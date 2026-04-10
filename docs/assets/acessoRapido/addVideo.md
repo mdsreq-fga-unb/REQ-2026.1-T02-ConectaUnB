@@ -3,4 +3,4 @@
     <figcaption>Fonte: Autores.</figcaption>
 </div>
 
-#ID é o está no link youtube.com/watch?v=123, o ID é 123
+#ID é o que está no link youtube.com/watch?v=123, o ID é 123
