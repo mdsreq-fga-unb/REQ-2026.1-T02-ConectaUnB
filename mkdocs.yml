@@ -1,0 +1,73 @@
+site_name: ConectaUnB
+site_author: Gabriel Diniz, Giovanna Aguiar, Gustavo Abrantes, João Pedro, Mathues Lemes, Pedro Americo
+site_description: Site voltado para a documentação do Grupo 5 sobre Requisitos de Software 2026.1
+repo_url: https://github.com/mdsreq-fga-unb/REQ-2026.1-T02-ConectaUnB
+repo_name: REQ-2026.1-T02-ConectaUnB
+
+nav:
+  - Sobre: index.md
+
+  - Reuniões:
+      - Reunião 1: reunioes/reuniao1.md
+      # - Reunião 2: reunioes/reuniao2.md
+      # - Reunião 3: reunioes/reuniao3.md
+      # - Reunião 4: reunioes/reuniao4.md
+      # - Reunião 5: reunioes/reuniao5.md
+      # - Reunião 6: reunioes/reuniao6.md
+      # - Reunião 7: reunioes/reuniao7.md
+      # - Reunião 8: reunioes/reuniao8.md
+      # - Reunião 9: reunioes/reuniao9.md
+      # - Reunião 10: reunioes/reuniao10.md
+
+  - Visão do Produto e Projeto:
+      - "Cenário Atual": visaoDeProdutoProjeto/cenarioAtual.md
+      - "Solução Proposta": visaoDeProdutoProjeto/solucaoProposta.md
+      - "Estratégias de Engenharia de Software": visaoDeProdutoProjeto/estrategias.md
+      - "Engenharia de Requisitos": visaoDeProdutoProjeto/engenhariaDeRequisitos.md
+      - "Cronograma": visaoDeProdutoProjeto/cronograma.md
+      - "Interação entre equipe e cliente": visaoDeProdutoProjeto/interacao.md
+      # - "Requisitos de Software": visaoDeProdutoProjeto/requisitosDeSoftware.md
+      # - "DoR e Dod": visaoDeProdutoProjeto/DoReDod.md
+      # - "Backlog do Produto": visaoDeProdutoProjeto/backlog.md
+      - "Lições Aprendidas": 
+        - "Unidade 1": visaoDeProdutoProjeto/licoes/unidade1.md
+
+
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.footer
+
+  disable_nav_previous_next: true
+
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Trocar para modo escuro
+
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Trocar para modo claro
+
+  favicon: assets/logoUnb.ico
+  logo: assets/logoUnb.ico
+
+markdown_extensions:
+  - tables
+  - attr_list
+  - md_in_html
+  - pymdownx.blocks.caption
+  - pymdownx.tasklist:
+        custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:pymdownx.emoji.twemoji
+      emoji_generator: !!python/name:pymdownx.emoji.to_svg
+
+extra_css: [stylesheets/extra.css]
