@@ -4,3 +4,60 @@
   --md-primary-fg-color--dark: #008137 !important;
 }
 
+.md-typeset p, 
+.md-typeset li {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.md-typeset ul li, 
+.md-typeset ol li {
+    margin-bottom: 0.5em;
+}
+
+.md-typeset table td:first-child img {
+    width: 60px;          
+    height: auto;         
+    object-fit: contain;  
+    vertical-align: middle;
+    padding: 5px;
+}
+
+.md-typeset table td:first-child {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.table-caption, 
+.table-source {
+    text-align: center !important;
+    display: block;
+    width: 100%;
+}
+
+/* Opcional: Se você usa <b> ou <strong> no título, garante que ele centralize também */
+.table-caption strong, 
+.table-caption b {
+    display: inline-block;
+}
+
+/* Cor do link para o MODO CLARO (fundo branco) */
+[data-md-color-scheme="default"] .md-typeset a {
+    color: #004c9e; /* Azul escuro para legibilidade no branco */
+}
+
+/* Cor do link para o MODO ESCURO (fundo preto/slate) */
+[data-md-color-scheme="slate"] .md-typeset a {
+    color: #7cacff; /* Um azul mais claro/vivo para brilhar no fundo escuro */
+}
+
+/* Estilos comuns para ambos os modos */
+.md-typeset a {
+    text-decoration: underline;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.md-typeset a:hover {
+    filter: brightness(1.3);
+}
