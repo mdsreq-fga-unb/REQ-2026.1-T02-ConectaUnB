@@ -1,0 +1,9 @@
+# Lições - Unidade 1
+
+Nesse primeiro momento, o grupo aprendeu a deliberar e pensar criticamente sobre abordagens de desenvolvimento de software, percebendo que o RAD seria a melhor abordagem para o nosso projeto. Também desenvolvemos a habilidade da empatia, entendendo que não podemos pré-determinar uma solução, mas sim entender o problema do usuário e pensar em uma maneira de resolvê-lo para trazer o maior valor de negócio para o cliente. 
+
+Além disso, o processo de definição da solução nos exigiu estudar e compor uma stack tecnológica moderna e robusta. Com isso, aprendemos a importância de prever essas integrações e a necessidade de nivelamento técnico entre os seis membros da equipe para assegurar a construção e a entrega contínua de um MVP viável. 
+
+Ademais, diante do mapeamento dos múltiplos perfis de stakeholders, compreendemos na prática o desafio de lidar com agendas conflitantes e expectativas divergentes. Como aprendizado para contornar essa dificuldade, estruturamos estratégias claras de comunicação e organização para o alinhamento rápido da equipe e para a validação constante com os clientes, garantindo expectativas uniformes de todos os envolvidos. 
+
+Por outro lado, as maiores dificuldades da equipe, no momento, foram relacionadas ao tempo. Os integrantes possuem muitas entregas de outras disciplinas o que afetou o nosso planejamento; contudo, graças ao comprometimento da equipe, conseguimos entregar as atividades necessárias no prazo estabelecido. Além disso, percebemos que as diferentes visões dos stakeholders no projeto poderão acarretar em alguns sacrifícios futuros, sendo essa uma das principais razões pela qual escolhemos RAD como processo.

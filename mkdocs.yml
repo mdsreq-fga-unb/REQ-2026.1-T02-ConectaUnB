@@ -9,7 +9,7 @@ nav:
 
   - Reuniões:
       - Reunião 1: reunioes/reuniao1.md
-      # - Reunião 2: reunioes/reuniao2.md
+      - Reunião 2: reunioes/reuniao2.md
       # - Reunião 3: reunioes/reuniao3.md
       # - Reunião 4: reunioes/reuniao4.md
       # - Reunião 5: reunioes/reuniao5.md
@@ -31,6 +31,12 @@ nav:
       # - "Backlog do Produto": visaoDeProdutoProjeto/backlog.md
       - "Lições Aprendidas": 
         - "Unidade 1": visaoDeProdutoProjeto/licoes/unidade1.md
+  
+  - Apresentações:
+      - Apresentação 1: entregas/entrega1.md
+      # - Apresentação 2: entregas/reuniao2.md
+      # - Apresentação 3: entregas/reuniao3.md
+      # - Apresentação 4: entregas/reuniao4.md
 
 
 theme:
