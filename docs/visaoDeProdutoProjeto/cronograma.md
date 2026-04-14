@@ -1,0 +1,10 @@
+# Cronograma
+
+| Iteração | Início | fim | Objetivo Principal | Entregas esperadas | Validação do cliente |
+| :---: | :---: | :---: | :--- | :--- | :--- |
+| **Interação 1** | 13/04 | 24/04 | Elicitação e descoberta de requisito; preparação do ambiente de desenvolvimento; | Lista de requisitos priorizada para o MVP; Repositóri walking skeleton configurado e ambiente de design configurados; | Reunião geral com clientes para validação de escopo. |
+| **Interação 2** | 25/04 | 01/05 | Prototipação da criação e gestão de perfis | Diagrama de Contexto e Protótipos de baixa fidelidade das telas de criação e edição de perfil | Feedback sobre fluxo de interação e usabilidade das páginas. |
+| **Interação 3** | 02/05 | 22/05 | Desenvolvimento da criação e edição de perfis e prototipação da criação e gestão de postagens | Código funcional de Criação de Perfis; Protótipos de baixa fidelidade das telas de postagens | Demonstração do código de perfis rodando. Validação do design de postagem. |
+| **Interação 4** | 23/05 | 05/06 | Desenvolvimento da criação e gestão de postagens e prototipação de feed de visualização | Código funcional de Postagens exclusivas para entidades; Protótipos da interface principal do Feed e navegação | Demonstração de publicação rodando. Validação visual do Feed |
+| **Interação 5** | 06/06 | 26/06 | Desenvolvimento do feed de visualização e prototipação de meios de inscrição (redirecionamento) prototipação de visualização de métricas de engajamento | Código funcional do Feed e Navegação Pública; Protótipos de painel de métricas e botões de redirecionamento/inscrição. | Validação do feed e navegação pública. Apresentação do design dos modais de redirecionamento para incrição e meios de visualização de métricas de engajamento |
+| **Interação 6** | 27/06 | 03/07 | Desenvolvimento de meios de inscrição e Desenvolvimento de metricas de engajamento | Código funcional de inscrições e métricas; Matriz de Rastreabilidade fechada; | Homologação final com todos os stakeholders (Testes de Aceitação do Usuário). |
