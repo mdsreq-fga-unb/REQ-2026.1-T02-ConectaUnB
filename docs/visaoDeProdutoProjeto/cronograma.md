@@ -1,10 +1,21 @@
 # Cronograma
 
-| Iteração | Início | fim | Objetivo Principal | Entregas esperadas | Validação do cliente |
-| :---: | :---: | :---: | :--- | :--- | :--- |
-| **Interação 1** | 13/04 | 24/04 | Elicitação e descoberta de requisito; preparação do ambiente de desenvolvimento; | Lista de requisitos priorizada para o MVP; Repositóri walking skeleton configurado e ambiente de design configurados; | Reunião geral com clientes para validação de escopo. |
-| **Interação 2** | 25/04 | 01/05 | Prototipação da criação e gestão de perfis | Diagrama de Contexto e Protótipos de baixa fidelidade das telas de criação e edição de perfil | Feedback sobre fluxo de interação e usabilidade das páginas. |
-| **Interação 3** | 02/05 | 22/05 | Desenvolvimento da criação e edição de perfis e prototipação da criação e gestão de postagens | Código funcional de Criação de Perfis; Protótipos de baixa fidelidade das telas de postagens | Demonstração do código de perfis rodando. Validação do design de postagem. |
-| **Interação 4** | 23/05 | 05/06 | Desenvolvimento da criação e gestão de postagens e prototipação de feed de visualização | Código funcional de Postagens exclusivas para entidades; Protótipos da interface principal do Feed e navegação | Demonstração de publicação rodando. Validação visual do Feed |
-| **Interação 5** | 06/06 | 26/06 | Desenvolvimento do feed de visualização e prototipação de meios de inscrição (redirecionamento) prototipação de visualização de métricas de engajamento | Código funcional do Feed e Navegação Pública; Protótipos de painel de métricas e botões de redirecionamento/inscrição. | Validação do feed e navegação pública. Apresentação do design dos modais de redirecionamento para incrição e meios de visualização de métricas de engajamento |
-| **Interação 6** | 27/06 | 03/07 | Desenvolvimento de meios de inscrição e Desenvolvimento de metricas de engajamento | Código funcional de inscrições e métricas; Matriz de Rastreabilidade fechada; | Homologação final com todos os stakeholders (Testes de Aceitação do Usuário). |
+| Fase | Sub-interação | Início | Fim | Objetivo principal | Entregas esperadas | Validação do Cliente |
+| :--- | :---: | :---: | :---: | :--- | :--- | :--- |
+| **Fase 1: Requirements Planning** | - | 13/04 | 24/04 | • Elicitação e descoberta de requisito | • Lista de requisitos priorizada para o MVP | Reunião geral com clientes para validação de escopo |
+| **Fase 2: User Design** | - | 27/04 | 08/05 | • Prototipação da aplicação<br>• Preparação do ambiente de desenvolvimento | • Diagrama de Contexto<br>• Protótipos de alta fidelidade | Feedback sobre fluxo de interação e usabilidade |
+| **Fase 3: Construction** | - | 11/05 | 28/06 | • Desenvolvimento da Aplicação | • Páginas prototipadas conforme revisões | Revisão constante de software funcional |
+| | 3.1 | 11/05 | 17/05 | • Desenvolvimento da página de Cadastro<br>• Desenvolvimento da página de Login | • Entrega das páginas de login e cadastro | Feedback sobre funcionalidade e bugs |
+| | 3.2 | 18/05 | 31/05 | • Desenvolvimento da página de Perfil (Criação/Edição) | • Entrega da página de Perfil | Feedback sobre funcionalidade e bugs |
+| | 3.3 | 01/06 | 07/06 | • Modal de criação de postagens<br>• Modal de edição de postagens | • Entrega dos modais de criação e edição | Feedback sobre funcionalidade e bugs |
+| | 3.4 | 08/06 | 21/06 | • Desenvolvimento da página de feed<br>• Filtros da página de feed<br>• Interação com posts | • Entrega da página de feed com filtros e interações | Feedback sobre funcionalidade e bugs |
+| | 3.5 | 22/06 | 28/06 | • Modal de inscrição (redirecionamento)<br>• Métricas de engajamento | • Entrega do modal e métricas | Feedback sobre funcionalidade e bugs |
+| **Fase 4: Cutover** | - | 29/06 | 03/07 | • Entregar o MVP da aplicação estabilizada. | • Aplicação devidamente implantada (deploy) e em produção oficial. | Feedback final da aplicação |
+
+## Reuniões com Stakeholders
+
+- **24/04:** Elicitação e descoberta de Requisitos.
+- **08/05:** Feedback e construção dos protótipos.
+- **05/06:** Feedback sobre funcionalidade e bugs das aplicações desenvolvidas.
+- **19/06:** Feedback sobre funcionalidade e bugs das aplicações desenvolvidas.
+- **03/07:** Feedback final da plataforma em produção.
