@@ -10,7 +10,7 @@ nav:
   - Reuniões:
       - Reunião 1: reunioes/reuniao1.md
       - Reunião 2: reunioes/reuniao2.md
-      # - Reunião 3: reunioes/reuniao3.md
+      - Reunião 3: reunioes/reuniao3.md
       # - Reunião 4: reunioes/reuniao4.md
       # - Reunião 5: reunioes/reuniao5.md
       # - Reunião 6: reunioes/reuniao6.md
