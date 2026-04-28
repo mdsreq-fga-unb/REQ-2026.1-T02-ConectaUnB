@@ -2,7 +2,7 @@
 
 ## Objetivo Geral do Produto 
 
-O objetivo geral do produto é facilitar o engajamento acadêmico através da centralização de informações de projetos de extensão, empresas juniores, equipes de competição dentre outras atividades extracurriculares. O produto atua como um hub de oportunidades, eliminando a busca por perfis nas redes sociais ou de murais espalhados pela faculdade, melhorando a eficácia da comunicação e garantindo que o aluno encontre tudo o que precisa para sua formação complementar em um único lugar além de proporcionar à comunidade externa informações sobre o que a universidade está produzindo. 
+O objetivo geral do produto é aumentar o engajamento acadêmico através da centralização de informações de projetos de extensão, empresas juniores, equipes de competição dentre outras atividades extracurriculares. O produto atua como um hub de oportunidades, eliminando a busca por perfis nas redes sociais ou de murais espalhados pela faculdade, melhorando a eficácia da comunicação e garantindo que o aluno encontre tudo o que precisa para sua formação complementar em um único lugar além de proporcionar à comunidade externa informações sobre o que a universidade está produzindo. 
 
 ## Objetivos Específicos (OE) do Produto 
 
