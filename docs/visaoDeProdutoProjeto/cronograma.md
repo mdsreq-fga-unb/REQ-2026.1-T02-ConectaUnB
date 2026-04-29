@@ -1,10 +1,21 @@
 # Cronograma
 
-| Iteração | Início | fim | Objetivo Principal | Entregas esperadas | Validação do cliente |
-| :---: | :---: | :---: | :--- | :--- | :--- |
-| **Interação 1** | 13/04 | 24/04 | Elicitação e descoberta de requisito; preparação do ambiente de desenvolvimento; | Lista de requisitos priorizada para o MVP; Repositóri walking skeleton configurado e ambiente de design configurados; | Reunião geral com clientes para validação de escopo. |
-| **Interação 2** | 25/04 | 01/05 | Prototipação da criação e gestão de perfis | Diagrama de Contexto e Protótipos de baixa fidelidade das telas de criação e edição de perfil | Feedback sobre fluxo de interação e usabilidade das páginas. |
-| **Interação 3** | 02/05 | 22/05 | Desenvolvimento da criação e edição de perfis e prototipação da criação e gestão de postagens | Código funcional de Criação de Perfis; Protótipos de baixa fidelidade das telas de postagens | Demonstração do código de perfis rodando. Validação do design de postagem. |
-| **Interação 4** | 23/05 | 05/06 | Desenvolvimento da criação e gestão de postagens e prototipação de feed de visualização | Código funcional de Postagens exclusivas para entidades; Protótipos da interface principal do Feed e navegação | Demonstração de publicação rodando. Validação visual do Feed |
-| **Interação 5** | 06/06 | 26/06 | Desenvolvimento do feed de visualização e prototipação de meios de inscrição (redirecionamento) prototipação de visualização de métricas de engajamento | Código funcional do Feed e Navegação Pública; Protótipos de painel de métricas e botões de redirecionamento/inscrição. | Validação do feed e navegação pública. Apresentação do design dos modais de redirecionamento para incrição e meios de visualização de métricas de engajamento |
-| **Interação 6** | 27/06 | 03/07 | Desenvolvimento de meios de inscrição e Desenvolvimento de metricas de engajamento | Código funcional de inscrições e métricas; Matriz de Rastreabilidade fechada; | Homologação final com todos os stakeholders (Testes de Aceitação do Usuário). |
+| Fase | Sub-iteração | Início | Fim | Objetivo principal | Entregas esperadas | Validação do Cliente |
+| :--- | :---: | :---: | :---: | :--- | :--- | :--- |
+| **Fase 1: Requirements Planning** | - | 13/04 | 24/04 | <ul><li>Elicitação e descoberta de requisitos</li></ul> | <ul><li>Lista de requisitos priorizada para o MVP</li></ul> | Reunião geral com clientes para validação de escopo |
+| **Fase 2: User Design** | - | 27/04 | 08/05 | <ul><li>Prototipação da aplicação</li><li>Preparação do ambiente de desenvolvimento</li></ul> | <ul><li>Diagrama de Contexto</li><li>Protótipos de média fidelidade</li></ul> | Feedback sobre fluxo de interação e usabilidade |
+| **Fase 3: Construction** | - | 11/05 | 28/06 | <ul><li>Desenvolvimento da Aplicação</li></ul> | <ul><li>Páginas prototipadas conforme revisões</li></ul> | Revisão constante de software funcional |
+| | 3.1 | 11/05 | 17/05 | <ul><li>Desenvolvimento da página de Cadastro</li><li>Desenvolvimento da página de Login</li></ul> | <ul><li>Entrega das páginas de login e cadastro</li></ul> | Verificação de conformidade com os Critérios de Aceitação |
+| | 3.2 | 18/05 | 31/05 | <ul><li>Desenvolvimento da página de Perfil (Criação/Edição)</li></ul> | <ul><li>Entrega da página de Perfil</li></ul> | Verificação de conformidade com os Critérios de Aceitação |
+| | 3.3 | 01/06 | 07/06 | <ul><li>Modal de criação de postagens</li><li>Modal de edição de postagens</li></ul> | <ul><li>Entrega dos modais de criação e edição</li></ul> | Verificação de conformidade com os Critérios de Aceitação |
+| | 3.4 | 08/06 | 21/06 | <ul><li>Desenvolvimento da página de feed</li><li>Filtros da página de feed</li><li>Interação com posts</li></ul> | <ul><li>Entrega da página de feed com filtros e interações</li></ul> | Verificação de conformidade com os Critérios de Aceitação |
+| | 3.5 | 22/06 | 28/06 | <ul><li>Modal de inscrição (redirecionamento)</li><li>Métricas de engajamento</li></ul> | <ul><li>Entrega do modal e métricas</li></ul> | Verificação de conformidade com os Critérios de Aceitação |
+| **Fase 4: Cutover** | - | 29/06 | 03/07 | <ul><li>Entregar o MVP da aplicação estabilizada.</li></ul> | <ul><li>Aplicação devidamente implantada (deploy) e em produção oficial.</li></ul> | Feedback final da aplicação |
+
+## Reuniões com Stakeholders
+
+- **24/04:** Elicitação e descoberta de Requisitos.
+- **08/05:** Feedback e construção dos protótipos.
+- **05/06:** Verificação de conformidade com os Critérios de Aceitação das aplicações desenvolvidas.
+- **19/06:** Verificação de conformidade com os Critérios de Aceitação das aplicações desenvolvidas.
+- **03/07:** Feedback final da plataforma em produção.
