@@ -17,7 +17,7 @@ As ferramentas de comunicação são essenciais para que a equipe desenvolviment
 ### Comunicação com o cliente: 
 
 - **Ferramenta principal:** As reuniões de revisão e planejamento das etapas com o cliente serão realizadas por vídeo conferência, utilizando o Google meet. Essas reuniões permitirão a validação das entregas, coleta de feedback e discussões sobre as próximas atividades. 
-    - **Frequência e Método:** O cliente estará diretamente envolvido nas revisões e entregas de cada clico, podendo validar entregas e fornecer feedbacks, ou seja, ocorreram no fim de cada ciclo. 
+    - **Frequência e Método:** O cliente estará diretamente envolvido nas revisões e entregas de cada ciclo, validando entregas e fornecendo feedback. Durante a fase de planejamento de requisitos e User Design o grupo terá reuniões constantes com o cliente, e durante a fase de desenvolvimento o foco será em validações e feedback, ocorrendo no início e fim de cada sub iteração da construção.
 - **Ferramenta secundária:** Utilizaremos o whatsapp como meio rápido de comunicação informal para comunicações mais eficientes. 
 
 ### Comunicação entre membros da equipe: 
