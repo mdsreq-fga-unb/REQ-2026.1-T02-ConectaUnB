@@ -35,7 +35,6 @@
     width: 100%;
 }
 
-/* Opcional: Se você usa <b> ou <strong> no título, garante que ele centralize também */
 .table-caption strong, 
 .table-caption b {
     display: inline-block;
@@ -86,4 +85,12 @@
 /* 3. Garante que o cursor seja apenas a lupa */
 .md-typeset img {
     cursor: zoom-in !important;
+}
+
+/* Estilo padronizado para as fotos da equipe */
+.foto-equipe {
+    width: 100px !important;  /* Largura fixa */
+    height: 100px !important; /* Altura fixa */
+    object-fit: cover;        /* Corta o excesso sem distorcer a imagem */
+    margin: 0 auto;           /* Centraliza a imagem na célula */
 }
