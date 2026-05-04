@@ -58,6 +58,32 @@
     transition: color 0.3s;
 }
 
-.md-typeset a:hover {
+/* Aplica o brilho apenas em links que NÃO são do GLightbox */
+.md-typeset a:not(.glightbox):hover {
     filter: brightness(1.3);
+}
+
+/* 1. Remove clareamento e filtros de brilho */
+.md-typeset a img,
+.md-typeset a:hover img,
+.md-typeset a:focus img,
+.glightbox:hover img {
+    opacity: 1 !important;
+    filter: none !important;
+    -webkit-filter: none !important;
+    transition: none !important;
+}
+
+/* 2. Remove o "overlay" que o Material coloca no fundo do link */
+.md-typeset a.glightbox,
+.md-typeset a.glightbox:hover,
+.md-typeset a.glightbox:focus {
+    background-color: transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* 3. Garante que o cursor seja apenas a lupa */
+.md-typeset img {
+    cursor: zoom-in !important;
 }
