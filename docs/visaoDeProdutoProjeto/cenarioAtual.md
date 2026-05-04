@@ -62,7 +62,7 @@ Nesse contexto de fragmentação da informação, as partes afetadas podem ser d
 <div align="center">
   <p class="table-source"><strong>Figura 1</strong> - Rich Picture</p>
   
-  <img src="../../assets/fotos/richPicture.png" alt="Rich Picture">
+  <img src="../../assets/fotos/cenarioAtual/richPicture.png" alt="Rich Picture">
 
 </div>
 
@@ -78,7 +78,7 @@ A grande barreira é que não há uma página dedicada a cada projeto no site do
 <div align="center">
   <p class="table-source"><strong>Figura 2</strong> - Diagrama Ishikawa</p>
   
-  <img src="../../assets/fotos/diagramaPeixe.png" alt="Diagrama Ishikawa">
+  <img src="../../assets/fotos/cenarioAtual/diagramaPeixe.png" alt="Diagrama Ishikawa">
 
 </div>
  
@@ -120,7 +120,7 @@ Quanto à necessidade de divulgação de eventos e engajamento esportivo das Atl
 <div align="center">
   <p class="table-source"><strong>Figura 3</strong> - Mapa dos Stakeholders</p>
   
-  <img src="../../assets/fotos/mapaStakeholders.png" alt="Diagrama Ishikawa">
+  <img src="../../assets/fotos/cenarioAtual/mapaStakeholders.png" alt="Diagrama Ishikawa">
 
 </div>
 
