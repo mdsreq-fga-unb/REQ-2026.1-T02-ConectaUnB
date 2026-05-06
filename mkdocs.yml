@@ -22,6 +22,7 @@ nav:
   - Visão do Produto e Projeto:
       - "Cenário Atual": visaoDeProdutoProjeto/cenarioAtual.md
       - "Solução Proposta": visaoDeProdutoProjeto/solucaoProposta.md
+      - "Intervenção social": visaoDeProdutoProjeto/intervencaoSocial.md
       - "Estratégias de Engenharia de Software": visaoDeProdutoProjeto/estrategias.md
       - "Engenharia de Requisitos": visaoDeProdutoProjeto/engenhariaDeRequisitos.md
       - "Cronograma": visaoDeProdutoProjeto/cronograma.md
