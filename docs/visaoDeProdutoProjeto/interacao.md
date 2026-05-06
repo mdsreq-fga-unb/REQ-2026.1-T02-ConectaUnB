@@ -33,13 +33,12 @@ As ferramentas de comunicação são essenciais para que a equipe desenvolviment
 
 Para assegurar que o Conecta UnB atenda de forma precisa às necessidades da comunidade acadêmica e reduza o retrabalho técnico, o produto passará por ciclos de validação rigorosos antes de sua implementação final. Esse processo será guiado por três pilares principais:  
 
-1. **Definition of Ready (DoR):** O DoR atua como o "filtro de entrada" para a equipe de desenvolvimento. Ele garante que nenhuma linha de código seja escrita antes que a necessidade do usuário esteja perfeitamente compreendida e detalhada. Uma tarefa ou História de Usuário só será puxada para o desenvolvimento se cumprir os seguintes requisitos: 
+1. **Definition of Ready (DoR):** O DoR atua como o "filtro de entrada" para a equipe de desenvolvimento e será aplicado ao final da fase de Planejamento de Requisitos. Ele garante que nenhuma linha de código seja escrita antes que a necessidade do usuário esteja perfeitamente compreendida e detalhada. Uma tarefa ou História de Usuário só será puxada para o desenvolvimento se cumprir os seguintes requisitos: 
     - O escopo e a regra de negócio estão claros e sem ambiguidades. 
     - Os Critérios de Aceitação estão explicitamente documentados. 
     - As dependências técnicas (como rotas de API no NestJS ou tabelas no PostgreSQL) estão mapeadas. 
-    - As interfaces visuais relacionadas à funcionalidade já foram prototipadas e validadas no Figma. 
 
-2. **Definition of Done (DoD):** O DoD atua como o "filtro de saída" e representa o selo de qualidade da equipe técnica. Uma funcionalidade não será apresentada ao cliente a menos que cumpra um checklist rigoroso de engenharia de software, garantindo o alinhamento com padrões de qualidade e métricas de adequação. Os critérios incluem: 
+2. **Definition of Done (DoD):** O DoD atua como o "filtro de saída" e representa o selo de qualidade da equipe técnica. Ele será aplicado ao final da fase de Construção do RAD. Uma funcionalidade não será apresentada ao cliente a menos que cumpra um checklist rigoroso de engenharia de software, garantindo o alinhamento com padrões de qualidade e métricas de adequação. Os critérios incluem: 
     - A funcionalidade foi implementada de ponta a ponta (integração entre Next.js e NestJS). 
     - O código foi coberto e aprovado em testes automatizados (utilizando o Jest). 
     - O código passou por revisões via Pull Requests no GitHub. 
