@@ -7,8 +7,8 @@
 | **Gerente do Projeto** | Coordena o projeto, garante a comunicação entre cliente e equipe, controla prazos e entrega. | Pedro Américo | Gabriel Diniz e João |
 | **Desenvolvedor Frontend** | Responsável pela interface do usuário, design e implementação das funcionalidades do lado do cliente. | João Cruz | Gustavo Abrantes, Giovanna e Gabriel Diniz |
 | **Desenvolvedor Backend** | Implementa a lógica de negócios, integração com banco de dados e APIs. | Matheus Lemes | Pedro Américo |
-| **Analista QA** | Garante a qualidade do produto, executando testes de funcionalidades, performance e usabilidade. | Gabriel Diniz | todos |
-| **Analista de Requisitos** | Define os requisitos funcionais (RF) e não funcionais (RNF) do sistema e garante que eles sejam atendidos. | Giovana | todos |
+| **Analista QA** | Garante a qualidade do produto, executando testes de funcionalidades, performance e usabilidade. | Gabriel Diniz | **TODOS** |
+| **Analista de Requisitos** | Define os requisitos funcionais (RF) e não funcionais (RNF) do sistema e garante que eles sejam atendidos. | Giovana | **TODOS** |
 
 ## Comunicação 
 
