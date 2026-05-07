@@ -37,16 +37,15 @@ Para assegurar que o Conecta UnB atenda de forma precisa às necessidades da com
     - O escopo e a regra de negócio estão claros e sem ambiguidades. 
     - Os Critérios de Aceitação estão explicitamente documentados. 
     - As dependências técnicas (como rotas de API no NestJS ou tabelas no PostgreSQL) estão mapeadas. 
-    - Protótipos aprovados pelos clientes (de alta ou baixa fidelidade) .
+    - Protótipos aprovados pelos clientes.
 
-2. **Definition of Done (DoD):** O DoD atua como o "filtro de saída" e representa o selo de qualidade da equipe técnica. Ele será aplicado ao final da fase de Construção do RAD. Uma funcionalidade não será apresentada ao cliente a menos que cumpra um checklist rigoroso de engenharia de software, garantindo o alinhamento com padrões de qualidade e métricas de adequação. Os critérios incluem: 
+2. **Definition of Done (DoD):** O DoD atua como o "filtro de saída", sendo utilizado para averiguar qualidade do que foi construído. Ele será aplicado ao final da fase de Construção do RAD. Uma funcionalidade não será apresentada ao cliente a menos que cumpra um checklist rigoroso de engenharia de software, garantindo o alinhamento com padrões de qualidade e métricas de adequação. Os critérios incluem: 
     - A funcionalidade foi implementada de ponta a ponta (integração entre Next.js e NestJS). 
     - O código foi coberto e aprovado em testes automatizados (utilizando o Jest). 
     - O código passou por revisões via Pull Requests no GitHub. 
-    - A integração contínua (CI/CD) via GitHub Actions foi executada com sucesso, sem quebras de build. 
     - O deploy foi realizado com sucesso nos ambientes de homologação na Vercel e Koyeb. 
 
-3. **Validação com o Cliente:** Esta é a etapa final de validação do ponto de vista do negócio. Ao final de cada ciclo de desenvolvimento, a equipe realizará uma reunião de revisão a fim de garantir que o requisito está pronto para sair do ambiente de desenvolvimento e ser implementada no produto. 
+3. **Validação com o Cliente:** Esta é a etapa final de validação do ponto de vista do negócio. Ao final do ciclo de desenvolvimento, a equipe realizará uma reunião de revisão a fim de garantir que o produto está nos correto. 
     - Nesse momento, as funcionalidades que já passaram pelo DoD serão apresentadas em um ambiente navegável. 
     - Os representantes dos stakeholders (como docentes do Catavento, membros da Gama CubeDesign, Atlética Pesadelo, EJ CJR e representantes discentes) testarão a aplicação na prática. 
     - A validação ocorre confirmando se o incremento de software resolve a dor inicialmente eliciada pelo requisito, cumprindo os critérios de aceitação e garantindo que o produto gera o valor esperado para o contexto da universidade. 
