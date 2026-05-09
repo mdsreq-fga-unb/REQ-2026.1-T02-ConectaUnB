@@ -1,54 +1,93 @@
-# Análise de Entrevista —  Data: 01/05 - Entrevistados: Paula Meyer
+## Introdução
 
-## Visão do problema
+A seguir apresentamos a análise da entrevista realizada em 01 de Maio com a stakeholder Paula Meyer, representante do projeto Catavento.
 
-### Os diferentes stakeholders têm a mesma visão do problema?
+O objetivo desta análise é mapear a visão específica deste stakeholder em relação aos problemas de comunicação e divulgação no ambiente universitário. O documento explora as limitações e os gargalos das ferramentas atualmente utilizadas pela comunidade.
+
+Optamos por fazer a análise através de algumas perguntas indicadas pelo professor para a realização de uma atividade em aula, identificamos em grupo que essas perguntas nos orientaria bem para a condução da análise.
+
+## Desenvolvimento da análise
+
+**Os diferentes stakeholders têm a mesma visão do problema?**
+
 No momento, temos apenas a visão da coordenadora (Paula). É necessário validar em reuniões futuras se os alunos de graduação e o público atendido compartilham da percepção de que o problema é apenas a divulgação, ou se há gargalos na execução das atividades.
 
-### Liste desejos
-Ter uma presença ativa em redes sociais; realizar posts frequentes sobre as visitas e projetos; ter uma plataforma extremamente intuitiva; autonomia na gestão de conteúdo.
+**Liste desejos**
 
-### Liste necessidades
-Registro e acompanhamento de métricas (alunos de graduação envolvidos, alunos atendidos na extensão e número de atividades anuais); uma ferramenta que centralize a divulgação dos projetos.
+- Ter uma presença ativa em redes sociais;
+- Realizar posts frequentes sobre as visitas e projetos;
+- Ter uma plataforma extremamente intuitiva;
+- Autonomia na gestão de conteúdo.
 
-### Liste frustrações
-Projeto não possui boas fontes de divulgação nem alimentação constante de conteúdos; canais atuais (Instagram) estão parados; falta de braço operacional para a comunicação; invisibilidade do projeto.
+**Liste necessidades**
 
-### Existem necessidades implícitas?
+- Registro e acompanhamento de métricas (alunos de graduação envolvidos, alunos atendidos na extensão e número de atividades anuais);
+- Uma ferramenta que centralize a divulgação dos projetos.
+
+**Liste frustrações**
+
+- Projeto não possui boas fontes de divulgação nem alimentação constante de conteúdos;
+- Canais atuais (Instagram) estão parados;
+- Falta de braço operacional para a comunicação;
+- Invisibilidade do projeto.
+
+**Existem necessidades implícitas?**
+
 Necessidade de um fluxo simplificado de entrada de dados, já que o maior gargalo é a falta de tempo/pessoal para alimentar as plataformas.
 
-### Quais funcionalidades aparecem?
-Módulo de postagens (estilo blog/notícias); dashboard de métricas anuais; painel de gerenciamento de projetos de extensão; repositório de histórico de atividades.
+**Quais funcionalidades aparecem?**
 
-### Quais características de qualidade são mencionadas?
-Usabilidade: simplicidade e intuitividade acima de tudo. Consistência: interface padronizada igual para todos os perfis. Baixa curva de aprendizado.
+- Módulo de postagens (estilo blog/notícias); 
+- Dashboard de métricas anuais;
+- Painel de gerenciamento de projetos de extensão;
+- Repositório de histórico de atividades.
 
-### Há sinais de resistência à mudança? Onde?
+**Quais características de qualidade são mencionadas?**
+
+- Usabilidade: simplicidade e intuitividade acima de tudo. 
+- Consistência: interface padronizada igual para todos os perfis.
+- Baixa curva de aprendizado.
+
+**Há sinais de resistência à mudança? Onde?**
+
 Sim, de forma indireta na parte operacional. Já que não tem uma pessoa para divulgar, isso indica que qualquer solução complexa enfrentará resistência por falta de tempo da equipe.
 
-### Como fatores humanos podem influenciar os requisitos?
+**Como fatores humanos podem influenciar os requisitos?**
+
 A falta de um responsável dedicado à comunicação exige que o sistema se alimente quase automaticamente ou de forma muito rápida para evitar o abandono, como ocorreu com o Instagram.
 
-### Identifique ambiguidades
+**Identifique ambiguidades**
+
 A definição de “igual para todos os usuários” na parte em que ela fala da plataforma. Não está claro se ela se refere à estética visual ou se deseja que não existam níveis de permissão diferentes.
 
-### Identifique incompletudes
+**Identifique incompletudes**
+
 Falta saber se o sistema deve gerar as métricas, com cálculo, ou apenas exibir dados inseridos manualmente.
 
-### Há contradições ou redundâncias?
+**Há contradições ou redundâncias?**
+
 Contradição entre a vontade de ter “alimentação constante” e a afirmação de que “não tem pessoa para divulgar”.
 
-### Quais requisitos são implícitos?
+**Quais requisitos são implícitos?**
+
 Armazenamento de mídia, como fotos e vídeos para posts, e possível integração com sistemas acadêmicos para extração e exibição das métricas de alunos.
 
-### Existem conflitos entre stakeholders? Quais?
+**Existem conflitos entre stakeholders? Quais?**
+
 Não identificado.
 
 ## Requisitos identificados
 
+Utilizamos em um primeiro momento o **texto estruturado** para elicitar e declarar, de forma simples, antes de utilizarmos tecnicas mais formais de declaração.
+
+- O sistema deve ... COMPLETE
+
+<!-- ## Requisitos identificados
+
 Lista de requisitos preliminares, ainda pouco formalizados, incluindo requisitos funcionais, não funcionais e regras de negócio.
 
-### Requisitos Funcionais
+**Requisitos Funcionais**
+
 O que o sistema deve fazer:
 
 - RF01 - Gestão de Conteúdo: o sistema deve permitir o cadastro, edição e exclusão de posts contendo texto e mídia, como fotos e vídeos, sobre visitas e projetos.
@@ -60,7 +99,7 @@ O que o sistema deve fazer:
 - RF04 - Feed Público: o sistema deve exibir uma interface pública, no estilo blog ou portfólio, para divulgação das atividades.
 - RF05 - Filtro Temporal: o sistema deve permitir filtrar as métricas e postagens por ano letivo.
 
-### Requisitos Não Funcionais
+**Requisitos Não Funcionais**
 Como o sistema deve se comportar:
 
 - RNF01 - Usabilidade (Simplicidade): a interface deve ser minimalista, com o menor número possível de cliques para realizar uma postagem.
@@ -69,9 +108,9 @@ Como o sistema deve se comportar:
 - RNF04 - Responsividade (Mobile): o sistema deve ser totalmente funcional em dispositivos móveis para facilitar postagens rápidas durante as visitas.
 - RNF05 - Eficiência: o processo de upload de uma nova atividade ou postagem não deve levar mais do que 2 minutos.
 
-### Regras de Negócio
+**Regras de Negócio**
 As diretrizes e restrições do processo:
 
 - RN01 - Periodicidade das Métricas: as métricas de impacto, como alunos e atividades, devem ser obrigatoriamente agrupadas e fechadas anualmente para fins de relatório.
 - RN02 - Unicidade de Perfis: baseado na ambiguidade identificada, não haverá distinção de visualização entre administradores e usuários comuns; todos os usuários logados acessam as mesmas ferramentas de edição.
-- RN03 - Validação de Dados: uma atividade de extensão só pode ser contabilizada nas métricas se houver o registro do número de alunos atendidos.
+- RN03 - Validação de Dados: uma atividade de extensão só pode ser contabilizada nas métricas se houver o registro do número de alunos atendidos. -->
