@@ -38,6 +38,14 @@ nav:
       # - Apresentação 2: entregas/reuniao2.md
       # - Apresentação 3: entregas/reuniao3.md
       # - Apresentação 4: entregas/reuniao4.md
+  
+  - Entrevistas:
+      - Entrevista 1: analisesEntrevistas/analiseEntrevista24-04.md
+      - Entrevista 2: analisesEntrevistas/analiseEntrevista29-04.md
+      - Entrevista 3: analisesEntrevistas/analiseEntrevista01-05.md
+      # - Entrevista 2: entrevistas/entrevista2.md
+      # - Entrevista 3: entrevistas/entrevista3.md
+      # - Entrevista 4: entrevistas/entrevista4.md
 
 
 theme:
