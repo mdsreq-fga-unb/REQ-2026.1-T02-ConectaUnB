@@ -87,29 +87,29 @@ Não identificado nessa análise.
 
 Utilizamos em um primeiro momento o **texto estruturado** para elicitar e declarar, de forma simples, antes de utilizarmos técnicas mais formais de declaração.
 
-- O sistema deve ... COMPLETE
-
-<!-- * Liste os Requisitos identificados, nada muito bem estabelecido, apenas as ideias identificadas, podem ser requisitos funcionais, não funcionais e regras de negócio  
-    
 - **Requisitos Funcionais (RFs)** \- O que o sistema deve fazer:  
-    **RF01**: Cadastrar perfil público de entidade (Equipe de Competição, Empresa Júnior, Atlética, Projeto de Extensão), contendo descrição detalhada do propósito e atividades.  
-    **RF02**: Consultar perfil de entidades cadastradas na plataforma.  
-    **RF03**: Publicar atualizações de projetos (mini artigos) vinculados ao perfil da entidade, contendo texto e imagens.  
-    **RF04**: Classificar projetos com tags de status (ex: em andamento, finalizado, incompleto).  
-    **RF05**: Consultar o histórico de projetos anteriores e inativos de uma entidade.  
-    **RF06**: Configurar filtros de interesses pessoais no perfil do aluno (ex: PIBIC, vagas de EJ, eventos).  
-    **RF07**: Emitir notificações direcionadas aos alunos baseadas nos filtros de interesse configurados.  
-    **RF08**: Gerar painel de métricas de acesso para a entidade, exibindo o percentual de visualizações realizadas por alunos logados versus visitantes não logados.  
-      
+
+    **RF-2-01**: O sistema deve permitir o cadastro de um perfil público de entidade contendo a descrição detalhada do propósito e das atividades.
+
+    **RF-2-02**: O sistema deve permitir a publicação de atualizações de projetos contendo texto e imagens.
+
+    **RF-2-03**: O sistema deve permitir a classificação de projetos no momento da publicação.
+
+    **RF-2-04**: O sistema deve exibir o histórico de projetos anteriores e inativos no perfil de cada entidade.
+
+    **RF-2-05**: O sistema deve permitir a configuração de filtros de interesses pessoais (ex: equipes de competição, PIBIC) para personalizar o feed de visualização do aluno.
+
+    **RF-2-06**: O sistema deve emitir notificações direcionadas aos alunos baseadas nos filtros de interesse configurados em seus perfis.
+
+    **RF-2-07**: O sistema deve gerar um painel de métricas de acesso para a entidade exibindo o número de interações realizadas.
+
+
 - **Requisitos Não Funcionais (RNFs)** \- Qualidades e Restrições:  
-    **RNF01** (Usabilidade): O sistema deve fornecer uma interface de avisos estritamente filtrada pelas preferências do usuário, evitando poluição visual análoga à de murais gerais.  
-    **RNF02** (Interoperabilidade/Interface Externa): O sistema deve consumir a API de autenticação da Universidade de Brasília para distinguir contas de alunos matriculados de acessos de visitantes (necessário para o RF08).  
-      
+
+    **RNF-2-01**: O sistema deve exibir os avisos e conteúdos de forma personalizada, filtrando as informações para evitar a poluição visual característica dos murais gerais.
+
 * **Regras de Negócio (RNs)** \- Políticas e Condições do Domínio: 
 
-  **RN01**: Apenas usuários autenticados e cadastrados como "Membros" ou "Líderes" de uma entidade possuem permissão para criar ou editar postagens, alterar o status de projetos e visualizar o painel de métricas do perfil.
+    **RN-2-01**: Restringir a publicação de atualizações de projetos apenas aos usuários que estiverem previamente vinculados ao perfil da entidade publicadora.
 
-  **RN02:** Os status dos projetos não podem ser de preenchimento livre, devendo respeitar um domínio padronizado pelo sistema (ex: "Em concepção", "Em andamento", "Finalizado", "Cancelado") para facilitar buscas futuras. 
-
-  A RN02 pode não se aplicar ao projeto todo. -->
-
+    **RN-2-02**: Utilizar obrigatoriamente *tags* de status padronizadas e de domínio fechado pelo sistema para a classificação dos projetos.
