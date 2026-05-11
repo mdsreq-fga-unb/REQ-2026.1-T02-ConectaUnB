@@ -102,7 +102,7 @@ Utilizamos em um primeiro momento o **texto estruturado** para elicitar e declar
 
     **RF-2-02**: O sistema deve permitir a publicação de atualizações de projetos contendo texto e imagens.
 
-    **RF-2-03**: O sistema deve permitir a classificação de projetos no momento da publicação.
+    **RF-2-03**: O sistema deve permitir a classificação de projetos no momento da publicação (finalizado, em andamento, etc.).
 
     **RF-2-04**: O sistema deve exibir o histórico de projetos anteriores e inativos no perfil de cada entidade.
 
