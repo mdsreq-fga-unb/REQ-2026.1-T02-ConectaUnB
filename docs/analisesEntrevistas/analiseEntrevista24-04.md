@@ -1,4 +1,10 @@
-**Análise de Entrevista — Fase 1** Data: 24/04 Entrevistados: João (CJR), Ian (Aluno), Eiki (Atlética)
+## Introdução
+
+A seguir apresentamos a análise da entrevista realizada em 24 de abril com os stakeholders João (CJR), Ian (Aluno), Eiki (Atlética).
+
+O objetivo desta análise é mapear a visão específica deste stakeholder em relação aos problemas de comunicação e divulgação no ambiente universitário. O documento explora as limitações e os gargalos das ferramentas atualmente utilizadas pela comunidade.
+
+Optamos por fazer a análise através de algumas perguntas sugeridas pelo professor em aula, identificamos em grupo que essas perguntas serviriam como uma boa base para a condução da análise.
 
 **1\. Como a CJR divulga o processo seletivo?**
 
@@ -89,7 +95,7 @@ necessário destrinchar fatores de qualidade (Quais características de qualidad
 
 desenvolver perguntas de como seria feita moderação e afins (se teremos login e como isso se dará)
 
-**Perguntas para a análise (pedro americo)**
+**Perguntas para a análise**
 
 * Os diferentes stakeholders têm a mesma visão do problema?
 
@@ -289,3 +295,32 @@ filtros de busca (EJ, pibics, etc.)
 
 Feed, filtros, notificações, integração com redes,
 
+## Requisitos identificados
+
+Utilizamos em um primeiro momento o **texto estruturado** para elicitar e declarar, de forma simples, antes de utilizarmos técnicas mais formais de declaração.
+
+- **Requisitos Funcionais (RFs)** \- O que o sistema deve fazer:  
+
+    **RF-1-01**: O sistema deve permitir filtrar procesos seletivos abertos
+
+    **RF-1-02**: O sistema deve permitir criar posts com apenas textos, sem necessidade de imagens
+
+    **RF-1-03**: O sistema poderia permitir o usuário solicitar notificações de acordo com sua vontade
+
+    **RF-1-04**: Seria legal se o sistema permitisse importar posts de outras redes sociais
+
+    **RF-1-05**: O sistema deve registrar métricas de engajamentos de posts individuais
+
+    **RF-1-06**: O sistema deve permitir a atualização do status de um processo seletivo
+
+    **RF-1-07**: O sistema deve permitir o cancelamento de um processo seletivo
+
+
+- **Requisitos Não Funcionais (RNFs)** \- Qualidades e Restrições:  
+
+    **RNF-1-01**: O sistema deve permitir o primeiro acesso a plataforma sem necessidade de login
+
+
+* **Regras de Negócio (RNs)** \- Políticas e Condições do Domínio: 
+
+    **RN-1-01**: Suportar sistemas já usados pelas entidades nos atos de inscrição, como por exemplo google forms e microsoft forms

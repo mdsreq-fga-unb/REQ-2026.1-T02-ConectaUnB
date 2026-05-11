@@ -4,7 +4,7 @@ A seguir apresentamos a análise da entrevista realizada em 30 de Abril com a st
 
 O objetivo desta análise é mapear a visão específica deste stakeholder em relação aos problemas de comunicação e divulgação no ambiente universitário. O documento explora as limitações e os gargalos das ferramentas atualmente utilizadas pela comunidade.
 
-Optamos por fazer a análise através de algumas perguntas indicadas pelo professor para a realização de uma atividade em aula, identificamos em grupo que essas perguntas nos orientaria bem para a condução da análise.
+Optamos por fazer a análise através de algumas perguntas sugeridas pelo professor em aula, identificamos em grupo que essas perguntas serviriam como uma boa base para a condução da análise.
 
 ## Desenvolvimento da análise
 
@@ -99,7 +99,6 @@ Utilizamos em um primeiro momento o **texto estruturado** para elicitar e declar
     **RNF-3-03**: O sistema deve manter uma consistência visual padronizada para todos os perfis de acesso, reduzindo a confusão e a complexidade de navegação.
 
     **RNF-3-04**: O sistema deve possuir interface responsiva, facilitando postagens rápidas pelo celular durante a realização de visitas ou atividades de campo.
-
 
 * **Regras de Negócio (RNs)** \- Políticas e Condições do Domínio: 
 
