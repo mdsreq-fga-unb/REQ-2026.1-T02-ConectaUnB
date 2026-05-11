@@ -78,7 +78,7 @@ Não identificado.
 
 ## Requisitos identificados
 
-Utilizamos em um primeiro momento o **texto estruturado** para elicitar e declarar, de forma simples, antes de utilizarmos tecnicas mais formais de declaração.
+Utilizamos em um primeiro momento o **texto estruturado** para elicitar e declarar, de forma simples, antes de utilizarmos técnicas mais formais de declaração.
 
 - O sistema deve ... COMPLETE
 
