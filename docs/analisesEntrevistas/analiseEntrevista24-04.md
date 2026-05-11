@@ -301,26 +301,26 @@ Utilizamos em um primeiro momento o **texto estruturado** para elicitar e declar
 
 - **Requisitos Funcionais (RFs)** \- O que o sistema deve fazer:  
 
-    **RF01**: O sistema deve permitir filtrar procesos seletivos abertos
+    **RF-1-01**: O sistema deve permitir filtrar procesos seletivos abertos
 
-    **RF02**: O sistema deve permitir criar posts com apenas textos, sem necessidade de imagens
+    **RF-1-02**: O sistema deve permitir criar posts com apenas textos, sem necessidade de imagens
 
-    **RF03**: O sistema poderia permitir o usuário solicitar notificações de acordo com sua vontade
+    **RF-1-03**: O sistema poderia permitir o usuário solicitar notificações de acordo com sua vontade
 
-    **RF04**: Seria legal se o sistema permitisse importar posts de outras redes sociais
+    **RF-1-04**: Seria legal se o sistema permitisse importar posts de outras redes sociais
 
-    **RF05**: O sistema deve registrar métricas de engajamentos de posts individuais
+    **RF-1-05**: O sistema deve registrar métricas de engajamentos de posts individuais
 
-    **RF06**: O sistema deve permitir a atualização do status de um processo seletivo
+    **RF-1-06**: O sistema deve permitir a atualização do status de um processo seletivo
 
-    **RF07**: O sistema deve permitir o cancelamento de um processo seletivo
+    **RF-1-07**: O sistema deve permitir o cancelamento de um processo seletivo
 
 
 - **Requisitos Não Funcionais (RNFs)** \- Qualidades e Restrições:  
 
-    **RNF01**: O sistema deve permitir o primeiro acesso a plataforma sem necessidade de login
+    **RNF-1-01**: O sistema deve permitir o primeiro acesso a plataforma sem necessidade de login
 
 
 * **Regras de Negócio (RNs)** \- Políticas e Condições do Domínio: 
 
-    **RN01**: Suportar sistemas já usados pelas entidades nos atos de inscrição, como por exemplo google forms e microsoft forms
+    **RN-1-01**: Suportar sistemas já usados pelas entidades nos atos de inscrição, como por exemplo google forms e microsoft forms
