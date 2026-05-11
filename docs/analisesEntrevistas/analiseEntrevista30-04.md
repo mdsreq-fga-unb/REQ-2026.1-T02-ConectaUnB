@@ -6,6 +6,15 @@ O objetivo desta análise é mapear a visão específica deste stakeholder em re
 
 Optamos por fazer a análise através de algumas perguntas sugeridas pelo professor em aula, identificamos em grupo que essas perguntas serviriam como uma boa base para a condução da análise.
 
+## Vídeo da Entrevita
+
+<div style="text-align: center;">
+    <iframe width="100%" height="400" src="https://www.youtube.com/embed/nKRwOlEvvGg" title="Reunião stakeholder - fase 1 - 30 04 - Paula Meyer" frameborder="0" allowfullscreen></iframe>
+    <figcaption>
+        <a href="https://www.youtube.com/watch?v=nKRwOlEvvGg">Clique para assistir no YouTube</a>.
+    </figcaption>
+</div>
+
 ## Desenvolvimento da análise
 
 **Os diferentes stakeholders têm a mesma visão do problema?**

@@ -6,6 +6,17 @@ O objetivo desta análise é mapear a visão específica deste stakeholder em re
 
 Optamos por fazer a análise através de algumas perguntas sugeridas pelo professor em aula, identificamos em grupo que essas perguntas serviriam como uma boa base para a condução da análise.
 
+## Vídeo da Entrevita
+
+<div style="text-align: center;">
+    <iframe width="100%" height="400" src="https://www.youtube.com/embed/QRD08hyXsOg" title="Reunião stakeholder - fase 1 - 24 04 - Geral" frameborder="0" allowfullscreen></iframe>
+    <figcaption>
+        <a href="https://www.youtube.com/watch?v=QRD08hyXsOg">Clique para assistir no YouTube</a>.
+    </figcaption>
+</div>
+
+## Desenvolvimento da análise
+
 **1\. Como a CJR divulga o processo seletivo?**
 
 Canais utilizados:
