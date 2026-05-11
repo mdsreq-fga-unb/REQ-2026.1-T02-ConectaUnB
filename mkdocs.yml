@@ -10,7 +10,7 @@ nav:
   - Reuniões:
       - Reunião 1: reunioes/reuniao1.md
       - Reunião 2: reunioes/reuniao2.md
-      # - Reunião 3: reunioes/reuniao3.md
+      - Reunião 3: reunioes/reuniao3.md
       # - Reunião 4: reunioes/reuniao4.md
       # - Reunião 5: reunioes/reuniao5.md
       # - Reunião 6: reunioes/reuniao6.md
@@ -22,6 +22,7 @@ nav:
   - Visão do Produto e Projeto:
       - "Cenário Atual": visaoDeProdutoProjeto/cenarioAtual.md
       - "Solução Proposta": visaoDeProdutoProjeto/solucaoProposta.md
+      - "Intervenção social": visaoDeProdutoProjeto/intervencaoSocial.md
       - "Estratégias de Engenharia de Software": visaoDeProdutoProjeto/estrategias.md
       - "Engenharia de Requisitos": visaoDeProdutoProjeto/engenhariaDeRequisitos.md
       - "Cronograma": visaoDeProdutoProjeto/cronograma.md
@@ -83,5 +84,13 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:pymdownx.emoji.twemoji
       emoji_generator: !!python/name:pymdownx.emoji.to_svg
+  
+plugins:
+  - search
+  - glightbox:
+      touchNavigation: true
+      loop: false
+      zoomable: true
+      draggable: true
 
 extra_css: [stylesheets/extra.css]
