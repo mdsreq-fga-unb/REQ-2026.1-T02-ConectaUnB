@@ -1,6 +1,6 @@
 ## Introdução
 
-A seguir apresentamos a análise da entrevista realizada em 01 de Maio com a stakeholder Paula Meyer, representante do projeto Catavento.
+A seguir apresentamos a análise da entrevista realizada em 30 de Abril com a stakeholder Paula Meyer, representante do projeto Catavento.
 
 O objetivo desta análise é mapear a visão específica deste stakeholder em relação aos problemas de comunicação e divulgação no ambiente universitário. O documento explora as limitações e os gargalos das ferramentas atualmente utilizadas pela comunidade.
 
@@ -78,39 +78,29 @@ Não identificado.
 
 ## Requisitos identificados
 
-Utilizamos em um primeiro momento o **texto estruturado** para elicitar e declarar, de forma simples, antes de utilizarmos tecnicas mais formais de declaração.
+Utilizamos em um primeiro momento o **texto estruturado** para elicitar e declarar, de forma simples, antes de utilizarmos técnicas mais formais de declaração.
 
-- O sistema deve ... COMPLETE
+- **Requisitos Funcionais (RFs)** \- O que o sistema deve fazer:  
 
-<!-- ## Requisitos identificados
+    **RF-3-01**: O sistema deve permitir o cadastro, a edição e a exclusão de postagens contendo texto e mídias (fotos e vídeos) sobre as visitas e os projetos de extensão realizados [2, 4].
 
-Lista de requisitos preliminares, ainda pouco formalizados, incluindo requisitos funcionais, não funcionais e regras de negócio.
+    **RF-3-02**: O sistema deve exibir uma interface pública no formato de portfólio (ou blog) para a divulgação das atividades de extensão cadastradas no perfil.
 
-**Requisitos Funcionais**
+    **RF-3-03**: O sistema deve permitir a aplicação de filtros para pesquisar as métricas de impacto e as postagens.
 
-O que o sistema deve fazer:
+    **RF-3-04**: O sistema deve permitir o registro de atividades de extensão, associando-as obrigatoriamente a uma data e a um tipo de ação.
 
-- RF01 - Gestão de Conteúdo: o sistema deve permitir o cadastro, edição e exclusão de posts contendo texto e mídia, como fotos e vídeos, sobre visitas e projetos.
-- RF02 - Registro de Atividades: o sistema deve permitir o registro de atividades de extensão, associando data e tipo de ação.
-- RF03 - Painel de Métricas: o sistema deve gerar um dashboard ou relatório visual contendo:
-	- total de alunos de graduação envolvidos;
-	- total de alunos ou público atendido pela extensão;
-	- número de atividades realizadas no período.
-- RF04 - Feed Público: o sistema deve exibir uma interface pública, no estilo blog ou portfólio, para divulgação das atividades.
-- RF05 - Filtro Temporal: o sistema deve permitir filtrar as métricas e postagens por ano letivo.
+- **Requisitos Não Funcionais (RNFs)** \- Qualidades e Restrições:  
 
-**Requisitos Não Funcionais**
-Como o sistema deve se comportar:
+    **RNF-3-01**: O sistema deve permitir o cadastro, a edição e a exclusão de postagens contendo texto e mídias (fotos) sobre as visitas e os projetos de extensão realizados.
 
-- RNF01 - Usabilidade (Simplicidade): a interface deve ser minimalista, com o menor número possível de cliques para realizar uma postagem.
-- RNF02 - Curva de Aprendizado: o sistema deve ser intuitivo o suficiente para que um novo usuário consiga postar uma atividade sem treinamento prévio.
-- RNF03 - Consistência Visual: a interface deve ser padronizada e idêntica para todos os perfis de acesso, mantendo a familiaridade visual.
-- RNF04 - Responsividade (Mobile): o sistema deve ser totalmente funcional em dispositivos móveis para facilitar postagens rápidas durante as visitas.
-- RNF05 - Eficiência: o processo de upload de uma nova atividade ou postagem não deve levar mais do que 2 minutos.
+    **RNF-3-02**: O sistema deve apresentar uma interface minimalista e extremamente intuitiva, garantindo uma baixa curva de aprendizado para que usuários idosos ou com pouca afinidade tecnológica consigam realizar postagens sem necessidade de treinamento prévio.
 
-**Regras de Negócio**
-As diretrizes e restrições do processo:
+    **RNF-3-03**: O sistema deve manter uma consistência visual padronizada para todos os perfis de acesso, reduzindo a confusão e a complexidade de navegação.
 
-- RN01 - Periodicidade das Métricas: as métricas de impacto, como alunos e atividades, devem ser obrigatoriamente agrupadas e fechadas anualmente para fins de relatório.
-- RN02 - Unicidade de Perfis: baseado na ambiguidade identificada, não haverá distinção de visualização entre administradores e usuários comuns; todos os usuários logados acessam as mesmas ferramentas de edição.
-- RN03 - Validação de Dados: uma atividade de extensão só pode ser contabilizada nas métricas se houver o registro do número de alunos atendidos. -->
+    **RNF-3-04**: O sistema deve possuir interface responsiva, facilitando postagens rápidas pelo celular durante a realização de visitas ou atividades de campo.
+
+
+* **Regras de Negócio (RNs)** \- Políticas e Condições do Domínio: 
+
+    **RN-3-01**: Manter a unicidade de ferramentas de edição na gestão do perfil, aplicando hierarquias ou níveis de permissão para usuários logados vinculados ao projeto.
