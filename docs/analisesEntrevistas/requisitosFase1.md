@@ -1,6 +1,6 @@
 ## Introdução
 
-Após a primeira fase de elicitação e descoberta o grupo reuniu os requisitos declarados nas 3 entrevistas e os reuniu na seguinte tabela:
+Após a primeira fase de elicitação e descoberta o grupo declarou os requisitos entendidos e subentendidos das três entrevistas e os reuniu na seguinte tabela:
 
 
 ## Requisitos funcionais (RFs)
@@ -15,10 +15,10 @@ Após a primeira fase de elicitação e descoberta o grupo reuniu os requisitos 
 | RF-1-07 | Cancelar processo seletivo | O sistema deve permitir o cancelamento de um processo seletivo | OE1 OE2 OE3 | CP4 | VN2 |
 | RF-2-01 | Cadastrar perfil da entidade publicamente | O sistema deve permitir o cadastro de um perfil público de entidade contendo a descrição detalhada do propósito e das atividades. | OE1 OE2 OE3 | *CPX* | *VNX* |
 | RF-2-02 | Atualizar andamento de projetos | O sistema deve permitir a publicação de atualizações de projetos contendo texto e imagens. | OE1 OE2 OE3 OE5 | *CPX* | *VNX* |
-| RF-2-03 | Atualizar andamento de projetos | O sistema deve permitir a classificação de projetos no momento da publicação (finalizado, em andamento, etc.). | *OEX* | *CPX* | *VNX* |
+| RF-2-03 | Classificar projetos | O sistema deve permitir a classificação de projetos no momento da publicação (finalizado, em andamento, etc.). | *OEX* | *CPX* | *VNX* |
 | RF-2-04 | Visualizar histórico de projetos | O sistema deve exibir o histórico de projetos anteriores e inativos no perfil de cada entidade. | *OEX* | *CPX* | *VNX* |
 | RF-2-05 | Filtrar feed de acordo com preferências do usuário | O sistema deve permitir a configuração de filtros de interesses pessoais (ex: equipes de competição, PIBIC) para personalizar o feed de visualização do aluno. | *OEX* | *CPX* | *VNX* |
-| RF-2-06 | Enviar notificações | O sistema deve emitir notificações direcionadas aos alunos baseadas nos filtros de interesse configurados em seus perfis. | *OEX* | *CPX* | *VNX* |
+| RF-2-06 | Enviar notificações personalizadas | O sistema deve emitir notificações direcionadas aos alunos baseadas nos filtros de interesse configurados em seus perfis. | *OEX* | *CPX* | *VNX* |
 | RF-2-07 | Exibir métricas de engajamento para as entidades | O sistema deve gerar um painel de métricas de acesso para a entidade exibindo o número de interações realizadas. | *OEX* | *CPX* | *VNX* |
 | RF-3-01 | Administrar posts na plataforma | O sistema deve permitir o cadastro, a edição e a exclusão de postagens contendo texto e mídias (fotos e vídeos) sobre as visitas e os projetos de extensão realizados [2, 4]. | *OEX* | *CPX* | *VNX* |
 | RF-3-02 | Divulgar publicações no formato de portifólio | O sistema deve exibir uma interface pública no formato de portfólio (ou blog) para a divulgação das atividades de extensão cadastradas no perfil.| *OEX* | *CPX* | *VNX* |
