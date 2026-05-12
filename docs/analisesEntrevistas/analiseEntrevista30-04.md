@@ -101,13 +101,11 @@ Utilizamos em um primeiro momento o **texto estruturado** para elicitar e declar
 
 - **Requisitos Não Funcionais (RNFs)** \- Qualidades e Restrições:  
 
-    **RNF-3-01**: O sistema deve permitir o cadastro, a edição e a exclusão de postagens contendo texto e mídias (fotos) sobre as visitas e os projetos de extensão realizados.
+    **RNF-3-01**: O sistema deve apresentar uma interface minimalista e extremamente intuitiva, garantindo uma baixa curva de aprendizado para que usuários idosos ou com pouca afinidade tecnológica consigam realizar postagens sem necessidade de treinamento prévio.
 
-    **RNF-3-02**: O sistema deve apresentar uma interface minimalista e extremamente intuitiva, garantindo uma baixa curva de aprendizado para que usuários idosos ou com pouca afinidade tecnológica consigam realizar postagens sem necessidade de treinamento prévio.
+    **RNF-3-02**: O sistema deve manter uma consistência visual padronizada para todos os perfis de acesso, reduzindo a confusão e a complexidade de navegação.
 
-    **RNF-3-03**: O sistema deve manter uma consistência visual padronizada para todos os perfis de acesso, reduzindo a confusão e a complexidade de navegação.
-
-    **RNF-3-04**: O sistema deve possuir interface responsiva, facilitando postagens rápidas pelo celular durante a realização de visitas ou atividades de campo.
+    **RNF-3-03**: O sistema deve possuir interface responsiva, facilitando postagens rápidas pelo celular durante a realização de visitas ou atividades de campo.
 
 * **Regras de Negócio (RNs)** \- Políticas e Condições do Domínio: 
 
