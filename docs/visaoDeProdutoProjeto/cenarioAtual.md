@@ -62,7 +62,7 @@ Nesse contexto de fragmentação da informação, as partes afetadas podem ser d
 <div align="center">
   <p class="table-source"><strong>Figura 1</strong> - Rich Picture</p>
   
-  <img src="../../assets/fotos/richPicture.png" alt="Rich Picture">
+  <img src="../../assets/fotos/cenarioAtual/richPicture.png" alt="Rich Picture">
 
 </div>
 
@@ -78,7 +78,7 @@ A grande barreira é que não há uma página dedicada a cada projeto no site do
 <div align="center">
   <p class="table-source"><strong>Figura 2</strong> - Diagrama Ishikawa</p>
   
-  <img src="../../assets/fotos/diagramaPeixe.png" alt="Diagrama Ishikawa">
+  <img src="../../assets/fotos/cenarioAtual/diagramaPeixe.png" alt="Diagrama Ishikawa">
 
 </div>
  
@@ -115,7 +115,14 @@ Os stakeholders do projeto Conecta UnB englobam representantes de todas as frent
 
 Do lado dos publicadores de conteúdo e oportunidades, o projeto contará com a visão docente, focada em extensão, representada pelo projeto Catavento coordenado pela docente Paula Meyer Soares. Por outro lado, com as demandas de visibilidade e recrutamento técnico das equipes de competição, temos a representação da equipe Gama CubeDesign (representada por João Pedro).
 
-Quanto à necessidade de divulgação de eventos e engajamento esportivo das Atléticas, temos a representação da atlética Pesadelo (representada por Matheus Eiki Kimura Rezende). A busca por ampliação do alcance institucional e de processos seletivos profissionais será representada pela Empresa Júnior CJR (João Moreira como representante). Por fim, a equipe de desenvolvimento será a responsável por elicitar, projetar e implementar a solução técnica que integrará todos esses atores. 
+Quanto à necessidade de divulgação de eventos e engajamento esportivo das Atléticas, temos a representação da atlética Pesadelo (representada por Matheus Eiki Kimura Rezende). A busca por ampliação do alcance institucional e de processos seletivos profissionais será representada pela Empresa Júnior CJR (João Moreira como representante). Por fim, a equipe de desenvolvimento será a responsável por elicitar, projetar e implementar a solução técnica que integrará todos esses atores.
+
+<div align="center">
+  <p class="table-source"><strong>Figura 3</strong> - Mapa dos Stakeholders</p>
+  
+  <img src="../../assets/fotos/cenarioAtual/mapaStakeholders.png" alt="Diagrama Ishikawa">
+
+</div>
 
 <font size="3"><p style="text-align: center"><b>Tabela 1</b> - Stakeholders</p></font>
 

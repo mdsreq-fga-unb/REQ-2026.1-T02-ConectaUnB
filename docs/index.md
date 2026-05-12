@@ -9,7 +9,7 @@ O **Conecta UnB** é uma plataforma digital integradora concebida para centraliz
 
 <div align="center" markdown="1">
 
-| [![](https://github.com/GabrielDiniz12.png)](https://github.com/GabrielDiniz12) | [![](https://github.com/giovannabrito19.png)](https://github.com/giovannabrito19) | [![](https://github.com/GustaaSz.png)](https://github.com/GustaaSz) | [![](https://github.com/ojplc.png)](https://github.com/ojplc) | [![](https://github.com/matheuslemesam.png)](https://github.com/matheuslemesam) | [![](https://github.com/dev-americo.png)](https://github.com/dev-americo) | 
+| ![](../../assets/fotos/integrantes/gabriel.png){: .foto-equipe } | ![](../../assets/fotos/integrantes/giovanna.png){: .foto-equipe } | ![](../../assets/fotos/integrantes/gustavo.png){: .foto-equipe } | ![](../../assets/fotos/integrantes/joao.png){: .foto-equipe } | ![](../../assets/fotos/integrantes/matheus.png){: .foto-equipe } | ![](../../assets/fotos/integrantes/pedro.png){: .foto-equipe } | 
 |:-:|:-:|:-:|:-:|:-:|:-:|
 | [Gabriel Diniz](https://github.com/GabrielDiniz12) | [Giovanna Brito](https://github.com/giovannabrito19) | [Gustavo Abrantes](https://github.com/GustaaSz) | [João Pedro](https://github.com/ojplc) | [Mathues Lemes](https://github.com/matheuslemesam) | [Pedro Américo](https://github.com/dev-americo) |
 

@@ -6,23 +6,23 @@ O objetivo geral do produto é facilitar o engajamento acadêmico através da ce
 
 ## Objetivos Específicos (OE) do Produto 
 
-- **(OE1)** Centralizar a divulgação de informações para projetos, iniciativas acadêmicas e atividades extracurriculares; 
-- **(OE2)** Estimular o engajamento académico através da facilitação do acesso à informação;
-- **(OE3)** Ampliar e facilitar a visibilidade institucional; 
-- **(OE4)** Proporcionar ao titular do projeto métricas engajamento; 
+- **(OE1)** Fornecer um canal unificado e padronizado para a publicação de processos seletivos e ações das entidades; 
+- **(OE2)** Democratizar e reduzir as barreiras de acesso e busca por meio de navegação pública;
+- **(OE3)** Promover o portfólio de projetos e tecnologias da universidade para a sociedade civil e o mercado externo; 
+- **(OE4)** Proporcionar ao titular do projeto métricas de engajamento; 
 - **(OE5)** Preservar a memória institucional; 
 
 ## Características de Produto (mapeadas com os Objetivos Específicos do Produto) 
 
 | OE principal | Contribuição secundária | ID | Característica | Descrição resumida | ID | Valor de negócio (VN) principal |
 | :---: | :---: | :---: | :--- | :--- | :---: | :--- |
-| OE1 | OE5, OE3 | CP1 | Perfil individual para cada entidade e usuário | Cada entidade contará com um perfil o qual trará todos os processos seletivos em aberto, projetos antigos e publicações anteriores. | VN1 | Divulgação das entidades da instituição. |
-| OE2 | OE3, OE1 | CP2 | Feed de visualização | Um feed para visualização dos posts realizados na plataforma, contando com filtros para facilitar o acesso às informações desejadas. | VN2 | Melhoria no processo de exposição de projetos e ações das entidades. |
-| OE4 | OE2 | CP3 | Visualização de estatística de pesquisa e busca | Dados sobre inscrições e engajamento com filtros serão coletados segundo as normas da LGPD. | VN3 | Entender melhor as maiores demandas de projetos da instituição. |
-| OE2 | OE3, OE5 | CP4 | Publicações independentes | Cada entidade poderá fazer publicações com texto e fotos conforme sua necessidade, divulgando processos, conquistas e suas ações para toda comunidade. Somente publicadores terão essa possibilidade. | VN4 | Facilitação na disseminação de processos e ações de entidades independentes (EJ, equipes de competição, etc.). |
-| OE3 | OE4 | CP5 | Categorização dos perfis por áreas de interesse | Os perfis serão categorizados de acordo com o tipo de sua entidade (Ex: EJ, equipes de competição, etc.), área de atuação, etc. | VN5 | Melhoria do processo de descobrimento de projetos e entidades. |
-| OE5 | OE4 | CP6 | Catálogo digital de processos e entidades | Processos e entidades atuais e passadas serão armazenados e ainda poderão ser visualizados | VN6 | Melhoria na navegação, maior exposição do ecossistema da universidade e facilitação da descoberta de iniciativas atuais e já desenvolvidas. |
-| OE3 | OE2 | CP7 | Navegação na plataforma sem a necessidade de perfil | A solução deverá permitir acesso público a todos os perfis, inicialmente sem a necessidade de login, permitindo visibilidade e democratizando o acesso às informações. Sendo necessário fazer login somente se o usuário quiser interagir ou participar de algum processo. | VN7 | Democratização do acesso à plataforma. |
+| OE1 | OE5, OE3 | CP1 | Módulo de Perfis Institucionais | Espaço centralizado dedicado para que cada entidade crie, gerencie e exiba suas informações, processos seletivos e projetos. | VN1 | Divulgação padronizada das entidades da instituição. |
+| OE2 | OE3, OE1 | CP2 | Feed de visualização | Interface dinâmica para exibição contínua das postagens e oportunidades abertas pelas entidades acadêmicas.  | VN2 | Melhoria no processo de exposição de projetos e ações das entidades. |
+| OE4 | OE1 | CP3 | Métricas de Engajamento | Ferramenta de análise que consolida e apresenta os indicadores de interação e desempenho das publicações de uma entidade. | VN3 | Entender melhor as maiores demandas e o engajamento dos projetos da instituição. |
+| OE1 | OE3, OE5 | CP4 | Publicações independentes |  Módulo que permite aos titulares das entidades a criação e edição autônoma de posts com textos e mídias. | VN4 | Facilitação na disseminação de processos e ações das entidades. |
+| OE2 | OE3 | CP5 | Mecanismo de Busca e Filtragem | Ferramenta de pesquisa que permite localizar vagas, postagens e entidades utilizando parâmetros de categorização (ex: área de atuação, tipo de entidade). | VN5 | Melhoria do processo interno de descoberta de projetos por parte dos alunos. |
+| OE5 | OE3, OE2 | CP6 | Repositório Histórico de Iniciativas | Acervo digital consultável que consolida e mantém disponíveis os registros de projetos, processos e entidades passadas. | VN6 | Preservação e exposição do histórico do ecossistema da universidade. |
+| OE3 | OE2 | CP7 | Portal de Acesso Público | Modo de visualização aberta que disponibiliza o portfólio da plataforma para visitantes externos sem a exigência de autenticação prévia. | VN7 | Ampliação da visibilidade institucional para a sociedade, mantendo a democratização do acesso interno. |
 
 ## Tecnologias a Serem Utilizadas 
 

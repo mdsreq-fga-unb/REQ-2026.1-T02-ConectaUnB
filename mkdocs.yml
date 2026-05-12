@@ -10,9 +10,9 @@ nav:
   - Reuniões:
       - Reunião 1: reunioes/reuniao1.md
       - Reunião 2: reunioes/reuniao2.md
-      # - Reunião 3: reunioes/reuniao3.md
-      # - Reunião 4: reunioes/reuniao4.md
-      # - Reunião 5: reunioes/reuniao5.md
+      - Reunião 3: reunioes/reuniao3.md
+      - Reunião 4: reunioes/reuniao4.md
+      - Reunião 5: reunioes/reuniao5.md
       # - Reunião 6: reunioes/reuniao6.md
       # - Reunião 7: reunioes/reuniao7.md
       # - Reunião 8: reunioes/reuniao8.md
@@ -22,6 +22,7 @@ nav:
   - Visão do Produto e Projeto:
       - "Cenário Atual": visaoDeProdutoProjeto/cenarioAtual.md
       - "Solução Proposta": visaoDeProdutoProjeto/solucaoProposta.md
+      - "Intervenção social": visaoDeProdutoProjeto/intervencaoSocial.md
       - "Estratégias de Engenharia de Software": visaoDeProdutoProjeto/estrategias.md
       - "Engenharia de Requisitos": visaoDeProdutoProjeto/engenhariaDeRequisitos.md
       - "Cronograma": visaoDeProdutoProjeto/cronograma.md
@@ -37,6 +38,12 @@ nav:
       # - Apresentação 2: entregas/reuniao2.md
       # - Apresentação 3: entregas/reuniao3.md
       # - Apresentação 4: entregas/reuniao4.md
+  
+  - Entrevistas:
+      - Entrevista 1: analisesEntrevistas/analiseEntrevista24-04.md
+      - Entrevista 2: analisesEntrevistas/analiseEntrevista29-04.md
+      - Entrevista 3: analisesEntrevistas/analiseEntrevista30-04.md
+      - Requisitos fase 1: analisesEntrevistas/requisitosFase1.md
 
 
 theme:
@@ -75,5 +82,13 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:pymdownx.emoji.twemoji
       emoji_generator: !!python/name:pymdownx.emoji.to_svg
+  
+plugins:
+  - search
+  - glightbox:
+      touchNavigation: true
+      loop: false
+      zoomable: true
+      draggable: true
 
 extra_css: [stylesheets/extra.css]
