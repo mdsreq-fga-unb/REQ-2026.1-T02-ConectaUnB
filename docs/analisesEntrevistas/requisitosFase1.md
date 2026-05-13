@@ -47,3 +47,31 @@ Após a primeira fase de elicitação e descoberta o grupo declarou os requisito
 | RNF-06 | Suportabilidade | Uso mobile e desktop | O sistema deve ser funcional em desktops e mobile (através do navegador). | CP7 | XXXX |
 | RNF-07 | Desempenho | Carregamento rápido de páginas | As páginas devem carregar em menos de 10 segundos em média. | CP7 | XXXX |
 | RNF-08 | Requisito externo | Coleta de métricas de acordo com LGPD | As coletas de dados para métricas devem ser realizadas de maneira anonimizada e é necessário avisar ao usuário que esta informação será coletada | CP9 | XXXX |
+
+
+## Valor de negócio x Esforço da equipe
+
+O quadro foi feito na plataforma miro e pode ser acessado [clicando aqui](https://miro.com/app/board/uXjVHTrU614=/?share_link_id=624567294148)
+
+### Quadro valor de negócio x esforço da equipe
+![Quadro valor de negócio x esforço da equipe](../assets/fotos/valorXesforco/matrix.jpg)
+
+
+
+### Maior valor de negócio e menor esforço
+
+![Maior valor e menor esforço](../assets/fotos/valorXesforco/MVLE.png)
+
+### Maior valor de negócio e maior esforço
+
+![Maior valor e maior esforço](../assets/fotos/valorXesforco/MVME.png)
+
+### Menor valor de negócio e menor esforço
+
+![Menor valor e menor esforço](../assets/fotos/valorXesforco/LVLE.png)
+
+### Menor valor de negócio e maior esforço
+
+![Menor valor e menor esforço](../assets/fotos/valorXesforco/LVME.png)
+
+
