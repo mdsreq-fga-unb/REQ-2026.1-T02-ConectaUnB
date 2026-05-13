@@ -9,7 +9,7 @@ O **Conecta UnB** é uma plataforma digital integradora concebida para centraliz
 
 <div align="center" markdown="1">
 
-| ![](../../assets/fotos/integrantes/gabriel.png){: .foto-equipe } | ![](../../assets/fotos/integrantes/giovanna.png){: .foto-equipe } | ![](../../assets/fotos/integrantes/gustavo.png){: .foto-equipe } | ![](../../assets/fotos/integrantes/joao.png){: .foto-equipe } | ![](../../assets/fotos/integrantes/matheus.png){: .foto-equipe } | ![](../../assets/fotos/integrantes/pedro.png){: .foto-equipe } | 
+| ![](assets/fotos/integrantes/gabriel.png){: .foto-equipe } | ![](assets/fotos/integrantes/giovanna.png){: .foto-equipe } | ![](assets/fotos/integrantes/gustavo.png){: .foto-equipe } | ![](assets/fotos/integrantes/joao.png){: .foto-equipe } | ![](assets/fotos/integrantes/matheus.png){: .foto-equipe } | ![](assets/fotos/integrantes/pedro.png){: .foto-equipe } | 
 |:-:|:-:|:-:|:-:|:-:|:-:|
 | [Gabriel Diniz](https://github.com/GabrielDiniz12) | [Giovanna Brito](https://github.com/giovannabrito19) | [Gustavo Abrantes](https://github.com/GustaaSz) | [João Pedro](https://github.com/ojplc) | [Mathues Lemes](https://github.com/matheuslemesam) | [Pedro Américo](https://github.com/dev-americo) |
 
