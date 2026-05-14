@@ -4,7 +4,7 @@ Após a primeira fase de elicitação e descoberta o grupo declarou os requisito
 
 
 ## Requisitos funcionais (RFs)
-| Cod | Nome | Texto estruturado | Característica do produto | Rastreabiliade | Priorização MoSCoW |
+| Cod | Nome | Texto estruturado | Característica do produto | Rastreabilidade | Priorização MoSCoW |
 | ------ | ------ | ------ | ------ | ------ | ------ |
 | Processos seletivos |  |  |  |  |  |
 | RF-01 | Exibir processos seletivos abertos | O sistema deve permitir exibir todos os procesos seletivos abertos | CP5 | RF-1-01 | Must Have |
