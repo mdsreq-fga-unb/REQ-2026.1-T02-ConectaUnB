@@ -24,7 +24,7 @@ O objetivo geral do produto é facilitar o engajamento acadêmico através da ce
 | OE5 | OE3, OE2 | CP6 | Repositório Histórico de Iniciativas | Acervo digital consultável que consolida e mantém disponíveis os registros de projetos, processos e entidades passadas. | VN6 | Preservação e exposição do histórico do ecossistema da universidade. |
 | OE3 | OE2 | CP7 | Portal de Acesso Público | Modo de visualização aberta que disponibiliza o portfólio da plataforma para visitantes externos sem a exigência de autenticação prévia de maneira eficiente e de rápido acesso. | VN7 | Ampliação da visibilidade institucional para a sociedade, mantendo a democratização do acesso interno. |
 | OE2 | OE4 | CP8 | Notificação para os usuários | Facilitar o recebimento da informação por parte do usuário que pode ser notificado quando algum projeto de seu interesse tiver atualizações ou abertura de processos seletivos | VN5 | Melhoria do processo interno de descoberta de projetos por parte dos alunos. |
-| OE2 | OE1 | CP9 | Privacidade e conformidade com LGPD | Incorporar mecanismos e decisões relacionadas a privacidade e a segurança baseando-se na LGPD | VN8 | Reduções de riscos relacionados à segurança |
+| OE2 | OE1 | CP9 | Privacidade e conformidade com LGPD | Incorporar mecanismos e decisões relacionadas a privacidade e a segurança baseando-se na LGPD | VN8 | Redução de riscos relacionados à segurança |
 
 ## Tecnologias a Serem Utilizadas 
 
