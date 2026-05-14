@@ -70,9 +70,35 @@ Após a primeira fase de elicitação e descoberta o grupo declarou os requisito
 *   **Could Have (Desejáveis):** Botões de curtida e customizações complexas de notificações (RF-08, RF-27) geram conforto, mas não são o foco principal.
 *   **Won't Have (Fora do Escopo Inicial):** A importação de dados de outras redes (RF-31) foi isolada. Demandaria esforço alto de integração com APIs externas.
 
+
+## Valor de negócio x Esforço da equipe
+
+O quadro foi feito na plataforma miro e pode ser acessado [clicando aqui](https://miro.com/app/board/uXjVHTrU614=/?share_link_id=644318895415)
+
+### Quadro valor de negócio x esforço da equipe
+![Quadro valor de negócio x esforço da equipe](../assets/fotos/valorXesforco/matrix.jpg)
+
+
+
+### Maior valor de negócio e menor esforço
+
+![Maior valor e menor esforço](../assets/fotos/valorXesforco/MVLE.png)
+
+### Maior valor de negócio e maior esforço
+
+![Maior valor e maior esforço](../assets/fotos/valorXesforco/MVME.png)
+
+### Menor valor de negócio e menor esforço
+
+![Menor valor e menor esforço](../assets/fotos/valorXesforco/LVLE.png)
+
+### Menor valor de negócio e maior esforço
+
+![Menor valor e menor esforço](../assets/fotos/valorXesforco/LVME.png) 
+
 ## Matriz de Avaliação Técnica × Valor de Negócio (Atualizada e Ordenada)
 
-| Requisito | VB | CX | ES | PT | IP | Quadrante | Prioridade Sugerida |
+| Requisito | Valor de negócio | Complexidade técnica | Esforço | Pontuação técnica | Índice de prioridade | Quadrante | Prioridade Sugerida |
 | :--- | :---: | :---: | :---: | :---: | :---: | :--- | :--- |
 | **RF-12** - Acessar perfil da entidade | 5 | 1 | 1 | 1.0 | 5.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
 | **RF-17** - Acessar perfil de usuário | 5 | 1 | 1 | 1.0 | 5.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
@@ -106,29 +132,5 @@ Após a primeira fase de elicitação e descoberta o grupo declarou os requisito
 | **RF-27** - Personalizar conteúdos de notificação | 2 | 3 | 3 | 3.0 | 0.67 | Q4 - Baixo valor / Alta carga | Prioridade 4 |
 | **RF-31** - Importar posts de outras redes | 1 | 5 | 5 | 5.0 | 0.20 | Q4 - Baixo valor / Alta carga | Prioridade 4 |
 
-<!-- ## Valor de negócio x Esforço da equipe
-
-O quadro foi feito na plataforma miro e pode ser acessado [clicando aqui](https://miro.com/app/board/uXjVHTrU614=/?share_link_id=624567294148)
-
-### Quadro valor de negócio x esforço da equipe
-![Quadro valor de negócio x esforço da equipe](../assets/fotos/valorXesforco/matrix.jpg)
-
-
-
-### Maior valor de negócio e menor esforço
-
-![Maior valor e menor esforço](../assets/fotos/valorXesforco/MVLE.png)
-
-### Maior valor de negócio e maior esforço
-
-![Maior valor e maior esforço](../assets/fotos/valorXesforco/MVME.png)
-
-### Menor valor de negócio e menor esforço
-
-![Menor valor e menor esforço](../assets/fotos/valorXesforco/LVLE.png)
-
-### Menor valor de negócio e maior esforço
-
-![Menor valor e menor esforço](../assets/fotos/valorXesforco/LVME.png) -->
 
 
