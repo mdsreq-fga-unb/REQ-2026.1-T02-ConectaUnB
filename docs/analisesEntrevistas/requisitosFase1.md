@@ -68,7 +68,7 @@ Após a primeira fase de elicitação e descoberta o grupo declarou os requisito
 *   **Must Have (Obrigatórios para o MVP):** Foram priorizadas as funções que atacam o coração do problema: a fragmentação da informação.
 *   **Should Have (Importantes, mas não bloqueiam o lançamento):** São fundamentais para a experiência completa, mas a plataforma já gera valor sem eles.
 *   **Could Have (Desejáveis):** Botões de curtida e customizações complexas de notificações (RF-08, RF-27) geram conforto, mas não são o foco principal.
-*   **Won't Have (Fora do Escopo Inicial):** A importação de dados de outras redes (RF-31) foi isolada. Demandaria esforço alto de integração com APIs externas (Instagram/Twitter), tempo este que deve ser direcionado para garantir as operações nativas da ferramenta em sua base (Conecta UnB).
+*   **Won't Have (Fora do Escopo Inicial):** A importação de dados de outras redes (RF-31) foi isolada. Demandaria esforço alto de integração com APIs externas.
 
 ## Matriz de Avaliação Técnica × Valor de Negócio (Atualizada e Ordenada)
 
