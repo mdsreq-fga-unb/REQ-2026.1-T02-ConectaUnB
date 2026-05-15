@@ -27,17 +27,17 @@ Após a primeira fase de elicitação e descoberta o grupo declarou os requisito
 | RF-15 | Editar perfil da usuário | O sistema deve permitir a atualização dos dados de um perfil público de usuário. | CP1 | RF-2-01 | Must Have |  |
 | RF-16 | Excluir perfil da usuário | O sistema deve permitir a exclusão dos dados de um perfil de usuário. | CP1 | RF-2-01 | Must Have |  |
 | RF-17 | Acessar perfil da usuário | O sistema deve permitir a visualização dos dados de um perfil de usuário. | CP1 | RF-2-01 | Must Have |  |
-| RF-18 | Exibir painel de gestão | O sistema deve exibir um painel de gestão ao usuário autenticado, listando e permitindo o acesso rápido a todas as entidades nas quais ele possui privilégios de gestão. | CP1 | RF-2-01 | Must Have |  |
+| RF-18 | Exibir painel de gestão | O sistema deve exibir um painel de gestão ao usuário autenticado, listando e permitindo o acesso rápido a todas as entidades nas quais ele possui privilégios de gestão. | CP1 | RF-2-01 | Must Have | - Permitir ver todas as entidades que se faz parte <br>- Detalhar com clareza nível de privilégio de cada entidade que se faz parte <br>- Se administrador ter opção de acrescentar novos membros em uma entidade <br>- Conseguir administrar membros de uma entidade |
 | PROJETO |  |  |  |  |  |  |
-| RF-19 | Atualizar projeto | O sistema deve permitir a publicação de atualizações de projetos contendo texto e imagens. | CP6 | RF-2-02 | Must Have |  |
-| RF-20 | Visualizar histórico de projetos | O sistema deve exibir o histórico de projetos atuais e anteriores no perfil de cada entidade. | CP6 | RF-2-04 | Should Have |  |
-| RF-21 | Criar um novo projeto | O sistema deve permitir a publicação de projetos contendo texto e imagem. | CP6 | RF-2-02 | Must Have |  |
-| RF-22 | Deletar um projeto | O sistema deve permitir a deleção de projetos. | CP6 | RF-2-02 | Must Have |  |
+| RF-19 | Atualizar projeto | O sistema deve permitir a publicação de atualizações de projetos contendo texto e imagens. | CP6 | RF-2-02 | Must Have | - Uma publicação deve poder ser associada a um projeto <br>- A entidade "projeto" diz respeito a uma coleção de posts <br>- Deve ser possível editar a foto banner/nome/descrição/participantes de um projeto  |
+| RF-20 | Visualizar histórico de projetos | O sistema deve exibir o histórico de projetos atuais e anteriores no perfil de cada entidade. | CP6 | RF-2-04 | Should Have | - Os posts relacionados à aquele projeto devem ser mostrados  |
+| RF-21 | Criar um novo projeto | O sistema deve permitir a publicação de projetos contendo texto e imagem. | CP6 | RF-2-02 | Must Have | - O projeto deve ter nome, |
+| RF-22 | Deletar um projeto | O sistema deve permitir a deleção de projetos. | CP6 | RF-2-02 | Must Have | - Um projeto só será considerado excluído quando todas as suas evidências forem removidas do banco de dados, isso inclui mas não se limita a tags do projeto que possam estar em posts |
 | PUBLICAÇÕES |  |  |  |  |  |  |
-| RF-23 | Criar publicações | O sistema deve permitir criar posts contendo texto e imagem, podendo ser apenas um dos dois | CP4 CP6 | RF-1-02 | Must Have |  |
-| RF-24 | Editar publicações | O sistema deve permitir editar posts | CP4 CP6 | RF-1-02 | Must Have |  |
-| RF-25 | Apagar publicações | O sistema deve permitir a deleção de posts | CP4 CP6 | RF-1-02 | Must Have |  |
-| RF-26 | Pesquisar publicações com filtros de busca | O sistema deve permitir a busca por posts através de filtros | CP5 | RF-3-03 | Should Have |  |
+| RF-23 | Criar publicações | O sistema deve permitir criar posts contendo texto e imagem, podendo ser apenas um dos dois | CP4 CP6 | RF-1-02 | Must Have | - Publicações podem não ter imagens <br>- Usuários devem poder ver como ficará o post antes de publicá-lo (preview) |
+| RF-24 | Editar publicações | O sistema deve permitir editar posts | CP4 CP6 | RF-1-02 | Must Have | - A edição deve permitir editar todos os campos de um post <br>- Usuário deve conseguir ver como ficará o post antes de concluir a edição |
+| RF-25 | Apagar publicações | O sistema deve permitir a deleção de posts | CP4 CP6 | RF-1-02 | Must Have | - Publicações serão consideradas apagadas apenas quando todos as suas evidências forem removidos do banco de dados |
+| RF-26 | Pesquisar publicações com filtros de busca | O sistema deve permitir a busca por posts através de filtros | CP5 | RF-3-03 | Should Have | - Os filtros devem levar em conta campus/área de interesse/tipo da entidade/.... |
 | NOTIFICAÇÕES |  |  |  |  |  |  |
 | RF-27 | Personalizar conteúdos de notificação | O sistema deve permitir o usuário solicitar notificações de acordo com sua vontade | CP8 | RF-1-03 RF-2-06 | Could Have |  |
 | RF-28 | Notificar usuários | O sistema irá notificar o usuário após aguma atualização de entidade de seu interesse | CP8 | RF-1-03 RF-2-06 | Should Have |  |
