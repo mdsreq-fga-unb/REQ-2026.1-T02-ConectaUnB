@@ -1253,6 +1253,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#matriz-de-rastreabilidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Matriz de rastreabilidade
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#justificativa-da-priorizacao-visao-de-negocio" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1413,6 +1424,17 @@
     <span class="md-ellipsis">
       
         Requisitos não funcionais (RNFs)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#matriz-de-rastreabilidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Matriz de rastreabilidade
       
     </span>
   </a>
@@ -1960,7 +1982,7 @@
 <td>CA1: Operações que envolvam o banco de dados sempre devem comunicar ao usuário se a operação foi concluída ou não. <br>CA2: Se uma operação levar mais que 40 segundos para ser concluída o usuário deve receber um feedback adicional de "essa operação está levando mais tempo que o normal" e ter a opção de cancelar</td>
 </tr>
 <tr>
-<td>RNF-06</td>
+<td>RNF-05</td>
 <td>Suportabilidade</td>
 <td>Uso mobile e desktop</td>
 <td>O sistema deve ser funcional em desktops e mobile (através do navegador).</td>
@@ -1970,7 +1992,7 @@
 <td>CA1: A aplicação deve se adequar ao tamanho de tela médio de um desktop (14 polegadas)<br> CA2: A aplicação deve se adequar ao tamanho de tela médio de um celular (6,2 polegadas)</td>
 </tr>
 <tr>
-<td>RNF-07</td>
+<td>RNF-06</td>
 <td>Desempenho</td>
 <td>Carregamento rápido de páginas</td>
 <td>As páginas devem carregar em menos de 10 segundos em média.</td>
@@ -1980,7 +2002,7 @@
 <td></td>
 </tr>
 <tr>
-<td>RNF-08</td>
+<td>RNF-07</td>
 <td>Requisito externo</td>
 <td>Coleta de métricas de acordo com LGPD</td>
 <td>As coletas de dados para métricas devem ser realizadas de maneira anonimizada e é necessário avisar ao usuário que esta informação será coletada</td>
@@ -1990,7 +2012,7 @@
 <td>CA1: O usuário deve concordar com as políticas de privacidade da aplicação antes de se cadastrar</td>
 </tr>
 <tr>
-<td>RNF-09</td>
+<td>RNF-08</td>
 <td>Requisito externo</td>
 <td>Criptografar dados seníveis de usuários e entidades</td>
 <td>O sistema deve criptografar os dados sensíveis dos usuários e entidades, como matrículas, senhas, etc.</td>
@@ -2001,11 +2023,98 @@
 </tr>
 </tbody>
 </table>
+<h2 id="matriz-de-rastreabilidade">Matriz de rastreabilidade</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Contribuição<br>principal</th>
+<th style="text-align: left;">Contribuição<br>secundária</th>
+<th style="text-align: left;">CP</th>
+<th style="text-align: left;">VN</th>
+<th style="text-align: left;">RFs relacionados</th>
+<th style="text-align: left;">RNFs relacionados</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">OE1 - Fornecer um canal unificado e padronizado para a publicação de processos seletivos e ações das entidades</td>
+<td style="text-align: left;">OE3 - Promover o portfólio de projetos e tecnologias da universidade para a sociedade civil e o mercado externo<br>OE5 - Preservar a memória institucional</td>
+<td style="text-align: left;">CP1 - Módulo de Perfis Institucionais</td>
+<td style="text-align: left;">VN1 - Divulgação padronizada das entidades da instituição.</td>
+<td style="text-align: left;">RF-08:Criar perfil da entidade publicamente<br>RF-9:    Editar perfil da entidade<br>RF-10: Excluir perfil da entidade<br>RF-11: Acessar perfil da entidade<br>RF-12: Gerenciar co-gestores<br>RF-13:Cadastrar perfil de usuário<br>RF-14: Editar perfil da usuário<br>RF-15:Excluir perfil da usuário<br>RF-16: Acessar perfil da usuário<br>RF-17:Exibir painel de gestão</td>
+<td style="text-align: left;">RNF-03: Manter consistência visual<br>RNF-04: Garantir responsividade</td>
+</tr>
+<tr>
+<td style="text-align: left;">OE2 - Democratizar e reduzir as barreiras de acesso e busca por meio de navegação pública</td>
+<td style="text-align: left;">OE1 - Fornecer um canal unificado e padronizado para a publicação de processos seletivos e ações das entidades<br>OE3 - Promover o portfólio de projetos e tecnologias da universidade para a sociedade civil e o mercado externo</td>
+<td style="text-align: left;">CP2 - Feed de visualização</td>
+<td style="text-align: left;">VN2 - Melhoria no processo de exposição de projetos e ações das entidades.</td>
+<td style="text-align: left;">RF-07: Divulgar publicações no formato de blog</td>
+<td style="text-align: left;">RNF-06: Carregamento rápido de páginas<br>RNF-05: Uso mobile e desktop</td>
+</tr>
+<tr>
+<td style="text-align: left;">OE4 - Proporcionar ao titular do projeto métricas de engajamento</td>
+<td style="text-align: left;">OE1 - Fornecer um canal unificado e padronizado para a publicação de processos seletivos e ações das entidades</td>
+<td style="text-align: left;">CP3 - Métricas de Engajamento</td>
+<td style="text-align: left;">VN3 - Entender melhor as maiores demandas e o engajamento dos projetos da instituição.</td>
+<td style="text-align: left;">RF-28:Exibir métricas de engajamento para as entidades<br>RF-29: Exibir métricas de engajamento para publicações</td>
+<td style="text-align: left;">RNF-07: Coleta de métricas de acordo com LGPD</td>
+</tr>
+<tr>
+<td style="text-align: left;">OE1 - Fornecer um canal unificado e padronizado para a publicação de processos seletivos e ações das entidades</td>
+<td style="text-align: left;">OE3 - Promover o portfólio de projetos e tecnologias da universidade para a sociedade civil e o mercado externo<br>OE5 - Preservar a memória institucional</td>
+<td style="text-align: left;">CP4 - Publicações independentes</td>
+<td style="text-align: left;">VN4   - Facilitação na disseminação de processos e ações das entidades.</td>
+<td style="text-align: left;">RF-03: Atualizar status de um processo seletivo<br>RF-04: Cancelar um processo seletivo<br>RF-05:Criar um processo seletivo<br>RF-22: Criar publicações<br>RF-23: Editar publicações<br>RF-24: Apagar publicações<br>RF-30: Importar posts de outras redes</td>
+<td style="text-align: left;">RNF-06: As páginas devem carregar em menos de 10 segundos em média.</td>
+</tr>
+<tr>
+<td style="text-align: left;">OE2 - Democratizar e reduzir as barreiras de acesso e busca por meio de navegação pública</td>
+<td style="text-align: left;">OE3 - Promover o portfólio de projetos e tecnologias da universidade para a sociedade civil e o mercado externo</td>
+<td style="text-align: left;">CP5 - Mecanismo de Busca e Filtragem</td>
+<td style="text-align: left;">VN5 - Melhoria do processo interno de descoberta de projetos por parte dos alunos</td>
+<td style="text-align: left;">RF-01: Exibir processos seletivos abertos<br>RF-02: Filtrar processos seletivos abertos<br>RF-06: Filtrar feed de acordo com preferências do usuário<br>RF-25: Pesquisar publicações com filtros de busca</td>
+<td style="text-align: left;">RNF-07: Coleta de métricas de acordo com LGPD</td>
+</tr>
+<tr>
+<td style="text-align: left;">OE5 - Preservar a memória institucional</td>
+<td style="text-align: left;">OE2 - Democratizar e reduzir as barreiras de acesso e busca por meio de navegação pública<br>OE3 - Promover o portfólio de projetos e tecnologias da universidade para a sociedade civil e o mercado externo</td>
+<td style="text-align: left;">CP6 - Repositório Histórico de Iniciativas</td>
+<td style="text-align: left;">VN6 - Preservação e exposição do histórico do ecossistema da universidade.</td>
+<td style="text-align: left;">RF-18: Atualizar projeto<br>RF-19:Visualizar histórico de projetos<br>RF-20: Criar um novo projeto<br>RF-21: Deletar um projeto<br>RF-22: Criar publicações<br>RF-23: Editar publicações<br>RF-24: Apagar publicações</td>
+<td style="text-align: left;">RNF-03: Manter consistência visual</td>
+</tr>
+<tr>
+<td style="text-align: left;">OE3 - Promover o portfólio de projetos e tecnologias da universidade para a sociedade civil e o mercado externo</td>
+<td style="text-align: left;">OE2 - Democratizar e reduzir as barreiras de acesso e busca por meio de navegação pública</td>
+<td style="text-align: left;">CP7 - Portal de Acesso Público</td>
+<td style="text-align: left;">VN7 - Ampliação da visibilidade institucional para a sociedade, mantendo a democratização do acesso interno.</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">RNF-01:Acessar plataforma sem login<br>RNF-02: Facilidade no uso<br>RNF-03: Manter consistência visual<br>RNF-04: Garantir responsividade<br>RNF-05: Uso mobile e desktop<br>RNF-06: Carregamento rápido de páginas</td>
+</tr>
+<tr>
+<td style="text-align: left;">OE2 - Democratizar e reduzir as barreiras de acesso e busca por meio de navegação pública</td>
+<td style="text-align: left;">OE4 - Proporcionar ao titular do projeto métricas de engajamento</td>
+<td style="text-align: left;">CP8 - Notificação para os usuários</td>
+<td style="text-align: left;">VN5 - Melhoria do processo interno de descoberta de projetos por parte dos alunos.</td>
+<td style="text-align: left;">RF-26: Personalizar conteúdos de notificação<br>RF-27: Notificar usuários</td>
+<td style="text-align: left;">RNF-07: Coleta de métricas de acordo com LGPD</td>
+</tr>
+<tr>
+<td style="text-align: left;">OE2 - Democratizar e reduzir as barreiras de acesso e busca por meio de navegação pública</td>
+<td style="text-align: left;">OE1 - Fornecer um canal unificado e padronizado para a publicação de processos seletivos e ações das entidades</td>
+<td style="text-align: left;">CP9 - Privacidade e conformidade com LGPD</td>
+<td style="text-align: left;">VN8 - Redução de riscos relacionados à segurança</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">RNF-07: Coleta de métricas de acordo com LGPD<br>RNF-08: Criptografar dados seníveis de usuários e entidades</td>
+</tr>
+</tbody>
+</table>
 <h2 id="justificativa-da-priorizacao-visao-de-negocio">Justificativa da Priorização (Visão de Negócio)</h2>
 <ul>
 <li><strong>Must Have (Obrigatórios para o MVP):</strong> Foram priorizadas as funções que atacam o coração do problema: a fragmentação da informação.</li>
 <li><strong>Should Have (Importantes, mas não bloqueiam o lançamento):</strong> São fundamentais para a experiência completa, mas a plataforma já gera valor sem eles.</li>
-<li><strong>Could Have (Desejáveis):</strong> Botões de curtida e customizações complexas de notificações (RF-08, RF-27) geram conforto, mas não são o foco principal.</li>
+<li><strong>Could Have (Desejáveis):</strong> Customizações complexas de notificações (RF-27) geram conforto, mas não são o foco principal.</li>
 <li><strong>Won't Have (Fora do Escopo Inicial):</strong> A importação de dados de outras redes (RF-31) foi isolada. Demandaria esforço alto de integração com APIs externas.</li>
 </ul>
 <h2 id="valor-de-negocio-x-esforco-da-equipe">Valor de negócio x Esforço da equipe</h2>
