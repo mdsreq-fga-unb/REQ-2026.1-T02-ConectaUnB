@@ -43,7 +43,7 @@ A organização e atualização dos requisitos está presente desde o Planejamen
 
 - **Organização e Atualização de Backlog**: Por termos optado pelo processo RAD iterativo e incremental com framework kanban, organizaremos os requisitos em um backlog dinâmico. Essa técnica estruturará as funcionalidades em uma lista priorizada, que será atualizada continuamente à medida que o entendimento do problema de fragmentação da UnB amadurece e novos feedbacks são coletados.
 - **Matriz de Rastreabilidade**: Utilizaremos uma matriz de rastreabilidade para conectar cada requisito à sua fonte original (por exemplo, a demanda de recrutamento da Empresa Júnior CJR ou de divulgação de eventos da Atlética Pesadelo) e aos artefatos do sistema. Essa técnica de organização garantirá que a evolução do entendimento coletivo não se perca e funcionará como uma memória estruturada das decisões e mudanças adotadas no projeto.
-- **Revisão Iterativa de Requisitos**: Sendo o projeto fortemente baseado em feedback rápido, aplicaremos revisões e atualizações contínuas ao conjunto de requisitos documentados. O objetivo é manter a organização dos requisitos sempre em seu estado mais atual, refletindo imediatamente as mudanças, os aprendizados e os novos consensos emergentes entre a equipe e os stakeholders ao longo do processo de desenvolvimento.
+
 
 ## Engenharia de Requisitos e o RAD
 
