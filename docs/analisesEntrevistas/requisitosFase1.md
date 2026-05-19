@@ -51,7 +51,6 @@ Após a primeira fase de elicitação e descoberta o grupo declarou os requisito
 | **RF-33** | Importar posts de outras redes | O sistema deve permitir importar publicações de redes sociais externas integradas pelo usuário. | CP4 | RF-1-04 | Could Have | **CA01:** O sistema deve permitir que o usuário vincule sua conta em uma rede externa, como LinkedIn ou Instagram.<br> **CA02:** Após a integração, o sistema deve listar os posts recentes da rede externa para que o usuário escolha quais deseja importar.<br> **CA03:** O post importado deve manter o texto original e as imagens associadas. |
 
 
-
 ## Requisitos não funcionais (RNFs)
 
 | Cod | Classificação URPS+/Sommervile | Nome | Texto descritivo | Característica do produto | Rastreabiliade | Priorização MoSCoW | Critérios de aceitação |
@@ -229,6 +228,7 @@ Para **Quadrante** e sugestão de **Prioridade** colocamos:
 
 ## Backlog
 
+### MVP
 | Código | Descrição | RNFs Relacionados | Critérios de Aceitação (DoD) | Tema / Lógica |
 | :---: | :--- | :--- | :--- | :--- |
 | **RF-17** | Permitir o cadastro de um perfil público de usuário. | RNF-04, 07, 08 | **CA1:** O cadastro do perfil de usuário só será considerado concluído quando o usuário preencher corretamente os campos obrigatórios.<br>**CA2:** O usuário deve receber a mensagem “Cadastro concluído com sucesso” na tela após o cadastro.<br>**CA3:** Após o cadastro, o usuário deve ser redirecionado para a página de login. | Perfil de Usuário |
@@ -252,6 +252,10 @@ Para **Quadrante** e sugestão de **Prioridade** colocamos:
 | **RF-02** | Permitir filtrar processos seletivos abertos. | RNF-06 | **CA1:** O sistema deve filtrar os processos seletivos abertos quando o usuário aplicar um ou mais parâmetros de categorização na busca, exibindo apenas as categorias selecionadas. | Proc. Seletivos |
 | **RF-05** | Permitir a criação de processo seletivo delimitando data limite. | RNF-04 | **CA1:** O sistema deve criar um processo seletivo quando o gestor da entidade submeter o formulário preenchido corretamente.<br>**CA2:** É necessário delimitar uma data de término de inscrição válida. | Proc. Seletivos |
 | **RF-03** | Permitir a atualização do status de um processo seletivo. | RNF-04 | **CA1:** O sistema deve atualizar o status de um processo seletivo apenas para usuários com privilégios de gestor.<br>**CA2:** O usuário deverá escolher classificações de status pré definidas (aberto, finalizado, etc.). | Proc. Seletivos |
+
+### Escopo (Quadrante 3 e 4)
+| Código | Descrição | RNFs Relacionados | Critérios de Aceitação (DoD) | Tema / Lógica |
+| :---: | :--- | :--- | :--- | :--- |
 | **RF-04** | Permitir a finalização de um processo seletivo. | RNF-04 | **CA1:** O sistema deve finalizar um processo seletivo quando o gestor da entidade confirmar a ação de finalização.<br>**CA2:** Seu estado deve ser alterado para "Finalizado". | Proc. Seletivos |
 | **RF-16** | Permitir a adição e a remoção de co-gestores. | RNF-04 | **CA1:** O gerenciamento de co-gestores só será considerado concluído quando o administrador da entidade conseguir adicionar ou remover co-gestores do perfil da entidade.<br>**CA2:** O usuario administrador deve conseguir visualizar a lista atualizada de co-gestores.<br>**CA3:** O usuario administrador deve receber uma mensagem de confirmação da ação realizada na tela ("Co-gestor adicionado com sucesso" ou "Co-gestor removido com sucesso"). | Gestão de Entidade |
 | **RF-06** | Permitir configuração de filtros de interesses pessoais no feed. | RNF-06 | **CA1:** O sistema deve filtrar as publicações do feed quando o usuário autenticado tiver filtros de interesses pessoais configurados, restringindo a exibição exclusivamente às postagens que possuam as tags ou categorias correspondentes às suas preferências. | Feed |
@@ -260,6 +264,10 @@ Para **Quadrante** e sugestão de **Prioridade** colocamos:
 | **RF-31** | Exibir métricas de engajamento da entidade (seguidores, inscrições). | RNF-07 | **CA1:** O sistema deve disponibilizar as métricas de engajamento (curtidas, seguidores, etc.) da entidade de forma visível ao usuário autorizado.<br>**CA2:** O contador de seguidores deve mostrar o número exato de usuários vinculados à entidade. | Métricas |
 | **RF-32** | Exibir métricas de interações para cada publicação. | RNF-07 | **CA1:** O sistema deve apresentar o total de interações em cada publicação.<br>**CA2:** Os dados de interação devem ser atualizados dinamicamente ou quando houver recarregamento do conteúdo. | Métricas |
 | **RF-33** | Permitir importar publicações de redes sociais externas integradas. | RNF-06 | **CA01:** O sistema deve permitir que o usuário vincule sua conta em uma rede externa, como LinkedIn ou Instagram.<br>**CA02:** Após a integração, o sistema deve listar os posts recentes da rede externa para que o usuário escolha quais deseja importar.<br>**CA03:** O post importado deve manter o texto original e as imagens associadas. | Integração |
+
+### Fora do Escopo
+| Código | Descrição | RNFs Relacionados | Critérios de Aceitação (DoD) | Tema / Lógica |
+| :---: | :--- | :--- | :--- | :--- |
 | **RF-07** | Permitir que usuários criem comentários nas publicações. | RNF-04 | **CA1:** O sistema deve registrar o comentário apenas se o usuário preencher o campo de texto e submeter a ação estando autenticado.<br>**CA2:** O comentário deve estar obrigatoriamente associado à publicação específica e ao perfil do usuário criador. | Comentários |
 | **RF-08** | Exibir os comentários nas publicações. | RNF-01 | **CA1:** O sistema deve exibir a lista de comentários da publicação ordenados cronologicamente.<br>**CA2:** O acesso à leitura dos comentários deve ser público, permitindo a visualização por qualquer usuário (autenticado ou visitante externo). | Comentários |
 | **RF-09** | Permitir editar comentários próprios. | RNF-04 | **CA1:** O sistema deve permitir a edição do comentário estritamente se o usuário autenticado for o autor original do texto.<br>**CA2:** Após a edição ser concluída com sucesso no banco de dados, o comentário deve exibir um indicativo visual de que foi editado. | Comentários |
