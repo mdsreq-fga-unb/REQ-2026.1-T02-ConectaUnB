@@ -25,23 +25,23 @@ Após a primeira fase de elicitação e descoberta o grupo declarou os requisito
 | **RF-13** | Editar perfil da entidade | O sistema deve permitir a atualização dos dados de um perfil público de entidade. | CP1 | RF-2-01 | Must Have | **CA1:** A edição do perfil da entidade só será considerada concluída quando o usuário salvar as alterações realizadas, o banco de dados der um feedback, o usuário receberá a mensagem “Edição concluída com sucesso” na tela e for redirecionado para a página de perfil com as informações atualizadas. <br> **CA2:** Caso haja falha na edição o usuário deve ser avisado como prosseguir. |
 | **RF-14** | Excluir perfil da entidade | O sistema deve permitir a exclusão dos dados de um perfil de entidade. | CP1 | RF-2-01 | Must Have | **CA1:** A exclusão do perfil da entidade só será considerada concluída quando o usuário confirmar a ação de exclusão, receber a mensagem “Conta excluída com sucesso” na tela. <br> **CA2:** O perfil só será considerado excluído quando todas as suas evidências forem removidas do banco de dados, incluindo mas não se limitando a posts, e projetos, etc. |
 | **RF-15** | Acessar perfil da entidade | O sistema deve permitir a visualização dos dados de um perfil de entidade. | CP1 | RF-2-01 | Must Have | **CA1:** O acesso ao perfil da entidade só será considerado concluído quando o usuário for redirecionado para a visualização da entidade e conseguir visualizar corretamente as informações cadastradas, incluindo nome, nome de usuário, foto, publicações e número de seguidores. |
-| **RF-16** | Administrar Co-gestores das entidades | O sistema deve permitir a adição e a remoção de usuários (docentes ou discentes) como co-gestores de uma entidade quando a ação for realizada por um usuário que já possua privilégios de gestor nela. | CP1 | RF-2-01 | Should Have | **CA1:** O gerenciamento de co-gestores só será considerado concluído quando o administrador da entidade conseguir adicionar ou remover co-gestores do perfil da entidade, visualizar a lista atualizada de co-gestores e receber uma mensagem de confirmação da ação realizada na tela ("Co-gestor adicionado com sucesso" ou "Co-gestor removido com sucesso"). |
+| **RF-16** | Administrar Co-gestores das entidades | O sistema deve permitir a adição e a remoção de usuários (docentes ou discentes) como co-gestores de uma entidade quando a ação for realizada por um usuário que já possua privilégios de gestor nela. | CP1 | RF-2-01 | Should Have | **CA1:** O gerenciamento de co-gestores só será considerado concluído quando o administrador da entidade conseguir adicionar ou remover co-gestores do perfil da entidade.  <br> **CA2:** O usuario administrador deve conseguir visualizar a lista atualizada de co-gestores. <br> **CA3:** O usuario administrador deve receber uma mensagem de confirmação da ação realizada na tela ("Co-gestor adicionado com sucesso" ou "Co-gestor removido com sucesso"). |
 | **PERFIL - USUÁRIO** |  |  |  |  |  |  |
-| **RF-17** | Cadastrar perfil de usuário | O sistema deve permitir o cadastro de um perfil público de usuário | CP1 | RF-2-01 | Must Have | **CA1:** O cadastro do perfil de usuário só será considerado concluído quando o usuário preencher corretamente os campos obrigatórios, receber a mensagem “Cadastro concluído com sucesso” na tela e for redirecionado para a página de login. |
-| **RF-18** | Editar perfil da usuário | O sistema deve permitir a atualização dos dados de um perfil público de usuário. | CP1 | RF-2-01 | Must Have | **CA1:** A edição do perfil de usuário só será considerada concluída quando o usuário salvar as alterações realizadas, receber a mensagem “Edição concluída com sucesso” na tela e visualizar as informações atualizadas em sua página de perfil. <br> **CA2:** O usuário deve ser capaz de alterar foto de perfil/foto do banner/nome/descrição/campus <br> **CA3:** O usuário só deve receber a mensagem "Edição concluída com sucesso" após o banco de dados der o feedback de alteração concluída. |
-| **RF-19** | Excluir perfil da usuário | O sistema deve permitir a exclusão dos dados de um perfil de usuário. | CP1 | RF-2-01 | Must Have | **CA1:** A exclusão do perfil de usuário só será considerada concluída quando o usuário confirmar a exclusão da conta, receber a mensagem “Conta excluída com sucesso” na tela e for redirecionado para a página inicial com a barra de navegação no formato deslogado. <br> **CA2:** O perfil só será considerado excluído quando todas as suas evidências forem removidas do banco de dados, incluindo mas não se limitando a comentários, configurações de notificações, seguindo, etc. <br> **CA3:** Por se tratar de dados anonimizados a exclusão de um perfil de usuário não deve afetar as métricas. |
-| **RF-20** | Acessar perfil da usuário | O sistema deve permitir a visualização dos dados de um perfil de usuário. | CP1 | RF-2-01 | Must Have | **CA1:** O acesso ao perfil de usuário só será considerado concluído quando o usuário conseguir visualizar corretamente suas informações cadastradas, incluindo nome, nome de usuário e foto de perfil. |
-| **RF-21** | Exibir painel de gestão de entidades | O sistema deve exibir um painel de gestão ao usuário autenticado, listando e permitindo o acesso rápido a todas as entidades nas quais ele possui privilégios de gestão e membro. | CP1 | RF-2-01 | Should Have | **CA1:** Permitir ver todas as entidades que se faz parte <br> **CA2:** Detalhar com clareza nível de privilégio de cada entidade que se faz parte <br> **CA3:** Se administrador ter opção de acrescentar novos membros em uma entidade <br> **CA4:** Conseguir adicionar e remover membros de uma entidade |
+| **RF-17** | Cadastrar perfil de usuário | O sistema deve permitir o cadastro de um perfil público de usuário | CP1 | RF-2-01 | Must Have | **CA1:** O cadastro do perfil de usuário só será considerado concluído quando o usuário preencher corretamente os campos obrigatórios. <br> **CA2:** O usuário deve receber a mensagem “Cadastro concluído com sucesso” na tela após o cadastro. <br> **CA3:** Após o cadastro, o usuário deve ser redirecionado para a página de login. |
+| **RF-18** | Editar perfil da usuário | O sistema deve permitir a atualização dos dados de um perfil público de usuário. | CP1 | RF-2-01 | Must Have | **CA1:** A edição do perfil de usuário só será considerada concluída quando o usuário salvar as alterações realizadas. <br> **CA2:** O usuário deve receber a mensagem “Edição concluída com sucesso” na tela após concluir a edição e salvar as alterações. <br> **CA3:** O usuário deve visualizar as informações atualizadas em sua página de perfil. <br> **CA4:** O usuário deve ser capaz de alterar foto de perfil/foto do banner/nome/descrição/campus |
+| **RF-19** | Excluir perfil da usuário | O sistema deve permitir a exclusão dos dados de um perfil de usuário. | CP1 | RF-2-01 | Must Have | **CA1:** A exclusão só será considerada concluída quando o usuário confirmar a ação, receber a mensagem "Conta excluída com sucesso" e for redirecionado para a página inicial no formato deslogado. <br> **CA2:** O perfil só será considerado excluído quando nenhum dado identificável do usuário puder ser acessado por outros usuários do sistema. <br> **CA3:** A exclusão de um perfil não deve afetar as métricas de engajamento já registradas pelo sistema. |
+| **RF-20** | Acessar perfil da usuário | O sistema deve permitir a visualização dos dados de um perfil de usuário. | CP1 | RF-2-01 | Must Have | **CA1:** O acesso ao perfil só será considerado concluído quando o usuário conseguir visualizar corretamente suas informações cadastradas, incluindo nome, nome de usuário e foto de perfil. <br> **CA2:** O perfil deve ser acessível a partir de qualquer ponto do sistema que contenha o identificador do usuário.|
+| **RF-21** | Exibir painel de gestão de entidades | O sistema deve exibir um painel de gestão ao usuário autenticado, listando e permitindo o acesso rápido a todas as entidades nas quais ele possui privilégios de gestão e membro. | CP1 | RF-2-01 | Should Have | **CA1:** O painel só será considerado funcional quando listar todas as entidades nas quais o usuário autenticado possui vínculo ativo. <br> **CA2:** O painel deve indicar claramente o nível de privilégio do usuário em cada entidade listada. <br> **CA3:** Um usuário com privilégios de gestão deve conseguir adicionar e remover membros de uma entidade a partir do painel. |
 | **PROJETO** |  |  |  |  |  |  |
 | **RF-22** | Atualizar projeto | O sistema deve permitir a publicação de atualizações de projetos podendo conter texto e imagens. | CP6 | RF-2-02 | Must Have | **CA1:** Um projeto deve poder ser associada a uma entidade (EJ, equipe de competição, etc.) <br> **CA2:** Cada projeto possui uma descrição associada <br> **CA3:** Deve ser possível editar a foto/banner/nome/descrição/colaboradores de um projeto |
 | **RF-23** | Visualizar histórico de projetos | O sistema deve exibir o histórico de projetos atuais e anteriores no perfil de cada entidade. | CP6 | RF-2-04 | Must Have | **CA1:** Os cards de descrição relacionados à aquele projeto devem ser mostrados na página da entidade relacionada |
 | **RF-24** | Criar um novo projeto | O sistema deve permitir a publicação de projetos contendo texto e imagem. | CP6 | RF-2-02 | Must Have | **CA1:** O projeto deve ter foto, banner, nome, descrição, colaboradores |
 | **RF-25** | Deletar um projeto | O sistema deve permitir a deleção de projetos. | CP6 | RF-2-02 | Must Have | **CA1:** Um projeto só será considerado excluído quando todas as suas evidências forem removidas do banco de dados |
 | **PUBLICAÇÕES** |  |  |  |  |  |  |
-| **RF-26** | Criar publicações | O sistema deve permitir criar posts contendo texto e imagem, podendo ser apenas um dos dois | CP4 | RF-1-02 | Must Have | **CA1:** Publicações podem não ter imagens <br> **CA2:** Usuários devem poder ver como ficará o post antes de publicá-lo (preview) <br> **CA3:** Após a publicação o post deve aparecer nos publicações do perfil da entidade |
+| **RF-26** | Criar publicações | O sistema deve permitir criar posts contendo texto e imagem, podendo ser apenas um dos dois | CP4 | RF-1-02 | Must Have | **CA1:** Uma publicação pode ser criada contendo apenas texto ou apenas imagem ou ambos. <br> **CA2:** Usuários devem poder ver como ficará o post antes de publicá-lo (preview) <br> **CA3:** Após a publicação o post deve aparecer nos publicações do perfil da entidade |
 | **RF-27** | Editar publicações | O sistema deve permitir editar posts | CP4 CP6 | RF-1-02 | Must Have | **CA1:** A edição deve permitir editar todos os campos de um post <br> **CA2:** Usuário deve conseguir ver como ficará o post antes de concluir a edição |
 | **RF-28** | Apagar publicações | O sistema deve permitir a deleção de posts | CP4 CP6 | RF-1-02 | Must Have | **CA1:** Publicações serão consideradas apagadas apenas quando todos as suas evidências forem removidos do banco de dados |
-| **RF-29** | Pesquisar publicações com filtros de busca | O sistema deve permitir a busca por posts através de filtros | CP5 | RF-3-03 | Should Have | **CA1:** Os filtros devem levar em conta campus/área de interesse/tipo da entidade |
+| **RF-29** | Pesquisar publicações com filtros de busca | O sistema deve permitir a busca por posts através de filtros | CP5 | RF-3-03 | Should Have | **CA1:** A busca só será considerada funcional quando retornar publicações compatíveis com pelo menos um dos filtros aplicados pelo usuário. <br> **CA2:** O sistema deve permitir filtrar publicações por campus, área de interesse e tipo de entidade. |
 | **NOTIFICAÇÕES** |  |  |  |  |  |  |
 | **RF-30** | Personalizar conteúdos de notificação | O usuário deve poder gerenciar suas preferências de notificação escolhendo quais tipos de alertas receber. | CP8 | RF-1-03 RF-2-06 | Could Have | **CA1:** O sistema deve permitir que o usuário configure suas preferências de notificação.<br> **CA2:** O sistema deve oferecer a ativação ou desativação dos tipos de notificação disponíveis.<br> **CA3:** Ao salvar as alterações, o sistema deve atualizar as preferências no banco de dados e aplicá-las imediatamente nos próximos envios. |
 | **MÉTRICAS** |  |  |  |  |  |  |
@@ -88,7 +88,7 @@ Após a primeira fase de elicitação e descoberta o grupo declarou os requisito
 *   **Could Have (Desejáveis):** Customizações complexas de notificações (RF-27) geram conforto, mas não são o foco principal. Nota com média 2 ou 3 no forms passado aos stakeholders.
 *   **Won't Have (Fora do Escopo Inicial):** A adição de comentários foi isolada. Nota com média 1 no forms passado aos stakeholders (apesar da nota média arredondada ter sido 2 para comentários).
 
-### Relação de Funcionalidades e notas médias no Forms
+### Relação de Funcionalidades por Valor - Notas médias no Forms
 
 | Funcionalidade | Nota Média |
 | :--- | :---: |
@@ -145,7 +145,7 @@ O quadro foi feito na plataforma miro e pode ser acessado [clicando aqui](https:
 
 ![Menor valor e menor esforço](../assets/fotos/valorXesforco/LVME.png) 
 
-## Matriz de Avaliação Técnica × Valor de Negócio (Atualizada e Ordenada)
+## Matriz de Avaliação Técnica × Valor de Negócio
 
 Para **Valor de Negócio** utilizamos a classificação de 1 a 5 dos stakeholders em um formulário, sendo:
 
@@ -157,40 +157,70 @@ Para **Valor de Negócio** utilizamos a classificação de 1 a 5 dos stakeholder
 
 Para **Complexidade Técnica** utilizamos uma classificação de 1 a 5, sendo:
 
+1. **Muito Baixa** - Lógica trivial e interfaces simples. Operações básicas de leitura sem regras de negócio (ex: página estática).
+2. **Baixa** - Operações básicas de CRUD (Criar, Ler, Atualizar, Apagar) em uma única tabela do banco de dados. Validações de formulário padrão. Tecnologias e bibliotecas totalmente dominadas pela equipe.
+3. **Média** - Funcionalidades moderadas envolvendo múltiplas tabelas. Necessidade de controle de permissões e autenticação. Requer criação de componentes de UI personalizados no frontend.
+4. **Alta** - Lógica de negócio complexa. Necessidade de integração com APIs ou ferramentas externas. Processamento de dados mais denso (ex: cálculo de métricas de engajamento) ou manipulação de arquivos (upload de imagens).
+5. **Muito Alta** - Requisitos que exigem alta segurança ou arquitetura que a equipe não domina. Alta probabilidade de bugs que impactem o sistema inteiro.
+
+Para **Esforço (ES)** utilizamos uma classificação de 1 a 5, que avalia puramente o volume de trabalho e o tempo necessário (horas), independentemente de ser difícil ou fácil, sendo:
+
+1. **Muito Baixo** - Até 4 horas totais;
+2. **Baixo** - De 5 a 12 horas totais;
+3. **Médio** - De 13 a 24 horas totais;
+4. **Alto** - De 25 a 40 horas totais;
+5. **Muito Alto** - Mais de 40 horas totais;
+
+Para **Pontuação Técnica** utilizamos: (Complexidade Técnica + Esforço)/2
+
+Para **Índice de Prioridade** utilizamos: Valor de Negócio/Pontuação Técnica 
+
+Para **Quadrante** e sugestão de **Prioridade** colocamos:
+
+- Q1 - Alto Valor / Baixa Carga Técnica (Prioridade 1)
+    - **Regra matemática:** VN ≥ 4 e PT < 3.0
+
+- Q2 - Alto Valor / Alta Carga Técnica (Prioridade 2)
+    - **Regra matemática:** VN ≥ 4 e PT ≥ 3.0
+
+- Q3 - Baixo Valor / Baixa Carga Técnica (Prioridade 3)
+    - **Regra matemática:** VN ≤ 3 e PT < 3.0
+
+- Q4 - Baixo Valor / Alta Carga Técnica (Prioridade 4)
+    - **Regra matemática:** VN ≤ 3 e PT ≥ 3.0
 
 | Requisito | Valor de negócio | Complexidade técnica | Esforço | Pontuação técnica | Índice de prioridade | Quadrante | Prioridade Sugerida |
 | :--- | :---: | :---: | :---: | :---: | :---: | :--- | :--- |
-| **RF-12** - Acessar perfil da entidade | 5 | 1 | 1 | 1.0 | 5.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-17** - Acessar perfil de usuário | 5 | 1 | 1 | 1.0 | 5.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-15** - Acessar perfil da entidade | 5 | 1 | 1 | 1.0 | 5.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-20** - Acessar perfil de usuário | 5 | 1 | 1 | 1.0 | 5.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-25** - Deletar um projeto | 5 | 1 | 1 | 1.0 | 5.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-28** - Apagar publicações | 5 | 1 | 1 | 1.0 | 5.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
 | **RF-03** - Atualizar status de um processo seletivo | 4 | 1 | 1 | 1.0 | 4.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-04** - Cancelar um processo seletivo | 4 | 1 | 1 | 1.0 | 4.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-22** - Deletar um projeto | 4 | 1 | 1 | 1.0 | 4.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-25** - Apagar publicações | 4 | 1 | 1 | 1.0 | 4.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-01** - Exibir processos seletivos abertos | 5 | 1 | 2 | 1.5 | 3.33 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-14** - Cadastrar perfil de usuário | 5 | 2 | 2 | 2.0 | 2.50 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-15** - Editar perfil de usuário | 5 | 2 | 2 | 2.0 | 2.50 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-04** - Finalizar um processo seletivo | 4 | 1 | 1 | 1.0 | 4.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-14** - Excluir perfil da entidade | 5 | 1 | 2 | 1.5 | 3.33 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-01** - Exibir processos seletivos abertos | 4 | 1 | 2 | 1.5 | 2.67 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-11** - Visualizar publicações no feed | 5 | 2 | 2 | 2.0 | 2.50 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-13** - Editar perfil da entidade | 5 | 2 | 2 | 2.0 | 2.50 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-17** - Cadastrar perfil de usuário | 5 | 2 | 2 | 2.0 | 2.50 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-18** - Editar perfil da usuário | 5 | 2 | 2 | 2.0 | 2.50 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-22** - Atualizar projeto | 5 | 2 | 2 | 2.0 | 2.50 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-23** - Visualizar histórico de projetos | 5 | 2 | 2 | 2.0 | 2.50 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-26** - Criar publicações | 5 | 2 | 2 | 2.0 | 2.50 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-27** - Editar publicações | 5 | 2 | 2 | 2.0 | 2.50 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
 | **RF-02** - Filtrar processos seletivos abertos | 4 | 2 | 2 | 2.0 | 2.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-05** - Criar um processo seletivo | 5 | 2 | 3 | 2.5 | 2.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-06** - Filtrar feed por preferências do usuário | 5 | 3 | 2 | 2.5 | 2.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-09** - Criar perfil da entidade publicamente | 5 | 2 | 3 | 2.5 | 2.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-10** - Editar perfil da entidade | 4 | 2 | 2 | 2.0 | 2.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-16** - Excluir perfil de usuário (LGPD) | 5 | 3 | 2 | 2.5 | 2.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-19** - Atualizar projeto | 4 | 2 | 2 | 2.0 | 2.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-21** - Criar um novo projeto | 5 | 2 | 3 | 2.5 | 2.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-24** - Editar publicações | 4 | 2 | 2 | 2.0 | 2.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-07** - Divulgar publicações no formato de blog | 4 | 2 | 3 | 2.5 | 1.60 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-23** - Criar publicações | 5 | 2 | 2 | 2.5 | 2.00 | Q2 - Alto valor / Alta carga | Prioridade 1 |
-| **RF-18** - Exibir painel de gestão | 4 | 3 | 3 | 3.0 | 1.33 | Q2 - Alto valor / Alta carga | Prioridade 2 |
-| **RF-08** - Interagir com publicações (curtidas) | 2 | 1 | 1 | 1.0 | 2.00 | Q3 - Baixo valor / Baixa carga | Prioridade 2 |
-| **RF-11** - Excluir perfil da entidade | 3 | 2 | 2 | 2.0 | 1.50 | Q3 - Baixo valor / Baixa carga | Prioridade 3 |
-| **RF-20** - Visualizar histórico de projetos | 3 | 2 | 2 | 2.0 | 1.50 | Q3 - Baixo valor / Baixa carga | Prioridade 3 |
-| **RF-13** - Gerenciar co-gestores | 3 | 3 | 2 | 2.5 | 1.20 | Q3 - Baixo valor / Baixa carga | Prioridade 3 |
-| **RF-26** - Pesquisar publicações c/ filtros de busca | 3 | 3 | 3 | 3.0 | 1.00 | Q4 - Baixo valor / Alta carga | Prioridade 4 |
-| **RF-30** - Exibir métricas para publicações | 3 | 3 | 3 | 3.0 | 1.00 | Q4 - Baixo valor / Alta carga | Prioridade 4 |
-| **RF-29** - Exibir métricas para entidades | 3 | 3 | 4 | 3.5 | 0.86 | Q4 - Baixo valor / Alta carga | Prioridade 4 |
-| **RF-28** - Notificar usuários automaticamente | 3 | 4 | 4 | 4.0 | 0.75 | Q4 - Baixo valor / Alta carga | Prioridade 4 |
-| **RF-27** - Personalizar conteúdos de notificação | 2 | 3 | 3 | 3.0 | 0.67 | Q4 - Baixo valor / Alta carga | Prioridade 4 |
-| **RF-31** - Importar posts de outras redes | 1 | 5 | 5 | 5.0 | 0.20 | Q4 - Baixo valor / Alta carga | Prioridade 4 |
-
-
-
+| **RF-12** - Criar perfil da entidade publicamente | 5 | 2 | 3 | 2.5 | 2.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-19** - Excluir perfil da usuário | 5 | 3 | 2 | 2.5 | 2.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-24** - Criar um novo projeto | 5 | 2 | 3 | 2.5 | 2.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-05** - Criar um processo seletivo | 4 | 2 | 3 | 2.5 | 1.60 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-06** - Filtrar feed de acordo com preferências do usuário | 4 | 3 | 2 | 2.5 | 1.60 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-16** - Administrar Co-gestores das entidades | 4 | 3 | 2 | 2.5 | 1.60 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-21** - Exibir painel de gestão de entidades | 4 | 3 | 3 | 3.0 | 1.33 | Q2 - Alto valor / Alta carga | Prioridade 2 |
+| **RF-29** - Pesquisar publicações com filtros de busca | 4 | 3 | 3 | 3.0 | 1.33 | Q2 - Alto valor / Alta carga | Prioridade 2 |
+| **RF-08** - Visualizar comentários em publicações | 2 | 1 | 1 | 1.0 | 2.00 | Q3 - Baixo valor / Baixa carga | Prioridade 3 |
+| **RF-10** - Apagar comentários | 2 | 1 | 1 | 1.0 | 2.00 | Q3 - Baixo valor / Baixa carga | Prioridade 3 |
+| **RF-09** - Editar comentários próprios | 2 | 2 | 1 | 1.5 | 1.33 | Q3 - Baixo valor / Baixa carga | Prioridade 3 |
+| **RF-07** - Criar comentários em publicações | 2 | 2 | 2 | 2.0 | 1.00 | Q3 - Baixo valor / Baixa carga | Prioridade 3 |
+| **RF-30** - Personalizar conteúdos de notificação | 3 | 3 | 3 | 3.0 | 1.00 | Q4 - Baixo valor / Alta carga | Prioridade 4 |
+| **RF-32** - Exibir métricas de engajamento para publicações | 3 | 3 | 3 | 3.0 | 1.00 | Q4 - Baixo valor / Alta carga | Prioridade 4 |
+| **RF-31** - Exibir métricas de engajamento para as entidades | 3 | 3 | 4 | 3.5 | 0.86 | Q4 - Baixo valor / Alta carga | Prioridade 4 |
+| **RF-33** - Importar posts de outras redes | 3 | 5 | 5 | 5.0 | 0.60 | Q4 - Baixo valor / Alta carga | Prioridade 4 |
