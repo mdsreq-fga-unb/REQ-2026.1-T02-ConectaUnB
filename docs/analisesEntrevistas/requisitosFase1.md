@@ -83,7 +83,7 @@ Após a primeira fase de elicitação e descoberta o grupo declarou os requisito
 
 ## Justificativa da Priorização (Visão de Negócio)
 
-*   **Must Have (Obrigatórios para o MVP):** Foram priorizadas as funções que atacam o coração do problema: a fragmentação da informação. Nota com média 5 no forms passado aos stakeholders.
+*   **Must Have (Importantes para definição do MVP):** Foram priorizadas as funções que atacam o coração do problema: a fragmentação da informação. Nota com média 5 no forms passado aos stakeholders.
 *   **Should Have (Importantes, mas não bloqueiam o lançamento):** São fundamentais para a experiência completa, mas a plataforma já gera valor sem eles. Nota com média 4 no forms passado aos stakeholders.
 *   **Could Have (Desejáveis):** Customizações complexas de notificações (RF-27) geram conforto, mas não são o foco principal. Nota com média 2 ou 3 no forms passado aos stakeholders.
 *   **Won't Have (Fora do Escopo Inicial):** A adição de comentários foi isolada. Nota com média 1 no forms passado aos stakeholders (apesar da nota média arredondada ter sido 2 para comentários).
