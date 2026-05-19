@@ -8,9 +8,9 @@ Após a primeira fase de elicitação e descoberta o grupo declarou os requisito
 | Cod | Nome | Texto estruturado | Característica do produto | Rastreabilidade Entrevistas | Priorização MoSCoW | Critérios de aceitação |
 | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
 | **PROCESSOS SELETIVOS** |  |  |  |  |  |  |
-| **RF-01** | Exibir processos seletivos abertos | O sistema deve permitir exibir todos os procesos seletivos abertos | CP5 | RF-1-01 | Must Have |**CA2:** Apenas processos com a data de término igual ou superior à data atual devem ser exibidos nesta listagem. <br> **CA3:** Somentes usuários autenticados poderão se inscrever no processo seletivo. |
+| **RF-01** | Exibir processos seletivos abertos | O sistema deve permitir exibir todos os procesos seletivos abertos | CP5 | RF-1-01 | Must Have | **CA1:** Apenas usuários autenticados podem se cadastrar em processos seletivos. <br> **CA2:** Apenas processos com a data de término igual ou superior à data atual devem ser exibidos nesta listagem. |
 | **RF-02** | Filtrar processos seletivos abertos | O sistema deve permitir filtrar processos seletivos abertos | CP5 | RF-1-01 | Must Have | **CA1:** O sistema deve filtrar os processos seletivos abertos quando o usuário aplicar um ou mais parâmetros de categorização na busca, exibindo apenas as categorias selecionadas. |
-| **RF-03** | Atualizar status de um processo seletivo | O sistema deve permitir a atualização do status de um processo seletivo de uma entidade | CP4 | RF-1-06 | Must Have | **CA1:** O sistema deve atualizar o status de um processo seletivo quando o usuário com privilégios de gestor da entidade submeter a alteração, com classificações de status pré definidas (aberto, finalizado, etc.). |
+| **RF-03** | Atualizar status de um processo seletivo | O sistema deve permitir a atualização do status de um processo seletivo de uma entidade | CP4 | RF-1-06 | Must Have | **CA1:** O sistema deve atualizar o status de um processo seletivo apenas para usuários com privilégios de gestor <br>**CA2** O usuário deverá escolher classificações de status pré definidas (aberto, finalizado, etc.). |
 | **RF-04** | Finalizar um processo seletivo | O sistema deve permitir a finalização de um processo seletivo de uma entidade | CP4 | RF-1-07 | Must Have | **CA1:** O sistema deve finalizar um processo seletivo quando o gestor da entidade confirmar a ação de finalização. <br> **CA2:** Seu estado deve ser alterado para "Finalizado" |
 | **RF-05** | Criar um processo seletivo | O sistema deve permitir a criação de um processo seletivo de uma entidade delimitando data limite para inscrição | CP4 | RF-1-07 | Must Have | **CA1:** O sistema deve criar um processo seletivo quando o gestor da entidade submeter o formulário preenchido corretamente. <br> **CA2:** É necessário delimitar uma data de término de inscrição válida. |
 | **FEED** |  |  |  |  |  |  |
@@ -83,7 +83,7 @@ Após a primeira fase de elicitação e descoberta o grupo declarou os requisito
 
 ## Justificativa da Priorização (Visão de Negócio)
 
-*   **Must Have (Obrigatórios para o MVP):** Foram priorizadas as funções que atacam o coração do problema: a fragmentação da informação. Nota com média 5 no forms passado aos stakeholders.
+*   **Must Have (Importantes para definição do MVP):** Foram priorizadas as funções que atacam o coração do problema: a fragmentação da informação. Nota com média 5 no forms passado aos stakeholders.
 *   **Should Have (Importantes, mas não bloqueiam o lançamento):** São fundamentais para a experiência completa, mas a plataforma já gera valor sem eles. Nota com média 4 no forms passado aos stakeholders.
 *   **Could Have (Desejáveis):** Customizações complexas de notificações (RF-27) geram conforto, mas não são o foco principal. Nota com média 2 ou 3 no forms passado aos stakeholders.
 *   **Won't Have (Fora do Escopo Inicial):** A adição de comentários foi isolada. Nota com média 1 no forms passado aos stakeholders (apesar da nota média arredondada ter sido 2 para comentários).
