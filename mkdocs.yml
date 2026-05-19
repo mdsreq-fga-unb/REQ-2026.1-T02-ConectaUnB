@@ -32,6 +32,7 @@ nav:
       # - "Backlog do Produto": visaoDeProdutoProjeto/backlog.md
       - "Lições Aprendidas": 
         - "Unidade 1": visaoDeProdutoProjeto/licoes/unidade1.md
+        - "Unidade 2": visaoDeProdutoProjeto/licoes/unidade2.md
   
   - Apresentações:
       - Apresentação 1: entregas/entrega1.md
