@@ -8,7 +8,7 @@ Após a primeira fase de elicitação e descoberta o grupo declarou os requisito
 | Cod | Nome | Texto estruturado | Característica do produto | Rastreabilidade Entrevistas | Priorização MoSCoW | Critérios de aceitação |
 | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
 | **PROCESSOS SELETIVOS** |  |  |  |  |  |  |
-| **RF-01** | Exibir processos seletivos abertos | O sistema deve permitir exibir todos os procesos seletivos abertos | CP5 | RF-1-01 | Must Have | **CA1:** O botão para a inscrição só deve estar clicável para usuários autenticados; visitantes devem ver a vaga, mas não o botão. <br> **CA2:** Apenas processos com a data de término igual ou superior à data atual devem ser exibidos nesta listagem. <br> **CA3:** Somentes usuários autenticados poderão se inscrever no processo seletivo. |
+| **RF-01** | Exibir processos seletivos abertos | O sistema deve permitir exibir todos os procesos seletivos abertos | CP5 | RF-1-01 | Must Have |**CA2:** Apenas processos com a data de término igual ou superior à data atual devem ser exibidos nesta listagem. <br> **CA3:** Somentes usuários autenticados poderão se inscrever no processo seletivo. |
 | **RF-02** | Filtrar processos seletivos abertos | O sistema deve permitir filtrar processos seletivos abertos | CP5 | RF-1-01 | Must Have | **CA1:** O sistema deve filtrar os processos seletivos abertos quando o usuário aplicar um ou mais parâmetros de categorização na busca, exibindo apenas as categorias selecionadas. |
 | **RF-03** | Atualizar status de um processo seletivo | O sistema deve permitir a atualização do status de um processo seletivo de uma entidade | CP4 | RF-1-06 | Must Have | **CA1:** O sistema deve atualizar o status de um processo seletivo quando o usuário com privilégios de gestor da entidade submeter a alteração, com classificações de status pré definidas (aberto, finalizado, etc.). |
 | **RF-04** | Finalizar um processo seletivo | O sistema deve permitir a finalização de um processo seletivo de uma entidade | CP4 | RF-1-07 | Must Have | **CA1:** O sistema deve finalizar um processo seletivo quando o gestor da entidade confirmar a ação de finalização. <br> **CA2:** Seu estado deve ser alterado para "Finalizado" |
@@ -88,7 +88,7 @@ Após a primeira fase de elicitação e descoberta o grupo declarou os requisito
 *   **Could Have (Desejáveis):** Customizações complexas de notificações (RF-27) geram conforto, mas não são o foco principal. Nota com média 2 ou 3 no forms passado aos stakeholders.
 *   **Won't Have (Fora do Escopo Inicial):** A adição de comentários foi isolada. Nota com média 1 no forms passado aos stakeholders (apesar da nota média arredondada ter sido 2 para comentários).
 
-### Relação de Funcionalidades e notas médias no Forms
+### Relação de Funcionalidades por Valor - Notas médias no Forms
 
 | Funcionalidade | Nota Média |
 | :--- | :---: |
@@ -145,7 +145,7 @@ O quadro foi feito na plataforma miro e pode ser acessado [clicando aqui](https:
 
 ![Menor valor e menor esforço](../assets/fotos/valorXesforco/LVME.png) 
 
-## Matriz de Avaliação Técnica × Valor de Negócio (Atualizada e Ordenada)
+## Matriz de Avaliação Técnica × Valor de Negócio
 
 Para **Valor de Negócio** utilizamos a classificação de 1 a 5 dos stakeholders em um formulário, sendo:
 
@@ -157,40 +157,70 @@ Para **Valor de Negócio** utilizamos a classificação de 1 a 5 dos stakeholder
 
 Para **Complexidade Técnica** utilizamos uma classificação de 1 a 5, sendo:
 
+1. **Muito Baixa** - Lógica trivial e interfaces simples. Operações básicas de leitura sem regras de negócio (ex: página estática).
+2. **Baixa** - Operações básicas de CRUD (Criar, Ler, Atualizar, Apagar) em uma única tabela do banco de dados. Validações de formulário padrão. Tecnologias e bibliotecas totalmente dominadas pela equipe.
+3. **Média** - Funcionalidades moderadas envolvendo múltiplas tabelas. Necessidade de controle de permissões e autenticação. Requer criação de componentes de UI personalizados no frontend.
+4. **Alta** - Lógica de negócio complexa. Necessidade de integração com APIs ou ferramentas externas. Processamento de dados mais denso (ex: cálculo de métricas de engajamento) ou manipulação de arquivos (upload de imagens).
+5. **Muito Alta** - Requisitos que exigem alta segurança ou arquitetura que a equipe não domina. Alta probabilidade de bugs que impactem o sistema inteiro.
+
+Para **Esforço (ES)** utilizamos uma classificação de 1 a 5, que avalia puramente o volume de trabalho e o tempo necessário (horas), independentemente de ser difícil ou fácil, sendo:
+
+1. **Muito Baixo** - Até 4 horas totais;
+2. **Baixo** - De 5 a 12 horas totais;
+3. **Médio** - De 13 a 24 horas totais;
+4. **Alto** - De 25 a 40 horas totais;
+5. **Muito Alto** - Mais de 40 horas totais;
+
+Para **Pontuação Técnica** utilizamos: (Complexidade Técnica + Esforço)/2
+
+Para **Índice de Prioridade** utilizamos: Valor de Negócio/Pontuação Técnica 
+
+Para **Quadrante** e sugestão de **Prioridade** colocamos:
+
+- Q1 - Alto Valor / Baixa Carga Técnica (Prioridade 1)
+    - **Regra matemática:** VN ≥ 4 e PT < 3.0
+
+- Q2 - Alto Valor / Alta Carga Técnica (Prioridade 2)
+    - **Regra matemática:** VN ≥ 4 e PT ≥ 3.0
+
+- Q3 - Baixo Valor / Baixa Carga Técnica (Prioridade 3)
+    - **Regra matemática:** VN ≤ 3 e PT < 3.0
+
+- Q4 - Baixo Valor / Alta Carga Técnica (Prioridade 4)
+    - **Regra matemática:** VN ≤ 3 e PT ≥ 3.0
 
 | Requisito | Valor de negócio | Complexidade técnica | Esforço | Pontuação técnica | Índice de prioridade | Quadrante | Prioridade Sugerida |
 | :--- | :---: | :---: | :---: | :---: | :---: | :--- | :--- |
-| **RF-12** - Acessar perfil da entidade | 5 | 1 | 1 | 1.0 | 5.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-17** - Acessar perfil de usuário | 5 | 1 | 1 | 1.0 | 5.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-15** - Acessar perfil da entidade | 5 | 1 | 1 | 1.0 | 5.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-20** - Acessar perfil de usuário | 5 | 1 | 1 | 1.0 | 5.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-25** - Deletar um projeto | 5 | 1 | 1 | 1.0 | 5.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-28** - Apagar publicações | 5 | 1 | 1 | 1.0 | 5.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
 | **RF-03** - Atualizar status de um processo seletivo | 4 | 1 | 1 | 1.0 | 4.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-04** - Cancelar um processo seletivo | 4 | 1 | 1 | 1.0 | 4.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-22** - Deletar um projeto | 4 | 1 | 1 | 1.0 | 4.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-25** - Apagar publicações | 4 | 1 | 1 | 1.0 | 4.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-01** - Exibir processos seletivos abertos | 5 | 1 | 2 | 1.5 | 3.33 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-14** - Cadastrar perfil de usuário | 5 | 2 | 2 | 2.0 | 2.50 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-15** - Editar perfil de usuário | 5 | 2 | 2 | 2.0 | 2.50 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-04** - Finalizar um processo seletivo | 4 | 1 | 1 | 1.0 | 4.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-14** - Excluir perfil da entidade | 5 | 1 | 2 | 1.5 | 3.33 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-01** - Exibir processos seletivos abertos | 4 | 1 | 2 | 1.5 | 2.67 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-11** - Visualizar publicações no feed | 5 | 2 | 2 | 2.0 | 2.50 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-13** - Editar perfil da entidade | 5 | 2 | 2 | 2.0 | 2.50 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-17** - Cadastrar perfil de usuário | 5 | 2 | 2 | 2.0 | 2.50 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-18** - Editar perfil da usuário | 5 | 2 | 2 | 2.0 | 2.50 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-22** - Atualizar projeto | 5 | 2 | 2 | 2.0 | 2.50 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-23** - Visualizar histórico de projetos | 5 | 2 | 2 | 2.0 | 2.50 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-26** - Criar publicações | 5 | 2 | 2 | 2.0 | 2.50 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-27** - Editar publicações | 5 | 2 | 2 | 2.0 | 2.50 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
 | **RF-02** - Filtrar processos seletivos abertos | 4 | 2 | 2 | 2.0 | 2.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-05** - Criar um processo seletivo | 5 | 2 | 3 | 2.5 | 2.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-06** - Filtrar feed por preferências do usuário | 5 | 3 | 2 | 2.5 | 2.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-09** - Criar perfil da entidade publicamente | 5 | 2 | 3 | 2.5 | 2.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-10** - Editar perfil da entidade | 4 | 2 | 2 | 2.0 | 2.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-16** - Excluir perfil de usuário (LGPD) | 5 | 3 | 2 | 2.5 | 2.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-19** - Atualizar projeto | 4 | 2 | 2 | 2.0 | 2.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-21** - Criar um novo projeto | 5 | 2 | 3 | 2.5 | 2.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-24** - Editar publicações | 4 | 2 | 2 | 2.0 | 2.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-07** - Divulgar publicações no formato de blog | 4 | 2 | 3 | 2.5 | 1.60 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
-| **RF-23** - Criar publicações | 5 | 2 | 2 | 2.5 | 2.00 | Q2 - Alto valor / Alta carga | Prioridade 1 |
-| **RF-18** - Exibir painel de gestão | 4 | 3 | 3 | 3.0 | 1.33 | Q2 - Alto valor / Alta carga | Prioridade 2 |
-| **RF-08** - Interagir com publicações (curtidas) | 2 | 1 | 1 | 1.0 | 2.00 | Q3 - Baixo valor / Baixa carga | Prioridade 2 |
-| **RF-11** - Excluir perfil da entidade | 3 | 2 | 2 | 2.0 | 1.50 | Q3 - Baixo valor / Baixa carga | Prioridade 3 |
-| **RF-20** - Visualizar histórico de projetos | 3 | 2 | 2 | 2.0 | 1.50 | Q3 - Baixo valor / Baixa carga | Prioridade 3 |
-| **RF-13** - Gerenciar co-gestores | 3 | 3 | 2 | 2.5 | 1.20 | Q3 - Baixo valor / Baixa carga | Prioridade 3 |
-| **RF-26** - Pesquisar publicações c/ filtros de busca | 3 | 3 | 3 | 3.0 | 1.00 | Q4 - Baixo valor / Alta carga | Prioridade 4 |
-| **RF-30** - Exibir métricas para publicações | 3 | 3 | 3 | 3.0 | 1.00 | Q4 - Baixo valor / Alta carga | Prioridade 4 |
-| **RF-29** - Exibir métricas para entidades | 3 | 3 | 4 | 3.5 | 0.86 | Q4 - Baixo valor / Alta carga | Prioridade 4 |
-| **RF-28** - Notificar usuários automaticamente | 3 | 4 | 4 | 4.0 | 0.75 | Q4 - Baixo valor / Alta carga | Prioridade 4 |
-| **RF-27** - Personalizar conteúdos de notificação | 2 | 3 | 3 | 3.0 | 0.67 | Q4 - Baixo valor / Alta carga | Prioridade 4 |
-| **RF-31** - Importar posts de outras redes | 1 | 5 | 5 | 5.0 | 0.20 | Q4 - Baixo valor / Alta carga | Prioridade 4 |
-
-
-
+| **RF-12** - Criar perfil da entidade publicamente | 5 | 2 | 3 | 2.5 | 2.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-19** - Excluir perfil da usuário | 5 | 3 | 2 | 2.5 | 2.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-24** - Criar um novo projeto | 5 | 2 | 3 | 2.5 | 2.00 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-05** - Criar um processo seletivo | 4 | 2 | 3 | 2.5 | 1.60 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-06** - Filtrar feed de acordo com preferências do usuário | 4 | 3 | 2 | 2.5 | 1.60 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-16** - Administrar Co-gestores das entidades | 4 | 3 | 2 | 2.5 | 1.60 | Q1 - Alto valor / Baixa carga | Prioridade 1 |
+| **RF-21** - Exibir painel de gestão de entidades | 4 | 3 | 3 | 3.0 | 1.33 | Q2 - Alto valor / Alta carga | Prioridade 2 |
+| **RF-29** - Pesquisar publicações com filtros de busca | 4 | 3 | 3 | 3.0 | 1.33 | Q2 - Alto valor / Alta carga | Prioridade 2 |
+| **RF-08** - Visualizar comentários em publicações | 2 | 1 | 1 | 1.0 | 2.00 | Q3 - Baixo valor / Baixa carga | Prioridade 3 |
+| **RF-10** - Apagar comentários | 2 | 1 | 1 | 1.0 | 2.00 | Q3 - Baixo valor / Baixa carga | Prioridade 3 |
+| **RF-09** - Editar comentários próprios | 2 | 2 | 1 | 1.5 | 1.33 | Q3 - Baixo valor / Baixa carga | Prioridade 3 |
+| **RF-07** - Criar comentários em publicações | 2 | 2 | 2 | 2.0 | 1.00 | Q3 - Baixo valor / Baixa carga | Prioridade 3 |
+| **RF-30** - Personalizar conteúdos de notificação | 3 | 3 | 3 | 3.0 | 1.00 | Q4 - Baixo valor / Alta carga | Prioridade 4 |
+| **RF-32** - Exibir métricas de engajamento para publicações | 3 | 3 | 3 | 3.0 | 1.00 | Q4 - Baixo valor / Alta carga | Prioridade 4 |
+| **RF-31** - Exibir métricas de engajamento para as entidades | 3 | 3 | 4 | 3.5 | 0.86 | Q4 - Baixo valor / Alta carga | Prioridade 4 |
+| **RF-33** - Importar posts de outras redes | 3 | 5 | 5 | 5.0 | 0.60 | Q4 - Baixo valor / Alta carga | Prioridade 4 |
