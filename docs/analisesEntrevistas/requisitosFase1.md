@@ -228,7 +228,7 @@ Para **Quadrante** e sugestão de **Prioridade** colocamos:
 
 ## Backlog
 
-### MVP
+### MVP (Quadrante 1)
 | Código | Descrição | RNFs Relacionados | Critérios de Aceitação (DoD) | Tema / Lógica |
 | :---: | :--- | :--- | :--- | :--- |
 | **RF-17** | Permitir o cadastro de um perfil público de usuário. | RNF-04, 07, 08 | **CA1:** O cadastro do perfil de usuário só será considerado concluído quando o usuário preencher corretamente os campos obrigatórios.<br>**CA2:** O usuário deve receber a mensagem “Cadastro concluído com sucesso” na tela após o cadastro.<br>**CA3:** Após o cadastro, o usuário deve ser redirecionado para a página de login. | Perfil de Usuário |
@@ -253,7 +253,7 @@ Para **Quadrante** e sugestão de **Prioridade** colocamos:
 | **RF-05** | Permitir a criação de processo seletivo delimitando data limite. | RNF-04 | **CA1:** O sistema deve criar um processo seletivo quando o gestor da entidade submeter o formulário preenchido corretamente.<br>**CA2:** É necessário delimitar uma data de término de inscrição válida. | Proc. Seletivos |
 | **RF-03** | Permitir a atualização do status de um processo seletivo. | RNF-04 | **CA1:** O sistema deve atualizar o status de um processo seletivo apenas para usuários com privilégios de gestor.<br>**CA2:** O usuário deverá escolher classificações de status pré definidas (aberto, finalizado, etc.). | Proc. Seletivos |
 
-### Escopo (Quadrante 3 e 4)
+### Escopo (Quadrante 2 e 3)
 | Código | Descrição | RNFs Relacionados | Critérios de Aceitação (DoD) | Tema / Lógica |
 | :---: | :--- | :--- | :--- | :--- |
 | **RF-04** | Permitir a finalização de um processo seletivo. | RNF-04 | **CA1:** O sistema deve finalizar um processo seletivo quando o gestor da entidade confirmar a ação de finalização.<br>**CA2:** Seu estado deve ser alterado para "Finalizado". | Proc. Seletivos |
@@ -265,7 +265,7 @@ Para **Quadrante** e sugestão de **Prioridade** colocamos:
 | **RF-32** | Exibir métricas de interações para cada publicação. | RNF-07 | **CA1:** O sistema deve apresentar o total de interações em cada publicação.<br>**CA2:** Os dados de interação devem ser atualizados dinamicamente ou quando houver recarregamento do conteúdo. | Métricas |
 | **RF-33** | Permitir importar publicações de redes sociais externas integradas. | RNF-06 | **CA01:** O sistema deve permitir que o usuário vincule sua conta em uma rede externa, como LinkedIn ou Instagram.<br>**CA02:** Após a integração, o sistema deve listar os posts recentes da rede externa para que o usuário escolha quais deseja importar.<br>**CA03:** O post importado deve manter o texto original e as imagens associadas. | Integração |
 
-### Fora do Escopo
+### Fora do Escopo (Quadrante 4)
 | Código | Descrição | RNFs Relacionados | Critérios de Aceitação (DoD) | Tema / Lógica |
 | :---: | :--- | :--- | :--- | :--- |
 | **RF-07** | Permitir que usuários criem comentários nas publicações. | RNF-04 | **CA1:** O sistema deve registrar o comentário apenas se o usuário preencher o campo de texto e submeter a ação estando autenticado.<br>**CA2:** O comentário deve estar obrigatoriamente associado à publicação específica e ao perfil do usuário criador. | Comentários |
