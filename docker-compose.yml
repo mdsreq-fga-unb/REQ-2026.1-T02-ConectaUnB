@@ -12,22 +12,41 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root -d conectaunb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     restart: unless-stopped
 
-  backend:
-    image: node:24
-    container_name: conecta_unb_back
-    working_dir: /usr/src/app/apps/back
-    user: "1000:1000"
-    command: pnpm run start:dev
+  api:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile
+    container_name: conecta_unb_api
+    working_dir: /workspace
+    command: pnpm --filter back dev
     ports:
-      - "3001:3001"
+      - "3000:3000"
     volumes:
-      - ./:/usr/src/app
+      - ./:/workspace
+      - api_node_modules:/workspace/node_modules
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     environment:
-      - DATABASE_URL=postgresql://root:rootpassword@postgres:5432/conectaunb?schema=public
+      PORT: 3000
+      DATABASE_URL: postgresql://root:rootpassword@postgres:5432/conectaunb?schema=public
+      NODE_ENV: development
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:3000/ >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
 
 volumes:
   pgdata:
+  api_node_modules:

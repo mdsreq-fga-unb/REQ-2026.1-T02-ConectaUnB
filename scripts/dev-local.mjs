@@ -100,7 +100,7 @@ function getDockerComposeUnavailableMessage() {
 
 const { command: dockerCommand, args: dockerBaseArgs } = resolveDockerComposeCommand();
 
-const dockerCompose = spawn(dockerCommand, [...dockerBaseArgs, 'up', '-d', 'postgres'], {
+const dockerCompose = spawn(dockerCommand, [...dockerBaseArgs, 'up', '-d', 'postgres', 'api'], {
   stdio: 'inherit',
   env: process.env,
 });
@@ -112,21 +112,21 @@ dockerCompose.on('exit', (code) => {
 
   const pnpmCommand = process.platform === 'win32' ? 'pnpm.cmd' : 'pnpm';
 
-  const turboDev = spawn(pnpmCommand, ['dev:apps'], {
+  const frontDev = spawn(pnpmCommand, ['--filter', 'front', 'dev'], {
     stdio: 'inherit',
     env: process.env,
   });
 
   const forwardSignal = (signal) => {
-    if (!turboDev.killed) {
-      turboDev.kill(signal);
+    if (!frontDev.killed) {
+      frontDev.kill(signal);
     }
   };
 
   process.on('SIGINT', () => forwardSignal('SIGINT'));
   process.on('SIGTERM', () => forwardSignal('SIGTERM'));
 
-  turboDev.on('exit', (turboCode) => {
-    process.exit(turboCode ?? 0);
+  frontDev.on('exit', (frontCode) => {
+    process.exit(frontCode ?? 0);
   });
 });
