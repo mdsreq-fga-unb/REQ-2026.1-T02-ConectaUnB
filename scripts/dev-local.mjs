@@ -57,7 +57,7 @@ function resolveDockerComposeCommand() {
   }
 
   if (legacyComposeResult.error?.code === 'ENOENT') {
-    console.error(getDockerMissingMessage());
+    console.error(getDockerComposeUnavailableMessage());
     process.exit(1);
   }
 

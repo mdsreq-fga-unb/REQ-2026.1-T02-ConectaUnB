@@ -81,8 +81,6 @@ pnpm dev
 - Backend: `http://localhost:3001`
 - PostgreSQL: `localhost:5432`
 
-### Comandos úteis
-
 ### Guia passo-a-passo (Windows e Ubuntu)
 
 Este guia mostra como preparar o ambiente e subir o projeto localmente. Use os links oficiais para instalar ferramentas quando necessário.

@@ -19,7 +19,7 @@ services:
     container_name: conecta_unb_back
     working_dir: /usr/src/app/apps/back
     user: "1000:1000"
-    command: npm run start:dev
+    command: pnpm run start:dev
     ports:
       - "3001:3001"
     volumes:
