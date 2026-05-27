@@ -6,19 +6,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "turbo run dev",
+    "dev": "node scripts/dev-local.mjs",
+    "dev:apps": "turbo run dev",
     "build": "turbo run build"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devEngines": {
-    "packageManager": {
-      "name": "pnpm",
-      "version": "^11.3.0",
-      "onFail": "download"
-    }
-  },
   "type": "module",
   "devDependencies": {
     "turbo": "^2.9.14"
