@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: conecta_unb_db
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: rootpassword
+      POSTGRES_DB: conectaunb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  backend:
+    image: node:24
+    container_name: conecta_unb_back
+    working_dir: /usr/src/app/apps/back
+    user: "1000:1000"
+    command: pnpm run start:dev
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./:/usr/src/app
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_URL=postgresql://root:rootpassword@postgres:5432/conectaunb?schema=public
+
+volumes:
+  pgdata:
