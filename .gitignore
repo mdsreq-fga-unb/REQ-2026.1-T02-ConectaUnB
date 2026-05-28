@@ -14,6 +14,7 @@ dist/
 .turbo/
 out/
 build/
+coverage/
 
 # Logs e arquivos de sistema
 npm-debug.log*
