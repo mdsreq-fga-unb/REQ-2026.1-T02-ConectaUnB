@@ -43,6 +43,33 @@ Exemplo de portas locais após subir:
 - Backend (API): http://localhost:3000
 - PostgreSQL: localhost:5432
 
+Rotas uteis da API:
+
+- Health check: http://localhost:3000/api/health
+- Swagger UI (development): http://localhost:3000/api/docs
+
+### Desenvolvimento do backend fora do container (opcional)
+
+Se voce quiser rodar o backend localmente (fora do servico `api` do Docker):
+
+1. Suba apenas o banco:
+
+```bash
+docker compose up -d postgres
+```
+
+2. Gere o client do Prisma:
+
+```bash
+pnpm --filter back prisma:generate
+```
+
+3. Rode o backend:
+
+```bash
+pnpm --filter back dev
+```
+
 ### Fluxos alternativos
 
 - Subir apenas os apps (backend e frontend via turborepo, sem o banco em Docker):
@@ -81,4 +108,18 @@ copy .env.example .env # PowerShell
 - No Windows, se `corepack enable` falhar com `EPERM`, execute o PowerShell como Administrador ou instale `pnpm` globalmente: `npm install -g pnpm@11.3.0`.
 - Se o Docker não estiver rodando, abra o Docker Desktop e aguarde a inicialização antes de executar `pnpm dev`.
 
-Se quiser, eu reorganizo o README por seções (Instalação, Subir local, Dev avançado, Deploy) e adiciono exemplos rápidos de troubleshooting. Atualmente o arquivo documenta o fluxo principal e as alternativas, mas posso deixá-lo ainda mais enxuto se preferir.
+### Swagger e ambientes
+
+- Em `development`, o Swagger fica habilitado por padrao em `/api/docs`.
+- Em outros ambientes, o Swagger fica desabilitado por padrao.
+- Para habilitar fora de development, defina `SWAGGER_ENABLED=true`.
+- Para proteger o Swagger com autenticacao basica (fora de development), defina `SWAGGER_USER` e `SWAGGER_PASSWORD`.
+
+Exemplo para staging/producao:
+
+```bash
+NODE_ENV=production
+SWAGGER_ENABLED=true
+SWAGGER_USER=admin
+SWAGGER_PASSWORD=troque-esta-senha
+```
