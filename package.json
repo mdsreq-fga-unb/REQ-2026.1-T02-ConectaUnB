@@ -15,6 +15,10 @@
   "license": "ISC",
   "type": "module",
   "devDependencies": {
+    "prisma": "6.19.3",
     "turbo": "^2.9.14"
+  },
+  "dependencies": {
+    "@prisma/client": "6.19.3"
   }
 }
