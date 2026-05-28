@@ -2,7 +2,9 @@ import { IsOptional, IsString } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class UploadQueryDto {
-  @ApiPropertyOptional({ description: 'Entity type (e.g. publications, projects, profiles)' })
+  @ApiPropertyOptional({
+    description: 'Entity type (e.g. publications, projects, profiles)',
+  })
   @IsOptional()
   @IsString()
   entity?: string;

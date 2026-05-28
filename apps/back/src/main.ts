@@ -52,7 +52,10 @@ function protectSwaggerWithBasicAuth(username: string, password: string) {
       return;
     }
 
-    const credentials = Buffer.from(authorizationHeader.slice(6), 'base64').toString('utf8');
+    const credentials = Buffer.from(
+      authorizationHeader.slice(6),
+      'base64',
+    ).toString('utf8');
     const separatorIndex = credentials.indexOf(':');
 
     if (separatorIndex === -1) {
@@ -85,7 +88,8 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
 
   const nodeEnvironment = process.env.NODE_ENV ?? 'development';
-  const swaggerEnabled = process.env.SWAGGER_ENABLED === 'true' || nodeEnvironment === 'development';
+  const swaggerEnabled =
+    process.env.SWAGGER_ENABLED === 'true' || nodeEnvironment === 'development';
 
   if (swaggerEnabled) {
     if (nodeEnvironment !== 'development') {
@@ -93,7 +97,10 @@ async function bootstrap() {
       const swaggerPassword = process.env.SWAGGER_PASSWORD;
 
       if (swaggerUsername && swaggerPassword) {
-        const basicAuthMiddleware = protectSwaggerWithBasicAuth(swaggerUsername, swaggerPassword);
+        const basicAuthMiddleware = protectSwaggerWithBasicAuth(
+          swaggerUsername,
+          swaggerPassword,
+        );
         app.use(`/${globalPrefix}/docs`, basicAuthMiddleware);
         app.use(`/${globalPrefix}/docs-json`, basicAuthMiddleware);
       }

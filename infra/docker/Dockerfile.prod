@@ -1,0 +1,36 @@
+FROM node:24-alpine AS builder
+
+WORKDIR /workspace
+
+RUN corepack enable && corepack prepare pnpm@11.3.0 --activate
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
+COPY apps/back/package.json apps/back/package.json
+COPY prisma prisma
+
+RUN pnpm install --frozen-lockfile
+
+COPY apps/back apps/back
+
+RUN pnpm --filter back prisma:generate
+RUN pnpm --filter back build
+
+FROM node:24-alpine AS production
+
+WORKDIR /workspace
+
+RUN corepack enable && corepack prepare pnpm@11.3.0 --activate
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/back/package.json apps/back/package.json
+COPY prisma prisma
+
+RUN pnpm install --frozen-lockfile --prod
+
+COPY --from=builder /workspace/apps/back/dist apps/back/dist
+
+RUN pnpm --filter back prisma:generate
+
+EXPOSE 3000
+
+CMD ["node", "apps/back/dist/main.js"]

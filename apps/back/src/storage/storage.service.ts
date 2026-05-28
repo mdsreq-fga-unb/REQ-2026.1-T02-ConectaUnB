@@ -1,5 +1,13 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { PutObjectCommand, DeleteObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import {
+  PutObjectCommand,
+  DeleteObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3';
 import { v4 as uuidv4 } from 'uuid';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -91,7 +99,9 @@ export class StorageService {
   }
 
   async findById(id: string) {
-    const record = await (this.prisma as any).file.findUnique({ where: { id } });
+    const record = await (this.prisma as any).file.findUnique({
+      where: { id },
+    });
     if (!record) {
       throw new NotFoundException('File not found');
     }
@@ -99,7 +109,9 @@ export class StorageService {
   }
 
   async delete(key: string) {
-    const record = await (this.prisma as any).file.findUnique({ where: { key } });
+    const record = await (this.prisma as any).file.findUnique({
+      where: { key },
+    });
     if (!record) {
       throw new NotFoundException('File not found');
     }

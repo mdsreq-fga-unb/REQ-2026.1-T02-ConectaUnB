@@ -15,9 +15,11 @@ import { LocalAuthGuard } from './guards/local-auth.guard';
     PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
+      useFactory: (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET') ?? 'changeme',
-        signOptions: { expiresIn: configService.get<string>('JWT_EXPIRATION') ?? '3600s' },
+        signOptions: {
+          expiresIn: (configService.get<string>('JWT_EXPIRATION') ?? '3600s') as any,
+        },
       }),
       inject: [ConfigService],
     }),
