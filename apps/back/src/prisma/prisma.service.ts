@@ -2,7 +2,10 @@ import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 
 @Injectable()
-export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
+export class PrismaService
+  extends PrismaClient
+  implements OnModuleInit, OnModuleDestroy
+{
   private readonly shouldConnect = Boolean(process.env.DATABASE_URL);
 
   async onModuleInit() {
@@ -11,8 +14,11 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
         await this.$connect();
       } catch (error) {
         // não falhar em ambientes de teste sem DB
-        // eslint-disable-next-line no-console
-        console.warn('Prisma connect failed:', error instanceof Error ? error.message : error);
+
+        console.warn(
+          'Prisma connect failed:',
+          error instanceof Error ? error.message : error,
+        );
       }
     }
   }

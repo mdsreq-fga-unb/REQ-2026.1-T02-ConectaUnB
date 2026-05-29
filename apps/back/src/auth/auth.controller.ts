@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, Request, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { Request as ExpressRequest } from 'express';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
@@ -31,7 +40,7 @@ export class AuthController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get('me')
-  me(@Request() req: any) {
+  me(@Request() req: ExpressRequest & { user: { id: string; email: string } }) {
     return req.user;
   }
 }

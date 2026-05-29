@@ -1,9 +1,23 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { v4 as uuidv4 } from 'uuid';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import {
+  DeleteObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3';
+import { randomUUID } from 'crypto';
 import { PrismaService } from '../prisma/prisma.service';
+import { File as PrismaFile } from '@prisma/client';
 
-const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+const ALLOWED_MIME_TYPES = [
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/gif',
+];
 const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024;
 
 interface UploadOptions {
@@ -24,7 +38,9 @@ export class StorageService {
   constructor(private readonly prisma: PrismaService) {
     this.bucket = process.env.R2_BUCKET_NAME ?? '';
     this.publicUrl = (process.env.R2_PUBLIC_URL ?? '').replace(/\/+$/, '');
-    this.endpoint = process.env.R2_ENDPOINT ?? `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`;
+    this.endpoint =
+      process.env.R2_ENDPOINT ??
+      `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`;
     this.accessKeyId = process.env.R2_ACCESS_KEY_ID ?? '';
     this.secretAccessKey = process.env.R2_SECRET_ACCESS_KEY ?? '';
 
@@ -39,12 +55,21 @@ export class StorageService {
   }
 
   private ensureStorageConfigured() {
-    if (!this.bucket || !this.publicUrl || !this.endpoint || !this.accessKeyId || !this.secretAccessKey) {
+    if (
+      !this.bucket ||
+      !this.publicUrl ||
+      !this.endpoint ||
+      !this.accessKeyId ||
+      !this.secretAccessKey
+    ) {
       throw new BadRequestException('Storage is not configured');
     }
   }
 
-  async upload(file: Express.Multer.File, opts: UploadOptions = {}) {
+  async upload(
+    file: Express.Multer.File,
+    opts: UploadOptions = {},
+  ): Promise<PrismaFile> {
     this.ensureStorageConfigured();
 
     if (!file) {
@@ -65,7 +90,7 @@ export class StorageService {
 
     const ext = file.originalname.split('.').pop() ?? 'bin';
     const directory = opts.entity ?? 'misc';
-    const key = `${directory}/${uuidv4()}.${ext}`;
+    const key = `${directory}/${randomUUID()}.${ext}`;
 
     await this.s3.send(
       new PutObjectCommand({
@@ -78,7 +103,7 @@ export class StorageService {
 
     const url = `${this.publicUrl}/${key}`;
 
-    const record = await (this.prisma as any).file.create({
+    const record = await this.prisma.file.create({
       data: {
         key,
         url,
@@ -94,12 +119,12 @@ export class StorageService {
     return record;
   }
 
-  async getUrl(key: string): Promise<string> {
-    return `${this.publicUrl}/${key}`;
+  getUrl(key: string): Promise<string> {
+    return Promise.resolve(`${this.publicUrl}/${key}`);
   }
 
-  async findById(id: string) {
-    const record = await (this.prisma as any).file.findUnique({
+  async findById(id: string): Promise<PrismaFile> {
+    const record = await this.prisma.file.findUnique({
       where: { id },
     });
     if (!record) {
@@ -108,10 +133,10 @@ export class StorageService {
     return record;
   }
 
-  async delete(key: string) {
+  async delete(key: string): Promise<{ deleted: boolean }> {
     this.ensureStorageConfigured();
 
-    const record = await (this.prisma as any).file.findUnique({
+    const record = await this.prisma.file.findUnique({
       where: { key },
     });
     if (!record) {
@@ -125,7 +150,7 @@ export class StorageService {
       }),
     );
 
-    await (this.prisma as any).file.delete({ where: { key } });
+    await this.prisma.file.delete({ where: { key } });
 
     return { deleted: true };
   }

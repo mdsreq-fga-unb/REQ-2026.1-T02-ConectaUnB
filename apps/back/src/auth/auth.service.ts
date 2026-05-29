@@ -2,6 +2,7 @@ import { ConflictException, Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -44,7 +45,10 @@ export class AuthService {
     };
   }
 
-  async validateUser(email: string, pass: string) {
+  async validateUser(
+    email: string,
+    pass: string,
+  ): Promise<Omit<User, 'password'> | null> {
     const user = await this.usersService.findByEmail(email);
     if (!user) return null;
 
@@ -53,11 +57,11 @@ export class AuthService {
 
     // retornar usuário sem a senha
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, ...rest } = user as any;
+    const { password, ...rest } = user;
     return rest;
   }
 
-  async login(user: any) {
+  login(user: { id: string; email: string }) {
     const payload = { sub: user.id, email: user.email };
     return { access_token: this.jwtService.sign(payload) };
   }

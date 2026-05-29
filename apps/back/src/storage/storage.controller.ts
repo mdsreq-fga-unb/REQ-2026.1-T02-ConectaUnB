@@ -1,3 +1,5 @@
+import { Request as ExpressRequest } from 'express';
+import { File as PrismaFile } from '@prisma/client';
 import {
   Controller,
   Post,
@@ -41,8 +43,8 @@ export class StorageController {
   async upload(
     @UploadedFile() file: Express.Multer.File,
     @Query() query: UploadQueryDto,
-    @Request() req: any,
-  ) {
+    @Request() req: ExpressRequest & { user?: { id: string } },
+  ): Promise<PrismaFile> {
     return this.storageService.upload(file, {
       entity: query.entity,
       entityId: query.entityId,
@@ -54,7 +56,7 @@ export class StorageController {
   @ApiOperation({ summary: 'Get file metadata by ID' })
   @ApiResponse({ status: 200, description: 'File metadata.' })
   @ApiResponse({ status: 404, description: 'File not found.' })
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string): Promise<PrismaFile> {
     return this.storageService.findById(id);
   }
 
