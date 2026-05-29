@@ -9,7 +9,7 @@ RUN apk add --no-cache curl && corepack enable && corepack prepare pnpm@11.3.0 -
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
 COPY apps/back/package.json apps/back/package.json
 COPY apps/front/package.json apps/front/package.json
-COPY prisma prisma
+COPY apps/back/prisma apps/back/prisma
 
 RUN pnpm install --frozen-lockfile
 

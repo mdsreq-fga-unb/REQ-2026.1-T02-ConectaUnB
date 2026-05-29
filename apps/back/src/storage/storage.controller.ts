@@ -9,6 +9,7 @@ import {
   UseInterceptors,
   UploadedFile,
   Request,
+  BadRequestException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
@@ -17,6 +18,7 @@ import {
   ApiResponse,
   ApiConsumes,
   ApiBearerAuth,
+  ApiQuery,
 } from '@nestjs/swagger';
 import { StorageService } from './storage.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -44,7 +46,7 @@ export class StorageController {
     return this.storageService.upload(file, {
       entity: query.entity,
       entityId: query.entityId,
-      ownerId: req.user?.sub,
+      ownerId: req.user?.id,
     });
   }
 
@@ -56,14 +58,19 @@ export class StorageController {
     return this.storageService.findById(id);
   }
 
-  @Delete(':key')
+  @Delete()
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete a file by key' })
+  @ApiQuery({ name: 'key', required: true, description: 'File key' })
   @ApiResponse({ status: 200, description: 'File deleted.' })
   @ApiResponse({ status: 401, description: 'Unauthorized.' })
   @ApiResponse({ status: 404, description: 'File not found.' })
-  async remove(@Param('key') key: string) {
+  async remove(@Query('key') key: string) {
+    if (!key) {
+      throw new BadRequestException('File key is required');
+    }
+
     return this.storageService.delete(key);
   }
 }
