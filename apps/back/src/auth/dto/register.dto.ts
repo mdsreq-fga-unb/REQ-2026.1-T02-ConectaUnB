@@ -11,4 +11,13 @@ export class RegisterDto {
   @IsOptional()
   @IsString()
   name?: string;
+
+  @IsString()
+  cargo: string;
+
+  @IsString()
+  matricula: string;
+
+  @IsString()
+  curso: string;
 }

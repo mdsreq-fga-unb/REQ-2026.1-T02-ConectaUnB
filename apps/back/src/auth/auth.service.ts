@@ -1,50 +1,64 @@
-import { Injectable, ConflictException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { PrismaService } from '../prisma/prisma.service';
+import { ConflictException, Injectable } from '@nestjs/common';
+import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private prisma: PrismaService,
+    private usersService: UsersService,
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, pass: string) {
-    const user = await (this.prisma as any).user.findUnique({
-      where: { email },
-    });
-    if (user && (await bcrypt.compare(pass, user.password))) {
-      const { password, ...result } = user;
-      return result;
-    }
-    return null;
-  }
-
-  async login(user: any) {
-    const payload = {
-      sub: user.id,
-      email: user.email,
-      roles: user.roles ?? [],
-    };
-    return { access_token: this.jwtService.sign(payload) };
-  }
-
-  async register(data: { email: string; password: string; name?: string }) {
-    const existing = await (this.prisma as any).user.findUnique({
-      where: { email: data.email },
-    });
+  async register(data: {
+    email: string;
+    password: string;
+    name?: string;
+    cargo: string;
+    matricula: string;
+    curso: string;
+  }) {
+    const existing = await this.usersService.findByEmail(data.email);
     if (existing) {
-      throw new ConflictException('Email already registered');
+      throw new ConflictException('User already exists');
     }
 
     const saltRounds = parseInt(process.env.BCRYPT_SALT_ROUNDS ?? '10', 10);
     const hashed = await bcrypt.hash(data.password, saltRounds);
-    const created = await (this.prisma as any).user.create({
-      data: { email: data.email, password: hashed, name: data.name },
+    const user = await this.usersService.create({
+      email: data.email,
+      password: hashed,
+      name: data.name,
+      cargo: data.cargo,
+      matricula: data.matricula,
+      curso: data.curso,
     });
+
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      cargo: user.cargo,
+      matricula: user.matricula,
+      curso: user.curso,
+    };
+  }
+
+  async validateUser(email: string, pass: string) {
+    const user = await this.usersService.findByEmail(email);
+    if (!user) return null;
+
+    const match = await bcrypt.compare(pass, user.password);
+    if (!match) return null;
+
+    // retornar usuário sem a senha
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, ...result } = created;
-    return result;
+    const { password, ...rest } = user as any;
+    return rest;
+  }
+
+  async login(user: any) {
+    const payload = { sub: user.id, email: user.email };
+    return { access_token: this.jwtService.sign(payload) };
   }
 }

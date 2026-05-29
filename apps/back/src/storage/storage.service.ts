@@ -1,23 +1,9 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import {
-  PutObjectCommand,
-  DeleteObjectCommand,
-  S3Client,
-} from '@aws-sdk/client-s3';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { v4 as uuidv4 } from 'uuid';
 import { PrismaService } from '../prisma/prisma.service';
 
-const ALLOWED_MIME_TYPES = [
-  'image/jpeg',
-  'image/png',
-  'image/webp',
-  'image/gif',
-];
-
+const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024;
 
 interface UploadOptions {
@@ -38,7 +24,9 @@ export class StorageService {
 
     this.s3 = new S3Client({
       region: process.env.R2_REGION ?? 'auto',
-      endpoint: process.env.R2_ENDPOINT,
+      endpoint:
+        process.env.R2_ENDPOINT ??
+        `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
       credentials: {
         accessKeyId: process.env.R2_ACCESS_KEY_ID ?? '',
         secretAccessKey: process.env.R2_SECRET_ACCESS_KEY ?? '',

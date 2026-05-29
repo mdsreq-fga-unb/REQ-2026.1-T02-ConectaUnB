@@ -1,0 +1,159 @@
+name: ci-cd
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: ci-cd-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: conectaunb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d conectaunb"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/conectaunb?schema=public
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.3.0
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma client
+        run: pnpm --filter back prisma:generate
+
+      - name: Apply database migrations
+        run: pnpm --filter back prisma:migrate:deploy
+
+      - name: Run backend unit tests
+        run: pnpm --filter back test
+
+      - name: Run backend e2e tests
+        run: pnpm --filter back test:e2e
+
+      - name: Build backend
+        run: pnpm --filter back build
+
+      - name: Build frontend
+        run: pnpm --filter front build
+
+  deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: test
+    runs-on: ubuntu-latest
+
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.3.0
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma client
+        run: pnpm --filter back prisma:generate
+
+      - name: Deploy database migrations
+        run: pnpm --filter back prisma:migrate:deploy
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build backend image
+        run: docker build -f infra/docker/Dockerfile -t ghcr.io/${{ github.repository_owner }}/conectaunb-back:${{ github.sha }} .
+
+      - name: Push backend image
+        run: docker push ghcr.io/${{ github.repository_owner }}/conectaunb-back:${{ github.sha }}
+
+      - name: Trigger Koyeb deploy hook
+        run: |
+          if [ -n "$KOYEB_DEPLOY_HOOK_URL" ]; then
+            curl -fsSL -X POST "$KOYEB_DEPLOY_HOOK_URL"
+          fi
+        env:
+          KOYEB_DEPLOY_HOOK_URL: ${{ secrets.KOYEB_DEPLOY_HOOK_URL }}
+
+      - name: Setup Vercel project
+        working-directory: apps/front
+        run: npx vercel pull --yes --environment=production --token "${VERCEL_TOKEN}"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Build Vercel app
+        working-directory: apps/front
+        run: npx vercel build --prod --token "${VERCEL_TOKEN}"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Deploy frontend to Vercel
+        working-directory: apps/front
+        run: npx vercel deploy --prebuilt --prod --token "${VERCEL_TOKEN}"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
