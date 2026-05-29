@@ -43,7 +43,7 @@ Exemplo de portas locais após subir:
 - Backend (API): http://localhost:3000
 - PostgreSQL: localhost:5432
 
-Rotas uteis da API:
+Rotas úteis da API:
 
 - Health check: http://localhost:3000/api/health
 - Swagger UI (development): http://localhost:3000/api/docs
