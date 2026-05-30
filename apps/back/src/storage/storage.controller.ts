@@ -1,3 +1,5 @@
+import { Request as ExpressRequest } from 'express';
+import { File as PrismaFile } from '@prisma/client';
 import {
   Controller,
   Post,
@@ -9,6 +11,7 @@ import {
   UseInterceptors,
   UploadedFile,
   Request,
+  BadRequestException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
@@ -17,6 +20,7 @@ import {
   ApiResponse,
   ApiConsumes,
   ApiBearerAuth,
+  ApiQuery,
 } from '@nestjs/swagger';
 import { StorageService } from './storage.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -39,12 +43,12 @@ export class StorageController {
   async upload(
     @UploadedFile() file: Express.Multer.File,
     @Query() query: UploadQueryDto,
-    @Request() req: any,
-  ) {
+    @Request() req: ExpressRequest & { user?: { id: string } },
+  ): Promise<PrismaFile> {
     return this.storageService.upload(file, {
       entity: query.entity,
       entityId: query.entityId,
-      ownerId: req.user?.sub,
+      ownerId: req.user?.id,
     });
   }
 
@@ -52,18 +56,23 @@ export class StorageController {
   @ApiOperation({ summary: 'Get file metadata by ID' })
   @ApiResponse({ status: 200, description: 'File metadata.' })
   @ApiResponse({ status: 404, description: 'File not found.' })
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string): Promise<PrismaFile> {
     return this.storageService.findById(id);
   }
 
-  @Delete(':key')
+  @Delete()
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete a file by key' })
+  @ApiQuery({ name: 'key', required: true, description: 'File key' })
   @ApiResponse({ status: 200, description: 'File deleted.' })
   @ApiResponse({ status: 401, description: 'Unauthorized.' })
   @ApiResponse({ status: 404, description: 'File not found.' })
-  async remove(@Param('key') key: string) {
+  async remove(@Query('key') key: string) {
+    if (!key) {
+      throw new BadRequestException('File key is required');
+    }
+
     return this.storageService.delete(key);
   }
 }

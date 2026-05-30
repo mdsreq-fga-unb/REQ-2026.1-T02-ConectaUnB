@@ -25,4 +25,5 @@ pnpm-debug.log*
 
 # Variáveis de ambiente 
 .env
+.env.prod
 .env*.local
