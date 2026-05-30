@@ -1,8 +1,16 @@
-import { Injectable, OnModuleDestroy, OnModuleInit, INestApplication } from '@nestjs/common';
+import {
+  Injectable,
+  OnModuleDestroy,
+  OnModuleInit,
+  INestApplication,
+} from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 
 @Injectable()
-export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
+export class PrismaService
+  extends PrismaClient
+  implements OnModuleInit, OnModuleDestroy
+{
   private readonly shouldConnect = Boolean(process.env.DATABASE_URL);
 
   async onModuleInit() {
