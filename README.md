@@ -110,10 +110,10 @@ copy .env.example .env # PowerShell
 
 ### Swagger e ambientes
 
-- Em `development`, o Swagger fica habilitado por padrao em `/api/docs`.
-- Em outros ambientes, o Swagger fica desabilitado por padrao.
+- Em `development`, o Swagger fica habilitado por padrão em `/api/docs`.
+- Em outros ambientes, o Swagger fica desabilitado por padrão.
 - Para habilitar fora de development, defina `SWAGGER_ENABLED=true`.
-- O backend ainda nao implementa autenticacao basica para o Swagger; os endpoints ficam expostos quando `SWAGGER_ENABLED=true`.
+- O backend ainda não implementa autenticação básica para o Swagger; os endpoints ficam expostos quando `SWAGGER_ENABLED=true`.
 
 Exemplo para staging/producao:
 
