@@ -50,7 +50,7 @@ Rotas úteis da API:
 
 ### Desenvolvimento do backend fora do container (opcional)
 
-Se voce quiser rodar o backend localmente (fora do servico `api` do Docker):
+Se você quiser rodar o backend localmente (fora do serviço `api` do Docker):
 
 1. Suba apenas o banco:
 
