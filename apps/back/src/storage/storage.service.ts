@@ -88,8 +88,10 @@ export class StorageService {
       );
     }
 
-    const ext = file.originalname.split('.').pop() ?? 'bin';
-    const directory = opts.entity ?? 'misc';
+    const extRaw = file.originalname.split('.').pop() ?? 'bin';
+    const ext = extRaw.replace(/[^a-z0-9_]/gi, '').slice(0, 10) || 'bin';
+    const directoryRaw = opts.entity ?? 'misc';
+    const directory = directoryRaw.replace(/[^a-z0-9_-]/gi, '').slice(0, 50) || 'misc';
     const key = `${directory}/${randomUUID()}.${ext}`;
 
     await this.s3.send(

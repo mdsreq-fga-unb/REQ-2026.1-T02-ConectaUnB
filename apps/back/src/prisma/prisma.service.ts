@@ -15,14 +15,7 @@ export class PrismaService
 
   async onModuleInit() {
     if (this.shouldConnect) {
-      try {
-        await this.$connect();
-      } catch (error) {
-        console.warn(
-          'Prisma connect failed:',
-          error instanceof Error ? error.message : error,
-        );
-      }
+      await this.$connect();
     }
   }
 

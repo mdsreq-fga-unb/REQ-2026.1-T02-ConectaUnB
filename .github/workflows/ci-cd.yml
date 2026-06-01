@@ -121,7 +121,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build backend image
-        run: docker build -f infra/docker/Dockerfile -t ghcr.io/${{ github.repository_owner }}/conectaunb-back:${{ github.sha }} .
+        run: docker build -f infra/docker/Dockerfile.prod -t ghcr.io/${{ github.repository_owner }}/conectaunb-back:${{ github.sha }} .
 
       - name: Push backend image
         run: docker push ghcr.io/${{ github.repository_owner }}/conectaunb-back:${{ github.sha }}
