@@ -1,0 +1,140 @@
+name: Backend CI/CD
+
+on:
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - "apps/back/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "turbo.json"
+      - ".github/workflows/backend.yml"
+  push:
+    branches: [main]
+
+env:
+  NODE_VERSION: "24"
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - run: corepack enable && corepack prepare pnpm@11.3.0 --activate
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm --filter back lint
+
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - run: corepack enable && corepack prepare pnpm@11.3.0 --activate
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm --filter back prisma:generate
+
+      - run: pnpm --filter back test
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - run: corepack enable && corepack prepare pnpm@11.3.0 --activate
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm --filter back prisma:generate
+
+      - run: pnpm --filter back build
+
+  release:
+    name: Release Image
+    runs-on: ubuntu-latest
+    needs: [build]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - uses: docker/metadata-action@v5
+        id: meta
+        with:
+          images: ghcr.io/${{ github.repository }}/api
+          tags: |
+            type=sha,prefix=
+            type=raw,value=latest
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: infra/docker/Dockerfile.prod
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  deploy:
+    name: Deploy to Koyeb
+    runs-on: ubuntu-latest
+    needs: [release]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Trigger Koyeb redeploy
+        run: |
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+            "https://app.koyeb.com/v1/services/${{ secrets.KOYEB_SERVICE }}/redeploy" \
+            -H "Authorization: Bearer ${{ secrets.KOYEB_API_TOKEN }}" \
+            -H "Content-Type: application/json")
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          echo "Status: $HTTP_CODE"
+          echo "Response: $BODY"
+          if [ "$HTTP_CODE" -lt 200 ] || [ "$HTTP_CODE" -ge 300 ]; then
+            echo "Deploy failed with HTTP $HTTP_CODE"
+            exit 1
+          fi
+          echo "Deploy triggered successfully"
