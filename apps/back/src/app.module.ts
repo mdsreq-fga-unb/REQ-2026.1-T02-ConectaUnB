@@ -10,6 +10,7 @@ import { StorageModule } from './storage/storage.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { HealthController } from './health.controller';
 import { PerfilModule } from './perfil/perfil.module';
+import { EntidadeModule } from './entidade/entidade.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { PerfilModule } from './perfil/perfil.module';
     AuthModule,
     StorageModule,
     PerfilModule,
+    EntidadeModule,
   ],
   controllers: [AppController, HealthController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],
