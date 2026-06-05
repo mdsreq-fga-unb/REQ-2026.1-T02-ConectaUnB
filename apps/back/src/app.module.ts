@@ -11,6 +11,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { HealthController } from './health.controller';
 import { PerfilModule } from './perfil/perfil.module';
 import { EntidadeModule } from './entidade/entidade.module';
+import { ProjetoModule } from './projeto/projeto.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { EntidadeModule } from './entidade/entidade.module';
     StorageModule,
     PerfilModule,
     EntidadeModule,
+    ProjetoModule,
   ],
   controllers: [AppController, HealthController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],
