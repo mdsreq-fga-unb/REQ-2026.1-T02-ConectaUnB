@@ -143,6 +143,8 @@ model ProcessoSeletivo {
   titulo          String @db.Text
   descricao       String? @db.Text
   classificacao   ClassificacaoInscricao
+  linkFoto        String?
+  linkIncricao    String?
   inicioInscricao DateTime
   fimInscricao    DateTime
   createdAt       DateTime @default(now())

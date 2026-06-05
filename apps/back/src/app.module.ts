@@ -13,6 +13,7 @@ import { PerfilModule } from './perfil/perfil.module';
 import { EntidadeModule } from './entidade/entidade.module';
 import { ProjetoModule } from './projeto/projeto.module';
 import { PostagemModule } from './postagem/postagem.module';
+import { ProcessoSeletivoModule } from './processo-seletivo/processo-seletivo.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { PostagemModule } from './postagem/postagem.module';
     EntidadeModule,
     ProjetoModule,
     PostagemModule,
+    ProcessoSeletivoModule,
   ],
   controllers: [AppController, HealthController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],
