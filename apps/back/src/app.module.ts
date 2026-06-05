@@ -12,6 +12,7 @@ import { HealthController } from './health.controller';
 import { PerfilModule } from './perfil/perfil.module';
 import { EntidadeModule } from './entidade/entidade.module';
 import { ProjetoModule } from './projeto/projeto.module';
+import { PostagemModule } from './postagem/postagem.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ProjetoModule } from './projeto/projeto.module';
     PerfilModule,
     EntidadeModule,
     ProjetoModule,
+    PostagemModule,
   ],
   controllers: [AppController, HealthController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],
