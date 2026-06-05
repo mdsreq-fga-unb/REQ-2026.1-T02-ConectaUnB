@@ -14,6 +14,7 @@ import { EntidadeModule } from './entidade/entidade.module';
 import { ProjetoModule } from './projeto/projeto.module';
 import { PostagemModule } from './postagem/postagem.module';
 import { ProcessoSeletivoModule } from './processo-seletivo/processo-seletivo.module';
+import { NotificacaoModule } from './notificacao/notificacao.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { ProcessoSeletivoModule } from './processo-seletivo/processo-seletivo.mo
     ProjetoModule,
     PostagemModule,
     ProcessoSeletivoModule,
+    NotificacaoModule,
   ],
   controllers: [AppController, HealthController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],

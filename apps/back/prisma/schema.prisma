@@ -227,7 +227,7 @@ enum ClassificacaoInscricao {
 }
 
 enum TipoNotificacao {
-  NOVO_PROCESSO_SELETIVO
+  PROCESSO_SELETIVO
   ATUALIZACAO_PROJETO
   NOVA_PUBLICACAO
 }
