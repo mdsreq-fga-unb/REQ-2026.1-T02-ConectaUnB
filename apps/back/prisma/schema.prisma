@@ -11,17 +11,17 @@ model Perfil {
   id                        Int @id @default(autoincrement())
   name                      String @db.Text
   email                     String @unique
-  matricula                 String @unique
+  matricula                 Int? @unique
   senha                     String
   linkFoto                  String?
-  curso                     Curso?
-  departamento              Departamento?
-  campus                    Campus?
+  curso                     Curso
+  departamento              Departamento
+  campus                    Campus
   cargo                     Cargo
   PreferenciaNotificacao    PreferenciaNotificacao?
   createdAt                 DateTime @default(now())
   updatedAt                 DateTime @updatedAt
-  ultimaLeituraNotificacoes DateTime?
+  ultimaLeituraNotificacoes DateTime @default(now())
 
   Membro              Membro[]
   Seguindo            Seguindo[]
