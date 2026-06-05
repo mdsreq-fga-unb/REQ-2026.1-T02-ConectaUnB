@@ -9,7 +9,7 @@ export class LoginDto {
       description: 'Email do usuário',
       example: 'georgemarsicano@unb.br'
   })
-  email: string;
+  email!: string;
 
   @IsString()
   @IsNotEmpty()
@@ -18,6 +18,6 @@ export class LoginDto {
       description: 'Senha do usuário (deve conter no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais)',
       example: 'Senha@123'
   })
-  password: string;
+  senha!: string;
   
 }

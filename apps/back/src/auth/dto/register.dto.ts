@@ -1,5 +1,6 @@
 import { IsEmail, IsEnum, IsNotEmpty, IsString, MaxLength, IsNumber, IsStrongPassword, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import { Cargo, Campus, Departamento, Curso } from '@prisma/client';
 import { IsUnbEmail } from './is-unb-email.validator';
 
@@ -12,7 +13,7 @@ export class CreatePerfilDto {
         description: 'Nome completo do usuário',
         example: 'George Marsicano Correa'
     })
-    name: string;
+    name!: string;
     
     @IsEmail()
     @IsNotEmpty()
@@ -21,15 +22,16 @@ export class CreatePerfilDto {
         description: 'Email do usuário',
         example: 'georgemarsicano@unb.br'
     })
-    email: string;
+    email!: string;
 
-    @IsNumber()
     @IsOptional()
+    @Type(() => Number)
+    @IsNumber()
     @ApiProperty({
         description: 'Matrícula do usuário (obrigatória para discentes)',
         example: 123456789
     })
-    matricula: number;
+    matricula?: number;
 
     @IsString()
     @IsNotEmpty()
@@ -46,26 +48,26 @@ export class CreatePerfilDto {
         description: 'Senha do usuário (deve conter no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais)',
         example: 'Senha@123'
     })
-    senha: string;
+    senha!: string;
 
     @ApiProperty({ enum: Curso, required: true })
     @IsNotEmpty()
     @IsEnum(Curso)
-    curso: Curso;
+    curso!: Curso;
 
     @ApiProperty({ enum: Departamento, required: true })
     @IsNotEmpty()
     @IsEnum(Departamento)
-    departamento: Departamento;
+    departamento!: Departamento;
 
     @ApiProperty({ enum: Campus, required: true })
     @IsNotEmpty()
     @IsEnum(Campus)
-    campus: Campus;
+    campus!: Campus;
 
     @ApiProperty({ enum: Cargo, required: true })
     @IsNotEmpty()
     @IsEnum(Cargo)
-    cargo: Cargo;
+    cargo!: Cargo;
 
 }

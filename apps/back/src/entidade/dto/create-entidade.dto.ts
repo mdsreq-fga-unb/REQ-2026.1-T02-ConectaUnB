@@ -11,21 +11,21 @@ export class CreateEntidadeDto {
         description: 'Nome da entidade',
         example: 'ConectaUnB'
     })
-    nome: string;
+    nome!: string;
 
     @ApiProperty({ enum: ClassificacaoEntidade, required: true })
     @IsEnum(ClassificacaoEntidade)
     @IsNotEmpty()
-    classificacao: ClassificacaoEntidade;
+    classificacao!: ClassificacaoEntidade;
 
     @ApiProperty({ enum: Campus, required: true })
     @IsEnum(Campus)
     @IsNotEmpty()
-    campus: Campus;
+    campus!: Campus;
 
     @ApiProperty({ enum: Departamento, required: true })
     @IsEnum(Departamento)
     @IsNotEmpty()
-    departamento: Departamento;
+    departamento!: Departamento;
 
 }

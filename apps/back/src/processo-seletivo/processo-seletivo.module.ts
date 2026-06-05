@@ -5,5 +5,6 @@ import { ProcessoSeletivoController } from './processo-seletivo.controller';
 @Module({
   controllers: [ProcessoSeletivoController],
   providers: [ProcessoSeletivoService],
+  exports: [ProcessoSeletivoService],
 })
 export class ProcessoSeletivoModule {}

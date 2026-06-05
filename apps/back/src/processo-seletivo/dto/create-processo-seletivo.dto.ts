@@ -8,13 +8,13 @@ export class CreateProcessoSeletivoDto {
     @ApiProperty({ description: 'ID da Entidade dona do processo seletivo', example: 1 })
     @IsNumber()
     @IsNotEmpty()
-    idEntidade: number;
+    idEntidade!: number;
 
     @ApiProperty({ description: 'Título', example: 'Processo Seletivo Trainee 2026.2' })
     @IsString()
     @IsNotEmpty()
     @MaxLength(255)
-    titulo: string;
+    titulo!: string;
 
     @ApiProperty({ description: 'Descrição', required: false })
     @IsString()
@@ -25,7 +25,7 @@ export class CreateProcessoSeletivoDto {
     @ApiProperty({ enum: ClassificacaoInscricao, required: true })
     @IsEnum(ClassificacaoInscricao)
     @IsNotEmpty()
-    classificacao: ClassificacaoInscricao;
+    classificacao!: ClassificacaoInscricao;
 
     @ApiProperty({ description: 'Link para a foto do processo seletivo' })
     @IsOptional()
@@ -41,11 +41,11 @@ export class CreateProcessoSeletivoDto {
     @Type(() => Date)
     @IsDate()
     @IsNotEmpty()
-    inicioInscricao: Date;
+    inicioInscricao!: Date;
 
     @ApiProperty({ description: 'Data e hora de encerramento das inscrições' })
     @Type(() => Date)
     @IsDate()
     @IsNotEmpty()
-    fimInscricao: Date;
+    fimInscricao!: Date;
 }

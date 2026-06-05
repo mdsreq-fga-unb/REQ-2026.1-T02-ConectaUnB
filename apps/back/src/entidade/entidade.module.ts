@@ -5,5 +5,6 @@ import { EntidadeController } from './entidade.controller';
 @Module({
   controllers: [EntidadeController],
   providers: [EntidadeService],
+  exports: [EntidadeService],
 })
 export class EntidadeModule {}

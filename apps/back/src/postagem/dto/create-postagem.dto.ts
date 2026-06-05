@@ -6,19 +6,19 @@ export class CreatePostagemDto {
     @ApiProperty({ description: 'ID da Entidade autora da postagem', example: 1 })
     @IsNumber()
     @IsNotEmpty()
-    idEntidade: number;
+    idEntidade!: number;
 
     @ApiProperty({ description: 'Texto da postagem', example: 'Bebam água!' })
     @IsString()
     @IsNotEmpty()
     @MaxLength(255)
-    titulo: string;
+    titulo!: string;
 
     @ApiProperty({ description: 'Conteúdo da postagem (texto)', example: 'Se não beber água faz mal a saúde!' })
     @IsString()
     @IsNotEmpty()
     @MaxLength(1500)
-    conteudo: string;
+    conteudo!: string;
 
     @ApiProperty({ description: 'Link para a foto da postagem' })
     @IsOptional()

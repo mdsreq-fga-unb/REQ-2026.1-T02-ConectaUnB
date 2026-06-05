@@ -13,7 +13,7 @@ export class AddMembroProjetoDto {
   })
   @IsNumber()
   @IsNotEmpty()
-  idMembro: number;
+  idMembro!: number;
 
   @ApiProperty({ 
     enum: PapelProjeto, 
@@ -21,5 +21,5 @@ export class AddMembroProjetoDto {
   })
   @IsEnum(PapelProjeto)
   @IsNotEmpty()
-  papel: PapelProjeto;
+  papel!: PapelProjeto;
 }

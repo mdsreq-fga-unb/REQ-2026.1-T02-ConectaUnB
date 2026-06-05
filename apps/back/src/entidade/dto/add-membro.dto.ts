@@ -7,11 +7,11 @@ export class AddMembroDto {
   @ApiProperty({ description: 'ID do Perfil do usuário que será adicionado à entidade', example: 1 })
   @IsNumber()
   @IsNotEmpty()
-  idPerfil: number;
+  idPerfil!: number;
 
   @ApiProperty({ enum: ClassificacaoMembro, description: 'Nível de permissão do membro na entidade' })
   @IsEnum(ClassificacaoMembro)
   @IsNotEmpty()
-  classificacao: ClassificacaoMembro;
+  classificacao!: ClassificacaoMembro;
 
 }

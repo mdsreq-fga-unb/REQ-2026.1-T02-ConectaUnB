@@ -8,13 +8,13 @@ export class CreateProjetoDto {
     @ApiProperty({ description: 'ID da Entidade dona do projeto', example: 1 })
     @IsNumber()
     @IsNotEmpty()
-    idEntidade: number;
+    idEntidade!: number;
 
     @ApiProperty({ description: 'Nome do projeto', example: 'Sistema de Gerenciamento' })
     @IsString()
     @IsNotEmpty()
     @MaxLength(255)
-    nome: string;
+    nome!: string;
 
     @ApiProperty({ description: 'Descrição do projeto', required: false })
     @IsString()
@@ -30,13 +30,13 @@ export class CreateProjetoDto {
     @ApiProperty({ enum: StatusProjeto, required: true })
     @IsEnum(StatusProjeto)
     @IsNotEmpty()
-    status: StatusProjeto;
+    status!: StatusProjeto;
 
     @ApiProperty({ description: 'Data de início do projeto' })
     @Type(() => Date)
     @IsDate()
     @IsNotEmpty()
-    dataInicio: Date;
+    dataInicio!: Date;
 
     @ApiProperty({ description: 'Data de finalização do projeto', required: false })
     @IsOptional()

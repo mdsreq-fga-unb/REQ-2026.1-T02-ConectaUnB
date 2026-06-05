@@ -5,5 +5,6 @@ import { PostagemController } from './postagem.controller';
 @Module({
   controllers: [PostagemController],
   providers: [PostagemService],
+  exports: [PostagemService],
 })
 export class PostagemModule {}
