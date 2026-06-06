@@ -1,0 +1,25 @@
+{
+  "name": "apps",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "pnpm@11.3.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "pnpm -w test",
+    "dev": "node scripts/dev-local.mjs",
+    "dev:apps": "turbo run dev",
+    "build": "turbo run build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "prisma": "6.19.3",
+    "turbo": "^2.9.14"
+  },
+  "dependencies": {
+    "@prisma/client": "6.19.3"
+  }
+}
