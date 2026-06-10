@@ -26,7 +26,7 @@ export class PerfilService {
     return this.prisma.perfil.delete({ where: { id } });
   }
 
-  async findByEmail(email: string): Promise<Perfil | null> {
+  async findByEmail(email: string) {
     return this.prisma.perfil.findUnique({ where: { email } });
   }
 

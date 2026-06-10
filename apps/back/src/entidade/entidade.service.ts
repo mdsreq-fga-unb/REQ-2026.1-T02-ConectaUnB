@@ -4,7 +4,7 @@ import { UpdateEntidadeDto } from './dto/update-entidade.dto';
 
 @Injectable()
 export class EntidadeService {
-  create(createEntidadeDto: CreateEntidadeDto) {
+  create(_createEntidadeDto: CreateEntidadeDto) {
     return 'This action adds a new entidade';
   }
 
@@ -16,7 +16,7 @@ export class EntidadeService {
     return `This action returns a #${id} entidade`;
   }
 
-  update(id: number, updateEntidadeDto: UpdateEntidadeDto) {
+  update(id: number, _updateEntidadeDto: UpdateEntidadeDto) {
     return `This action updates a #${id} entidade`;
   }
 

@@ -1,11 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ProcessoSeletivoService } from './processo-seletivo.service';
 import { CreateProcessoSeletivoDto } from './dto/create-processo-seletivo.dto';
 import { UpdateProcessoSeletivoDto } from './dto/update-processo-seletivo.dto';
 
 @Controller('processo-seletivo')
 export class ProcessoSeletivoController {
-  constructor(private readonly processoSeletivoService: ProcessoSeletivoService) {}
+  constructor(
+    private readonly processoSeletivoService: ProcessoSeletivoService,
+  ) {}
 
   @Post()
   create(@Body() createProcessoSeletivoDto: CreateProcessoSeletivoDto) {
@@ -23,7 +33,10 @@ export class ProcessoSeletivoController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProcessoSeletivoDto: UpdateProcessoSeletivoDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateProcessoSeletivoDto: UpdateProcessoSeletivoDto,
+  ) {
     return this.processoSeletivoService.update(+id, updateProcessoSeletivoDto);
   }
 
