@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import axios from "axios";
+
 // enums UnB (Campus, Departamentos, cursos)
 export const CAMPUS_OPTIONS = [
   { value: "DARCY", label: "Darcy Ribeiro" },
@@ -166,6 +168,47 @@ export default function CadastroPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // função de envio para o back
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // impede a página de recarregar (padrão do HTML)
+
+    // garante que as senhas são iguais antes de tentar enviar
+    if (formData.senha !== formData.confirmacaoSenha) {
+      alert("As senhas não coincidem. Verifique antes de enviar.");
+      return;
+    }
+
+    // separa o que o backend quer do que ele NÃO quer
+    // pega tudo de formData, mas deixa a confirmacaoSenha de fora do pacote final
+    const { confirmacaoSenha, ...dadosLimpos } = formData;
+
+    // formatação de tipos
+    // se for discente, convertemos a string da matrícula para número. se for docente, apagamos o campo.
+    let payloadFinal: any = { ...dadosLimpos };
+    if (payloadFinal.cargo === "DISCENTE") {
+      payloadFinal.matricula = Number(payloadFinal.matricula);
+    } else {
+      delete payloadFinal.matricula; // docentes AINDA não enviam matrícula
+    }
+
+    // requisição com Axios
+    try {
+
+      const response = await axios.post("http://localhost:3000/auth/register", payloadFinal);
+      
+      console.log("Sucesso!", response.data);
+      alert("Cadastro realizado com sucesso!");
+      
+      // opcional p/ redirecionar para o Login aqui após o sucesso
+      // window.location.href = "/login";
+      
+    } catch (error: any) {
+      console.error("Erro ao realizar cadastro:", error);
+      // pega erro
+      alert(error.response?.data?.message || "Ocorreu um erro ao tentar cadastrar.");
+    }
+  };
+
   // testes de senha
   const temMinimoCaracteres = formData.senha.length >= 8;
   const temMaiuscula = /[A-Z]/.test(formData.senha);
@@ -193,6 +236,7 @@ export default function CadastroPage() {
             width={250}
             height={250}
             priority 
+            className="w-auto h-auto"
           />
         </div>
 
@@ -206,7 +250,7 @@ export default function CadastroPage() {
             <h1 className="text-3xl font-bold text-[#003366]">Cadastre-se</h1>
           </div>
 
-         <form className="mt-8 space-y-4 text-sm">
+         <form onSubmit={handleSubmit} className="mt-8 space-y-4 text-sm">
             
             {/* cargo*/}
             <div className="flex flex-col">
@@ -241,7 +285,7 @@ export default function CadastroPage() {
                 type="email"
                 name="email"
                 placeholder="@aluno.unb.br ou @unb.br"
-                pattern="^[a-zA-Z0-9._%+-]+@(aluno\.unb\.br|unb\.br)$"
+                pattern="^[a-zA-Z0-9._%+\-]+@(aluno\.unb\.br|unb\.br)$"
                 title="Use seu e-mail @aluno.unb.br ou @unb.br"
                 required
                 value={formData.email}
