@@ -49,7 +49,7 @@ Exemplo de portas locais após subir:
 
 Rotas úteis da API:
 
-- Health check: http://localhost:3000/api/health
+- Health check: http://localhost:3000/health
 - Swagger UI (development): http://localhost:3000/api/docs
 
 ### Desenvolvimento do backend fora do container (opcional)
