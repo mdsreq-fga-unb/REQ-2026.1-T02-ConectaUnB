@@ -252,20 +252,6 @@ export default function CadastroPage() {
 
          <form onSubmit={handleSubmit} className="mt-8 space-y-4 text-sm">
             
-            {/* cargo*/}
-            <div className="flex flex-col">
-              <label className="mb-1 ml-4 text-[#003366] font-medium">Cargo</label>
-              <select
-                name="cargo"
-                value={formData.cargo}
-                onChange={handleChange}
-                className="w-full px-4 py-2 bg-transparent border border-[#006633] rounded-full focus:outline-none focus:ring-2 focus:ring-[#006633]"
-              >
-                <option value="DISCENTE">Discente</option>
-                <option value="DOCENTE">Docente</option>
-              </select>
-            </div>
-
             {/* nome */}
             <div className="flex flex-col">
               <label className="mb-1 ml-4 text-[#003366] font-medium">Nome</label>
@@ -308,6 +294,20 @@ export default function CadastroPage() {
                 />
               </div>
             )}
+
+            {/* cargo*/}
+            <div className="flex flex-col">
+              <label className="mb-1 ml-4 text-[#003366] font-medium">Cargo</label>
+              <select
+                name="cargo"
+                value={formData.cargo}
+                onChange={handleChange}
+                className="w-full px-4 py-2 bg-transparent border border-[#006633] rounded-full focus:outline-none focus:ring-2 focus:ring-[#006633]"
+              >
+                <option value="DISCENTE">Discente</option>
+                <option value="DOCENTE">Docente</option>
+              </select>
+            </div>
 
             {/* campus */}
             <div className="flex flex-col">
