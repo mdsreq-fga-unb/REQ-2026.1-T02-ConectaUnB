@@ -11,7 +11,7 @@ O repositório fornece um comando único para preparar e subir o ambiente de des
 
 ### Pré-requisitos
 
-- Node.js 24+ (recomendado)
+- Node.js 22+ (obrigatório, 24+ recomendado)
 - pnpm 11+
 - Docker Desktop (Windows/macOS) ou Docker Engine + Compose (Linux)
 - Copie `.env.example` para `.env` na raiz
@@ -110,6 +110,7 @@ copy .env.example .env # PowerShell
 ### Erros comuns
 
 - No Windows, se `corepack enable` falhar com `EPERM`, execute o PowerShell como Administrador ou instale `pnpm` globalmente: `npm install -g pnpm@11.3.0`.
+- No Linux, se `corepack enable` falhar com `EACCES`, execute `sudo corepack enable` ou instale o pnpm manualmente: `npm install -g pnpm@11.3.0`.
 - Se o Docker não estiver rodando, abra o Docker Desktop e aguarde a inicialização antes de executar `pnpm dev`.
 
 ### Swagger e ambientes
