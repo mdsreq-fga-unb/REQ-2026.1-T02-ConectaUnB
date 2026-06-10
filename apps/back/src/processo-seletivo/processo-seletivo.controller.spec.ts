@@ -11,7 +11,9 @@ describe('ProcessoSeletivoController', () => {
       providers: [ProcessoSeletivoService],
     }).compile();
 
-    controller = module.get<ProcessoSeletivoController>(ProcessoSeletivoController);
+    controller = module.get<ProcessoSeletivoController>(
+      ProcessoSeletivoController,
+    );
   });
 
   it('should be defined', () => {

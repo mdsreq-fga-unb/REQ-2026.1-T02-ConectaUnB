@@ -1,10 +1,18 @@
-import { IsString, IsOptional, IsNotEmpty, MaxLength, IsEnum, IsNumber } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  MaxLength,
+  IsEnum,
+  IsNumber,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { TipoNotificacao } from '@prisma/client';
 
 export class CreateNotificacaoDto {
-  
-  @ApiProperty({ description: 'ID da Entidade dona da notificação', example: 1 })
+  @ApiProperty({
+    description: 'ID da Entidade dona da notificação',
+    example: 1,
+  })
   @IsNumber()
   @IsNotEmpty()
   idEntidade!: number;
@@ -13,16 +21,18 @@ export class CreateNotificacaoDto {
   @IsEnum(TipoNotificacao)
   @IsNotEmpty()
   tipo!: TipoNotificacao;
-  
-  @ApiProperty({ description: 'Mensagem da notificação', example: 'Você recebeu uma nova notificação' })
+
+  @ApiProperty({
+    description: 'Mensagem da notificação',
+    example: 'Você recebeu uma nova notificação',
+  })
   @IsString()
   @IsNotEmpty()
   @MaxLength(255)
   mensagem!: string;
-  
+
   @ApiProperty({ description: 'ID da referência', example: 1 })
   @IsNumber()
   @IsNotEmpty()
   referenciaId!: number;
-  
 }

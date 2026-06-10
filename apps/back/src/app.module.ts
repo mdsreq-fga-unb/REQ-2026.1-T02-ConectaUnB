@@ -6,7 +6,7 @@ import { ThrottlerGuard } from '@nestjs/throttler';
 import { AuthModule } from './auth/auth.module';
 import { StorageModule } from './storage/storage.module';
 import { PrismaModule } from './prisma/prisma.module';
-import { HealthController } from './health.controller';
+import { AppController, HealthController } from './health.controller';
 import { PerfilModule } from './perfil/perfil.module';
 import { EntidadeModule } from './entidade/entidade.module';
 import { ProjetoModule } from './projeto/projeto.module';
@@ -28,7 +28,7 @@ import { NotificacaoModule } from './notificacao/notificacao.module';
     ProcessoSeletivoModule,
     NotificacaoModule,
   ],
-  controllers: [HealthController],
+  controllers: [AppController, HealthController],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
 export class AppModule {}
