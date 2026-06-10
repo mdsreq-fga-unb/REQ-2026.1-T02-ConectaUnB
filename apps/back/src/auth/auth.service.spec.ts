@@ -4,6 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { PerfilService } from '../perfil/perfil.service';
 import { Cargo, Campus, Curso, Departamento } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
 
 const mockPerfilService = {
   findByEmail: jest.fn(),
@@ -83,7 +84,6 @@ describe('AuthService', () => {
     const password = 'Senha@123';
 
     it('should return user without senha when credentials are valid', async () => {
-      const bcrypt = await import('bcrypt');
       const hashed = await bcrypt.hash(password, 1);
 
       mockPerfilService.findByEmail.mockResolvedValue({
@@ -111,7 +111,7 @@ describe('AuthService', () => {
       mockPerfilService.findByEmail.mockResolvedValue({
         id: 1,
         email,
-        senha: await (await import('bcrypt')).hash('correct-password', 1),
+        senha: await bcrypt.hash('correct-password', 1),
       });
 
       const result = await service.validateUser(email, 'wrong-password');
