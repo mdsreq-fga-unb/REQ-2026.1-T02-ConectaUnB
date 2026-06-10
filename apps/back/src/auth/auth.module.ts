@@ -6,7 +6,7 @@ import { AuthController } from './auth.controller';
 import { JwtStrategy } from './jwt.strategy';
 import { LocalStrategy } from './local.strategy';
 import { PrismaModule } from '../prisma/prisma.module';
-import { UsersModule } from '../users/users.module';
+import { PerfilModule } from '../perfil/perfil.module';
 
 // Em produção, exigir que a variável JWT_SECRET esteja definida
 if (!process.env.JWT_SECRET && process.env.NODE_ENV === 'production') {
@@ -17,7 +17,7 @@ if (!process.env.JWT_SECRET && process.env.NODE_ENV === 'production') {
   imports: [
     PassportModule,
     PrismaModule,
-    UsersModule,
+    PerfilModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET!,
       signOptions: { expiresIn: '1h' },

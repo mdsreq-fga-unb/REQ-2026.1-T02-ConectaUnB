@@ -1,67 +1,70 @@
 import { ConflictException, Injectable } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
+import { PerfilService } from '../perfil/perfil.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '@prisma/client';
+import { Cargo, Campus, Curso, Departamento, Perfil } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService,
+    private perfilService: PerfilService,
     private jwtService: JwtService,
   ) {}
 
   async register(data: {
     email: string;
     password: string;
-    name?: string;
-    cargo: string;
-    matricula: string;
-    curso: string;
+    name: string;
+    cargo: Cargo;
+    matricula?: number;
+    curso: Curso;
+    departamento: Departamento;
+    campus: Campus;
   }) {
-    const existing = await this.usersService.findByEmail(data.email);
+    const existing = await this.perfilService.findByEmail(data.email);
     if (existing) {
-      throw new ConflictException('User already exists');
+      throw new ConflictException('Perfil already exists');
     }
 
     const saltRounds = parseInt(process.env.BCRYPT_SALT_ROUNDS ?? '10', 10);
     const hashed = await bcrypt.hash(data.password, saltRounds);
-    const user = await this.usersService.create({
+    const perfil = await this.perfilService.create({
       email: data.email,
-      password: hashed,
+      senha: hashed,
       name: data.name,
       cargo: data.cargo,
       matricula: data.matricula,
       curso: data.curso,
+      departamento: data.departamento,
+      campus: data.campus,
     });
 
     return {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      cargo: user.cargo,
-      matricula: user.matricula,
-      curso: user.curso,
+      id: perfil.id,
+      email: perfil.email,
+      name: perfil.name,
+      cargo: perfil.cargo,
+      matricula: perfil.matricula,
+      curso: perfil.curso,
     };
   }
 
   async validateUser(
     email: string,
     pass: string,
-  ): Promise<Omit<User, 'password'> | null> {
-    const user = await this.usersService.findByEmail(email);
-    if (!user) return null;
+  ): Promise<Omit<Perfil, 'senha'> | null> {
+    const perfil = await this.perfilService.findByEmail(email);
+    if (!perfil) return null;
 
-    const match = await bcrypt.compare(pass, user.password);
+    const match = await bcrypt.compare(pass, perfil.senha);
     if (!match) return null;
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, ...rest } = user;
+    const { senha, ...rest } = perfil;
     return rest;
   }
 
-  login(user: { id: string; email: string }) {
-    const payload = { sub: user.id, email: user.email };
+  login(user: Pick<Perfil, 'id' | 'email'>) {
+    const payload = { sub: String(user.id), email: user.email };
     return { access_token: this.jwtService.sign(payload) };
   }
 }

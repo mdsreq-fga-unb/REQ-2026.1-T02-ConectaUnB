@@ -11,31 +11,33 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
-import { RegisterDto } from './dto/register.dto';
+import { CreatePerfilDto } from './dto/register.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('register')
-  async register(@Body() dto: RegisterDto) {
+  async register(@Body() dto: CreatePerfilDto) {
     return this.authService.register({
       email: dto.email,
-      password: dto.password,
+      password: dto.senha,
       name: dto.name,
       cargo: dto.cargo,
       matricula: dto.matricula,
       curso: dto.curso,
+      departamento: dto.departamento,
+      campus: dto.campus,
     });
   }
 
   @Post('login')
   async login(@Body() dto: LoginDto) {
-    const user = await this.authService.validateUser(dto.email, dto.password);
-    if (!user) {
+    const perfil = await this.authService.validateUser(dto.email, dto.senha);
+    if (!perfil) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    return this.authService.login(user);
+    return this.authService.login(perfil);
   }
 
   @UseGuards(AuthGuard('jwt'))
