@@ -4,7 +4,7 @@ import { UpdateProcessoSeletivoDto } from './dto/update-processo-seletivo.dto';
 
 @Injectable()
 export class ProcessoSeletivoService {
-  create(createProcessoSeletivoDto: CreateProcessoSeletivoDto) {
+  create(_createProcessoSeletivoDto: CreateProcessoSeletivoDto) {
     return 'This action adds a new processoSeletivo';
   }
 
@@ -16,7 +16,7 @@ export class ProcessoSeletivoService {
     return `This action returns a #${id} processoSeletivo`;
   }
 
-  update(id: number, updateProcessoSeletivoDto: UpdateProcessoSeletivoDto) {
+  update(id: number, _updateProcessoSeletivoDto: UpdateProcessoSeletivoDto) {
     return `This action updates a #${id} processoSeletivo`;
   }
 

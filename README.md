@@ -15,6 +15,7 @@ O repositório fornece um comando único para preparar e subir o ambiente de des
 - pnpm 11+
 - Docker Desktop (Windows/macOS) ou Docker Engine + Compose (Linux)
 - Copie `.env.example` para `.env` na raiz
+- Defina `JWT_SECRET` no `.env` (necessário para autenticação)
 
 Se o `pnpm` não estiver disponível, habilite o Corepack:
 
@@ -51,6 +52,15 @@ Rotas úteis da API:
 
 - Health check: http://localhost:3000/health
 - Swagger UI (development): http://localhost:3000/api/docs
+- Autenticação:
+  - `POST /auth/register` — Cadastro de perfil
+  - `POST /auth/login` — Login (retorna JWT)
+  - `GET /auth/me` — Dados do perfil logado (requer JWT)
+- Perfil (requer JWT):
+  - `GET /perfil` — Listar perfis
+  - `GET /perfil/:id` — Buscar perfil por ID
+  - `PATCH /perfil/:id` — Atualizar perfil
+  - `DELETE /perfil/:id` — Excluir perfil
 
 ### Desenvolvimento do backend fora do container (opcional)
 
@@ -126,3 +136,14 @@ Exemplo para staging/producao:
 NODE_ENV=production
 SWAGGER_ENABLED=true
 ```
+
+### Variáveis de ambiente
+
+| Variável | Obrigatória | Padrão | Descrição |
+|---|---|---|---|
+| `PORT` | Não | `3000` | Porta do backend |
+| `DATABASE_URL` | Sim | — | URL de conexão PostgreSQL |
+| `JWT_SECRET` | Sim | — | Chave secreta para assinar tokens JWT |
+| `BCRYPT_SALT_ROUNDS` | Não | `10` | Número de rounds do bcrypt para hash de senha |
+| `CORS_ORIGIN` | Não | `*` | Origem permitida pelo CORS |
+| `SWAGGER_ENABLED` | Não | `false` | Habilita Swagger fora de development |
