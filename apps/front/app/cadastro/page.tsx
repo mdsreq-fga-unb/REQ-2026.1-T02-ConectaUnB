@@ -149,8 +149,9 @@ export const CURSO_OPTIONS = [
   { value: "TURISMO", label: "Turismo" }
 ];
 
+type FieldErrors = Record<string, string>;
+
 export default function CadastroPage() {
-  // Dados p/ cadastro
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -160,89 +161,148 @@ export default function CadastroPage() {
     curso: "",
     departamento: "",
     campus: "",
-    cargo: "DISCENTE", 
+    cargo: "DISCENTE",
   });
+
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [submitError, setSubmitError] = useState("");
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [showSenha, setShowSenha] = useState(false);
+  const [showConfirmSenha, setShowConfirmSenha] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    setFieldErrors((prev) => {
+      const next = { ...prev };
+      delete next[name];
+      return next;
+    });
+    setSubmitError("");
+    setSubmitSuccess(false);
   };
 
-  // função de envio para o back
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // impede a página de recarregar (padrão do HTML)
+  function validate(): FieldErrors {
+    const errors: FieldErrors = {};
 
-    // garante que as senhas são iguais antes de tentar enviar
-    if (formData.senha !== formData.confirmacaoSenha) {
-      alert("As senhas não coincidem. Verifique antes de enviar.");
+    if (formData.name.trim().length < 3) {
+      errors.name = "O nome deve ter pelo menos 3 caracteres.";
+    }
+
+    if (formData.cargo === "DISCENTE") {
+      if (!formData.email.trim().endsWith("@aluno.unb.br")) {
+        errors.email = "O e-mail de discente deve obrigatoriamente terminar com @aluno.unb.br";
+      }
+    } else if (formData.cargo === "DOCENTE") {
+      if (!formData.email.trim().endsWith("@unb.br")) {
+        errors.email = "O e-mail de docente deve obrigatoriamente terminar com @unb.br";
+      }
+    }
+
+    if (!formData.email.trim()) {
+      errors.email = "O e-mail é obrigatório.";
+    }
+
+    if (formData.cargo === "DISCENTE") {
+      if (!formData.matricula.trim()) {
+        errors.matricula = "A matrícula é obrigatória para discentes.";
+      } else if (!/^\d{9}$/.test(formData.matricula.trim())) {
+        errors.matricula = "A matrícula deve conter exatamente 9 dígitos numéricos.";
+      }
+    }
+
+    if (!formData.campus) {
+      errors.campus = "Selecione um campus.";
+    }
+
+    if (!formData.departamento) {
+      errors.departamento = "Selecione um departamento.";
+    }
+
+    if (!formData.curso) {
+      errors.curso = "Selecione um curso.";
+    }
+
+    if (formData.senha.length > 0 && /\s/.test(formData.senha)) {
+      errors.senha = "A senha não pode conter espaços.";
+    } else if (formData.senha.length > 0 && formData.senha.length < 8) {
+      errors.senha = "A senha deve ter pelo menos 8 caracteres.";
+    }
+
+    if (formData.senha && formData.confirmacaoSenha && formData.senha !== formData.confirmacaoSenha) {
+      errors.confirmacaoSenha = "As senhas não coincidem.";
+    }
+
+    return errors;
+  }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSubmitError("");
+    setSubmitSuccess(false);
+
+    const errors = validate();
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
       return;
     }
 
-    // separa o que o backend quer do que ele NÃO quer
-    // pega tudo de formData, mas deixa a confirmacaoSenha de fora do pacote final
+    if (formData.senha !== formData.confirmacaoSenha) {
+      setFieldErrors({ confirmacaoSenha: "As senhas não coincidem." });
+      return;
+    }
+
     const { confirmacaoSenha, ...dadosLimpos } = formData;
 
-    // formatação de tipos
-    // se for discente, convertemos a string da matrícula para número. se for docente, apagamos o campo.
-    let payloadFinal: any = { ...dadosLimpos };
+    let payloadFinal: Record<string, unknown> = { ...dadosLimpos };
     if (payloadFinal.cargo === "DISCENTE") {
       payloadFinal.matricula = Number(payloadFinal.matricula);
     } else {
-      delete payloadFinal.matricula; // docentes AINDA não enviam matrícula
+      delete payloadFinal.matricula;
     }
 
-    // requisição com Axios
     try {
-
       const response = await axios.post("http://localhost:3000/auth/register", payloadFinal);
-      
       console.log("Sucesso!", response.data);
-      alert("Cadastro realizado com sucesso!");
-      
-      // opcional p/ redirecionar para o Login aqui após o sucesso
-      // window.location.href = "/login";
-      
-    } catch (error: any) {
-      console.error("Erro ao realizar cadastro:", error);
-      // pega erro
-      alert(error.response?.data?.message || "Ocorreu um erro ao tentar cadastrar.");
+      setSubmitSuccess(true);
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string | string[] }; status?: number } };
+      const rawMsg = Array.isArray(err.response?.data?.message)
+        ? err.response.data.message.join("; ")
+        : err.response?.data?.message || "Ocorreu um erro ao tentar cadastrar.";
+      if (rawMsg.includes("already exists") || rawMsg.includes("duplicat") || err.response?.status === 409) {
+        setSubmitError("Este e-mail já está cadastrado.");
+        setFieldErrors({ email: "Este e-mail já está cadastrado." });
+      } else {
+        setSubmitError(rawMsg);
+      }
     }
   };
 
-  // testes de senha
   const temMinimoCaracteres = formData.senha.length >= 8;
   const temMaiuscula = /[A-Z]/.test(formData.senha);
   const temMinuscula = /[a-z]/.test(formData.senha);
   const temNumero = /[0-9]/.test(formData.senha);
   const temEspecial = /[^A-Za-z0-9]/.test(formData.senha);
-
-  // A senha só será considerada forte se passar em todos os 5 testes e compara as senhas
-  const senhaEStavel = temMinimoCaracteres && temMaiuscula && temMinuscula && temNumero && temEspecial;
   const senhasCoincidem = formData.senha === formData.confirmacaoSenha;
 
   return (
-    // divide a tela em duas colunas apenas em monitores/tablets.
     <main className="min-h-screen grid grid-cols-1 md:grid-cols-2 text-[#1D1D1D]">
 
-      {/* coluna da esquerda - escondemos em celulares e mostramos em telas maiores */}
       <section className="hidden md:flex flex-col items-center justify-center bg-[#003366] relative overflow-hidden">
-    
         <div className="absolute inset-0 opacity-30 bg-[url('/fundoGeometrico.svg')] bg-[length:100%] bg-[position:0%_35%] bg-no-repeat" />
-
         <div className="relative z-10 bg-white p-8 rounded-xl shadow-2xl">
           <Image
-            src="/logoConecta.svg" 
+            src="/logoConecta.svg"
             alt="Logo Conecta UnB"
             width={250}
             height={250}
-            priority 
+            priority
             className="w-auto h-auto"
           />
         </div>
-
       </section>
 
-      {/* "formulário" */}
       <section className="flex flex-col items-center justify-center bg-white p-8 sm:p-12">
         <div className="w-full max-w-md space-y-8">
 
@@ -250,52 +310,25 @@ export default function CadastroPage() {
             <h1 className="text-3xl font-bold text-[#003366]">Cadastre-se</h1>
           </div>
 
-         <form onSubmit={handleSubmit} className="mt-8 space-y-4 text-sm">
-            
-            {/* nome */}
+          <form onSubmit={handleSubmit} className="mt-8 space-y-4 text-sm">
+
             <div className="flex flex-col">
               <label className="mb-1 ml-4 text-[#003366] font-medium">Nome</label>
               <input
                 type="text"
                 name="name"
+                required
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full px-4 py-2 bg-transparent border border-[#006633] rounded-full focus:outline-none focus:ring-2 focus:ring-[#006633]"
+                className={`w-full px-4 py-2 bg-transparent border rounded-full focus:outline-none focus:ring-2 ${
+                  fieldErrors.name ? "border-red-400 focus:ring-red-400" : "border-[#006633] focus:ring-[#006633]"
+                }`}
               />
+              {fieldErrors.name && (
+                <p className="mt-1 ml-4 text-xs text-red-500">{fieldErrors.name}</p>
+              )}
             </div>
 
-            {/* email */}
-            <div className="flex flex-col">
-              <label className="mb-1 ml-4 text-[#003366] font-medium">Email UnB</label>
-              <input
-                type="email"
-                name="email"
-                placeholder="@aluno.unb.br ou @unb.br"
-                pattern="^[a-zA-Z0-9._%+\-]+@(aluno\.unb\.br|unb\.br)$"
-                title="Use seu e-mail @aluno.unb.br ou @unb.br"
-                required
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full px-4 py-2 bg-transparent border border-[#006633] rounded-full focus:outline-none focus:ring-2 focus:ring-[#006633] placeholder:text-gray-400 placeholder:text-xs"
-              />
-            </div>
-
-            {/* matricula, para alunos */}
-            {formData.cargo === "DISCENTE" && (
-              <div className="flex flex-col">
-                <label className="mb-1 ml-4 text-[#003366] font-medium">Matrícula</label>
-                <input
-                  type="text"
-                  name="matricula"
-                  required
-                  value={formData.matricula}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 bg-transparent border border-[#006633] rounded-full focus:outline-none focus:ring-2 focus:ring-[#006633]"
-                />
-              </div>
-            )}
-
-            {/* cargo*/}
             <div className="flex flex-col">
               <label className="mb-1 ml-4 text-[#003366] font-medium">Cargo</label>
               <select
@@ -309,7 +342,44 @@ export default function CadastroPage() {
               </select>
             </div>
 
-            {/* campus */}
+            <div className="flex flex-col">
+              <label className="mb-1 ml-4 text-[#003366] font-medium">Email UnB</label>
+              <input
+                type="email"
+                name="email"
+                required
+                value={formData.email}
+                onChange={handleChange}
+                placeholder={formData.cargo === "DISCENTE" ? "@aluno.unb.br" : "@unb.br"}
+                className={`w-full px-4 py-2 bg-transparent border rounded-full focus:outline-none focus:ring-2 placeholder:text-gray-400 placeholder:text-xs ${
+                  fieldErrors.email ? "border-red-400 focus:ring-red-400" : "border-[#006633] focus:ring-[#006633]"
+                }`}
+              />
+              {fieldErrors.email && (
+                <p className="mt-1 ml-4 text-xs text-red-500">{fieldErrors.email}</p>
+              )}
+            </div>
+
+            {formData.cargo === "DISCENTE" && (
+              <div className="flex flex-col">
+                <label className="mb-1 ml-4 text-[#003366] font-medium">Matrícula</label>
+                <input
+                  type="text"
+                  name="matricula"
+                  required
+                  value={formData.matricula}
+                  onChange={handleChange}
+                  placeholder="Ex: 1234567"
+                  className={`w-full px-4 py-2 bg-transparent border rounded-full focus:outline-none focus:ring-2 ${
+                    fieldErrors.matricula ? "border-red-400 focus:ring-red-400" : "border-[#006633] focus:ring-[#006633]"
+                  }`}
+                />
+                {fieldErrors.matricula && (
+                  <p className="mt-1 ml-4 text-xs text-red-500">{fieldErrors.matricula}</p>
+                )}
+              </div>
+            )}
+
             <div className="flex flex-col">
               <label className="mb-1 ml-4 text-[#003366] font-medium">Campus</label>
               <select
@@ -317,16 +387,20 @@ export default function CadastroPage() {
                 required
                 value={formData.campus}
                 onChange={handleChange}
-                className="w-full px-4 py-2 bg-transparent border border-[#006633] rounded-full focus:outline-none focus:ring-2 focus:ring-[#006633]"
+                className={`w-full px-4 py-2 bg-transparent border rounded-full focus:outline-none focus:ring-2 ${
+                  fieldErrors.campus ? "border-red-400 focus:ring-red-400" : "border-[#006633] focus:ring-[#006633]"
+                }`}
               >
                 <option value="">Selecione o campus...</option>
                 {CAMPUS_OPTIONS.map((campus) => (
                   <option key={campus.value} value={campus.value}>{campus.label}</option>
                 ))}
               </select>
+              {fieldErrors.campus && (
+                <p className="mt-1 ml-4 text-xs text-red-500">{fieldErrors.campus}</p>
+              )}
             </div>
 
-            {/* departamento */}
             <div className="flex flex-col">
               <label className="mb-1 ml-4 text-[#003366] font-medium">Departamento</label>
               <select
@@ -334,16 +408,20 @@ export default function CadastroPage() {
                 required
                 value={formData.departamento}
                 onChange={handleChange}
-                className="w-full px-4 py-2 bg-transparent border border-[#006633] rounded-full focus:outline-none focus:ring-2 focus:ring-[#006633]"
+                className={`w-full px-4 py-2 bg-transparent border rounded-full focus:outline-none focus:ring-2 ${
+                  fieldErrors.departamento ? "border-red-400 focus:ring-red-400" : "border-[#006633] focus:ring-[#006633]"
+                }`}
               >
                 <option value="">Selecione o departamento...</option>
                 {DEPARTAMENTO_OPTIONS.map((depto) => (
                   <option key={depto.value} value={depto.value}>{depto.label}</option>
                 ))}
               </select>
+              {fieldErrors.departamento && (
+                <p className="mt-1 ml-4 text-xs text-red-500">{fieldErrors.departamento}</p>
+              )}
             </div>
 
-            {/* curso*/}
             <div className="flex flex-col">
               <label className="mb-1 ml-4 text-[#003366] font-medium">Curso</label>
               <select
@@ -351,28 +429,55 @@ export default function CadastroPage() {
                 required
                 value={formData.curso}
                 onChange={handleChange}
-                className="w-full px-4 py-2 bg-transparent border border-[#006633] rounded-full focus:outline-none focus:ring-2 focus:ring-[#006633]"
+                className={`w-full px-4 py-2 bg-transparent border rounded-full focus:outline-none focus:ring-2 ${
+                  fieldErrors.curso ? "border-red-400 focus:ring-red-400" : "border-[#006633] focus:ring-[#006633]"
+                }`}
               >
                 <option value="">Selecione o curso...</option>
                 {CURSO_OPTIONS.map((curso) => (
                   <option key={curso.value} value={curso.value}>{curso.label}</option>
                 ))}
               </select>
+              {fieldErrors.curso && (
+                <p className="mt-1 ml-4 text-xs text-red-500">{fieldErrors.curso}</p>
+              )}
             </div>
 
-            {/* senha */}
             <div className="flex flex-col">
               <label className="mb-1 ml-4 text-[#003366] font-medium">Senha</label>
-              <input
-                type="password"
-                name="senha"
-                required
-                value={formData.senha}
-                onChange={handleChange}
-                className="w-full px-4 py-2 bg-transparent border border-[#006633] rounded-full focus:outline-none focus:ring-2 focus:ring-[#006633]"
-              />
-              
-              {/* mostra uma lista de "ajuda" */}
+              <div className="relative">
+                <input
+                  type={showSenha ? "text" : "password"}
+                  name="senha"
+                  required
+                  value={formData.senha}
+                  onChange={handleChange}
+                  className={`w-full px-4 py-2 pr-10 bg-transparent border rounded-full focus:outline-none focus:ring-2 ${
+                    fieldErrors.senha ? "border-red-400 focus:ring-red-400" : "border-[#006633] focus:ring-[#006633]"
+                  }`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowSenha((prev) => !prev)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#003366]"
+                  tabIndex={-1}
+                  aria-label={showSenha ? "Ocultar senha" : "Mostrar senha"}
+                >
+                  {showSenha ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+                      <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+                      <line x1="1" y1="1" x2="23" y2="23"/>
+                      <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"/>
+                    </svg>
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                      <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                  )}
+                </button>
+              </div>
               {formData.senha.length > 0 && (
                 <div className="mt-2 ml-4 text-xs space-y-1 transition-all">
                   <p className={temMinimoCaracteres ? "text-green-600" : "text-gray-400"}>
@@ -392,29 +497,56 @@ export default function CadastroPage() {
                   </p>
                 </div>
               )}
+              {fieldErrors.senha && (
+                <p className="mt-1 ml-4 text-xs text-red-500">{fieldErrors.senha}</p>
+              )}
             </div>
 
-            {/* confirmação de senha */}
             <div className="flex flex-col">
               <label className="mb-1 ml-4 text-[#003366] font-medium">Confirmação de Senha</label>
-              <input
-                type="password"
-                name="confirmacaoSenha"
-                required
-                value={formData.confirmacaoSenha}
-                onChange={handleChange}
-                className="w-full px-4 py-2 bg-transparent border border-[#006633] rounded-full focus:outline-none focus:ring-2 focus:ring-[#006633]"
-              />
-              
-              {/* exibe apenas quando digita */}
+              <div className="relative">
+                <input
+                  type={showConfirmSenha ? "text" : "password"}
+                  name="confirmacaoSenha"
+                  required
+                  value={formData.confirmacaoSenha}
+                  onChange={handleChange}
+                  className={`w-full px-4 py-2 pr-10 bg-transparent border rounded-full focus:outline-none focus:ring-2 ${
+                    fieldErrors.confirmacaoSenha ? "border-red-400 focus:ring-red-400" : "border-[#006633] focus:ring-[#006633]"
+                  }`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmSenha((prev) => !prev)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#003366]"
+                  tabIndex={-1}
+                  aria-label={showConfirmSenha ? "Ocultar senha" : "Mostrar senha"}
+                >
+                  {showConfirmSenha ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+                      <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+                      <line x1="1" y1="1" x2="23" y2="23"/>
+                      <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"/>
+                    </svg>
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                      <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                  )}
+                </button>
+              </div>
               {formData.confirmacaoSenha.length > 0 && (
                 <p className={`mt-1 ml-4 text-xs font-medium ${senhasCoincidem ? "text-green-600" : "text-red-500"}`}>
                   {senhasCoincidem ? "✓ As senhas coincidem" : "○ As senhas não coincidem"}
                 </p>
               )}
+              {fieldErrors.confirmacaoSenha && (
+                <p className="mt-1 ml-4 text-xs text-red-500">{fieldErrors.confirmacaoSenha}</p>
+              )}
             </div>
 
-            {/* botão de cadastro e login */}
             <div className="pt-4 flex flex-col items-center">
               <button
                 type="submit"
@@ -422,10 +554,22 @@ export default function CadastroPage() {
               >
                 Cadastro
               </button>
-              
+
               <a href="/login" className="text-sm text-[#003366] hover:underline mt-4">
                 Login
               </a>
+
+              {submitSuccess && (
+                <p className="mt-3 text-xs text-green-600 font-medium text-center">
+                  Cadastro realizado com sucesso!
+                </p>
+              )}
+
+              {submitError && (
+                <p className="mt-3 text-xs text-red-500 font-medium text-center">
+                  {submitError}
+                </p>
+              )}
             </div>
 
           </form>
