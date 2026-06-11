@@ -59,7 +59,7 @@ export class AuthService {
     const match = await bcrypt.compare(pass, perfil.senha);
     if (!match) return null;
 
-    const { senha, ...rest } = perfil;
+    const { senha: _, ...rest } = perfil;
     return rest;
   }
 

@@ -4,7 +4,7 @@ import { UpdatePostagemDto } from './dto/update-postagem.dto';
 
 @Injectable()
 export class PostagemService {
-  create(createPostagemDto: CreatePostagemDto) {
+  create(_createPostagemDto: CreatePostagemDto) {
     return 'This action adds a new postagem';
   }
 
@@ -16,7 +16,7 @@ export class PostagemService {
     return `This action returns a #${id} postagem`;
   }
 
-  update(id: number, updatePostagemDto: UpdatePostagemDto) {
+  update(id: number, _updatePostagemDto: UpdatePostagemDto) {
     return `This action updates a #${id} postagem`;
   }
 

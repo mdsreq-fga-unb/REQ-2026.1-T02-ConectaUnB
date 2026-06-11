@@ -10,7 +10,6 @@ import { Cargo } from '@prisma/client';
 @ValidatorConstraint({ name: 'isUnbEmail', async: false })
 export class IsUnbEmailConstraint implements ValidatorConstraintInterface {
   validate(email: string, args: ValidationArguments) {
-
     const { cargo } = args.object as any;
 
     if (!email || typeof email !== 'string') return false;
@@ -31,20 +30,20 @@ export class IsUnbEmailConstraint implements ValidatorConstraintInterface {
   // Mensagem de erro
   defaultMessage(args: ValidationArguments) {
     const { cargo } = args.object as any;
-    
+
     if (cargo === Cargo.DOCENTE) {
       return 'O e-mail de docente deve obrigatoriamente terminar com @unb.br';
     }
     if (cargo === Cargo.DISCENTE) {
       return 'O e-mail de discente deve obrigatoriamente terminar com @aluno.unb.br';
     }
-    
+
     return 'E-mail inválido para o cargo selecionado.';
   }
 }
 
 export function IsUnbEmail(validationOptions?: ValidationOptions) {
-  return function (object: Object, propertyName: string) {
+  return function (object: object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName: propertyName,
