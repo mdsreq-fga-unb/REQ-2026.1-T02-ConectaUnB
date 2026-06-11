@@ -183,13 +183,13 @@ export default function CadastroPage() {
     const { confirmacaoSenha, ...dadosLimpos } = formData;
 
     // formatação de tipos
-    // se for discente, convertemos a string da matrícula para número. se for docente, apagamos o campo.
-    let payloadFinal: any = { ...dadosLimpos };
-    if (payloadFinal.cargo === "DISCENTE") {
-      payloadFinal.matricula = Number(payloadFinal.matricula);
-    } else {
-      delete payloadFinal.matricula; // docentes AINDA não enviam matrícula
-    }
+    // se for discente, convertemos a string da matrícula para número. se for docente, omitimos o campo.
+    const payloadFinal = {
+      ...dadosLimpos,
+      ...(dadosLimpos.cargo === "DISCENTE"
+        ? { matricula: Number(dadosLimpos.matricula) }
+        : {}),
+    };
 
     // requisição com Axios
     try {
@@ -202,10 +202,10 @@ export default function CadastroPage() {
       // opcional p/ redirecionar para o Login aqui após o sucesso
       // window.location.href = "/login";
       
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Erro ao realizar cadastro:", error);
-      // pega erro
-      alert(error.response?.data?.message || "Ocorreu um erro ao tentar cadastrar.");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      alert((error as any)?.response?.data?.message || "Ocorreu um erro ao tentar cadastrar.");
     }
   };
 
