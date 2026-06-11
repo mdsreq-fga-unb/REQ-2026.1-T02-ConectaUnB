@@ -3,10 +3,13 @@ import {
   IsEnum,
   IsNotEmpty,
   IsString,
+  MinLength,
   MaxLength,
   IsNumber,
+  Matches,
   IsStrongPassword,
   IsOptional,
+  ValidateIf,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
@@ -16,6 +19,7 @@ import { IsUnbEmail } from './is-unb-email.validator';
 export class CreatePerfilDto {
   @IsString()
   @IsNotEmpty()
+  @MinLength(3, { message: 'O nome deve ter pelo menos 3 caracteres.' })
   @MaxLength(255)
   @ApiProperty({
     description: 'Nome completo do usuário',
@@ -32,9 +36,13 @@ export class CreatePerfilDto {
   })
   email!: string;
 
-  @IsOptional()
+  @ValidateIf((o) => o.cargo === 'DISCENTE')
+  @IsNotEmpty({ message: 'A matrícula é obrigatória para discentes.' })
   @Type(() => Number)
-  @IsNumber()
+  @IsNumber(undefined, { message: 'A matrícula deve conter apenas números.' })
+  @Matches(/^\d{9}$/, {
+    message: 'A matrícula deve conter exatamente 9 dígitos numéricos.',
+  })
   @ApiProperty({
     description: 'Matrícula do usuário (obrigatória para discentes)',
     example: 123456789,
@@ -43,6 +51,7 @@ export class CreatePerfilDto {
 
   @IsString()
   @IsNotEmpty()
+  @Matches(/^\S*$/, { message: 'A senha não pode conter espaços.' })
   @IsStrongPassword(
     {
       minLength: 8,
