@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@prisma/client": "6.19.3",
-    "axios": "^1.17.0"
+    "axios": "^1.17.0",
+    "lucide-react": "^1.17.0"
   }
 }
