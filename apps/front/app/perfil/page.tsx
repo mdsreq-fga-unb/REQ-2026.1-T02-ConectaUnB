@@ -149,6 +149,23 @@ export default function PerfilPage() {
     setIsEditing(!isEditing);
   };
 
+  // Função que será chamada quando o usuário clicar em "Salvar Alterações"
+  const handleSave = async () => {
+    try {
+      // Pedrão: colocar o Axios para enviar o formData
+
+      // CA2 
+      alert("Edição concluída com sucesso");
+      
+      // CA1
+      setIsEditing(false);
+      
+    } catch (error) {
+      console.error("Erro ao salvar perfil:", error);
+      alert("Ocorreu um erro ao tentar salvar as alterações.");
+    }
+  };
+
   return (
     <div className="min-h-screen flex bg-white">
       
@@ -218,7 +235,7 @@ export default function PerfilPage() {
             <div className="flex flex-col gap-4 w-full md:w-auto">
               {isEditing ? (
                 <button 
-                  onClick={toggleEditMode} 
+                  onClick={handleSave} 
                   className="px-6 py-2.5 bg-[#003366] text-white font-medium rounded-full hover:bg-[#002244] transition-colors whitespace-nowrap"
                 >
                   Salvar Alterações
