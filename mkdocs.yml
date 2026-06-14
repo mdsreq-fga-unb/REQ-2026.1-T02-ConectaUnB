@@ -40,14 +40,16 @@ nav:
       # - Apresentação 3: entregas/reuniao3.md
       # - Apresentação 4: entregas/reuniao4.md
   
-  - Entrevistas:
+  - Entrevistas/Evidências/Entregas:
       - Fase 1 - Requisitos:
         - Entrevista 1: analisesEntrevistas/analiseEntrevista24-04.md
         - Entrevista 2: analisesEntrevistas/analiseEntrevista29-04.md
         - Entrevista 3: analisesEntrevistas/analiseEntrevista30-04.md
       - Fase 2 - User Design:
         - Entrevista 1: userDesign/entrevista1.md
+        - Protótipo 1: userDesign/prototipos.md
         - Evidências forms: userDesign/evidenciasForms.md
+        - Protótipo 2: userDesign/prototipos2.md
 
 
 theme:
