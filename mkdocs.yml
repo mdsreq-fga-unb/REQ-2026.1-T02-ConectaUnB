@@ -48,8 +48,9 @@ nav:
       - Fase 2 - User Design:
         - Entrevista 1: userDesign/entrevista1.md
         - Protótipo 1: userDesign/prototipos.md
-        - Evidências forms: userDesign/evidenciasForms.md
+        - Evidências priorização (formulário): userDesign/evidenciasForms.md
         - Protótipo 2: userDesign/prototipos2.md
+        - Validação critérios de aceitação e protótipos (formulário): userDesign/evidenciasCA.md
 
 
 theme:
