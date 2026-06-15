@@ -23,7 +23,7 @@ export class CreatePerfilDto {
   @MaxLength(255)
   @ApiProperty({
     description: 'Nome completo do usuário',
-    example: 'George Marsicano Correa',
+    example: 'Professor da UnB',
   })
   name!: string;
 
@@ -32,7 +32,7 @@ export class CreatePerfilDto {
   @IsUnbEmail()
   @ApiProperty({
     description: 'Email do usuário',
-    example: 'georgemarsicano@unb.br',
+    example: 'professor@unb.br',
   })
   email!: string;
 
