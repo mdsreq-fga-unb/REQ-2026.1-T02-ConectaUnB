@@ -26,6 +26,17 @@ O objetivo geral do produto é facilitar o engajamento acadêmico através da ce
 | OE2 <br> Democratizar e reduzir as barreiras de acesso e busca por meio de navegação pública; | OE4 <br> Proporcionar ao titular do projeto métricas de engajamento; | CP8 <br> Notificação para os usuários | Facilitar o recebimento da informação por parte do usuário que pode ser notificado quando algum projeto de seu interesse tiver atualizações ou abertura de processos seletivos | VN5 <br> Melhoria do processo interno de descoberta de projetos por parte dos alunos. |
 | OE2 <br> Democratizar e reduzir as barreiras de acesso e busca por meio de navegação pública; | OE1 <br> Fornecer um canal unificado e padronizado para a publicação de processos seletivos e ações das entidades; | CP9 <br> Privacidade e conformidade com LGPD | Incorporar mecanismos e decisões relacionadas a privacidade e a segurança baseando-se na LGPD | VN8 <br> Redução de riscos relacionados à segurança |
 
+## Diagrama de Contexto
+
+Com base nos requisitos levantados, no mapa de stakeholders e no rich picture elaborados durante a etapa de elicitação, foi construído o diagrama de contexto do ConectaUnB, representado na Figura 1. O diagrama apresenta o sistema como uma caixa preta, evidenciando suas fronteiras de atuação e os principais atores e sistemas externos que interagem com a plataforma, bem como os fluxos de informação trocados entre eles.
+
+<div align="center">
+  <p class="table-source"><strong>Figura 3</strong> - Diagrama de Contexto do ConectaUnB</p>
+
+  <img src="../assets/fotos/soluçãoProposta/DiagramaContexto.png" alt="Diagrama de Contexto">
+
+</div>
+
 ## Tecnologias a Serem Utilizadas 
 
 Para a construção da solução proposta para o Conecta UnB, serão adotadas tecnologias modernas e compatíveis com a necessidade de centralização de informações, alta disponibilidade e desenvolvimento iterativo.  
