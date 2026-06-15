@@ -1,5 +1,9 @@
- # REQ-2026.1-T02-ConectaUnB
-Repositório do projeto da disciplina REQ-T1 (2026.1).
+# REQ-2026.1-T02-ConectaUnB
+Repositório do projeto **Conecta UnB**, equipe **Capoeira** da disciplina de REQ-T2, 2026.1.
+
+O Conecta UnB tem o objetivo de centralizar a comunicação e as oportunidades dentro do ecossistema acadêmico da Universidade de Brasília (UnB).
+
+Informações disponíveis em: https://mdsreq-fga-unb.github.io/REQ-2026.1-T02-ConectaUnB/.
 
 ## Visão geral — Subir o ambiente local
 
@@ -7,7 +11,7 @@ O repositório fornece um comando único para preparar e subir o ambiente de des
 
 ### Pré-requisitos
 
-- Node.js 20+ (recomendado 22 LTS)
+- Node.js 22+ (obrigatório, 24+ recomendado)
 - pnpm 11+
 - Docker Desktop (Windows/macOS) ou Docker Engine + Compose (Linux)
 - Copie `.env.example` para `.env` na raiz
@@ -116,6 +120,7 @@ copy .env.example .env # PowerShell
 ### Erros comuns
 
 - No Windows, se `corepack enable` falhar com `EPERM`, execute o PowerShell como Administrador ou instale `pnpm` globalmente: `npm install -g pnpm@11.3.0`.
+- No Linux, se `corepack enable` falhar com `EACCES`, execute `sudo corepack enable` ou instale o pnpm manualmente: `npm install -g pnpm@11.3.0`.
 - Se o Docker não estiver rodando, abra o Docker Desktop e aguarde a inicialização antes de executar `pnpm dev`.
 
 ### Swagger e ambientes

@@ -40,7 +40,7 @@ services:
       DATABASE_URL: postgresql://root:rootpassword@postgres:5432/conectaunb?schema=public
       NODE_ENV: development
     healthcheck:
-      test: ["CMD-SHELL", "curl -fsS http://localhost:3000/api/health >/dev/null"]
+      test: ["CMD-SHELL", "curl -fsS http://localhost:3000/health >/dev/null"]
       interval: 10s
       timeout: 5s
       retries: 5
