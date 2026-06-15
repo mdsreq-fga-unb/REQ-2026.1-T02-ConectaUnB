@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import axios from "axios";
+import {useRouter} from "next/navigation";
 
 // enums UnB (Campus, Departamentos, cursos)
 export const CAMPUS_OPTIONS = [
@@ -152,6 +153,9 @@ export const CURSO_OPTIONS = [
 type FieldErrors = Record<string, string>;
 
 export default function CadastroPage() {
+
+  const router = useRouter();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -265,6 +269,7 @@ export default function CadastroPage() {
       const response = await axios.post("http://localhost:3000/auth/register", payloadFinal);
       console.log("Sucesso!", response.data);
       setSubmitSuccess(true);
+      router.push("/login");
     } catch (error: unknown) {
       const err = error as { response?: { data?: { message?: string | string[] }; status?: number } };
       const rawMsg = Array.isArray(err.response?.data?.message)
@@ -369,7 +374,7 @@ export default function CadastroPage() {
                   required
                   value={formData.matricula}
                   onChange={handleChange}
-                  placeholder="Ex: 1234567"
+                  placeholder="Ex: 123456789"
                   className={`w-full px-4 py-2 bg-transparent border rounded-full focus:outline-none focus:ring-2 ${
                     fieldErrors.matricula ? "border-red-400 focus:ring-red-400" : "border-[#006633] focus:ring-[#006633]"
                   }`}
