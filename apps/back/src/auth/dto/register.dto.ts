@@ -38,16 +38,16 @@ export class CreatePerfilDto {
 
   @ValidateIf((o) => o.cargo === 'DISCENTE')
   @IsNotEmpty({ message: 'A matrícula é obrigatória para discentes.' })
-  @Type(() => Number)
-  @IsNumber(undefined, { message: 'A matrícula deve conter apenas números.' })
+  @Type(() => String)
+  @IsString({ message: 'A matrícula deve ser um texto.' })
   @Matches(/^\d{9}$/, {
     message: 'A matrícula deve conter exatamente 9 dígitos numéricos.',
   })
   @ApiProperty({
     description: 'Matrícula do usuário (obrigatória para discentes)',
-    example: 123456789,
+    example: '123456789',
   })
-  matricula?: number;
+  matricula?: string;
 
   @IsString()
   @IsNotEmpty()
