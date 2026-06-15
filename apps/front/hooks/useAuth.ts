@@ -40,7 +40,7 @@ export function useAuth() {
   const logout = () => {
     localStorage.removeItem("conecta_unb_token");
     setUser(null);
-    router.push("/login");
+    router.push("/");
   };
 
   return { user, loading, logout };

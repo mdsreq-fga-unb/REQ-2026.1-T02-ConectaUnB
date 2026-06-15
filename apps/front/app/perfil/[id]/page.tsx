@@ -7,138 +7,19 @@ import { useAuth } from "@/hooks/useAuth";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-
-const CAMPUS_OPTIONS = [
-  { value: "DARCY", label: "Darcy Ribeiro" },
-  { value: "CEILANDIA", label: "Ceilândia" },
-  { value: "GAMA", label: "Gama" },
-  { value: "PLANALTINA", label: "Planaltina" },
-];
-
-const CURSO_OPTIONS = [
-  { value: "ADMINISTRACAO", label: "Administração" },
-  { value: "AGRONOMIA", label: "Agronomia" },
-  { value: "ARQUITETURA_E_URBANISMO", label: "Arquitetura e Urbanismo" },
-  { value: "ARQUIVOLOGIA", label: "Arquivologia" },
-  { value: "ARTES_CENICAS", label: "Artes Cênicas" },
-  { value: "ARTES_CENICAS_INTERPRETACAO_TEATRAL", label: "Artes Cênicas - Interpretação Teatral" },
-  { value: "ARTES_VISUAIS", label: "Artes Visuais" },
-  { value: "BIBLIOTECONOMIA", label: "Biblioteconomia" },
-  { value: "BIOTECNOLOGIA", label: "Biotecnologia" },
-  { value: "CIENCIA_DA_COMPUTACAO", label: "Ciência da Computação" },
-  { value: "CIENCIA_POLITICA", label: "Ciência Política" },
-  { value: "CIENCIAS_AMBIENTAIS", label: "Ciências Ambientais" },
-  { value: "CIENCIAS_BIOLOGICAS", label: "Ciências Biológicas" },
-  { value: "CIENCIAS_CONTABEIS", label: "Ciências Contábeis" },
-  { value: "CIENCIAS_ECONOMICAS", label: "Ciências Econômicas" },
-  { value: "CIENCIAS_NATURAIS", label: "Ciências Naturais" },
-  { value: "CIENCIAS_SOCIAIS", label: "Ciências Sociais" },
-  { value: "CIENCIAS_SOCIAIS_ANTROPOLOGIA", label: "Ciências Sociais - Antropologia" },
-  { value: "CIENCIAS_SOCIAIS_LATINO_AMERICANAS", label: "Ciências Sociais Latino-Americanas" },
-  { value: "CIENCIAS_SOCIAIS_SOCIOLOGIA", label: "Ciências Sociais - Sociologia" },
-  { value: "COMPUTACAO", label: "Computação" },
-  { value: "COMUNICACAO_SOCIAL_AUDIOVISUAL", label: "Comunicação Social - Audiovisual" },
-  { value: "COMUNICACAO_SOCIAL_COMUNICACAO_ORGANIZACIONAL", label: "Comunicação Social - Comunicação Organizacional" },
-  { value: "COMUNICACAO_SOCIAL_PUBLICIDADE_E_PROPAGANDA", label: "Comunicação Social - Publicidade e Propaganda" },
-  { value: "DESIGN_PROGRAMACAO_VISUAL", label: "Design - Programação Visual" },
-  { value: "DESIGN_PROJETO_DO_PRODUTO", label: "Design - Projeto do Produto" },
-  { value: "DIREITO", label: "Direito" },
-  { value: "EDUCACAO_DO_CAMPO_CIENCIAS_DA_NATUREZA", label: "Educação do Campo - Ciências da Natureza" },
-  { value: "EDUCACAO_DO_CAMPO_CIENCIAS_DA_NATUREZA_E_MATEMATICA", label: "Educação do Campo - Ciências da Natureza e Matemática" },
-  { value: "EDUCACAO_DO_CAMPO_LINGUAGENS_ARTES_E_LITERATURA", label: "Educação do Campo - Linguagens, Artes e Literatura" },
-  { value: "EDUCACAO_DO_CAMPO_MATEMATICA", label: "Educação do Campo - Matemática" },
-  { value: "EDUCACAO_FISICA", label: "Educação Física" },
-  { value: "EDUCACAO_FISICA_CICLO_BASICO", label: "Educação Física - Ciclo Básico" },
-  { value: "ENFERMAGEM", label: "Enfermagem" },
-  { value: "ENGENHARIA", label: "Engenharia" },
-  { value: "ENGENHARIA_AEROESPACIAL", label: "Engenharia Aeroespacial" },
-  { value: "ENGENHARIA_AMBIENTAL", label: "Engenharia Ambiental" },
-  { value: "ENGENHARIA_AMBIENTAL_E_SANITARIA", label: "Engenharia Ambiental e Sanitária" },
-  { value: "ENGENHARIA_AUTOMOTIVA", label: "Engenharia Automotiva" },
-  { value: "ENGENHARIA_CIVIL", label: "Engenharia Civil" },
-  { value: "ENGENHARIA_DE_COMPUTACAO", label: "Engenharia de Computação" },
-  { value: "ENGENHARIA_DE_ENERGIA", label: "Engenharia de Energia" },
-  { value: "ENGENHARIA_DE_PRODUCAO", label: "Engenharia de Produção" },
-  { value: "ENGENHARIA_DE_REDES_DE_COMUNICACAO", label: "Engenharia de Redes de Comunicação" },
-  { value: "ENGENHARIA_DE_SOFTWARE", label: "Engenharia de Software" },
-  { value: "ENGENHARIA_ELETRICA", label: "Engenharia Elétrica" },
-  { value: "ENGENHARIA_ELETRONICA", label: "Engenharia Eletrônica" },
-  { value: "ENGENHARIA_FLORESTAL", label: "Engenharia Florestal" },
-  { value: "ENGENHARIA_MECANICA", label: "Engenharia Mecânica" },
-  { value: "ENGENHARIA_MECATRONICA_CONTROLE_E_AUTOMACAO", label: "Engenharia Mecatrônica - Controle e Automação" },
-  { value: "ENGENHARIA_QUIMICA", label: "Engenharia Química" },
-  { value: "ESTATISTICA", label: "Estatística" },
-  { value: "FARMACIA", label: "Farmácia" },
-  { value: "FILOSOFIA", label: "Filosofia" },
-  { value: "FISICA", label: "Física" },
-  { value: "FISICA_COMPUTACIONAL", label: "Física Computacional" },
-  { value: "FISIOTERAPIA", label: "Fisioterapia" },
-  { value: "FONOAUDIOLOGIA", label: "Fonoaudiologia" },
-  { value: "GEOFISICA", label: "Geofísica" },
-  { value: "GEOGRAFIA", label: "Geografia" },
-  { value: "GEOLOGIA", label: "Geologia" },
-  { value: "GESTAO_AMBIENTAL", label: "Gestão Ambiental" },
-  { value: "GESTAO_DE_AGRONEGOCIOS", label: "Gestão de Agronegócios" },
-  { value: "GESTAO_DE_POLITICAS_PUBLICAS", label: "Gestão de Políticas Públicas" },
-  { value: "GESTAO_DO_AGRONEGOCIO", label: "Gestão do Agronegócio" },
-  { value: "HISTORIA", label: "História" },
-  { value: "INTELIGENCIA_ARTIFICIAL", label: "Inteligência Artificial" },
-  { value: "JORNALISMO", label: "Jornalismo" },
-  { value: "LETRAS_LINGUA_E_LITERATURA_JAPONESA", label: "Letras - Língua e Literatura Japonesa" },
-  { value: "LETRAS_LINGUA_ESPANHOLA_E_LITERATURA_ESPANHOLA_E_HISPANO_AMERICANA", label: "Letras - Língua Espanhola e Literaturas" },
-  { value: "LETRAS_LINGUA_FRANCESA_E_RESPECTIVA_LITERATURA", label: "Letras - Língua Francesa e Literatura" },
-  { value: "LETRAS_LINGUA_INGLESA_E_RESPECTIVA_LITERATURA", label: "Letras - Língua Inglesa e Literatura" },
-  { value: "LETRAS_LINGUA_PORTUGUESA_E_RESPECTIVA_LITERATURA", label: "Letras - Língua Portuguesa e Literatura" },
-  { value: "LETRAS_PORTUGUES_DO_BRASIL_COMO_SEGUNDA_LINGUA", label: "Letras - Português do Brasil como Segunda Língua" },
-  { value: "LETRAS_TRADUCAO_ESPANHOL", label: "Letras - Tradução Espanhol" },
-  { value: "LETRAS_TRADUCAO_FRANCES", label: "Letras - Tradução Francês" },
-  { value: "LETRAS_TRADUCAO_INGLES", label: "Letras - Tradução Inglês" },
-  { value: "LINGUA_DE_SINAIS_BRASILEIRA_PORTUGUES_COMO_SEGUNDA_LINGUA", label: "Língua de Sinais Brasileira/Português" },
-  { value: "LINGUAS_ESTRANGEIRAS_APLICADAS_MSI", label: "Línguas Estrangeiras Aplicadas (MSI)" },
-  { value: "MATEMATICA", label: "Matemática" },
-  { value: "MEDICINA", label: "Medicina" },
-  { value: "MEDICINA_VETERINARIA", label: "Medicina Veterinária" },
-  { value: "MUSEOLOGIA", label: "Museologia" },
-  { value: "MUSICA", label: "Música" },
-  { value: "MUSICA_CANTO", label: "Música - Canto" },
-  { value: "MUSICA_CLARINETA", label: "Música - Clarineta" },
-  { value: "MUSICA_COMPOSICAO", label: "Música - Composição" },
-  { value: "MUSICA_CONTRABAIXO", label: "Música - Contrabaixo" },
-  { value: "MUSICA_FAGOTE", label: "Música - Fagote" },
-  { value: "MUSICA_FLAUTA", label: "Música - Flauta" },
-  { value: "MUSICA_OBOE", label: "Música - Oboé" },
-  { value: "MUSICA_PIANO", label: "Música - Piano" },
-  { value: "MUSICA_REGENCIA", label: "Música - Regência" },
-  { value: "MUSICA_SAXOFONE", label: "Música - Saxofone" },
-  { value: "MUSICA_TROMBONE", label: "Música - Trombone" },
-  { value: "MUSICA_TROMPA", label: "Música - Trompa" },
-  { value: "MUSICA_TROMPETE", label: "Música - Trompete" },
-  { value: "MUSICA_VIOLA", label: "Música - Viola" },
-  { value: "MUSICA_VIOLAO", label: "Música - Violão" },
-  { value: "MUSICA_VIOLINO", label: "Música - Violino" },
-  { value: "MUSICA_VIOLONCELO", label: "Música - Violoncelo" },
-  { value: "NUTRICAO", label: "Nutrição" },
-  { value: "ODONTOLOGIA", label: "Odontologia" },
-  { value: "PSICOLOGIA", label: "Psicologia" },
-  { value: "QUIMICA", label: "Química" },
-  { value: "QUIMICA_TECNOLOGICA", label: "Química Tecnológica" },
-  { value: "RELACOES_INTERNACIONAIS", label: "Relações Internacionais" },
-  { value: "SAUDE_COLETIVA", label: "Saúde Coletiva" },
-  { value: "SERVICO_SOCIAL", label: "Serviço Social" },
-  { value: "TEATRO", label: "Teatro" },
-  { value: "TEORIA_CRITICA_E_HISTORIA_DA_ARTE", label: "Teoria, Crítica e História da Arte" },
-  { value: "TURISMO", label: "Turismo" }
-];
+import { CAMPUS_OPTIONS, CURSO_OPTIONS, DEPARTAMENTO_OPTIONS } from "@/constants/options";
 
 export default function PerfilPage() {
 
   const { user } = useAuth();
+  const { logout } = useAuth();
   const router = useRouter();
 
   const params = useParams();
   const profileId = params.id;
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+  const [isModalLogoutOpen, setIsModalLogoutOpen] = useState(false);
 
   const isOwner = user?.sub === profileId;
 
@@ -150,26 +31,33 @@ export default function PerfilPage() {
     matricula: "",
     campus: "",
     curso: "",
+    departamento: "",
   });
 
-  useEffect(() => {
-    const fetchDados = async () => {
-      try {
-        const resPerfil = await api.get(`/perfil/${profileId}`);
-        setFormData(resPerfil.data);
-        const resSeguindo = await api.get(`/perfil/seguindo/${profileId}`);
-        setProjetosSeguidos(resSeguindo.data);
-      } catch (error: any) {
-        console.error("Erro ao carregar perfil:", error);
-        toast.error("Ocorreu um erro ao carregar o perfil.");
-        router.push("/");
-      }
-    };
 
+  const fetchDados = async () => {
+    try {
+      const resPerfil = await api.get(`/perfil/${profileId}`);
+      setFormData(resPerfil.data);
+      const resSeguindo = await api.get(`/perfil/seguindo/${profileId}`);
+      setProjetosSeguidos(resSeguindo.data);
+    } catch (error: any) {
+      console.error("Erro ao carregar perfil:", error);
+      toast.error("Ocorreu um erro ao carregar o perfil.");
+      router.push("/");
+    }
+  };
+
+  useEffect(() => {
     if (profileId) {
       fetchDados();
     }
   }, [profileId, router]);
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    fetchDados();
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -210,6 +98,12 @@ const handleDelete = async () => {
       toast.error("Ocorreu um erro ao tentar excluir o perfil.");
     }
   };
+
+const handleLogout = () => {
+  logout();
+  toast("Sessão encerrada", { description: "Até logo!" });
+  router.push("/");
+};
 
   if (isOwner){
   return (
@@ -252,55 +146,108 @@ const handleDelete = async () => {
                 className="w-full px-5 py-2.5 bg-transparent border border-[#006633] rounded-full text-[#1D1D1D] font-medium focus:outline-none disabled:bg-gray-50 disabled:text-gray-500 transition-colors"
               />
 
+              <div className="relative w-full">
               <select
                 name="campus"
                 value={formData.campus}
                 onChange={handleChange}
                 disabled={!isEditing}
-                className="w-full px-5 py-2.5 bg-transparent border border-[#006633] rounded-full text-[#1D1D1D] font-medium focus:outline-none disabled:bg-gray-50 disabled:text-gray-500 transition-colors appearance-none"
+                // Adicionado pr-12 para dar espaço para a seta
+                className="w-full px-5 py-2.5 pr-12 bg-transparent border border-[#006633] rounded-full text-[#1D1D1D] font-medium focus:outline-none disabled:bg-gray-50 disabled:text-gray-500 transition-colors appearance-none"
               >
                 {CAMPUS_OPTIONS.map((option) => (
                   <option key={option.value} value={option.value}>{option.label}</option>
                 ))}
               </select>
+              <div className={`absolute inset-y-0 right-4 flex items-center pointer-events-none ${isEditing ? 'text-[#006633]' : 'text-gray-400'}`}>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
+            </div>
 
+            <div className="relative w-full">
+              <select
+                name="departamento"
+                value={formData.departamento}
+                onChange={handleChange}
+                disabled={!isEditing}
+                // Adicionei o appearance-none e pr-12 aqui também!
+                className="w-full px-5 py-2.5 pr-12 bg-transparent border border-[#006633] rounded-full text-[#1D1D1D] font-medium focus:outline-none disabled:bg-gray-50 disabled:text-gray-500 transition-colors appearance-none"
+              >
+                {DEPARTAMENTO_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>{option.label}</option>
+                ))}
+              </select>
+              <div className={`absolute inset-y-0 right-4 flex items-center pointer-events-none ${isEditing ? 'text-[#006633]' : 'text-gray-400'}`}>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
+            </div>
+
+            <div className="relative w-full">
               <select
                 name="curso"
                 value={formData.curso}
                 onChange={handleChange}
                 disabled={!isEditing}
-                className="w-full px-5 py-2.5 bg-transparent border border-[#006633] rounded-full text-[#1D1D1D] font-medium focus:outline-none disabled:bg-gray-50 disabled:text-gray-500 transition-colors appearance-none"
+                className="w-full px-5 py-2.5 pr-12 bg-transparent border border-[#006633] rounded-full text-[#1D1D1D] font-medium focus:outline-none disabled:bg-gray-50 disabled:text-gray-500 transition-colors appearance-none"
               >
                 {CURSO_OPTIONS.map((option) => (
                   <option key={option.value} value={option.value}>{option.label}</option>
                 ))}
               </select>
+              <div className={`absolute inset-y-0 right-4 flex items-center pointer-events-none ${isEditing ? 'text-[#006633]' : 'text-gray-400'}`}>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
+            </div>
+
             </div>
 
             {/* botões editar e excluir */}
-            <div className="flex flex-col gap-4 w-full md:w-auto">
+            <div className="flex flex-col gap-4 w-full md:w-52">
               {isEditing ? (
-                <button 
-                  onClick={handleSave} 
-                  className="px-6 py-2.5 bg-[#003366] text-white font-medium rounded-full hover:bg-[#002244] transition-colors whitespace-nowrap"
-                >
-                  Salvar Alterações
-                </button>
+                <>
+                  <button 
+                    onClick={handleSave} 
+                    className="px-6 py-2.5 bg-[#006633] text-white font-medium rounded-full hover:bg-[#004d26] transition-colors whitespace-nowrap"
+                  >
+                    Salvar Alterações
+                  </button>
+                  <button 
+                    onClick={handleCancelEdit} 
+                    className="px-6 py-2.5 bg-gray-500 text-white font-medium rounded-full hover:bg-gray-600 transition-colors whitespace-nowrap"
+                  >
+                    Cancelar
+                  </button>
+                </>
               ) : (
-                <button 
-                  onClick={toggleEditMode} 
-                  className="px-6 py-2.5 bg-[#006633] text-white font-medium rounded-full hover:bg-[#004d26] transition-colors whitespace-nowrap"
-                >
-                  Editar Perfil
-                </button>
-              )}
+                <>
+                  <button 
+                    onClick={toggleEditMode} 
+                    className="px-6 py-2.5 bg-[#006633] text-white font-medium rounded-full hover:bg-[#004d26] transition-colors whitespace-nowrap"
+                  >
+                    Editar Perfil
+                  </button>
 
-              <button 
-              className="px-6 py-2.5 bg-red-600 text-white font-medium rounded-full hover:bg-red-700 transition-colors whitespace-nowrap" 
-              onClick={() => setIsModalOpen(true)}
-              >
-                Excluir Perfil
-              </button>
+                  <button 
+                    className="px-6 py-2.5 bg-blue-800 text-white font-medium rounded-full hover:bg-blue-950 transition-colors whitespace-nowrap" 
+                    onClick={() => setIsModalLogoutOpen(true)}
+                  >
+                    Logout
+                  </button>
+
+                  <button 
+                    className="px-6 py-2.5 bg-red-600 text-white font-medium rounded-full hover:bg-red-700 transition-colors whitespace-nowrap" 
+                    onClick={() => setIsModalDeleteOpen(true)}
+                  >
+                    Excluir Perfil
+                  </button>
+                </>
+              )}
             </div>
 
           </div>
@@ -327,29 +274,52 @@ const handleDelete = async () => {
           </div>
 
         </div>
-    {isModalOpen && (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-        <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
-          <h3 className="text-lg font-bold text-gray-900">Excluir Perfil</h3>
-          <p className="mt-2 text-sm text-gray-500">Tem certeza que deseja excluir seu perfil? Esta ação é irreversível.</p>
-          
-          <div className="mt-6 flex justify-end gap-3">
-            <button 
-              onClick={() => setIsModalOpen(false)} 
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-full hover:bg-gray-200"
-            >
-              Cancelar
-            </button>
-            <button 
-              onClick={handleDelete} 
-              className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-full hover:bg-red-700"
-            >
-              Confirmar Exclusão
-            </button>
-          </div>
-        </div>
-      </div>
-    )}
+          {isModalDeleteOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+              <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+                <h3 className="text-lg font-bold text-gray-900">Excluir Perfil</h3>
+                <p className="mt-2 text-sm text-gray-500">Tem certeza que deseja excluir seu perfil? Esta ação é irreversível.</p>
+                
+                <div className="mt-6 flex justify-end gap-3">
+                  <button 
+                    onClick={() => setIsModalDeleteOpen(false)} 
+                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-full hover:bg-gray-200"
+                  >
+                    Cancelar
+                  </button>
+                  <button 
+                    onClick={handleDelete} 
+                    className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-full hover:bg-red-700"
+                  >
+                    Confirmar Exclusão
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+          {isModalLogoutOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+              <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+                <h3 className="text-lg font-bold text-gray-900">Sair da Conta</h3>
+                <p className="mt-2 text-sm text-gray-500">Tem certeza que deseja sair da sua conta? Você precisará fazer login novamente.</p>
+                
+                <div className="mt-6 flex justify-end gap-3">
+                  <button 
+                    onClick={() => setIsModalLogoutOpen(false)} 
+                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-full hover:bg-gray-200"
+                  >
+                    Cancelar
+                  </button>
+                  <button 
+                    onClick={handleLogout} 
+                    className="px-4 py-2 text-sm font-medium text-white bg-blue-800 rounded-full hover:bg-blue-950"
+                  >
+                    Confirmar Saída
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
       </main>
 
     </div>

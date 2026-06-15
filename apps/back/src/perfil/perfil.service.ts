@@ -6,7 +6,7 @@ import { NotFoundException } from '@nestjs/common';
 
 const perfilSelectPublico = {
   id: true,
-  nome: true,
+  name: true,
   email: true,
   matricula: true,
   curso: true,
