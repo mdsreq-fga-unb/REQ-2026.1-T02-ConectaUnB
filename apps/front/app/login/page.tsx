@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import axios from "axios";
 import { useRouter } from "next/navigation";
+import { api } from "../../guards/api";
+import { useAuth } from "../../hooks/useAuth";
+import AuthBanner from "@/components/auth/AuthBanner";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -15,6 +17,14 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [showSenha, setShowSenha] = useState(false);
 
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      router.push("/");
+    }
+  }, [user, router]);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErro("");
@@ -24,17 +34,22 @@ export default function LoginPage() {
       return;
     }
 
-    try {
+try {
       setLoading(true);
       
-      const response = await axios.post("http://localhost:3000/auth/login", {
+      const response = await api.post("/auth/login", {
         email: email.trim(),
         senha: senha,
       });
 
-      console.log("Login realizado com sucesso!", response.data);
+      const token = response.data?.access_token;
 
-      router.push("/");
+      if (token) {
+        localStorage.setItem("conecta_unb_token", token);
+        api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      }
+
+      router.push("/"); 
 
     } catch (error: unknown) {
       const err = error as { response?: { data?: { message?: string | string[] }; status?: number } };
@@ -55,19 +70,8 @@ export default function LoginPage() {
 
   return (
     <main className="min-h-screen grid grid-cols-1 md:grid-cols-2 text-[#1D1D1D]">
-      <section className="hidden md:flex flex-col items-center justify-center bg-[#003366] relative overflow-hidden">
-        <div className="absolute inset-0 opacity-30 bg-[url('/fundoGeometrico.svg')] bg-[length:100%] bg-[position:0%_35%] bg-no-repeat" />
-        <div className="relative z-10 bg-white p-8 rounded-xl shadow-2xl">
-          <Image
-            src="/logoConecta.svg"
-            alt="Logo Conecta UnB"
-            width={250}
-            height={250}
-            priority
-            className="w-auto h-auto"
-          />
-        </div>
-      </section>
+        
+        <AuthBanner/>
 
       {/* Seção do Formulário de Login */}
       <section className="flex flex-col items-center justify-center bg-white p-8 sm:p-12">
