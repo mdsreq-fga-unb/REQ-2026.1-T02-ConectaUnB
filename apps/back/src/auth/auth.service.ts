@@ -16,7 +16,7 @@ export class AuthService {
     password: string;
     name: string;
     cargo: Cargo;
-    matricula?: number;
+    matricula?: string;
     curso: Curso;
     departamento: Departamento;
     campus: Campus;
