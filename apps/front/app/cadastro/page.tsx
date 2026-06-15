@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { api } from "../Guards/api";
+import { api } from "../../guards/api";
 import {useRouter} from "next/navigation";
+import { useAuth } from "../../hooks/useAuth";
 
 // enums UnB (Campus, Departamentos, cursos)
 export const CAMPUS_OPTIONS = [
@@ -156,6 +157,8 @@ export default function CadastroPage() {
 
   const router = useRouter();
 
+  const { user } = useAuth();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -174,6 +177,12 @@ export default function CadastroPage() {
   const [showSenha, setShowSenha] = useState(false);
   const [showConfirmSenha, setShowConfirmSenha] = useState(false);
 
+  useEffect(() => {
+    if (user) {
+      router.push("/");
+    }
+  }, [user, router]);
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));

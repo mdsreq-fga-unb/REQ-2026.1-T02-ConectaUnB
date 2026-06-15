@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { api } from "../Guards/api";
+import { api } from "../../guards/api";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -14,6 +15,14 @@ export default function LoginPage() {
   const [erro, setErro] = useState("");
   const [loading, setLoading] = useState(false);
   const [showSenha, setShowSenha] = useState(false);
+
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      router.push("/");
+    }
+  }, [user, router]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
