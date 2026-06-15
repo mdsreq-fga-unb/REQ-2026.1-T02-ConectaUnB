@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import axios from "axios";
+import { api } from "../Guards/api";
 import {useRouter} from "next/navigation";
 
 // enums UnB (Campus, Departamentos, cursos)
@@ -266,7 +266,7 @@ export default function CadastroPage() {
     }
 
     try {
-      const response = await axios.post("http://localhost:3000/auth/register", payloadFinal);
+      const response = await api.post("/auth/register", payloadFinal);
       console.log("Sucesso!", response.data);
       setSubmitSuccess(true);
       router.push("/login");

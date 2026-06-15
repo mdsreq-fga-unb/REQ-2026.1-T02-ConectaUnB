@@ -3,8 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import axios from "axios";
 import { useRouter } from "next/navigation";
+import { api } from "../Guards/api";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -24,17 +24,22 @@ export default function LoginPage() {
       return;
     }
 
-    try {
+try {
       setLoading(true);
       
-      const response = await axios.post("http://localhost:3000/auth/login", {
+      const response = await api.post("/auth/login", {
         email: email.trim(),
         senha: senha,
       });
 
-      console.log("Login realizado com sucesso!", response.data);
+      const token = response.data?.access_token;
 
-      router.push("/");
+      if (token) {
+        localStorage.setItem("conecta_unb_token", token);
+        api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      }
+
+      router.push("/"); 
 
     } catch (error: unknown) {
       const err = error as { response?: { data?: { message?: string | string[] }; status?: number } };
