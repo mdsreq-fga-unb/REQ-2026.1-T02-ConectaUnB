@@ -35,3 +35,5 @@ Evidências do formulário para os critérios de aceitação.
 ![Evidência 31](evidencias/CA/CA31.png)
 ![Evidência 32](evidencias/CA/CA32.png)
 ![Evidência 33](evidencias/CA/CA33.png)
+
+**OBS:** A divergência na tela de notificação e tela de projetos já foi resolvida com o stakeholder, houve apenas um mal entendido.

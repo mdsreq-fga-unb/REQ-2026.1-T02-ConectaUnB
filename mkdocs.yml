@@ -27,13 +27,21 @@ nav:
       - "Engenharia de Requisitos": visaoDeProdutoProjeto/engenhariaDeRequisitos.md
       - "Cronograma": visaoDeProdutoProjeto/cronograma.md
       - "Interação entre equipe e cliente": visaoDeProdutoProjeto/interacao.md
-      - "Requisitos de Software": visaoDeProdutoProjeto/requisitosDeSoftware.md
+      # - "Requisitos de Software": visaoDeProdutoProjeto/requisitosDeSoftware.md
       - "DoR e Dod": visaoDeProdutoProjeto/DoReDod.md
-      - "Backlog do Produto": visaoDeProdutoProjeto/backlog.md
+      # - "Backlog do Produto": visaoDeProdutoProjeto/backlog.md
       - "Lições Aprendidas": 
         - "Unidade 1": visaoDeProdutoProjeto/licoes/unidade1.md
         - "Unidade 2": visaoDeProdutoProjeto/licoes/unidade2.md
   
+  - Requisitos:
+      - "Requisitos Funcionais": requisitos/requisitosFuncionais.md
+      - "Requisitos Não Funcionais": requisitos/requisitosNaoFuncionais.md
+      - "Representação (Telas)": requisitos/representacao.md
+      - "Matriz de Rastreabilidade": requisitos/matrizRastreabilidade.md
+      - "Priorização de Requisitos": requisitos/priorizacao.md
+      - "Backlog do Produto": requisitos/backlog.md
+
   - Apresentações:
       - Apresentação 1: entregas/entrega1.md
       - Apresentação 2: entregas/unidade2.md
