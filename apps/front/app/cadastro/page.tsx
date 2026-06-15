@@ -5,6 +5,7 @@ import Image from "next/image";
 import { api } from "../../guards/api";
 import {useRouter} from "next/navigation";
 import { useAuth } from "../../hooks/useAuth";
+import AuthBanner from "@/components/auth/AuthBanner";
 
 // enums UnB (Campus, Departamentos, cursos)
 export const CAMPUS_OPTIONS = [
@@ -303,19 +304,7 @@ export default function CadastroPage() {
   return (
     <main className="min-h-screen grid grid-cols-1 md:grid-cols-2 text-[#1D1D1D]">
 
-      <section className="hidden md:flex flex-col items-center justify-center bg-[#003366] relative overflow-hidden">
-        <div className="absolute inset-0 opacity-30 bg-[url('/fundoGeometrico.svg')] bg-[length:100%] bg-[position:0%_35%] bg-no-repeat" />
-        <div className="relative z-10 bg-white p-8 rounded-xl shadow-2xl">
-          <Image
-            src="/logoConecta.svg"
-            alt="Logo Conecta UnB"
-            width={250}
-            height={250}
-            priority
-            className="w-auto h-auto"
-          />
-        </div>
-      </section>
+      <AuthBanner/>
 
       <section className="flex flex-col items-center justify-center bg-white p-8 sm:p-12">
         <div className="w-full max-w-md space-y-8">
