@@ -3,3 +3,27 @@ venv/
 .venv/
 *.sh
 *.txt
+
+# Dependências do Node e pnpm
+node_modules/
+.pnpm-store/
+
+# Builds e cache do Turborepo/Next/Nest
+dist/
+.next/
+.turbo/
+out/
+build/
+coverage/
+
+# Logs e arquivos de sistema
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.DS_Store
+
+# Variáveis de ambiente 
+.env
+.env.prod
+.env*.local
