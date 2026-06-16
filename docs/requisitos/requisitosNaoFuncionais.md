@@ -1,3 +1,13 @@
+## Introdução
+
+Os requisitos não funcionais elencados estão dispostos abaixo, eles foram elaborados e descobertos a partir de entrevistas com os stakeholders, sendo alocadas 3 entrevistas diferentes para que todos pudessem participar ( [Entrevista-24/04](../userDesign/Fase1/analiseEntrevista24-04.md), [Entrevista-29/04](../userDesign/Fase1/analiseEntrevista29-04.md), [Entrevista-30/04](../userDesign/Fase1/analiseEntrevista30-04.md) ). Ao final de cada entrevista há um conjunto primário de requisitos elencados, oriundos daquela entrevista, que podem ser acessados abaixo:
+
+- [Requisitos Entrevista-24/04](../../userDesign/Fase1/analiseEntrevista24-04/#requisitos-identificados)
+- [Requisitos Entrevista-29/04](../../userDesign/Fase1/analiseEntrevista29-04/##requisitos-identificados)
+- [Requisitos Entrevista-30/04](../../userDesign/Fase1/analiseEntrevista30-04/##requisitos-identificados)
+
+Todos os Requisitos foram validados com os stakeholders por meio de uma [reunião](../userDesign/Fase2/entrevista1.md) e por meio de um [formulário](../userDesign/Fase2/evidenciasForms.md) do google forms em que validaram e classificaram sua importância de 1 a 5.
+
 ## Requisitos não funcionais (RNFs)
 
 | Cod | Classificação URPS+/Sommervile | Nome | Texto descritivo | Característica do produto | Rastreabiliade | Critérios de aceitação |
@@ -11,3 +21,6 @@
 | **RNF-07** | Requisito externo | Coleta de métricas de acordo com LGPD | As coletas de dados para métricas devem ser realizadas de maneira anonimizada e é necessário avisar ao usuário que esta informação será coletada | CP9<br>Privacidade e conformidade com LGPD | LGPD | **CA1:** O usuário deve concordar com as políticas de privacidade da aplicação antes de se cadastrar |
 | **RNF-08** | Requisito externo | Criptografar senhas dos usuários | O sistema deve criptografar os senhas dos usuários. | CP9<br>Privacidade e conformidade com LGPD | LGPD | **CA1:** Todas as senhas devem ser salvas de forma irreversível no banco de dados utilizando função de hash (bcrypt padrão do NestJS). |
 | **RNF-09** | Usabilidade | Notificar usuários | O sistema deve enviar uma notificação sempre que houver alteração de status em uma entidade que o usuário segue. | CP8<br>Notificação para os usuários | RF-1-03 RF-2-06 | **CA01:** Quando uma entidade sofrer alteração de dados ou de status, o sistema deve identificar os usuários que a seguem.<br> **CA02:** O sistema deve disparar a notificação em até 5 minutos após a atualização da entidade. |
+
+## Esquemas Visuais
+

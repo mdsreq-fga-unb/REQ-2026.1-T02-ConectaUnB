@@ -1,23 +1,7 @@
 ## Evidências Critérios de aceitação
 
-Evidências do formulário para os critérios de aceitação.
+Evidências do formulário para validação dos prótotipos criados após a primeira versão.
 
-![Evidência 1](evidencias/CA/CA1.png)
-![Evidência 2](evidencias/CA/CA2.png)
-![Evidência 3](evidencias/CA/CA3.png)
-![Evidência 4](evidencias/CA/CA4.png)
-![Evidência 5](evidencias/CA/CA5.png)
-![Evidência 6](evidencias/CA/CA6.png)
-![Evidência 7](evidencias/CA/CA7.png)
-![Evidência 8](evidencias/CA/CA8.png)
-![Evidência 9](evidencias/CA/CA9.png)
-![Evidência 10](evidencias/CA/CA10.png)
-![Evidência 11](evidencias/CA/CA11.png)
-![Evidência 12](evidencias/CA/CA12.png)
-![Evidência 13](evidencias/CA/CA13.png)
-![Evidência 14](evidencias/CA/CA14.png)
-![Evidência 15](evidencias/CA/CA15.png)
-![Evidência 16](evidencias/CA/CA16.png)
 ![Evidência 17](evidencias/CA/CA17.png)
 ![Evidência 18](evidencias/CA/CA18.png)
 ![Evidência 19](evidencias/CA/CA19.png)

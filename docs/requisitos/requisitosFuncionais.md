@@ -1,3 +1,17 @@
+## Introdução
+
+Os requisitos elencados estão dispostos abaixo, eles foram elaborados e descobertos a partir de entrevistas com os stakeholders, sendo alocadas 3 entrevistas diferentes para que todos pudessem participar ( [Entrevista-24/04](../userDesign/Fase1/analiseEntrevista24-04.md), [Entrevista-29/04](../userDesign/Fase1/analiseEntrevista29-04.md), [Entrevista-30/04](../userDesign/Fase1/analiseEntrevista30-04.md) ). Ao final de cada entrevista há um conjunto primário de requisitos elencados, oriundos daquela entrevista, que podem ser acessados abaixo:
+
+- [Requisitos Entrevista-24/04](../../userDesign/Fase1/analiseEntrevista24-04/#requisitos-identificados)
+- [Requisitos Entrevista-29/04](../../userDesign/Fase1/analiseEntrevista29-04/##requisitos-identificados)
+- [Requisitos Entrevista-30/04](../../userDesign/Fase1/analiseEntrevista30-04/##requisitos-identificados)
+
+Todos os Requisitos foram validados com os stakeholders por meio de uma [reunião](../userDesign/Fase2/entrevista1.md) e por meio de um [formulário](../userDesign/Fase2/evidenciasForms.md) do google forms em que validaram e classificaram sua importância de 1 a 5.
+
+As evidências de Validação dos Critŕios de Aceitação estão disponíveis na [Fase 3](../userDesign/Fase3/CA/evidenciasCA1.md).
+
+Os requisitos estão devidamente representados por meio de telas e protótipos visuais estabelecidos em [Representação](../requisitos/representacao.md).
+
 ## Requisitos funcionais (RFs)
 
 | Cod | Nome | Texto estruturado | Característica do produto | Rastreabilidade Entrevistas | Critérios de aceitação |
@@ -47,3 +61,5 @@
 | **RF-32** | Exibir métricas de engajamento para publicações | O sistema deve mostrar métricas de interações para cada publicação. | CP3<br>Métricas de Engajamento | RF-2-07 | **CA1:** O sistema deve apresentar o total de interações em cada publicação.<br> **CA2:** Os dados de interação devem ser atualizados dinamicamente ou quando houver recarregamento do conteúdo. |
 | **INTEGRAÇÃO** |  |  |  |  |  |
 | **RF-33** | Importar posts de outras redes | O sistema deve permitir importar publicações de redes sociais externas integradas pelo usuário. | CP4<br>Publicações independentes | RF-1-04 | **CA01:** O sistema deve permitir que o usuário vincule sua conta em uma rede externa, como LinkedIn ou Instagram.<br> **CA02:** Após a integração, o sistema deve listar os posts recentes da rede externa para que o usuário escolha quais deseja importar.<br> **CA03:** O post importado deve manter o texto original e as imagens associadas. |
+
+## Esquema Visual

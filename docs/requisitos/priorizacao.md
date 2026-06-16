@@ -1,4 +1,10 @@
-### Relação de Funcionalidades por Valor - Notas médias no Forms
+## Introdução
+
+Neste artefato explicamos em detalhes a priorização dos requisitos elencados, bom como o detalhamento de cada passo.
+
+## Relação de Funcionalidades por Valor - Notas médias no Forms
+
+Os critérios utilizados estão descritos em Valor de Negócio.
 
 | Funcionalidade | Nota Média |
 | :--- | :---: |
@@ -36,8 +42,6 @@ O quadro foi feito na plataforma miro e pode ser acessado [clicando aqui](https:
 
 ### Quadro valor de negócio x esforço da equipe
 ![Quadro valor de negócio x esforço da equipe](../assets/fotos/valorXesforco/matrix.png)
-
-
 
 ### Maior valor de negócio e menor esforço
 

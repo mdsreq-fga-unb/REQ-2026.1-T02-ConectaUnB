@@ -1,3 +1,7 @@
+## Introdução
+
+Neste artefato fazemos a rastreabilidade de ponta a ponta do projeto mostrando a origem de cada elemento criado.
+
 ## Matriz de rastreabilidade
 
 | Contribuição<br>principal | Contribuição<br>secundária | CP | VN | RFs relacionados | RNFs relacionados |
@@ -11,3 +15,5 @@
 | OE3 - Promover o portfólio de projetos e tecnologias da universidade para a sociedade civil e o mercado externo | OE2 - Democratizar e reduzir as barreiras de acesso e busca por meio de navegação pública | CP7 - Portal de Acesso Público | VN7 - Ampliação da visibilidade institucional para a sociedade, mantendo a democratização do acesso interno. | - | RNF-01: Acessar plataforma sem login<br>RNF-02: Facilidade no uso<br>RNF-03: Manter consistência visual<br>RNF-04: Garantir responsividade<br>RNF-05: Uso mobile e desktop<br>RNF-06: Carregamento rápido de páginas |
 | OE2 - Democratizar e reduzir as barreiras de acesso e busca por meio de navegação pública | OE4 - Proporcionar ao titular do projeto métricas de engajamento | CP8 - Notificação para os usuários | VN5 - Melhoria do processo interno de descoberta de projetos por parte dos alunos. | RF-30: Personalizar conteúdos de notificação | RNF-07: Coleta de métricas de acordo com LGPD<br>RNF-09: Notificar usuários |
 | OE2 - Democratizar e reduzir as barreiras de acesso e busca por meio de navegação pública | OE1 - Fornecer um canal unificado e padronizado para a publicação de processos seletivos e ações das entidades | CP9 - Privacidade e conformidade com LGPD | VN8 - Redução de riscos relacionados à segurança | - | RNF-07: Coleta de métricas de acordo com LGPD<br>RNF-08: Criptografar dados sensíveis de usuários e entidades |
+
+## Esquemas Visuais
