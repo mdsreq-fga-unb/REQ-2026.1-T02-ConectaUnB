@@ -3,7 +3,7 @@ name: Deploy Entrega 3
 on:
   push:
     branches:
-      - developer
+      - entrega3
 
 jobs:
   deploy:

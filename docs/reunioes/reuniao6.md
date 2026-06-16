@@ -1,0 +1,3 @@
+# Reunião 6 - 11/05
+
+Nesta reunião não houve a gravação padrão, entretanto discutimos sobre os requisitos descobertos e buscamos organizá-los de meneira lógica. Além disso houve uma preocupação em coloca-los no mesmo nível de detalhamento. O documento que elaboramos durante a reunião está descrito no link: [acessar documento](https://docs.google.com/document/d/1QsFfmL5FMP5A7kjXHxyOQa5B_1vP-8fg-3C_th18enE/edit?usp=sharing).
