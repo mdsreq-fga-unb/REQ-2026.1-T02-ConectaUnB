@@ -31,9 +31,9 @@ O objetivo geral do produto é facilitar o engajamento acadêmico através da ce
 Com base nos requisitos levantados, no mapa de stakeholders e no rich picture elaborados durante a etapa de elicitação, foi construído o diagrama de contexto do ConectaUnB, representado na Figura 1. O diagrama apresenta o sistema como uma caixa preta, evidenciando suas fronteiras de atuação e os principais atores e sistemas externos que interagem com a plataforma, bem como os fluxos de informação trocados entre eles.
 
 <div align="center">
-  <p class="table-source"><strong>Figura 3</strong> - Diagrama de Contexto do ConectaUnB</p>
+  <p class="table-source"><strong>Figura 1</strong> - Diagrama de Contexto do ConectaUnB</p>
 
-  <img src="../assets/fotos/soluçãoProposta/DiagramaContexto.png" alt="Diagrama de Contexto">
+  <img src="../../assets/fotos/soluçãoProposta/DiagramaContexto.png" alt="Diagrama de Contexto">
 
 </div>
 
