@@ -1,0 +1,96 @@
+:root > * {
+  --md-primary-fg-color: #003A7A !important;
+  --md-primary-fg-color--light: #008137 !important; 
+  --md-primary-fg-color--dark: #008137 !important;
+}
+
+.md-typeset p, 
+.md-typeset li {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.md-typeset ul li, 
+.md-typeset ol li {
+    margin-bottom: 0.5em;
+}
+
+.md-typeset table td:first-child img {
+    width: 60px;          
+    height: auto;         
+    object-fit: contain;  
+    vertical-align: middle;
+    padding: 5px;
+}
+
+.md-typeset table td:first-child {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.table-caption, 
+.table-source {
+    text-align: center !important;
+    display: block;
+    width: 100%;
+}
+
+.table-caption strong, 
+.table-caption b {
+    display: inline-block;
+}
+
+/* Cor do link para o MODO CLARO (fundo branco) */
+[data-md-color-scheme="default"] .md-typeset a {
+    color: #004c9e; /* Azul escuro para legibilidade no branco */
+}
+
+/* Cor do link para o MODO ESCURO (fundo preto/slate) */
+[data-md-color-scheme="slate"] .md-typeset a {
+    color: #7cacff; /* Um azul mais claro/vivo para brilhar no fundo escuro */
+}
+
+/* Estilos comuns para ambos os modos */
+.md-typeset a {
+    text-decoration: underline;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+/* Aplica o brilho apenas em links que NÃO são do GLightbox */
+.md-typeset a:not(.glightbox):hover {
+    filter: brightness(1.3);
+}
+
+/* 1. Remove clareamento e filtros de brilho */
+.md-typeset a img,
+.md-typeset a:hover img,
+.md-typeset a:focus img,
+.glightbox:hover img {
+    opacity: 1 !important;
+    filter: none !important;
+    -webkit-filter: none !important;
+    transition: none !important;
+}
+
+/* 2. Remove o "overlay" que o Material coloca no fundo do link */
+.md-typeset a.glightbox,
+.md-typeset a.glightbox:hover,
+.md-typeset a.glightbox:focus {
+    background-color: transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* 3. Garante que o cursor seja apenas a lupa */
+.md-typeset img {
+    cursor: zoom-in !important;
+}
+
+/* Estilo padronizado para as fotos da equipe */
+.foto-equipe {
+    width: 100px !important;  /* Largura fixa */
+    height: 100px !important; /* Altura fixa */
+    object-fit: cover;        /* Corta o excesso sem distorcer a imagem */
+    margin: 0 auto;           /* Centraliza a imagem na célula */
+}
