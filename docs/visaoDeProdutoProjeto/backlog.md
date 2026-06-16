@@ -1,7 +1,5 @@
 ## Backlog
 
-A fase de desenvolvimento atual do backlog pode ser vista a partir do [Projects do Projeto](https://github.com/orgs/mdsreq-fga-unb/projects/99/views/1) ou a partir das evidências descritas na [Fase 3](../../userDesign/Fase3/Codigo/evidenciasCodigoFonte1/)
-
 ### MVP (Quadrante 1)
 | Código | Descrição | RNFs Relacionados | Critérios de Aceitação (DoD) | Tema / Lógica |
 | :---: | :--- | :--- | :--- | :--- |
