@@ -1,10 +1,3 @@
-export const CAMPUS_OPTIONS = [
-  { value: "DARCY", label: "Darcy Ribeiro" },
-  { value: "CEILANDIA", label: "Ceilândia" },
-  { value: "GAMA", label: "Gama" },
-  { value: "PLANALTINA", label: "Planaltina" },
-];
-
 export const CURSO_OPTIONS = [
   { value: "ADMINISTRACAO", label: "Administração" },
   { value: "AGRONOMIA", label: "Agronomia" },
@@ -140,4 +133,48 @@ export const DEPARTAMENTO_OPTIONS = [
   { value: "LIP", label: "LIP" }, { value: "MAT", label: "MAT" }, { value: "MUS", label: "MUS" },
   { value: "NUT", label: "NUT" }, { value: "ODT", label: "ODT" }, { value: "SER", label: "SER" },
   { value: "SOL", label: "SOL" }, { value: "VIS", label: "VIS" }
+];
+
+export const CARGO_OPTIONS = [
+  { value: "DOCENTE", label: "Docente" },
+  { value: "DISCENTE", label: "Discente" }
+];
+
+export const CAMPUS_OPTIONS = [
+  { value: "CEILANDIA", label: "Ceilândia" },
+  { value: "GAMA", label: "Gama" },
+  { value: "DARCY", label: "Darcy" },
+  { value: "PLANALTINA", label: "Planaltina" }
+];
+
+export const ClassificacaoEntidade = [
+  { value: "EMPRESA_JUNIOR", label: "Empresa Júnior" },
+  { value: "EQUIPE_COMPETICAO", label: "Equipe de Competição" },
+  { value: "PROJETO_EXTENSAO", label: "Projeto de Extensão" },
+  { value: "ATLETICA", label: "Atletica" }
+];
+
+export const StatusProjeto = [
+  { value: "PLANEJAMENTO", label: "Em Planejamento" },
+  { value: "EM_ANDAMENTO", label: "Em Andamento" },
+  { value: "CONCLUIDO", label: "Concluído" },
+  { value: "CANCELADO", label: "Cancelado" },
+  { value: "PAUSADO", label: "Pausado" }
+];
+
+export const ClassificacaoMembro = [
+  { value: "GESTOR", label: "Gestor" },
+  { value: "CO_GESTOR", label: "Co-Gestor" },
+  { value: "MEMBRO", label: "Membro" }
+];
+
+export const ClassificacaoInscricao = [
+  { value: "ABERTA", label: "Aberta" },
+  { value: "FECHADA", label: "Fechada" }
+];
+
+export const TipoNotificacao = [
+  { value: "PROCESSO_SELETIVO", label: "Processo Seletivo" },
+  { value: "ATUALIZACAO_PROJETO", label: "Atualização de Projeto" },
+  { value: "NOVA_PUBLICACAO", label: "Nova Publicação" }
 ];

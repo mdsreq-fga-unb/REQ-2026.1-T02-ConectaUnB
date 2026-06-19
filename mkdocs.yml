@@ -4,7 +4,7 @@ site_description: Site voltado para a documentação do Grupo 5 sobre Requisitos
 repo_url: https://github.com/mdsreq-fga-unb/REQ-2026.1-T02-ConectaUnB
 repo_name: REQ-2026.1-T02-ConectaUnB
 
-site_url: https://mdsreq-fga-unb.github.io/REQ-2026.1-T02-ConectaUnB/entrega3/
+site_url: https://mdsreq-fga-unb.github.io/REQ-2026.1-T02-ConectaUnB/entrega4/
 
 nav:
   - Sobre: index.md
