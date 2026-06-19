@@ -1,0 +1,2619 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Site voltado para a documentação do Grupo 5 sobre Requisitos de Software 2026.1">
+      
+      
+        <meta name="author" content="Gabriel Diniz, Giovanna Aguiar, Gustavo Abrantes, João Pedro, Mathues Lemes, Pedro Americo">
+      
+      
+        <link rel="canonical" href="https://mdsreq-fga-unb.github.io/REQ-2026.1-T02-ConectaUnB/entrega4/userDesign/Fase1/copiaTabela/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/logoUnb.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>copiaTabela - ConectaUnB</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <link href="../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#requisitos-funcionais-rfs" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="ConectaUnB" class="md-header__button md-logo" aria-label="ConectaUnB" data-md-component="logo">
+      
+  <img src="../../../assets/logoUnb.ico" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ConectaUnB
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              copiaTabela
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo" aria-label="Trocar para modo escuro" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Trocar para modo escuro" for="__palette_1" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo" aria-label="Trocar para modo claro" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Trocar para modo claro" for="__palette_0" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required="">
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/mdsreq-fga-unb/REQ-2026.1-T02-ConectaUnB" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    REQ-2026.1-T02-ConectaUnB
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Sobre
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../reunioes/reuniao1/" class="md-tabs__link">
+          
+  
+  
+  Reuniões
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../visaoDeProdutoProjeto/cenarioAtual/" class="md-tabs__link">
+          
+  
+  
+  Visão do Produto e Projeto
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../requisitos/requisitosFuncionais/" class="md-tabs__link">
+          
+  
+  
+  Requisitos
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../entregas/entrega1/" class="md-tabs__link">
+          
+  
+  
+  Apresentações
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../analiseEntrevista24-04/" class="md-tabs__link">
+          
+  
+  
+  Entrevistas/Evidências/Entregas
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="ConectaUnB" class="md-nav__button md-logo" aria-label="ConectaUnB" data-md-component="logo">
+      
+  <img src="../../../assets/logoUnb.ico" alt="logo">
+
+    </a>
+    ConectaUnB
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/mdsreq-fga-unb/REQ-2026.1-T02-ConectaUnB" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    REQ-2026.1-T02-ConectaUnB
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sobre
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2">
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reuniões
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reuniões
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reunioes/reuniao1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reunião 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reunioes/reuniao2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reunião 2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reunioes/reuniao3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reunião 3
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reunioes/reuniao4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reunião 4
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reunioes/reuniao5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reunião 5
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3">
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visão do Produto e Projeto
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Visão do Produto e Projeto
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../visaoDeProdutoProjeto/cenarioAtual/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cenário Atual
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../visaoDeProdutoProjeto/solucaoProposta/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Solução Proposta
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../visaoDeProdutoProjeto/intervencaoSocial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Intervenção social
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../visaoDeProdutoProjeto/estrategias/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Estratégias de Engenharia de Software
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../visaoDeProdutoProjeto/engenhariaDeRequisitos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Engenharia de Requisitos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../visaoDeProdutoProjeto/cronograma/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cronograma
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../visaoDeProdutoProjeto/interacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interação entre equipe e cliente
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../visaoDeProdutoProjeto/DoReDod/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DoR e Dod
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_9">
+        
+          
+          <label class="md-nav__link" for="__nav_3_9" id="__nav_3_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lições Aprendidas
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Lições Aprendidas
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../visaoDeProdutoProjeto/licoes/unidade1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unidade 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../visaoDeProdutoProjeto/licoes/unidade2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unidade 2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4">
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Requisitos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Requisitos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../requisitos/requisitosFuncionais/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Requisitos Funcionais
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../requisitos/requisitosNaoFuncionais/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Requisitos Não Funcionais
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../requisitos/representacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Representação (Telas)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../requisitos/matrizRastreabilidade/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Matriz de Rastreabilidade
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../requisitos/priorizacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Priorização de Requisitos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../requisitos/backlog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backlog do Produto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5">
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apresentações
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Apresentações
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../entregas/entrega1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apresentação 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../entregas/unidade2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apresentação 2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6">
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entrevistas/Evidências/Entregas
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Entrevistas/Evidências/Entregas
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1">
+        
+          
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fase 1 - Requisitos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Fase 1 - Requisitos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../analiseEntrevista24-04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entrevista 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../analiseEntrevista29-04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entrevista 2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../analiseEntrevista30-04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entrevista 3
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2">
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fase 2 - User Design
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Fase 2 - User Design
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Fase2/entrevista1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entrevista 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Fase2/prototipos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Protótipo 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Fase2/evidenciasForms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evidências priorização (formulário)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Fase2/prototipos2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Protótipo 2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Fase2/evidenciasPrototipo2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Validação de protótipos (formulário)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3">
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fase 3 - Construction
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Fase 3 - Construction
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3_1">
+        
+          
+          <label class="md-nav__link" for="__nav_6_3_1" id="__nav_6_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evidências Critérios de Aceitação
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Evidências Critérios de Aceitação
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Fase3/CA/evidenciasCA1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evidências CA - Perfil e Entidade
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3_2">
+        
+          
+          <label class="md-nav__link" for="__nav_6_3_2" id="__nav_6_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evidências Código Fonte
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Evidências Código Fonte
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Fase3/Codigo/evidenciasCodigoFonte1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evidências Código Fonte - Perfil e Entidade
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#requisitos-funcionais-rfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requisitos funcionais (RFs)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#requisitos-nao-funcionais-rnfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requisitos não funcionais (RNFs)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#regras-de-negocio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Regras de negócio
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Regras de negócio">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rn-01" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RN-01
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rn-02" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RN-02
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rn-03" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RN-03
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rn-04" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RN-04
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rn-05" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RN-05
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rn-06" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RN-06
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rn-07" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RN-07
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rn-08" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RN-08
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rn-09" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RN-09
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rn-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RN-10
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rn-11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RN-11
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rn-12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RN-12
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+  <h1>copiaTabela</h1>
+
+<h2 id="requisitos-funcionais-rfs">Requisitos funcionais (RFs)</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Cod</th>
+<th style="text-align: left;">Nome</th>
+<th style="text-align: left;">Texto estruturado</th>
+<th style="text-align: left;">Objetivo Específico</th>
+<th style="text-align: center;">Característica do produto</th>
+<th style="text-align: center;">Valor de negócio (VN) principal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">RF-1-01</td>
+<td style="text-align: left;">Filtrar processos seletivos abertos</td>
+<td style="text-align: left;">O sistema deve permitir filtrar procesos seletivos abertos</td>
+<td style="text-align: left;">OE2 OE3</td>
+<td style="text-align: center;">CP5</td>
+<td style="text-align: center;"><em>VNX</em></td>
+</tr>
+<tr>
+<td style="text-align: center;">RF-1-02</td>
+<td style="text-align: left;">Criar publicações</td>
+<td style="text-align: left;">O sistema deve permitir criar posts com apenas textos, sem necessidade de imagens</td>
+<td style="text-align: left;">OE1 OE2 OE3 OE5</td>
+<td style="text-align: center;">CP4 CP6</td>
+<td style="text-align: center;"><em>VNX</em></td>
+</tr>
+<tr>
+<td style="text-align: center;">RF-1-03</td>
+<td style="text-align: left;">Notificar usuários personalizadamente</td>
+<td style="text-align: left;">O sistema poderia permitir o usuário solicitar notificações de acordo com sua vontade</td>
+<td style="text-align: left;">OE2 OE3</td>
+<td style="text-align: center;"><em>CPX</em></td>
+<td style="text-align: center;"><em>VNX</em></td>
+</tr>
+<tr>
+<td style="text-align: center;">RF-1-04</td>
+<td style="text-align: left;">Importar posts de outras redes</td>
+<td style="text-align: left;">Seria legal se o sistema permitisse importar posts de outras redes sociais</td>
+<td style="text-align: left;">OE1 OE2 OE3</td>
+<td style="text-align: center;">CP2 CP4 CP6</td>
+<td style="text-align: center;"><em>VNX</em></td>
+</tr>
+<tr>
+<td style="text-align: center;">RF-1-05</td>
+<td style="text-align: left;">Registrar métricas de engajamento</td>
+<td style="text-align: left;">O sistema deve registrar métricas de engajamentos de posts individuais</td>
+<td style="text-align: left;">OE4</td>
+<td style="text-align: center;">CP3</td>
+<td style="text-align: center;">VN3</td>
+</tr>
+<tr>
+<td style="text-align: center;">RF-1-06</td>
+<td style="text-align: left;">Atualizar status processo seletivo</td>
+<td style="text-align: left;">O sistema deve permitir a atualização do status de um processo seletivo</td>
+<td style="text-align: left;">OE1 OE2 OE3</td>
+<td style="text-align: center;">CP4</td>
+<td style="text-align: center;"><em>VNX</em></td>
+</tr>
+<tr>
+<td style="text-align: center;">RF-1-07</td>
+<td style="text-align: left;">Cancelar processo seletivo</td>
+<td style="text-align: left;">O sistema deve permitir o cancelamento de um processo seletivo</td>
+<td style="text-align: left;">OE1 OE2 OE3</td>
+<td style="text-align: center;">CP4</td>
+<td style="text-align: center;">VN2</td>
+</tr>
+<tr>
+<td style="text-align: center;">RF-2-01</td>
+<td style="text-align: left;">Cadastrar perfil da entidade publicamente</td>
+<td style="text-align: left;">O sistema deve permitir o cadastro de um perfil público de entidade contendo a descrição detalhada do propósito e das atividades.</td>
+<td style="text-align: left;">OE1 OE2 OE3</td>
+<td style="text-align: center;"><em>CPX</em></td>
+<td style="text-align: center;"><em>VNX</em></td>
+</tr>
+<tr>
+<td style="text-align: center;">RF-2-02</td>
+<td style="text-align: left;">Atualizar andamento de projetos</td>
+<td style="text-align: left;">O sistema deve permitir a publicação de atualizações de projetos contendo texto e imagens.</td>
+<td style="text-align: left;">OE1 OE2 OE3 OE5</td>
+<td style="text-align: center;"><em>CPX</em></td>
+<td style="text-align: center;"><em>VNX</em></td>
+</tr>
+<tr>
+<td style="text-align: center;">RF-2-03</td>
+<td style="text-align: left;">Classificar projetos</td>
+<td style="text-align: left;">O sistema deve permitir a classificação de projetos no momento da publicação (finalizado, em andamento, etc.).</td>
+<td style="text-align: left;"><em>OEX</em></td>
+<td style="text-align: center;"><em>CPX</em></td>
+<td style="text-align: center;"><em>VNX</em></td>
+</tr>
+<tr>
+<td style="text-align: center;">RF-2-04</td>
+<td style="text-align: left;">Visualizar histórico de projetos</td>
+<td style="text-align: left;">O sistema deve exibir o histórico de projetos anteriores e inativos no perfil de cada entidade.</td>
+<td style="text-align: left;"><em>OEX</em></td>
+<td style="text-align: center;"><em>CPX</em></td>
+<td style="text-align: center;"><em>VNX</em></td>
+</tr>
+<tr>
+<td style="text-align: center;">RF-2-05</td>
+<td style="text-align: left;">Filtrar feed de acordo com preferências do usuário</td>
+<td style="text-align: left;">O sistema deve permitir a configuração de filtros de interesses pessoais (ex: equipes de competição, PIBIC) para personalizar o feed de visualização do aluno.</td>
+<td style="text-align: left;"><em>OEX</em></td>
+<td style="text-align: center;"><em>CPX</em></td>
+<td style="text-align: center;"><em>VNX</em></td>
+</tr>
+<tr>
+<td style="text-align: center;">RF-2-06</td>
+<td style="text-align: left;">Enviar notificações personalizadas</td>
+<td style="text-align: left;">O sistema deve emitir notificações direcionadas aos alunos baseadas nos filtros de interesse configurados em seus perfis.</td>
+<td style="text-align: left;"><em>OEX</em></td>
+<td style="text-align: center;"><em>CPX</em></td>
+<td style="text-align: center;"><em>VNX</em></td>
+</tr>
+<tr>
+<td style="text-align: center;">RF-2-07</td>
+<td style="text-align: left;">Exibir métricas de engajamento para as entidades</td>
+<td style="text-align: left;">O sistema deve gerar um painel de métricas de acesso para a entidade exibindo o número de interações realizadas.</td>
+<td style="text-align: left;"><em>OEX</em></td>
+<td style="text-align: center;"><em>CPX</em></td>
+<td style="text-align: center;"><em>VNX</em></td>
+</tr>
+<tr>
+<td style="text-align: center;">RF-3-01</td>
+<td style="text-align: left;">Administrar posts na plataforma</td>
+<td style="text-align: left;">O sistema deve permitir o cadastro, a edição e a exclusão de postagens contendo texto e mídias (fotos e vídeos) sobre as visitas e os projetos de extensão realizados.</td>
+<td style="text-align: left;"><em>OEX</em></td>
+<td style="text-align: center;"><em>CPX</em></td>
+<td style="text-align: center;"><em>VNX</em></td>
+</tr>
+<tr>
+<td style="text-align: center;">RF-3-02</td>
+<td style="text-align: left;">Divulgar publicações no formato de portifólio</td>
+<td style="text-align: left;">O sistema deve exibir uma interface pública no formato de portfólio (ou blog) para a divulgação das atividades de extensão cadastradas no perfil.</td>
+<td style="text-align: left;"><em>OEX</em></td>
+<td style="text-align: center;"><em>CPX</em></td>
+<td style="text-align: center;"><em>VNX</em></td>
+</tr>
+<tr>
+<td style="text-align: center;">RF-3-03</td>
+<td style="text-align: left;">Pesquisar posts usando filtros de busca</td>
+<td style="text-align: left;">O sistema deve permitir a aplicação de filtros para pesquisar as métricas de impacto e as postagens.</td>
+<td style="text-align: left;"><em>OEX</em></td>
+<td style="text-align: center;"><em>CPX</em></td>
+<td style="text-align: center;"><em>VNX</em></td>
+</tr>
+<tr>
+<td style="text-align: center;">RF-3-04</td>
+<td style="text-align: left;">Registrar atividades de extensão</td>
+<td style="text-align: left;">O sistema deve permitir o registro de atividades de extensão, associando-as obrigatoriamente a uma data e a um tipo de ação.</td>
+<td style="text-align: left;"><em>OEX</em></td>
+<td style="text-align: center;"><em>CPX</em></td>
+<td style="text-align: center;"><em>VNX</em></td>
+</tr>
+</tbody>
+</table>
+<h2 id="requisitos-nao-funcionais-rnfs">Requisitos não funcionais (RNFs)</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Cod</th>
+<th style="text-align: center;">Classificação URPS+</th>
+<th style="text-align: center;">Nome</th>
+<th style="text-align: left;">Texto descritivo</th>
+<th style="text-align: left;">Objetivo Específico</th>
+<th style="text-align: center;">Característica do produto</th>
+<th style="text-align: left;">Valor de negócio (VN) principal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">RNF-1-01</td>
+<td style="text-align: center;">Usabilidade</td>
+<td style="text-align: center;">Acessar plataforma sem login</td>
+<td style="text-align: left;">O sistema deve permitir o primeiro acesso a plataforma sem necessidade de login</td>
+<td style="text-align: left;">OE1 OE2 OE3</td>
+<td style="text-align: center;">CP7</td>
+<td style="text-align: left;"><em>VNX</em></td>
+</tr>
+<tr>
+<td style="text-align: center;">RNF-2-01</td>
+<td style="text-align: center;">Usabilidade</td>
+<td style="text-align: center;">Personalizar visualização</td>
+<td style="text-align: left;">O sistema deve exibir os avisos e conteúdos de forma personalizada, filtrando as informações para evitar a poluição visual característica dos murais gerais.</td>
+<td style="text-align: left;"><em>OEX</em></td>
+<td style="text-align: center;"><em>CPX</em></td>
+<td style="text-align: left;"><em>VNX</em></td>
+</tr>
+<tr>
+<td style="text-align: center;">RNF-3-01</td>
+<td style="text-align: center;">Usabilidade</td>
+<td style="text-align: center;">Facilidade no uso</td>
+<td style="text-align: left;">O sistema deve apresentar uma interface minimalista e extremamente intuitiva, garantindo uma baixa curva de aprendizado para que usuários idosos ou com pouca afinidade tecnológica consigam realizar postagens sem necessidade de treinamento prévio.</td>
+<td style="text-align: left;"><em>OEX</em></td>
+<td style="text-align: center;"><em>CPX</em></td>
+<td style="text-align: left;"><em>VNX</em></td>
+</tr>
+<tr>
+<td style="text-align: center;">RNF-3-02</td>
+<td style="text-align: center;">Usabilidade</td>
+<td style="text-align: center;">Manter consistência visual</td>
+<td style="text-align: left;">O sistema deve manter uma consistência visual padronizada para todos os perfis de acesso, reduzindo a confusão e a complexidade de navegação.</td>
+<td style="text-align: left;"><em>OEX</em></td>
+<td style="text-align: center;"><em>CPX</em></td>
+<td style="text-align: left;"><em>VNX</em></td>
+</tr>
+<tr>
+<td style="text-align: center;">RNF-3-03</td>
+<td style="text-align: center;">Desemepnho</td>
+<td style="text-align: center;">Garantir responsividade</td>
+<td style="text-align: left;">O sistema deve possuir interface responsiva, facilitando postagens rápidas pelo celular durante a realização de visitas ou atividades de campo.</td>
+<td style="text-align: left;"><em>OEX</em></td>
+<td style="text-align: center;"><em>CPX</em></td>
+<td style="text-align: left;"><em>VNX</em></td>
+</tr>
+</tbody>
+</table>
+<h2 id="regras-de-negocio">Regras de negócio</h2>
+<h3 id="rn-01">RN-01</h3>
+<ul>
+<li><strong>ID:</strong> RN-01</li>
+<li><strong>Nome da Regra:</strong> Permissão para gestão da entidade.</li>
+<li><strong>Descrição:</strong> Apenas usuários autenticados e previamente cadastrados como "Líder" ou "Coordenador" de uma entidade possuem permissão para gerenciar as informações do perfil, criar ou editar postagens e alterar o status dos projetos daquela entidade específica.</li>
+<li><strong>Justificativa:</strong> Garantir a segurança e a veracidade das informações, evitando que visitantes ou alunos não vinculados alterem dados oficiais da equipe.</li>
+<li><strong>Fonte:</strong> Entrevistas com Stakeholders.</li>
+<li><strong>Impacto Esperado:</strong> O sistema deverá validar o vínculo do usuário com a entidade antes de liberar os botões e ferramentas de edição do "Módulo de Perfis Institucionais".</li>
+<li><strong>Rastreabilidade - CPs:</strong> Restringe a CP1 (Módulo de Perfis Institucionais) e afeta a CP4 (Publicações independentes).</li>
+</ul>
+<hr>
+<h3 id="rn-02">RN-02</h3>
+<ul>
+<li><strong>ID:</strong> RN-02</li>
+<li><strong>Nome da Regra:</strong> Autenticação e distinção de comunidade acadêmica.</li>
+<li><strong>Descrição:</strong> Para ser reconhecido como "Aluno" e ter a capacidade de se vincular a um perfil institucional (como membro de uma entidade), o usuário deve obrigatoriamente possuir um vínculo institucional da Universidade de Brasília (e-mail institucional), diferenciando-se de usuários "de fora" (visitantes).</li>
+<li><strong>Justificativa:</strong> Resolver a ambiguidade mapeada sobre "quem é aluno e quem é de fora", garantindo que a composição das entidades e a métrica de engajamento sejam precisas e restritas à comunidade acadêmica real.</li>
+<li><strong>Fonte:</strong>  Entrevistas com Stakeholders.</li>
+<li><strong>Impacto Esperado:</strong> O cadastro de usuários com privilégios de membro no Módulo de Perfis será com base no email institucional; contas não institucionais terão acesso apenas de leitura.</li>
+<li><strong>Rastreabilidade - CPs:</strong> Condiciona a CP1 (Módulo de Perfis Institucionais) e a CP3 (Métricas de Engajamento).</li>
+</ul>
+<hr>
+<h3 id="rn-03">RN-03</h3>
+<ul>
+<li><strong>ID:</strong> RN-03</li>
+<li><strong>Nome da Regra:</strong> Exclusividade de notificação por filtro de interesse.</li>
+<li><strong>Descrição:</strong> A emissão de notificações não devem ser enviadas em massa. O conteúdo entregue ao aluno logado deve ser obrigatoriamente condicionado e filtrado pelas preferências e interesses pessoais (ex: PIBIC, vagas de EJ, Atléticas) previamente configurados em seu perfil.</li>
+<li><strong>Justificativa:</strong> Resolver a frustração da comunidade com a comunicação atual (como os e-mails do SIGAA que notificam tudo e acabam ignorados, e a confusão de cartazes nos murais), garantindo que a notificação seja centrada apenas em informações relevantes para quem as lê, evitando a sobrecarga de avisos desnecessários.</li>
+<li><strong>Fonte:</strong> Entrevistas com Stakeholders.</li>
+<li><strong>Impacto Esperado:</strong> O algoritmo responsável pelas notificações deverá obrigatoriamente cruzar as <em>tags</em> da postagem/aviso recém-criada com as <em>tags</em> de interesse do usuário antes de disparar qualquer alerta.</li>
+<li><strong>Rastreabilidade - CPs:</strong> Condiciona diretamente a CP2 (Feed de visualização) e a CP5 (Mecanismo de Busca e Filtragem).</li>
+</ul>
+<hr>
+<h3 id="rn-04">RN-04</h3>
+<ul>
+<li><strong>ID:</strong> RN-04</li>
+<li><strong>Nome da Regra:</strong> Nomenclatura padronizada para oportunidades e projetos.</li>
+<li><strong>Descrição:</strong> Os status indicativos dos projetos e das publicações (especialmente os indicativos de "Processo de Inscrição Aberto") não podem ser de preenchimento livre em texto por parte do publicador. Eles devem obrigatoriamente respeitar um domínio fechado e padronizado pelo sistema (ex: "Inscrições Abertas", "Em andamento", "Finalizado").</li>
+<li><strong>Justificativa:</strong> Garantir que o mecanismo de busca funcione de forma consistente e que os usuários encontrem facilmente informações claras sobre quais entidades estão com processos de inscrição abertos, impedindo a criação de nomenclaturas diversas que quebrem a filtragem no feed.</li>
+<li><strong>Fonte:</strong> Entrevistas com Stakeholders.</li>
+<li><strong>Impacto Esperado:</strong> A interface de criação de publicações de projetos deverá fornecer uma lista restrita de status, e o Feed de Visualização utilizará esses valores padronizados para gerar indicativos visuais claros nos posts.</li>
+<li><strong>Rastreabilidade - CPs:</strong> Condiciona a CP2 (Feed de visualização), afeta a CP4 (Publicações independentes) e a CP5 (Mecanismo de Busca e Filtragem).</li>
+</ul>
+<hr>
+<h3 id="rn-05">RN-05</h3>
+<ul>
+<li><strong>ID:</strong> RN-05</li>
+<li><strong>Nome da Regra:</strong> Diferenciação de engajamento por perfil institucional.</li>
+<li><strong>Descrição:</strong> Os dados apresentados no painel de métricas das incrições devem obrigatoriamente segmentar o público, diferenciando interações realizadas por "Alunos" autenticados com e-mail institucional, segmentados por curso.</li>
+<li><strong>Justificativa:</strong> Resolver a frustração relatada de que "likes do Instagram não dizem nada", entregando a profundidade necessária para que as entidades saibam exatamente a taxa de conversão e qual perfil acadêmico querem se inscrever.</li>
+<li><strong>Fonte:</strong> Entrevistas com Stakeholders.</li>
+<li><strong>Impacto Esperado:</strong> O algoritmo de coleta de métricas deverá registrar dados de perfil a cada inscrição, para gerar os dados segmentados na visualização de métricas durante o período de inscrição.</li>
+<li><strong>Rastreabilidade - CPs:</strong> Condiciona a CP3 (Métricas de Engajamento) e depende da CP1 (Módulo de Perfis Institucionais).</li>
+</ul>
+<hr>
+<h3 id="rn-06">RN-06</h3>
+<ul>
+<li><strong>ID:</strong> RN-06</li>
+<li><strong>Nome da Regra:</strong> Anonimização e agregação de dados de engajamento.</li>
+<li><strong>Descrição:</strong> Os dados de interação (visualizações, cliques e acessos) apresentados nas métricas das entidades devem ser exibidos de forma estritamente agregada e anonimizada. É terminantemente proibida a exibição de logs transacionais ou dados que permitam a identificação, direta ou indireta, do aluno que consumiu o conteúdo (como nome, matrícula ou e-mail institucional).</li>
+<li><strong>Justificativa:</strong> Garantir conformidade com a LGPD, onde o dado anonimizado perde a possibilidade de associação ao indivíduo, deixando de ser classificado como dado pessoal.</li>
+<li><strong>Fonte:</strong> Lei Geral de Proteção de Dados.</li>
+<li><strong>Impacto Esperado:</strong> Deverá realizar o agrupamento das visualizações por categorias genéricas, impossibilitando a reversão dos dados para o perfil do usuário original.</li>
+<li><strong>Rastreabilidade - CPs:</strong> Condiciona e restringe diretamente a CP3 (Métricas de Engajamento).</li>
+</ul>
+<hr>
+<h3 id="rn-07">RN-07</h3>
+<ul>
+<li><strong>ID:</strong> RN-07</li>
+<li><strong>Nome da Regra:</strong> Princípio da Necessidade e proteção de dados sensíveis.</li>
+<li><strong>Descrição:</strong> O rastreamento de perfil para fins de geração de métricas de engajamento na plataforma deve se limitar ao mínimo necessário para a finalidade da análise acadêmica. É expressamente vedada a coleta, o cruzamento ou o uso de "dados pessoais sensíveis" do discente (como raça/cor, etnia, saúde, ou renda familiar) para a formação de perfis comportamentais nas métricas de publicações.</li>
+<li><strong>Justificativa:</strong> Atender ao Princípio da Necessidade imposto pela LGPD (limitação do tratamento ao mínimo necessário). No contexto da UnB, dados sensíveis gozam de uma camada extra de proteção rigorosa, pois seu vazamento ou tratamento discriminatório pode gerar prejuízos existenciais graves aos indivíduos.</li>
+<li><strong>Fonte:</strong> Lei Geral de Proteção de Dados.</li>
+<li><strong>Impacto Esperado:</strong> O sistema não devem possuir permissão para ler, cruzar ou espelhar tabelas da API de alunos da UnB que contenham marcadores socioeconômicos ou de saúde.</li>
+<li><strong>Rastreabilidade - CPs:</strong> Restringe a CP3 (Métricas de Engajamento).</li>
+</ul>
+<hr>
+<h3 id="rn-08">RN-08</h3>
+<ul>
+<li><strong>ID:</strong> RN-08</li>
+<li><strong>Nome da Regra:</strong> Retenção temporal do histórico e eliminação de dados.</li>
+<li><strong>Descrição:</strong> O repositório manterá o histórico e as informações vitais de processos e iniciativas passadas de forma perene. Contudo, dados pessoais sensíveis ou de identificação direta de alunos coletados em formulários internos de inscrição deverão ser eliminados ou irreversivelmente anonimizados após o encerramento do processo seletivo correspondente.</li>
+<li><strong>Justificativa:</strong> Adequar a manutenção do histórico institucional ao Art. 16 da LGPD, que determina que os dados pessoais devem ser eliminados após o término de seu tratamento (finalidade alcançada), evitando o acúmulo de dados desnecessários no banco do sistema.</li>
+<li><strong>Fonte:</strong> Lei Geral de Proteção de Dados Pessoais.</li>
+<li><strong>Impacto Esperado:</strong> O sistema deverá possuir uma rotina que, ao detectar que uma postagem de processo seletivo foi finalizada, limpe automaticamente eventuais listagens nominais de inscritos atreladas a ela.</li>
+<li><strong>Rastreabilidade - CPs:</strong> Condiciona e restringe a CP6 (Repositório Histórico de Iniciativas).</li>
+</ul>
+<hr>
+<h3 id="rn-09">RN-09</h3>
+<ul>
+<li><strong>ID:</strong> RN-09</li>
+<li><strong>Nome da Regra:</strong> Permissão de redirecionamento para fluxos externos.</li>
+<li><strong>Descrição:</strong> As publicações de processos seletivos e eventos não são obrigadas a utilizar formulários internos da plataforma. É expressamente permitido o uso de links de redirecionamento para ferramentas externas no corpo das publicações.</li>
+<li><strong>Justificativa:</strong> Respeitar a autonomia das entidades para manterem seus fluxos de inscrição originais.</li>
+<li><strong>Fonte:</strong> Análise de Entrevista.</li>
+<li><strong>Impacto Esperado:</strong> O módulo de criação de postagens deve renderizar hiperlinks clicáveis com segurança, direcionando o aluno para fora da plataforma em uma nova aba do navegador.</li>
+<li><strong>Rastreabilidade - CPs:</strong> Condiciona a CP4 (Publicações independentes).</li>
+</ul>
+<hr>
+<h3 id="rn-10">RN-10</h3>
+<ul>
+<li><strong>ID:</strong> RN-10</li>
+<li><strong>Nome da Regra:</strong> Moderação descentralizada de publicações.</li>
+<li><strong>Descrição:</strong> O gerenciamento, a edição, a exclusão e a moderação do conteúdo das publicações independentes serão de inteira responsabilidade da própria entidade publicadora, não existindo uma etapa de moderação ou aprovação central da universidade antes da postagem ir ao ar.</li>
+<li><strong>Justificativa:</strong> Promover a agilidade na comunicação (respondendo à dor de que as redes atuais são pouco eficientes e lentas) e garantir que as próprias entidades possuam e gerenciem as ferramentas de moderação de seu conteúdo.</li>
+<li><strong>Fonte:</strong> Análise de Entrevista.</li>
+<li><strong>Impacto Esperado:</strong> A interface deve fornecer aos "Líderes" ou "Coordenadores" da entidade os botões de controle para excluírem e editarem suas próprias postagens publicadas, atuando como moderadores diretos.</li>
+<li><strong>Rastreabilidade - CPs:</strong> Condiciona a CP4 (Publicações independentes).</li>
+</ul>
+<h3 id="rn-11">RN-11</h3>
+<ul>
+<li><strong>ID:</strong> RN-11</li>
+<li><strong>Nome da Regra:</strong> Obrigatoriedade de categorização para rastreabilidade de busca.</li>
+<li><strong>Descrição:</strong> Para que uma entidade ou projeto seja indexado e localizado com precisão nos filtros do sistema, é obrigatória a sua associação no momento do cadastro a categorias padronizadas.</li>
+<li><strong>Justificativa:</strong> Solucionar a dor do desconhecimento e desorganização da informação das atividades de extesão.</li>
+<li><strong>Fonte:</strong> Análise de Entrevista.</li>
+<li><strong>Impacto Esperado:</strong> O mecanismo de indexação e os componentes visuais de filtro só funcionarão consumindo a listagem dessas tags.</li>
+<li><strong>Rastreabilidade - CPs:</strong> Condiciona a CP5 (Mecanismo de Busca e Filtragem) e restringe a CP1 (Módulo de Perfis Institucionais).</li>
+</ul>
+<hr>
+<h3 id="rn-12">RN-12</h3>
+<ul>
+<li><strong>ID:</strong> RN-12</li>
+<li><strong>Nome da Regra:</strong> Acesso livre ao catálogo institucional.</li>
+<li><strong>Descrição:</strong> A navegação pelo portfólio das entidades e pela leitura das publicações independentes não deve exigir nenhum tipo de cadastro prévio, login, ou barreiras restritivas para os visitantes externos.</li>
+<li><strong>Justificativa:</strong> Garantir o alcance democrático da plataforma para a sociedade e resolver a dor das entidades em atingir novos públicos, especialmente calouros recém-ingressos que ainda estão construindo suas redes de contatos.</li>
+<li><strong>Fonte:</strong> Análise de Entrevista.</li>
+<li><strong>Impacto Esperado:</strong> A aplicação deve manter as páginas de perfil das entidades e o feed geral como rotas públicas.</li>
+<li><strong>Rastreabilidade - CPs:</strong> Condiciona e define o funcionamento base da CP7 (Portal de Acesso Público).</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden="">
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.footer"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
