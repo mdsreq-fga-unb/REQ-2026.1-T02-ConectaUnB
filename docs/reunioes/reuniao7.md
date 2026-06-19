@@ -1,0 +1,3 @@
+# Reunião 7 - 29/05
+
+Nesta reunião não houve a gravação padrão. Basicamente discutimos sobre as tecnicas e atividades de Verificação e Validação que aplicariamos no Grupo Anawe devido a atividade proposta pelo professor, entramos em um concenso de diviisão de tarefas e técnicas utilizadas, o documento pode ser acessado através do link: [acessar documento](https://docs.google.com/document/d/129jZ1BYDwiSaxaObXZ6fZrcecz-ozx-I2sstyBC5afQ/edit?usp=sharing).

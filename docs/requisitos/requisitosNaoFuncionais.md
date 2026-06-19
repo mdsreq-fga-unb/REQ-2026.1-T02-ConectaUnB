@@ -22,5 +22,3 @@ Todos os Requisitos foram validados com os stakeholders por meio de uma [reuniã
 | **RNF-08** | Requisito externo | Criptografar senhas dos usuários | O sistema deve criptografar os senhas dos usuários. | CP9<br>Privacidade e conformidade com LGPD | LGPD | **CA1:** Todas as senhas devem ser salvas de forma irreversível no banco de dados utilizando função de hash (bcrypt padrão do NestJS). |
 | **RNF-09** | Usabilidade | Notificar usuários | O sistema deve enviar uma notificação sempre que houver alteração de status em uma entidade que o usuário segue. | CP8<br>Notificação para os usuários | RF-1-03 RF-2-06 | **CA01:** Quando uma entidade sofrer alteração de dados ou de status, o sistema deve identificar os usuários que a seguem.<br> **CA02:** O sistema deve disparar a notificação em até 5 minutos após a atualização da entidade. |
 
-## Esquemas Visuais
-
