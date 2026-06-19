@@ -15,10 +15,10 @@ nav:
       - Reunião 3: reunioes/reuniao3.md
       - Reunião 4: reunioes/reuniao4.md
       - Reunião 5: reunioes/reuniao5.md
-      # - Reunião 6: reunioes/reuniao6.md
-      # - Reunião 7: reunioes/reuniao7.md
-      # - Reunião 8: reunioes/reuniao8.md
-      # - Reunião 9: reunioes/reuniao9.md
+      - Reunião 6: reunioes/reuniao6.md
+      - Reunião 7: reunioes/reuniao7.md
+      - Reunião 8: reunioes/reuniao8.md
+      - Reunião 9: reunioes/reuniao9.md
       # - Reunião 10: reunioes/reuniao10.md
 
   - Visão do Produto e Projeto:
@@ -35,6 +35,8 @@ nav:
       - "Lições Aprendidas": 
         - "Unidade 1": visaoDeProdutoProjeto/licoes/unidade1.md
         - "Unidade 2": visaoDeProdutoProjeto/licoes/unidade2.md
+        - "Unidade 3": visaoDeProdutoProjeto/licoes/unidade3.md
+        # - "Unidade 4": visaoDeProdutoProjeto/licoes/unidade4
   
   - Requisitos:
       - "Requisitos Funcionais": requisitos/requisitosFuncionais.md
@@ -47,7 +49,7 @@ nav:
   - Apresentações:
       - Apresentação 1: entregas/entrega1.md
       - Apresentação 2: entregas/unidade2.md
-      # - Apresentação 3: entregas/reuniao3.md
+      - Apresentação 3: entregas/unidade3.md
       # - Apresentação 4: entregas/reuniao4.md
   
   - Entrevistas/Evidências/Entregas:
