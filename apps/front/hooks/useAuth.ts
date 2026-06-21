@@ -29,7 +29,7 @@ export function useAuth() {
         } else {
           setUser(decoded);
         }
-      } catch (error) {
+      } catch {
         console.error("Token inválido ou corrompido.");
         localStorage.removeItem("conecta_unb_token");
         setUser(null);

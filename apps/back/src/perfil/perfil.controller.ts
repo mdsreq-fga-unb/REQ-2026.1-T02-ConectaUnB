@@ -39,5 +39,4 @@ export class PerfilController {
     const id = Number(req.user.id);
     return this.perfilService.remove(id);
   }
-
 }
