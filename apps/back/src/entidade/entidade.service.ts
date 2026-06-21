@@ -4,7 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { ClassificacaoMembro } from '@prisma/client';
+import { ClassificacaoMembro, Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { AddMembroDto } from './dto/add-membro.dto';
 import { CreateEntidadeDto } from './dto/create-entidade.dto';
@@ -12,7 +12,7 @@ import { UpdateEntidadeDto } from './dto/update-entidade.dto';
 
 @Injectable()
 export class EntidadeService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   create(createEntidadeDto: CreateEntidadeDto) {
     return this.prisma.entidade.create({ data: createEntidadeDto });
@@ -74,42 +74,64 @@ export class EntidadeService {
     addMembroDto: AddMembroDto,
   ) {
     await this.ensureEntidadeExists(idEntidade);
-    await this.ensureCanManageEntidade(idEntidade, idPerfilSolicitante);
-    await this.ensurePerfilExists(addMembroDto.idPerfil);
+    const gestaoSolicitante = await this.findGestaoMembro(
+      idEntidade,
+      idPerfilSolicitante,
+    );
 
-    const membroExistente = await this.prisma.membro.findFirst({
-      where: {
-        idEntidade,
-        idPerfil: addMembroDto.idPerfil,
-      },
-    });
-
-    if (membroExistente) {
-      throw new ConflictException('Perfil ja e membro desta entidade');
+    if (!gestaoSolicitante) {
+      throw new ForbiddenException(
+        'Apenas gestores ou co-gestores podem gerenciar membros da entidade',
+      );
     }
 
-    return this.prisma.membro.create({
-      data: {
-        idEntidade,
-        idPerfil: addMembroDto.idPerfil,
-        classificacao: addMembroDto.classificacao,
-      },
-      include: {
-        perfil: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
+    const isPapelDeGestao =
+      addMembroDto.classificacao === ClassificacaoMembro.GESTOR ||
+      addMembroDto.classificacao === ClassificacaoMembro.CO_GESTOR;
+
+    if (
+      isPapelDeGestao &&
+      gestaoSolicitante.classificacao !== ClassificacaoMembro.GESTOR
+    ) {
+      throw new ForbiddenException(
+        'Apenas GESTOR pode atribuir papeis de gestão (GESTOR ou CO_GESTOR)',
+      );
+    }
+
+    await this.ensurePerfilExists(addMembroDto.idPerfil);
+
+    try {
+      return await this.prisma.membro.create({
+        data: {
+          idEntidade,
+          idPerfil: addMembroDto.idPerfil,
+          classificacao: addMembroDto.classificacao,
+        },
+        include: {
+          perfil: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
+          entidade: {
+            select: {
+              id: true,
+              nome: true,
+            },
           },
         },
-        entidade: {
-          select: {
-            id: true,
-            nome: true,
-          },
-        },
-      },
-    });
+      });
+    } catch (error) {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2002'
+      ) {
+        throw new ConflictException('Perfil já é membro desta entidade');
+      }
+      throw error;
+    }
   }
 
   async removeMembro(
@@ -118,24 +140,58 @@ export class EntidadeService {
     idPerfilRemovido: number,
   ) {
     await this.ensureEntidadeExists(idEntidade);
-    await this.ensureCanManageEntidade(idEntidade, idPerfilSolicitante);
+    const gestaoSolicitante = await this.findGestaoMembro(
+      idEntidade,
+      idPerfilSolicitante,
+    );
 
-    const membro = await this.prisma.membro.findFirst({
-      where: {
-        idEntidade,
-        idPerfil: idPerfilRemovido,
-      },
-    });
-
-    if (!membro) {
-      throw new NotFoundException('Membro nao encontrado nesta entidade');
+    if (!gestaoSolicitante) {
+      throw new ForbiddenException(
+        'Apenas gestores ou co-gestores podem gerenciar membros da entidade',
+      );
     }
 
-    await this.prisma.membro.deleteMany({
+    const alvo = await this.prisma.membro.findFirst({
       where: {
         idEntidade,
         idPerfil: idPerfilRemovido,
       },
+      select: { id: true, classificacao: true },
+    });
+
+    if (!alvo) {
+      throw new NotFoundException('Membro não encontrado nesta entidade');
+    }
+
+    const solicitanteIsGestor =
+      gestaoSolicitante.classificacao === ClassificacaoMembro.GESTOR;
+
+    if (
+      alvo.classificacao === ClassificacaoMembro.GESTOR &&
+      !solicitanteIsGestor
+    ) {
+      throw new ForbiddenException(
+        'CO_GESTOR não pode remover um GESTOR da entidade',
+      );
+    }
+
+    if (alvo.classificacao === ClassificacaoMembro.GESTOR) {
+      const totalGestores = await this.prisma.membro.count({
+        where: {
+          idEntidade,
+          classificacao: ClassificacaoMembro.GESTOR,
+        },
+      });
+
+      if (totalGestores <= 1) {
+        throw new ConflictException(
+          'Não é possível remover o único GESTOR da entidade',
+        );
+      }
+    }
+
+    await this.prisma.membro.delete({
+      where: { id: alvo.id },
     });
 
     return {
@@ -152,7 +208,7 @@ export class EntidadeService {
     });
 
     if (!entidade) {
-      throw new NotFoundException('Entidade nao encontrada');
+      throw new NotFoundException('Entidade não encontrada');
     }
   }
 
@@ -163,12 +219,12 @@ export class EntidadeService {
     });
 
     if (!perfil) {
-      throw new NotFoundException('Perfil nao encontrado');
+      throw new NotFoundException('Perfil não encontrado');
     }
   }
 
-  private async ensureCanManageEntidade(idEntidade: number, idPerfil: number) {
-    const membroGestor = await this.prisma.membro.findFirst({
+  private async findGestaoMembro(idEntidade: number, idPerfil: number) {
+    return this.prisma.membro.findFirst({
       where: {
         idEntidade,
         idPerfil,
@@ -176,12 +232,7 @@ export class EntidadeService {
           in: [ClassificacaoMembro.GESTOR, ClassificacaoMembro.CO_GESTOR],
         },
       },
+      select: { id: true, classificacao: true },
     });
-
-    if (!membroGestor) {
-      throw new ForbiddenException(
-        'Apenas gestores ou co-gestores podem gerenciar membros da entidade',
-      );
-    }
   }
 }

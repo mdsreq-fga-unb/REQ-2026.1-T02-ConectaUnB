@@ -31,20 +31,21 @@ describe('EntidadeController', () => {
     jest.clearAllMocks();
   });
 
+  const buildReq = () =>
+    ({ user: { id: '7', email: 'user@aluno.unb.br' } }) as Parameters<
+      EntidadeController['findMinhasEntidades']
+    >[0];
+
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
 
   it('should list entities for the authenticated user', () => {
-    const req: Parameters<EntidadeController['findMinhasEntidades']>[0] = {
-      user: { id: '7', email: 'user@aluno.unb.br' },
-    } as Parameters<EntidadeController['findMinhasEntidades']>[0];
-
     entidadeService.findMinhasEntidades.mockReturnValue([
       { id: 1, nome: 'Conecta UnB', vinculo: { classificacao: 'GESTOR' } },
     ]);
 
-    expect(controller.findMinhasEntidades(req)).toEqual([
+    expect(controller.findMinhasEntidades(buildReq())).toEqual([
       { id: 1, nome: 'Conecta UnB', vinculo: { classificacao: 'GESTOR' } },
     ]);
     expect(entidadeService.findMinhasEntidades).toHaveBeenCalledWith(7);
@@ -52,10 +53,6 @@ describe('EntidadeController', () => {
 
   it('should add members using authenticated manager id', () => {
     const dto = { idPerfil: 9, classificacao: ClassificacaoMembro.MEMBRO };
-    const req: Parameters<EntidadeController['addMembro']>[2] = {
-      user: { id: '7', email: 'gestor@aluno.unb.br' },
-    } as Parameters<EntidadeController['addMembro']>[2];
-
     entidadeService.addMembro.mockReturnValue({
       id: 11,
       idPerfil: 9,
@@ -63,7 +60,7 @@ describe('EntidadeController', () => {
       classificacao: 'MEMBRO',
     });
 
-    expect(controller.addMembro('1', dto, req)).toEqual({
+    expect(controller.addMembro('1', dto, buildReq())).toEqual({
       id: 11,
       idPerfil: 9,
       idEntidade: 1,
@@ -73,17 +70,13 @@ describe('EntidadeController', () => {
   });
 
   it('should remove members using authenticated manager id', () => {
-    const req: Parameters<EntidadeController['removeMembro']>[2] = {
-      user: { id: '7', email: 'gestor@aluno.unb.br' },
-    } as Parameters<EntidadeController['removeMembro']>[2];
-
     entidadeService.removeMembro.mockReturnValue({
       idEntidade: 1,
       idPerfil: 9,
       removed: true,
     });
 
-    expect(controller.removeMembro('1', '9', req)).toEqual({
+    expect(controller.removeMembro('1', '9', buildReq())).toEqual({
       idEntidade: 1,
       idPerfil: 9,
       removed: true,
