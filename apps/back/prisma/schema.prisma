@@ -61,6 +61,8 @@ model Membro {
 
   gerenteProjetos     gerentesProjetos[]
   colaboradorProjetos colaboradoresProjetos[]
+
+  @@unique([idPerfil, idEntidade])
 }
 
 model Seguindo {
