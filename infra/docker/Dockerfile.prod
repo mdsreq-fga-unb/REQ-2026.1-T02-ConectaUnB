@@ -33,4 +33,4 @@ RUN pnpm --filter back prisma:generate
 
 EXPOSE 3000
 
-CMD ["node", "apps/back/dist/main.js"]
+CMD ["node", "apps/back/dist/src/main.js"]

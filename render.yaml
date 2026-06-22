@@ -1,0 +1,54 @@
+# Render Blueprint para o backend ConectaUnB
+# Docs: https://render.com/docs/blueprint-spec
+#
+# Como usar:
+#   1. No dashboard do Render, vá em "New" -> "Blueprint".
+#   2. Selecione o repositório e o branch de deploy (ex.: main).
+#   3. O Render vai ler este arquivo e provisionar o banco + a API.
+#   4. Preencha os secrets (JWT_SECRET, R2_*) em "Environment" antes do primeiro deploy.
+
+databases:
+  - name: conectaunb-db
+    databaseName: conectaunb
+    plan: starter
+    ipAllowList: []
+
+services:
+  - type: web
+    name: conectaunb-api
+    runtime: docker
+    dockerfilePath: ./infra/docker/Dockerfile.prod
+    dockerContext: .
+    plan: starter
+    healthCheckPath: /health
+    autoDeploy: true
+    preDeployCommand: pnpm --filter back prisma:migrate:deploy
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: conectaunb-db
+          property: connectionString
+      - key: JWT_SECRET
+        sync: false
+      - key: CORS_ORIGIN
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+      - key: SWAGGER_ENABLED
+        value: "false"
+      - key: R2_ACCESS_KEY_ID
+        sync: false
+      - key: R2_SECRET_ACCESS_KEY
+        sync: false
+      - key: R2_BUCKET_NAME
+        sync: false
+      - key: R2_ENDPOINT
+        sync: false
+      - key: R2_REGION
+        value: auto
+      - key: R2_PUBLIC_URL
+        sync: false
