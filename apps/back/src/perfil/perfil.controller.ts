@@ -1,6 +1,9 @@
 import { Controller, Get, Body, Patch, Param, Delete } from '@nestjs/common';
 import { PerfilService } from './perfil.service';
 import { UpdatePerfilDto } from './dto/update-perfil.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { UseGuards, Request } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('perfil')
 export class PerfilController {
@@ -16,13 +19,25 @@ export class PerfilController {
     return this.perfilService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePerfilDto: UpdatePerfilDto) {
-    return this.perfilService.update(+id, updatePerfilDto);
+  @Get('seguindo/:id')
+  findSeguindo(@Param('id') id: string) {
+    return this.perfilService.findSeguindo(+id);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.perfilService.remove(+id);
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Patch()
+  update(@Request() req, @Body() updatePerfilDto: UpdatePerfilDto) {
+    const id = Number(req.user.id);
+    return this.perfilService.update(id, updatePerfilDto);
   }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Delete()
+  remove(@Request() req) {
+    const id = Number(req.user.id);
+    return this.perfilService.remove(id);
+  }
+
 }

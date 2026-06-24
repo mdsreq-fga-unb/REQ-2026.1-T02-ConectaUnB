@@ -11,7 +11,7 @@ model Perfil {
   id                        Int @id @default(autoincrement())
   name                      String @db.Text
   email                     String @unique
-  matricula                 Int? @unique
+  matricula                 String? @unique
   senha                     String
   linkFoto                  String?
   curso                     Curso
@@ -61,6 +61,8 @@ model Membro {
 
   gerenteProjetos     gerentesProjetos[]
   colaboradorProjetos colaboradoresProjetos[]
+
+  @@unique([idPerfil, idEntidade])
 }
 
 model Seguindo {
