@@ -115,6 +115,7 @@ dockerCompose.on('exit', (code) => {
   const frontDev = spawn(pnpmCommand, ['--filter', 'front', 'dev'], {
     stdio: 'inherit',
     env: process.env,
+    shell: process.platform === 'win32', // <-- Adicione esta linha
   });
 
   const forwardSignal = (signal) => {

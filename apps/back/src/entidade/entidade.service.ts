@@ -14,8 +14,22 @@ import { UpdateEntidadeDto } from './dto/update-entidade.dto';
 export class EntidadeService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(createEntidadeDto: CreateEntidadeDto) {
-    return this.prisma.entidade.create({ data: createEntidadeDto });
+  create(createEntidadeDto: CreateEntidadeDto, idCriador: number) {
+    const { linkLogo, linkBanner, ...rest } = createEntidadeDto;
+    
+    return this.prisma.entidade.create({
+      data: {
+        ...rest,
+        linkLogo: linkLogo || '/sem_foto.png',
+        linkBanner: linkBanner || '/texturaHorizontal.png',
+        membros: {
+          create: {
+            idPerfil: idCriador,
+            classificacao: ClassificacaoMembro.GESTOR,
+          },
+        },
+      },
+    });
   }
 
   findAll() {

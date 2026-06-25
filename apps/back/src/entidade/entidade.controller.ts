@@ -29,8 +29,17 @@ export class EntidadeController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createEntidadeDto: CreateEntidadeDto) {
-    return this.entidadeService.create(createEntidadeDto);
+  create(
+    @Request() req: AuthenticatedRequest,
+    @Body() createEntidadeDto: CreateEntidadeDto,
+  ) {
+    console.log(
+      '=> CREATE CHAMADO! idCriador:',
+      req.user.id,
+      'DTO:',
+      createEntidadeDto,
+    );
+    return this.entidadeService.create(createEntidadeDto, Number(req.user.id));
   }
 
   @Get()
