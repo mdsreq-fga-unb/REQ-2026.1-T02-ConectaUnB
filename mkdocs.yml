@@ -7,6 +7,8 @@ repo_name: REQ-2026.1-T02-ConectaUnB
 nav:
   - Sobre: index.md
 
+  - Cronograma: cronograma/cronograma.md
+
   - Reuniões:
       - Reunião 1: reunioes/reuniao1.md
       - Reunião 2: reunioes/reuniao2.md
