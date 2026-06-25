@@ -1,8 +1,21 @@
+"use client";
+
 import React from 'react';
 import Image from 'next/image';
-import { Home, Briefcase, Bell, User } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Bell, Briefcase, Building2, Home, User } from 'lucide-react';
 
 export const Sidebar: React.FC = () => {
+  const pathname = usePathname();
+  const navItems = [
+    { href: '/', label: 'Feed', icon: Home },
+    { href: '/projetos', label: 'Projetos', icon: Briefcase },
+    { href: '/entidades', label: 'Entidades', icon: Building2 },
+    { href: '#', label: 'Notificações', icon: Bell },
+    { href: '#', label: 'Perfil', icon: User },
+  ];
+
   return (
     <aside className="w-64 bg-[#0d2a54] text-white flex flex-col min-h-screen justify-between">
       <div className="p-8 flex justify-center">
@@ -16,19 +29,22 @@ export const Sidebar: React.FC = () => {
 
       {/* Menu de Navegação */}
       <nav className="flex flex-col w-full">
-        <a href="#" className="flex items-center gap-4 px-8 py-4 hover:bg-[#153b75] transition-colors text-lg">
-          <Home size={24} /> Feed
-        </a>
-        {/* Item ativo tem um peso na fonte maior, você pode ajustar o background também se desejar */}
-        <a href="#" className="flex items-center gap-4 px-8 py-4 bg-[#153b75] font-bold text-lg">
-          <Briefcase size={24} /> Projetos
-        </a>
-        <a href="#" className="flex items-center gap-4 px-8 py-4 hover:bg-[#153b75] transition-colors text-lg">
-          <Bell size={24} /> Notificações
-        </a>
-        <a href="#" className="flex items-center gap-4 px-8 py-4 hover:bg-[#153b75] transition-colors text-lg">
-          <User size={24} /> Perfil
-        </a>
+        {navItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = item.href !== '#' && pathname === item.href;
+
+          return (
+            <Link
+              key={item.label}
+              href={item.href}
+              className={`flex items-center gap-4 px-8 py-4 transition-colors text-lg ${
+                isActive ? 'bg-[#153b75] font-bold' : 'hover:bg-[#153b75]'
+              }`}
+            >
+              <Icon size={24} /> {item.label}
+            </Link>
+          );
+        })}
       </nav>
 
       {/* Estampa decorativa no fundo da sidebar */}

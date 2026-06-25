@@ -83,4 +83,19 @@ describe('EntidadeController', () => {
     });
     expect(entidadeService.removeMembro).toHaveBeenCalledWith(1, 7, 9);
   });
+
+  it('should update entity using authenticated manager id', () => {
+    const dto = { nome: 'Entidade Atualizada' };
+    entidadeService.update.mockReturnValue({ id: 1, ...dto });
+
+    expect(controller.update('1', dto, buildReq())).toEqual({ id: 1, ...dto });
+    expect(entidadeService.update).toHaveBeenCalledWith(1, 7, dto);
+  });
+
+  it('should remove entity using authenticated manager id', () => {
+    entidadeService.remove.mockReturnValue({ id: 1 });
+
+    expect(controller.remove('1', buildReq())).toEqual({ id: 1 });
+    expect(entidadeService.remove).toHaveBeenCalledWith(1, 7);
+  });
 });

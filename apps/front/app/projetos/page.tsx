@@ -1,39 +1,89 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Sidebar } from '@/components/Sidebar';
 import { ButtonGreen } from '@/components/ButtonGreen';
 import { ProjetoCard } from '@/components/projetoCard';
+import { CreateProjetoModal } from '@/components/CreateProjetoModal';
 import { api } from '@/guards/api';
 import { toast } from 'sonner';
 
+type ProjetoResumo = {
+  id: number;
+  idEntidade?: number;
+  nome: string;
+  descricao?: string | null;
+  status?: string;
+  dataInicio?: string;
+  dataFim?: string | null;
+  vinculoProjeto: 'GERENTE' | 'COLABORADOR';
+  entidade?: {
+    id: number;
+    nome: string;
+  };
+};
+
+type EntidadeResumo = {
+  id: number;
+  nome: string;
+  vinculo: {
+    classificacao: 'GESTOR' | 'CO_GESTOR' | 'MEMBRO';
+  };
+};
+
 export default function ProjectsPage() {
-  const [meusProjetos, setMeusProjetos] = useState<any[]>([]);
-  const [cogestao, setCogestao] = useState<any[]>([]);
+  const [meusProjetos, setMeusProjetos] = useState<ProjetoResumo[]>([]);
+  const [colaboracoes, setColaboracoes] = useState<ProjetoResumo[]>([]);
+  const [entidadesGerenciaveis, setEntidadesGerenciaveis] = useState<EntidadeResumo[]>([]);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [selectedProjeto, setSelectedProjeto] = useState<ProjetoResumo | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchProjetos = async () => {
-      try {
-        const response = await api.get('/entidade/minhas');
-        const entidades = response.data;
+  const fetchProjetos = useCallback(async () => {
+    try {
+      const [projetosResponse, entidadesResponse] = await Promise.all([
+        api.get('/projeto/minhas'),
+        api.get('/entidade/minhas'),
+      ]);
+      const projetos = projetosResponse.data as ProjetoResumo[];
+      const entidades = entidadesResponse.data as EntidadeResumo[];
 
-        // Separar "Meus Projetos" e "Cogestão" com base na classificação do vínculo
-        const meus = entidades.filter((e: any) => e.vinculo.classificacao !== 'CO_GESTOR');
-        const coGestor = entidades.filter((e: any) => e.vinculo.classificacao === 'CO_GESTOR');
+      const meus = projetos.filter((projeto) => projeto.vinculoProjeto === 'GERENTE');
+      const colaborador = projetos.filter((projeto) => projeto.vinculoProjeto === 'COLABORADOR');
+      const gerenciaveis = entidades.filter((entidade) =>
+        entidade.vinculo.classificacao === 'GESTOR' ||
+        entidade.vinculo.classificacao === 'CO_GESTOR'
+      );
 
-        setMeusProjetos(meus);
-        setCogestao(coGestor);
-      } catch (error) {
-        console.error("Erro ao carregar projetos:", error);
-        toast.error("Ocorreu um erro ao carregar os projetos.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProjetos();
+      setMeusProjetos(meus);
+      setColaboracoes(colaborador);
+      setEntidadesGerenciaveis(gerenciaveis);
+    } catch (error) {
+      console.error("Erro ao carregar projetos:", error);
+      toast.error("Ocorreu um erro ao carregar os projetos.");
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchProjetos();
+  }, [fetchProjetos]);
+
+  const handleOpenCreateModal = () => {
+    if (entidadesGerenciaveis.length === 0) {
+      toast.error('Você precisa gerenciar uma entidade para criar projetos.');
+      return;
+    }
+
+    setIsCreateModalOpen(true);
+  };
+
+  const handleCloseProjectModal = () => {
+    setIsCreateModalOpen(false);
+    setSelectedProjeto(null);
+  };
 
   return (
     <div className="flex min-h-screen bg-[#fafafa]">
@@ -44,7 +94,7 @@ export default function ProjectsPage() {
       <main className="flex-1 p-12">
         {/* Cabeçalho com o botão à direita */}
         <div className="flex justify-end mb-12">
-          <ButtonGreen />
+          <ButtonGreen text="Criar Projeto" onClick={handleOpenCreateModal} />
         </div>
 
         {loading ? (
@@ -62,7 +112,15 @@ export default function ProjectsPage() {
                   <p className="text-gray-500">Nenhum projeto encontrado.</p>
                 ) : (
                   meusProjetos.map((projeto) => (
-                    <ProjetoCard key={projeto.id} nome={projeto.nome || "Projeto Sem Nome"} />
+                    <ProjetoCard
+                      key={projeto.id}
+                      nome={projeto.nome || "Projeto Sem Nome"}
+                      descricao={`${projeto.entidade?.nome ?? 'Sem entidade'} - Clique para editar`}
+                      onClick={() => {
+                        setSelectedProjeto(projeto);
+                        setIsCreateModalOpen(true);
+                      }}
+                    />
                   ))
                 )}
               </div>
@@ -71,14 +129,18 @@ export default function ProjectsPage() {
             {/* Seção: Cogestão */}
             <section>
               <h2 className="text-2xl font-bold text-[#0d2a54] mb-6 border-b-2 border-[#195b3d] pb-2">
-                Cogestão
+                Colaborações
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {cogestao.length === 0 ? (
-                  <p className="text-gray-500">Nenhum projeto de cogestão encontrado.</p>
+                {colaboracoes.length === 0 ? (
+                  <p className="text-gray-500">Nenhum projeto de colaboração encontrado.</p>
                 ) : (
-                  cogestao.map((projeto) => (
-                    <ProjetoCard key={projeto.id} nome={projeto.nome || "Projeto Sem Nome"} />
+                  colaboracoes.map((projeto) => (
+                    <ProjetoCard
+                      key={projeto.id}
+                      nome={projeto.nome || "Projeto Sem Nome"}
+                      descricao={projeto.entidade?.nome}
+                    />
                   ))
                 )}
               </div>
@@ -86,6 +148,13 @@ export default function ProjectsPage() {
           </>
         )}
       </main>
+      <CreateProjetoModal
+        isOpen={isCreateModalOpen}
+        entidades={entidadesGerenciaveis}
+        projeto={selectedProjeto}
+        onClose={handleCloseProjectModal}
+        onCreated={fetchProjetos}
+      />
     </div>
   );
-}
+}

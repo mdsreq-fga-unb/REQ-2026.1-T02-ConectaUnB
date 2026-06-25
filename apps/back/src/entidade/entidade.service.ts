@@ -68,17 +68,63 @@ export class EntidadeService {
   }
 
   findOne(id: number) {
-    return this.prisma.entidade.findUnique({ where: { id } });
+    return this.prisma.entidade.findUnique({
+      where: { id },
+      include: {
+        membros: {
+          orderBy: { createdAt: 'asc' },
+          select: {
+            id: true,
+            idPerfil: true,
+            classificacao: true,
+            createdAt: true,
+            perfil: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+              },
+            },
+          },
+        },
+      },
+    });
   }
 
-  update(id: number, updateEntidadeDto: UpdateEntidadeDto) {
+  async update(
+    id: number,
+    idPerfilSolicitante: number,
+    updateEntidadeDto: UpdateEntidadeDto,
+  ) {
+    await this.ensureEntidadeExists(id);
+    const gestaoSolicitante = await this.findGestaoMembro(
+      id,
+      idPerfilSolicitante,
+    );
+
+    if (!gestaoSolicitante) {
+      throw new ForbiddenException(
+        'Apenas gestores ou co-gestores podem editar a entidade',
+      );
+    }
+
     return this.prisma.entidade.update({
       where: { id },
       data: updateEntidadeDto,
     });
   }
 
-  remove(id: number) {
+  async remove(id: number, idPerfilSolicitante: number) {
+    await this.ensureEntidadeExists(id);
+    const gestaoSolicitante = await this.findGestaoMembro(
+      id,
+      idPerfilSolicitante,
+    );
+
+    if (gestaoSolicitante?.classificacao !== ClassificacaoMembro.GESTOR) {
+      throw new ForbiddenException('Apenas GESTOR pode excluir a entidade');
+    }
+
     return this.prisma.entidade.delete({ where: { id } });
   }
 

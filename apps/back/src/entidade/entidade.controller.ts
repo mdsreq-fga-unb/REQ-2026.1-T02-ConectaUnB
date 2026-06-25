@@ -95,14 +95,19 @@ export class EntidadeController {
   update(
     @Param('id') id: string,
     @Body() updateEntidadeDto: UpdateEntidadeDto,
+    @Request() req: AuthenticatedRequest,
   ) {
-    return this.entidadeService.update(+id, updateEntidadeDto);
+    return this.entidadeService.update(
+      +id,
+      Number(req.user.id),
+      updateEntidadeDto,
+    );
   }
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.entidadeService.remove(+id);
+  remove(@Param('id') id: string, @Request() req: AuthenticatedRequest) {
+    return this.entidadeService.remove(+id, Number(req.user.id));
   }
 }
