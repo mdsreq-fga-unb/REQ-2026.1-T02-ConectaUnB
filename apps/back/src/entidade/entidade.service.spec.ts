@@ -122,7 +122,7 @@ describe('EntidadeService', () => {
       membros: [
         {
           id: 12,
-          idPerfil: 9,
+          email: 'test@unb.br',
           classificacao: 'MEMBRO',
           createdAt: new Date('2026-06-01T00:00:00.000Z'),
           perfil: {
@@ -205,19 +205,19 @@ describe('EntidadeService', () => {
       prisma.membro.create.mockResolvedValue({
         id: 12,
         idEntidade: 1,
-        idPerfil: 9,
+        email: 'test@unb.br',
         classificacao: 'MEMBRO',
       });
 
       await expect(
         service.addMembro(1, 7, {
-          idPerfil: 9,
+          email: 'test@unb.br',
           classificacao: ClassificacaoMembro.MEMBRO,
         }),
       ).resolves.toEqual({
         id: 12,
         idEntidade: 1,
-        idPerfil: 9,
+        email: 'test@unb.br',
         classificacao: 'MEMBRO',
       });
 
@@ -232,7 +232,7 @@ describe('EntidadeService', () => {
       expect(prisma.membro.create).toHaveBeenCalledWith({
         data: {
           idEntidade: 1,
-          idPerfil: 9,
+          email: 'test@unb.br',
           classificacao: 'MEMBRO',
         },
         include: {
@@ -264,7 +264,7 @@ describe('EntidadeService', () => {
 
       await expect(
         service.addMembro(1, 7, {
-          idPerfil: 9,
+          email: 'test@unb.br',
           classificacao: ClassificacaoMembro.MEMBRO,
         }),
       ).resolves.toEqual({ id: 12 });
@@ -283,7 +283,7 @@ describe('EntidadeService', () => {
 
       await expect(
         service.addMembro(1, 7, {
-          idPerfil: 9,
+          email: 'test@unb.br',
           classificacao: ClassificacaoMembro.GESTOR,
         }),
       ).resolves.toEqual({ id: 12 });
@@ -295,7 +295,7 @@ describe('EntidadeService', () => {
 
       await expect(
         service.addMembro(1, 7, {
-          idPerfil: 9,
+          email: 'test@unb.br',
           classificacao: ClassificacaoMembro.MEMBRO,
         }),
       ).rejects.toBeInstanceOf(ForbiddenException);
@@ -312,7 +312,7 @@ describe('EntidadeService', () => {
 
       await expect(
         service.addMembro(1, 7, {
-          idPerfil: 9,
+          email: 'test@unb.br',
           classificacao: ClassificacaoMembro.GESTOR,
         }),
       ).rejects.toBeInstanceOf(ForbiddenException);
@@ -325,7 +325,7 @@ describe('EntidadeService', () => {
 
       await expect(
         service.addMembro(1, 7, {
-          idPerfil: 9,
+          email: 'test@unb.br',
           classificacao: ClassificacaoMembro.MEMBRO,
         }),
       ).rejects.toBeInstanceOf(NotFoundException);
@@ -344,7 +344,7 @@ describe('EntidadeService', () => {
 
       await expect(
         service.addMembro(1, 7, {
-          idPerfil: 9,
+          email: 'test@unb.br',
           classificacao: ClassificacaoMembro.MEMBRO,
         }),
       ).rejects.toBeInstanceOf(NotFoundException);
@@ -368,7 +368,7 @@ describe('EntidadeService', () => {
 
       await expect(
         service.addMembro(1, 7, {
-          idPerfil: 9,
+          email: 'test@unb.br',
           classificacao: ClassificacaoMembro.MEMBRO,
         }),
       ).rejects.toBeInstanceOf(ConflictException);
@@ -386,7 +386,7 @@ describe('EntidadeService', () => {
 
       await expect(
         service.addMembro(1, 7, {
-          idPerfil: 9,
+          email: 'test@unb.br',
           classificacao: ClassificacaoMembro.MEMBRO,
         }),
       ).rejects.toBe(unknownError);
@@ -403,7 +403,7 @@ describe('EntidadeService', () => {
 
       await expect(service.removeMembro(1, 7, 9)).resolves.toEqual({
         idEntidade: 1,
-        idPerfil: 9,
+        email: 'test@unb.br',
         removed: true,
       });
 
@@ -420,7 +420,7 @@ describe('EntidadeService', () => {
 
       await expect(service.removeMembro(1, 7, 9)).resolves.toEqual({
         idEntidade: 1,
-        idPerfil: 9,
+        email: 'test@unb.br',
         removed: true,
       });
 

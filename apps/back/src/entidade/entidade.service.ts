@@ -158,13 +158,13 @@ export class EntidadeService {
       );
     }
 
-    await this.ensurePerfilExists(addMembroDto.idPerfil);
+    const idPerfil = await this.getPerfilIdByEmail(addMembroDto.email);
 
     try {
       return await this.prisma.membro.create({
         data: {
           idEntidade,
-          idPerfil: addMembroDto.idPerfil,
+          idPerfil: idPerfil,
           classificacao: addMembroDto.classificacao,
         },
         include: {
@@ -272,15 +272,17 @@ export class EntidadeService {
     }
   }
 
-  private async ensurePerfilExists(idPerfil: number) {
+  private async getPerfilIdByEmail(email: string): Promise<number> {
     const perfil = await this.prisma.perfil.findUnique({
-      where: { id: idPerfil },
+      where: { email: email },
       select: { id: true },
     });
 
     if (!perfil) {
-      throw new NotFoundException('Perfil não encontrado');
+      throw new NotFoundException('Perfil com este e-mail não encontrado');
     }
+
+    return perfil.id;
   }
 
   private async findGestaoMembro(idEntidade: number, idPerfil: number) {

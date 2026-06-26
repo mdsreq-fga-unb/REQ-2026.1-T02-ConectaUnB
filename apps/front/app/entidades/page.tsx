@@ -66,7 +66,7 @@ function getErrorMessage(error: unknown) {
 
 function MemberManagerModal({ entidade, onClose, onChanged }: MemberManagerModalProps) {
   const [detalhe, setDetalhe] = useState<EntidadeDetalhada | null>(null);
-  const [idPerfil, setIdPerfil] = useState('');
+  const [email, setEmail] = useState('');
   const [classificacao, setClassificacao] = useState('MEMBRO');
   const [editForm, setEditForm] = useState({
     nome: '',
@@ -124,10 +124,10 @@ function MemberManagerModal({ entidade, onClose, onChanged }: MemberManagerModal
 
     try {
       await api.post(`/entidade/${entidade.id}/membros`, {
-        idPerfil: Number(idPerfil),
+        email,
         classificacao,
       });
-      setIdPerfil('');
+      setEmail('');
       setClassificacao('MEMBRO');
       await refreshDetalhe();
     } catch (error) {
@@ -333,15 +333,14 @@ function MemberManagerModal({ entidade, onClose, onChanged }: MemberManagerModal
           {canManage ? (
             <form onSubmit={handleAddMember} className="grid grid-cols-1 md:grid-cols-[1fr_180px_auto] gap-3 items-end">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">ID do perfil</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">E-mail do usuário</label>
                 <input
-                  type="number"
-                  min="1"
+                  type="email"
                   required
-                  value={idPerfil}
-                  onChange={(event) => setIdPerfil(event.target.value)}
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#195b3d] focus:border-[#195b3d] outline-none text-black"
-                  placeholder="Ex: 12"
+                  placeholder="Ex: usuario@unb.br"
                 />
               </div>
 
