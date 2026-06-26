@@ -1,10 +1,11 @@
 type ProjetoCardProps = {
   nome: string;
   descricao?: string;
+  imagem?: string;
   onClick?: () => void;
 };
 
-export function ProjetoCard({ nome, descricao, onClick }: ProjetoCardProps) {
+export function ProjetoCard({ nome, descricao, imagem, onClick }: ProjetoCardProps) {
   return (
     <button
       type="button"
@@ -12,8 +13,14 @@ export function ProjetoCard({ nome, descricao, onClick }: ProjetoCardProps) {
       className="flex w-full items-center gap-4 p-4 text-left bg-white border border-[#195b3d] rounded-xl shadow-[0_4px_6px_rgba(0,0,0,0.1)] hover:shadow-[0_6px_8px_rgba(0,0,0,0.15)] transition-shadow cursor-pointer disabled:cursor-default"
     >
       
-      {/* Círculo cinza simulando a foto do projeto */}
-      <div className="w-12 h-12 rounded-full bg-gray-300 flex-shrink-0" />
+      {/* Imagem do projeto/entidade */}
+      {imagem ? (
+        <img src={imagem} alt={nome} className="w-12 h-12 rounded-full object-cover flex-shrink-0" />
+      ) : (
+        <div className="w-12 h-12 rounded-full bg-gray-300 flex-shrink-0 flex items-center justify-center text-gray-500 font-bold">
+          {nome.charAt(0).toUpperCase()}
+        </div>
+      )}
       
       {/* Nome do projeto passado por propriedade */}
       <span className="min-w-0">

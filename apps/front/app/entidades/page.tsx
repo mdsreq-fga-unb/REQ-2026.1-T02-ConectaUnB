@@ -21,6 +21,7 @@ type EntidadeResumo = {
   classificacao?: string;
   campus?: string;
   departamento?: string;
+  linkLogo?: string | null;
   vinculo: VinculoEntidade;
 };
 
@@ -473,6 +474,7 @@ export default function EntidadesPage() {
                   key={entidade.id}
                   nome={entidade.nome}
                   descricao="Clique para gerenciar membros"
+                  imagem={entidade.linkLogo || undefined}
                   onClick={() => setSelectedEntidade(entidade)}
                 />
               ))
@@ -496,6 +498,7 @@ export default function EntidadesPage() {
                   key={entidade.id}
                   nome={entidade.nome}
                   descricao="Clique para gerenciar membros"
+                  imagem={entidade.linkLogo || undefined}
                   onClick={() => setSelectedEntidade(entidade)}
                 />
               ))
@@ -519,6 +522,7 @@ export default function EntidadesPage() {
                   key={entidade.id}
                   nome={entidade.nome}
                   descricao="Clique para ver membros"
+                  imagem={entidade.linkLogo || undefined}
                   onClick={() => setSelectedEntidade(entidade)}
                 />
               ))
