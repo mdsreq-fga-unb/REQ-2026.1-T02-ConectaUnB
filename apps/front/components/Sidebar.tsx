@@ -5,15 +5,18 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Bell, Briefcase, Building2, Home, User } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth';
 
 export const Sidebar: React.FC = () => {
   const pathname = usePathname();
+  const { user } = useAuth();
+
   const navItems = [
     { href: '/', label: 'Feed', icon: Home },
     { href: '/projetos', label: 'Projetos', icon: Briefcase },
     { href: '/entidades', label: 'Entidades', icon: Building2 },
     { href: '#', label: 'Notificações', icon: Bell },
-    { href: '#', label: 'Perfil', icon: User },
+    { href: user?.sub ? `/perfil/${user.sub}` : '/perfil', label: 'Perfil', icon: User },
   ];
 
   return (
