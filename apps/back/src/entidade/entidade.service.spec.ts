@@ -25,6 +25,7 @@ describe('EntidadeService', () => {
       findMany: jest.fn(),
       findFirst: jest.fn(),
       create: jest.fn(),
+      update: jest.fn(),
       delete: jest.fn(),
       count: jest.fn(),
     },
@@ -489,6 +490,64 @@ describe('EntidadeService', () => {
       );
 
       expect(prisma.membro.delete).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('updateMembro', () => {
+    it('should allow GESTOR to change MEMBRO to CO_GESTOR', async () => {
+      prisma.entidade.findUnique.mockResolvedValue({ id: 1 });
+      prisma.membro.findFirst
+        .mockResolvedValueOnce({ id: 2, classificacao: 'GESTOR' })
+        .mockResolvedValueOnce({ id: 3, classificacao: 'MEMBRO' });
+
+      prisma.membro.update.mockResolvedValue({ id: 3, classificacao: 'CO_GESTOR' });
+
+      await service.updateMembro(1, 7, 9, { classificacao: ClassificacaoMembro.CO_GESTOR });
+
+      expect(prisma.membro.update).toHaveBeenCalledWith({
+        where: { id: 3 },
+        data: { classificacao: 'CO_GESTOR' },
+      });
+    });
+
+    it('should reject CO_GESTOR trying to promote MEMBRO to CO_GESTOR', async () => {
+      prisma.entidade.findUnique.mockResolvedValue({ id: 1 });
+      prisma.membro.findFirst
+        .mockResolvedValueOnce({ id: 2, classificacao: 'CO_GESTOR' });
+
+      await expect(
+        service.updateMembro(1, 7, 9, { classificacao: ClassificacaoMembro.CO_GESTOR })
+      ).rejects.toBeInstanceOf(ForbiddenException);
+
+      expect(prisma.membro.update).not.toHaveBeenCalled();
+    });
+
+    it('should reject CO_GESTOR trying to edit a GESTOR', async () => {
+      prisma.entidade.findUnique.mockResolvedValue({ id: 1 });
+      prisma.membro.findFirst
+        .mockResolvedValueOnce({ id: 2, classificacao: 'CO_GESTOR' })
+        .mockResolvedValueOnce({ id: 3, classificacao: 'GESTOR' });
+
+      await expect(
+        service.updateMembro(1, 7, 9, { classificacao: ClassificacaoMembro.MEMBRO })
+      ).rejects.toBeInstanceOf(ForbiddenException);
+
+      expect(prisma.membro.update).not.toHaveBeenCalled();
+    });
+
+    it('should reject demoting the last GESTOR of the entity', async () => {
+      prisma.entidade.findUnique.mockResolvedValue({ id: 1 });
+      prisma.membro.findFirst
+        .mockResolvedValueOnce({ id: 2, classificacao: 'GESTOR' })
+        .mockResolvedValueOnce({ id: 3, classificacao: 'GESTOR' });
+      
+      prisma.membro.count.mockResolvedValue(1);
+
+      await expect(
+        service.updateMembro(1, 7, 9, { classificacao: ClassificacaoMembro.MEMBRO })
+      ).rejects.toBeInstanceOf(ConflictException);
+
+      expect(prisma.membro.update).not.toHaveBeenCalled();
     });
   });
 });

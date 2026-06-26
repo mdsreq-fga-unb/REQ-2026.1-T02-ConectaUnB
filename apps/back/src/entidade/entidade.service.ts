@@ -305,6 +305,18 @@ export class EntidadeService {
       throw new NotFoundException('Membro não encontrado nesta entidade');
     }
 
+    const solicitanteIsGestor =
+      gestaoSolicitante.classificacao === ClassificacaoMembro.GESTOR;
+
+    if (
+      alvo.classificacao === ClassificacaoMembro.GESTOR &&
+      !solicitanteIsGestor
+    ) {
+      throw new ForbiddenException(
+        'CO_GESTOR não pode alterar o cargo de um GESTOR',
+      );
+    }
+
     if (alvo.classificacao === ClassificacaoMembro.GESTOR && updateMembroDto.classificacao !== ClassificacaoMembro.GESTOR) {
       const totalGestores = await this.prisma.membro.count({
         where: {
