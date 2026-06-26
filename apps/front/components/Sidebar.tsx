@@ -20,7 +20,7 @@ export const Sidebar: React.FC = () => {
   ];
 
   return (
-    <aside className="w-64 bg-[#0d2a54] text-white flex flex-col min-h-screen justify-between">
+    <aside className="w-64 bg-[#0d2a54] text-white flex flex-col h-screen sticky top-0 justify-between">
       <div className="p-8 flex justify-center">
         <Image
             src="/logo.png"
