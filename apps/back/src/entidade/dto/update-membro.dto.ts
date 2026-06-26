@@ -1,6 +1,13 @@
-import { OmitType, PartialType } from '@nestjs/swagger';
-import { AddMembroDto } from './add-membro.dto';
+import { IsEnum, IsNotEmpty } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { ClassificacaoMembro } from '@prisma/client';
 
-export class UpdateMembroDto extends PartialType(
-  OmitType(AddMembroDto, ['email'] as const),
-) {}
+export class UpdateMembroDto {
+  @ApiProperty({
+    enum: ClassificacaoMembro,
+    description: 'Nível de permissão do membro na entidade',
+  })
+  @IsEnum(ClassificacaoMembro)
+  @IsNotEmpty()
+  classificacao!: ClassificacaoMembro;
+}

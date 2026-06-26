@@ -9,6 +9,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { AddMembroDto } from './dto/add-membro.dto';
 import { CreateEntidadeDto } from './dto/create-entidade.dto';
 import { UpdateEntidadeDto } from './dto/update-entidade.dto';
+import { UpdateMembroDto } from './dto/update-membro.dto';
 
 @Injectable()
 export class EntidadeService {
@@ -259,6 +260,70 @@ export class EntidadeService {
       idPerfil: idPerfilRemovido,
       removed: true,
     };
+  }
+
+  async updateMembro(
+    idEntidade: number,
+    idPerfilSolicitante: number,
+    idPerfilAlvo: number,
+    updateMembroDto: UpdateMembroDto,
+  ) {
+    await this.ensureEntidadeExists(idEntidade);
+    const gestaoSolicitante = await this.findGestaoMembro(
+      idEntidade,
+      idPerfilSolicitante,
+    );
+
+    if (!gestaoSolicitante) {
+      throw new ForbiddenException(
+        'Apenas gestores ou co-gestores podem gerenciar membros da entidade',
+      );
+    }
+
+    const isPapelDeGestao =
+      updateMembroDto.classificacao === ClassificacaoMembro.GESTOR ||
+      updateMembroDto.classificacao === ClassificacaoMembro.CO_GESTOR;
+
+    if (
+      isPapelDeGestao &&
+      gestaoSolicitante.classificacao !== ClassificacaoMembro.GESTOR
+    ) {
+      throw new ForbiddenException(
+        'Apenas GESTOR pode atribuir papeis de gestão (GESTOR ou CO_GESTOR)',
+      );
+    }
+
+    const alvo = await this.prisma.membro.findFirst({
+      where: {
+        idEntidade,
+        idPerfil: idPerfilAlvo,
+      },
+      select: { id: true, classificacao: true },
+    });
+
+    if (!alvo) {
+      throw new NotFoundException('Membro não encontrado nesta entidade');
+    }
+
+    if (alvo.classificacao === ClassificacaoMembro.GESTOR && updateMembroDto.classificacao !== ClassificacaoMembro.GESTOR) {
+      const totalGestores = await this.prisma.membro.count({
+        where: {
+          idEntidade,
+          classificacao: ClassificacaoMembro.GESTOR,
+        },
+      });
+
+      if (totalGestores <= 1) {
+        throw new ConflictException(
+          'Não é possível remover o único GESTOR da entidade',
+        );
+      }
+    }
+
+    return await this.prisma.membro.update({
+      where: { id: alvo.id },
+      data: { classificacao: updateMembroDto.classificacao },
+    });
   }
 
   private async ensureEntidadeExists(idEntidade: number) {

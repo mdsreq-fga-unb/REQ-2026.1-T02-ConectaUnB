@@ -15,6 +15,7 @@ import { EntidadeService } from './entidade.service';
 import { AddMembroDto } from './dto/add-membro.dto';
 import { CreateEntidadeDto } from './dto/create-entidade.dto';
 import { UpdateEntidadeDto } from './dto/update-entidade.dto';
+import { UpdateMembroDto } from './dto/update-membro.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 type AuthenticatedRequest = ExpressRequest & {
@@ -81,6 +82,23 @@ export class EntidadeController {
       +id,
       Number(req.user.id),
       +idPerfil,
+    );
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id/membros/:idPerfil')
+  updateMembro(
+    @Param('id') id: string,
+    @Param('idPerfil') idPerfil: string,
+    @Body() updateMembroDto: UpdateMembroDto,
+    @Request() req: AuthenticatedRequest,
+  ) {
+    return this.entidadeService.updateMembro(
+      +id,
+      Number(req.user.id),
+      +idPerfil,
+      updateMembroDto,
     );
   }
 

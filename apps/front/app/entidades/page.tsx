@@ -65,6 +65,81 @@ function getErrorMessage(error: unknown) {
   return 'Não foi possível concluir a ação. Tente novamente.';
 }
 
+function MemberRoleEditor({
+  membro,
+  entidadeId,
+  isSaving,
+  setIsSaving,
+  setErrorMessage,
+  setSuccessMessage,
+  refreshDetalhe,
+}: {
+  membro: MembroEntidade;
+  entidadeId: number;
+  isSaving: boolean;
+  setIsSaving: (s: boolean) => void;
+  setErrorMessage: (msg: string) => void;
+  setSuccessMessage: (msg: string) => void;
+  refreshDetalhe: () => Promise<void>;
+}) {
+  const [selectedRole, setSelectedRole] = useState(membro.classificacao);
+
+  // Update local state if prop changes from outside (e.g. after refreshDetalhe)
+  useEffect(() => {
+    setSelectedRole(membro.classificacao);
+  }, [membro.classificacao]);
+
+  const hasChanged = selectedRole !== membro.classificacao;
+
+  const handleUpdateRole = async () => {
+    setIsSaving(true);
+    setErrorMessage('');
+    setSuccessMessage('');
+
+    try {
+      await api.patch(`/entidade/${entidadeId}/membros/${membro.idPerfil}`, {
+        classificacao: selectedRole,
+      });
+      await refreshDetalhe();
+      setSuccessMessage('Cargo atualizado com sucesso');
+      setTimeout(() => setSuccessMessage(''), 3000);
+    } catch (error) {
+      console.error('Erro ao atualizar cargo:', error);
+      setErrorMessage(getErrorMessage(error));
+      setSelectedRole(membro.classificacao); // revert on error
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  return (
+    <div className="flex items-center gap-2">
+      <select
+        value={selectedRole}
+        onChange={(e) => setSelectedRole(e.target.value as any)}
+        disabled={isSaving}
+        className="px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:ring-[#195b3d] focus:border-[#195b3d] outline-none bg-white text-black"
+      >
+        {ClassificacaoMembro.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+      {hasChanged && (
+        <button
+          type="button"
+          disabled={isSaving}
+          onClick={handleUpdateRole}
+          className="inline-flex h-8 px-3 items-center justify-center rounded-md bg-[#195b3d] text-white hover:bg-[#13472f] disabled:opacity-50 text-sm font-medium"
+        >
+          Confirmar
+        </button>
+      )}
+    </div>
+  );
+}
+
 function MemberManagerModal({ entidade, onClose, onChanged }: MemberManagerModalProps) {
   const [detalhe, setDetalhe] = useState<EntidadeDetalhada | null>(null);
   const [email, setEmail] = useState('');
@@ -133,6 +208,8 @@ function MemberManagerModal({ entidade, onClose, onChanged }: MemberManagerModal
       setEmail('');
       setClassificacao('MEMBRO');
       await refreshDetalhe();
+      setSuccessMessage('Membro adicionado com sucesso');
+      setTimeout(() => setSuccessMessage(''), 3000);
     } catch (error) {
       console.error('Erro ao adicionar membro:', error);
       setErrorMessage(getErrorMessage(error));
@@ -152,6 +229,8 @@ function MemberManagerModal({ entidade, onClose, onChanged }: MemberManagerModal
     try {
       await api.delete(`/entidade/${entidade.id}/membros/${memberIdPerfil}`);
       await refreshDetalhe();
+      setSuccessMessage('Membro removido com sucesso');
+      setTimeout(() => setSuccessMessage(''), 3000);
     } catch (error) {
       console.error('Erro ao remover membro:', error);
       setErrorMessage(getErrorMessage(error));
@@ -396,20 +475,35 @@ function MemberManagerModal({ entidade, onClose, onChanged }: MemberManagerModal
                     <div className="min-w-0">
                       <p className="font-medium text-[#1D1D1D] truncate">{membro.perfil.name}</p>
                       <p className="text-sm text-gray-500 truncate">
-                        #{membro.idPerfil} - {membro.perfil.email} - {membro.classificacao}
+                        #{membro.idPerfil} - {membro.perfil.email}
                       </p>
                     </div>
                     {canManage ? (
-                      <button
-                        type="button"
-                        disabled={isSaving}
-                        onClick={() => handleRemoveMember(membro.idPerfil)}
-                        className="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md text-red-600 hover:bg-red-50 disabled:opacity-50"
-                        aria-label={`Remover ${membro.perfil.name}`}
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    ) : null}
+                      <div className="flex items-center gap-4">
+                        <MemberRoleEditor
+                          membro={membro}
+                          entidadeId={entidade.id}
+                          isSaving={isSaving}
+                          setIsSaving={setIsSaving}
+                          setErrorMessage={setErrorMessage}
+                          setSuccessMessage={setSuccessMessage}
+                          refreshDetalhe={refreshDetalhe}
+                        />
+                        <button
+                          type="button"
+                          disabled={isSaving}
+                          onClick={() => handleRemoveMember(membro.idPerfil)}
+                          className="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md text-red-600 hover:bg-red-50 disabled:opacity-50"
+                          aria-label={`Remover ${membro.perfil.name}`}
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="text-sm text-gray-700 bg-gray-100 px-3 py-1.5 rounded-md">
+                        {membro.classificacao}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
