@@ -79,6 +79,7 @@ function MemberManagerModal({ entidade, onClose, onChanged }: MemberManagerModal
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     if (!entidade) return;
@@ -122,6 +123,7 @@ function MemberManagerModal({ entidade, onClose, onChanged }: MemberManagerModal
     event.preventDefault();
     setIsSaving(true);
     setErrorMessage('');
+    setSuccessMessage('');
 
     try {
       await api.post(`/entidade/${entidade.id}/membros`, {
@@ -145,6 +147,7 @@ function MemberManagerModal({ entidade, onClose, onChanged }: MemberManagerModal
 
     setIsSaving(true);
     setErrorMessage('');
+    setSuccessMessage('');
 
     try {
       await api.delete(`/entidade/${entidade.id}/membros/${memberIdPerfil}`);
@@ -168,6 +171,7 @@ function MemberManagerModal({ entidade, onClose, onChanged }: MemberManagerModal
     event.preventDefault();
     setIsSaving(true);
     setErrorMessage('');
+    setSuccessMessage('');
 
     try {
       await api.patch(`/entidade/${entidade.id}`, {
@@ -179,9 +183,11 @@ function MemberManagerModal({ entidade, onClose, onChanged }: MemberManagerModal
       });
       await refreshDetalhe();
       onChanged();
+      setSuccessMessage('Mudanças salvas com sucesso');
+      setTimeout(() => setSuccessMessage(''), 3000);
     } catch (error) {
       console.error('Erro ao editar entidade:', error);
-      setErrorMessage(getErrorMessage(error));
+      setErrorMessage(`${getErrorMessage(error)} Por favor, verifique os dados informados ou tente novamente mais tarde.`);
     } finally {
       setIsSaving(false);
     }
@@ -193,13 +199,16 @@ function MemberManagerModal({ entidade, onClose, onChanged }: MemberManagerModal
 
     setIsSaving(true);
     setErrorMessage('');
+    setSuccessMessage('');
 
     try {
       await api.delete(`/entidade/${entidade.id}`);
+      window.alert('Entidade excluida com sucesso');
       onChanged();
       onClose();
     } catch (error) {
       console.error('Erro ao excluir entidade:', error);
+      window.alert('Tivemos um problema ao apagar essa entidade, tente de novo mais tarde');
       setErrorMessage(getErrorMessage(error));
     } finally {
       setIsSaving(false);
@@ -223,6 +232,12 @@ function MemberManagerModal({ entidade, onClose, onChanged }: MemberManagerModal
           {errorMessage ? (
             <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
               {errorMessage}
+            </div>
+          ) : null}
+
+          {successMessage ? (
+            <div className="rounded-md border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+              {successMessage}
             </div>
           ) : null}
 
