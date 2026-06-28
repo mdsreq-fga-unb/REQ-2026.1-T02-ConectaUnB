@@ -7,6 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { CAMPUS_OPTIONS, CURSO_OPTIONS, DEPARTAMENTO_OPTIONS } from "@/constants/options";
+import { Sidebar } from '@/components/Sidebar';
 import {ConfirmModal} from "../../../components/ConfirmModal";
 
 export default function PerfilPage() {
@@ -97,10 +98,7 @@ export default function PerfilPage() {
 
   return (
     <div className="min-h-screen flex bg-white">
-      {/* sidebar */}
-      <div className="hidden md:flex w-64 bg-gray-100 border-r border-gray-200 items-center justify-center flex-shrink-0 text-gray-400 font-medium">
-        [ Sidebar ]
-      </div>
+      <Sidebar />
 
       <main className="flex-1 p-8 sm:p-12 flex justify-center">
         <div className="w-full max-w-4xl space-y-16">

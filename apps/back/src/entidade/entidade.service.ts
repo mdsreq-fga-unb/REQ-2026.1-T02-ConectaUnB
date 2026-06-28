@@ -9,13 +9,28 @@ import { PrismaService } from '../prisma/prisma.service';
 import { AddMembroDto } from './dto/add-membro.dto';
 import { CreateEntidadeDto } from './dto/create-entidade.dto';
 import { UpdateEntidadeDto } from './dto/update-entidade.dto';
+import { UpdateMembroDto } from './dto/update-membro.dto';
 
 @Injectable()
 export class EntidadeService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(createEntidadeDto: CreateEntidadeDto) {
-    return this.prisma.entidade.create({ data: createEntidadeDto });
+  create(createEntidadeDto: CreateEntidadeDto, idCriador: number) {
+    const { linkLogo, linkBanner, ...rest } = createEntidadeDto;
+    
+    return this.prisma.entidade.create({
+      data: {
+        ...rest,
+        linkLogo: linkLogo || '/sem_foto.png',
+        linkBanner: linkBanner || '/texturaHorizontal.png',
+        membros: {
+          create: {
+            idPerfil: idCriador,
+            classificacao: ClassificacaoMembro.GESTOR,
+          },
+        },
+      },
+    });
   }
 
   findAll() {
@@ -54,17 +69,63 @@ export class EntidadeService {
   }
 
   findOne(id: number) {
-    return this.prisma.entidade.findUnique({ where: { id } });
+    return this.prisma.entidade.findUnique({
+      where: { id },
+      include: {
+        membros: {
+          orderBy: { createdAt: 'asc' },
+          select: {
+            id: true,
+            idPerfil: true,
+            classificacao: true,
+            createdAt: true,
+            perfil: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+              },
+            },
+          },
+        },
+      },
+    });
   }
 
-  update(id: number, updateEntidadeDto: UpdateEntidadeDto) {
+  async update(
+    id: number,
+    idPerfilSolicitante: number,
+    updateEntidadeDto: UpdateEntidadeDto,
+  ) {
+    await this.ensureEntidadeExists(id);
+    const gestaoSolicitante = await this.findGestaoMembro(
+      id,
+      idPerfilSolicitante,
+    );
+
+    if (!gestaoSolicitante) {
+      throw new ForbiddenException(
+        'Apenas gestores ou co-gestores podem editar a entidade',
+      );
+    }
+
     return this.prisma.entidade.update({
       where: { id },
       data: updateEntidadeDto,
     });
   }
 
-  remove(id: number) {
+  async remove(id: number, idPerfilSolicitante: number) {
+    await this.ensureEntidadeExists(id);
+    const gestaoSolicitante = await this.findGestaoMembro(
+      id,
+      idPerfilSolicitante,
+    );
+
+    if (gestaoSolicitante?.classificacao !== ClassificacaoMembro.GESTOR) {
+      throw new ForbiddenException('Apenas GESTOR pode excluir a entidade');
+    }
+
     return this.prisma.entidade.delete({ where: { id } });
   }
 
@@ -98,13 +159,13 @@ export class EntidadeService {
       );
     }
 
-    await this.ensurePerfilExists(addMembroDto.idPerfil);
+    const idPerfil = await this.getPerfilIdByEmail(addMembroDto.email);
 
     try {
       return await this.prisma.membro.create({
         data: {
           idEntidade,
-          idPerfil: addMembroDto.idPerfil,
+          idPerfil: idPerfil,
           classificacao: addMembroDto.classificacao,
         },
         include: {
@@ -201,6 +262,82 @@ export class EntidadeService {
     };
   }
 
+  async updateMembro(
+    idEntidade: number,
+    idPerfilSolicitante: number,
+    idPerfilAlvo: number,
+    updateMembroDto: UpdateMembroDto,
+  ) {
+    await this.ensureEntidadeExists(idEntidade);
+    const gestaoSolicitante = await this.findGestaoMembro(
+      idEntidade,
+      idPerfilSolicitante,
+    );
+
+    if (!gestaoSolicitante) {
+      throw new ForbiddenException(
+        'Apenas gestores ou co-gestores podem gerenciar membros da entidade',
+      );
+    }
+
+    const isPapelDeGestao =
+      updateMembroDto.classificacao === ClassificacaoMembro.GESTOR ||
+      updateMembroDto.classificacao === ClassificacaoMembro.CO_GESTOR;
+
+    if (
+      isPapelDeGestao &&
+      gestaoSolicitante.classificacao !== ClassificacaoMembro.GESTOR
+    ) {
+      throw new ForbiddenException(
+        'Apenas GESTOR pode atribuir papeis de gestão (GESTOR ou CO_GESTOR)',
+      );
+    }
+
+    const alvo = await this.prisma.membro.findFirst({
+      where: {
+        idEntidade,
+        idPerfil: idPerfilAlvo,
+      },
+      select: { id: true, classificacao: true },
+    });
+
+    if (!alvo) {
+      throw new NotFoundException('Membro não encontrado nesta entidade');
+    }
+
+    const solicitanteIsGestor =
+      gestaoSolicitante.classificacao === ClassificacaoMembro.GESTOR;
+
+    if (
+      alvo.classificacao === ClassificacaoMembro.GESTOR &&
+      !solicitanteIsGestor
+    ) {
+      throw new ForbiddenException(
+        'CO_GESTOR não pode alterar o cargo de um GESTOR',
+      );
+    }
+
+    if (alvo.classificacao === ClassificacaoMembro.GESTOR && updateMembroDto.classificacao !== ClassificacaoMembro.GESTOR) {
+      const totalGestores = await this.prisma.membro.count({
+        where: {
+          idEntidade,
+          classificacao: ClassificacaoMembro.GESTOR,
+        },
+      });
+
+      if (totalGestores <= 1) {
+        throw new ConflictException(
+          'Não é possível remover o único GESTOR da entidade',
+        );
+      }
+    }
+
+    return await this.prisma.membro.update({
+      where: { id: alvo.id },
+      data: { classificacao: updateMembroDto.classificacao },
+    });
+  }
+
   private async ensureEntidadeExists(idEntidade: number) {
     const entidade = await this.prisma.entidade.findUnique({
       where: { id: idEntidade },
@@ -212,15 +349,17 @@ export class EntidadeService {
     }
   }
 
-  private async ensurePerfilExists(idPerfil: number) {
+  private async getPerfilIdByEmail(email: string): Promise<number> {
     const perfil = await this.prisma.perfil.findUnique({
-      where: { id: idPerfil },
+      where: { email: email },
       select: { id: true },
     });
 
     if (!perfil) {
-      throw new NotFoundException('Perfil não encontrado');
+      throw new NotFoundException('Perfil com este e-mail não encontrado');
     }
+
+    return perfil.id;
   }
 
   private async findGestaoMembro(idEntidade: number, idPerfil: number) {

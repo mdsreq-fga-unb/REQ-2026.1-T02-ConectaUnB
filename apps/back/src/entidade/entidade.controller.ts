@@ -15,6 +15,7 @@ import { EntidadeService } from './entidade.service';
 import { AddMembroDto } from './dto/add-membro.dto';
 import { CreateEntidadeDto } from './dto/create-entidade.dto';
 import { UpdateEntidadeDto } from './dto/update-entidade.dto';
+import { UpdateMembroDto } from './dto/update-membro.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 type AuthenticatedRequest = ExpressRequest & {
@@ -29,8 +30,17 @@ export class EntidadeController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createEntidadeDto: CreateEntidadeDto) {
-    return this.entidadeService.create(createEntidadeDto);
+  create(
+    @Request() req: AuthenticatedRequest,
+    @Body() createEntidadeDto: CreateEntidadeDto,
+  ) {
+    console.log(
+      '=> CREATE CHAMADO! idCriador:',
+      req.user.id,
+      'DTO:',
+      createEntidadeDto,
+    );
+    return this.entidadeService.create(createEntidadeDto, Number(req.user.id));
   }
 
   @Get()
@@ -75,6 +85,23 @@ export class EntidadeController {
     );
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id/membros/:idPerfil')
+  updateMembro(
+    @Param('id') id: string,
+    @Param('idPerfil') idPerfil: string,
+    @Body() updateMembroDto: UpdateMembroDto,
+    @Request() req: AuthenticatedRequest,
+  ) {
+    return this.entidadeService.updateMembro(
+      +id,
+      Number(req.user.id),
+      +idPerfil,
+      updateMembroDto,
+    );
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.entidadeService.findOne(+id);
@@ -86,14 +113,19 @@ export class EntidadeController {
   update(
     @Param('id') id: string,
     @Body() updateEntidadeDto: UpdateEntidadeDto,
+    @Request() req: AuthenticatedRequest,
   ) {
-    return this.entidadeService.update(+id, updateEntidadeDto);
+    return this.entidadeService.update(
+      +id,
+      Number(req.user.id),
+      updateEntidadeDto,
+    );
   }
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.entidadeService.remove(+id);
+  remove(@Param('id') id: string, @Request() req: AuthenticatedRequest) {
+    return this.entidadeService.remove(+id, Number(req.user.id));
   }
 }
