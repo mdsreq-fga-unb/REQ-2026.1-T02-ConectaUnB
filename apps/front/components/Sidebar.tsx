@@ -15,7 +15,7 @@ export const Sidebar: React.FC = () => {
   const navItemsLogado = [
     { href: '/conecta/feed', label: 'Feed', icon: Home },
     { href: '/conecta/projetos', label: 'Projetos', icon: Briefcase },
-    { href: '/conecta/entidades', label: 'Entidades', icon: Building2 },
+    { href: '/conecta/entidades/gestao', label: 'Entidades', icon: Building2 },
     { href: '/conecta/notificacoes', label: 'Notificações', icon: Bell },
     { href: user?.sub ? `/conecta/perfil/${user.sub}` : '/conecta/perfil', label: 'Perfil', icon: User },
   ];

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
-import { ImageUploadBox } from './ImageUploadBox';
-import { CAMPUS_OPTIONS, ClassificacaoEntidade, DEPARTAMENTO_OPTIONS } from '../constants/options';
-import { api } from '../guards/api';
+import { ImageUploadBox } from '../ImageUploadBox';
+import { CAMPUS_OPTIONS, ClassificacaoEntidade, DEPARTAMENTO_OPTIONS } from '../../constants/options';
+import { api } from '../../guards/api';
 
 interface CreateEntidadeModalProps {
   isOpen: boolean;

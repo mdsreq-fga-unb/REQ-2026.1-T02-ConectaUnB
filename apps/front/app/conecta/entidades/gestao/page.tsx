@@ -3,9 +3,13 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Trash2, X } from 'lucide-react';
 import { ButtonGreen } from '@/components/ButtonGreen';
 import { ProjetoCard } from '@/components/projetoCard';
-import { CreateEntidadeModal } from '@/components/CreateEntidadeModal';
+import { CreateEntidadeModal } from '@/components/entidade/CreateEntidadeModal';
 import { api } from '@/guards/api';
 import { CAMPUS_OPTIONS, ClassificacaoEntidade, ClassificacaoMembro, DEPARTAMENTO_OPTIONS } from '@/constants/options';
+import { toast } from 'sonner';
+import { EditEntidadeForm } from '@/components/entidade/EditEntidadeForm';
+
+// Tipagem dos Dados
 
 type VinculoEntidade = {
   id: number;
@@ -45,6 +49,8 @@ type MemberManagerModalProps = {
   onChanged: () => void;
 };
 
+// Funções auxiliares
+
 function getErrorMessage(error: unknown) {
   if (
     typeof error === 'object' &&
@@ -63,6 +69,8 @@ function getErrorMessage(error: unknown) {
 
   return 'Não foi possível concluir a ação. Tente novamente.';
 }
+
+// Componente para editar o cargo de um membro
 
 function MemberRoleEditor({
   membro,
@@ -139,6 +147,8 @@ function MemberRoleEditor({
   );
 }
 
+// Componente principal do modal de gerenciamento de membros
+
 function MemberManagerModal({ entidade, onClose, onChanged }: MemberManagerModalProps) {
   const [detalhe, setDetalhe] = useState<EntidadeDetalhada | null>(null);
   const [email, setEmail] = useState('');
@@ -154,6 +164,8 @@ function MemberManagerModal({ entidade, onClose, onChanged }: MemberManagerModal
   const [isSaving, setIsSaving] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+
+  // Função para buscar os dados detalhados da entidade aberta no modal
 
   useEffect(() => {
     if (!entidade) return;
@@ -238,60 +250,7 @@ function MemberManagerModal({ entidade, onClose, onChanged }: MemberManagerModal
     }
   };
 
-  const handleEditInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
-  ) => {
-    const { name, value } = event.target;
-    setEditForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleUpdateEntidade = async (event: React.FormEvent) => {
-    event.preventDefault();
-    setIsSaving(true);
-    setErrorMessage('');
-    setSuccessMessage('');
-
-    try {
-      await api.patch(`/entidade/${entidade.id}`, {
-        nome: editForm.nome,
-        descricao: editForm.descricao || undefined,
-        classificacao: editForm.classificacao,
-        campus: editForm.campus,
-        departamento: editForm.departamento,
-      });
-      await refreshDetalhe();
-      onChanged();
-      setSuccessMessage('Mudanças salvas com sucesso');
-      setTimeout(() => setSuccessMessage(''), 3000);
-    } catch (error) {
-      console.error('Erro ao editar entidade:', error);
-      setErrorMessage(`${getErrorMessage(error)} Por favor, verifique os dados informados ou tente novamente mais tarde.`);
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  const handleDeleteEntidade = async () => {
-    const shouldDelete = window.confirm('Excluir esta entidade? Projetos, membros e conteúdos vinculados também serão removidos.');
-    if (!shouldDelete) return;
-
-    setIsSaving(true);
-    setErrorMessage('');
-    setSuccessMessage('');
-
-    try {
-      await api.delete(`/entidade/${entidade.id}`);
-      window.alert('Entidade excluida com sucesso');
-      onChanged();
-      onClose();
-    } catch (error) {
-      console.error('Erro ao excluir entidade:', error);
-      window.alert('Tivemos um problema ao apagar essa entidade, tente de novo mais tarde');
-      setErrorMessage(getErrorMessage(error));
-    } finally {
-      setIsSaving(false);
-    }
-  };
+  //interface modal
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
@@ -319,109 +278,27 @@ function MemberManagerModal({ entidade, onClose, onChanged }: MemberManagerModal
             </div>
           ) : null}
 
-          {canManage ? (
-            <form onSubmit={handleUpdateEntidade} className="space-y-4 rounded-md border border-gray-100 p-4">
-              <div className="flex items-center justify-between gap-4">
-                <h3 className="text-sm font-semibold text-[#0d2a54]">Dados da entidade</h3>
-                {canDelete ? (
-                  <button
-                    type="button"
-                    onClick={handleDeleteEntidade}
-                    disabled={isSaving}
-                    className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-700 bg-red-50 rounded-md hover:bg-red-100 disabled:opacity-50"
-                  >
-                    <Trash2 size={16} />
-                    Excluir
-                  </button>
-                ) : null}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Nome</label>
-                <input
-                  type="text"
-                  name="nome"
-                  required
-                  value={editForm.nome}
-                  onChange={handleEditInputChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#195b3d] focus:border-[#195b3d] outline-none text-black"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
-                <textarea
-                  name="descricao"
-                  value={editForm.descricao}
-                  onChange={handleEditInputChange}
-                  rows={2}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#195b3d] focus:border-[#195b3d] outline-none text-black"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Classificação</label>
-                  <select
-                    name="classificacao"
-                    required
-                    value={editForm.classificacao}
-                    onChange={handleEditInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#195b3d] focus:border-[#195b3d] outline-none bg-white text-black"
-                  >
-                    {ClassificacaoEntidade.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Campus</label>
-                  <select
-                    name="campus"
-                    required
-                    value={editForm.campus}
-                    onChange={handleEditInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#195b3d] focus:border-[#195b3d] outline-none bg-white text-black"
-                  >
-                    {CAMPUS_OPTIONS.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Departamento</label>
-                  <select
-                    name="departamento"
-                    required
-                    value={editForm.departamento}
-                    onChange={handleEditInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#195b3d] focus:border-[#195b3d] outline-none bg-white text-black"
-                  >
-                    {DEPARTAMENTO_OPTIONS.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div className="flex justify-end">
-                <button
-                  type="submit"
-                  disabled={isSaving}
-                  className="px-5 py-2 text-sm font-medium text-white bg-[#195b3d] rounded-md hover:bg-[#13472f] transition-colors disabled:opacity-50"
-                >
-                  Salvar Alterações
-                </button>
-              </div>
-            </form>
+          {/* SUB-SEÇÃO A: FORMULÁRIO DE EDIÇÃO DE DADOS AGORA VIA COMPONENTE */}
+          {canManage && detalhe ? (
+            <EditEntidadeForm 
+              entidadeId={entidade.id}
+              initialData={{
+                nome: detalhe.nome || '',
+                descricao: detalhe.descricao || '',
+                classificacao: detalhe.classificacao || '',
+                campus: detalhe.campus || '',
+                departamento: detalhe.departamento || ''
+              }}
+              canDelete={canDelete}
+              onSuccess={() => {
+                refreshDetalhe();
+                onChanged();
+              }}
+              onDeleted={() => {
+                onChanged();
+                onClose();
+              }}
+            />
           ) : null}
 
           {canManage ? (
@@ -516,6 +393,8 @@ function MemberManagerModal({ entidade, onClose, onChanged }: MemberManagerModal
   );
 }
 
+// Pagina Principal
+
 export default function EntidadesPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEntidade, setSelectedEntidade] = useState<EntidadeResumo | null>(null);
@@ -580,7 +459,7 @@ export default function EntidadesPage() {
                 <ProjetoCard
                   key={entidade.id}
                   nome={entidade.nome}
-                  descricao="Clique para gerenciar membros"
+                  descricao=""
                   imagem={entidade.linkLogo || undefined}
                   onClick={() => setSelectedEntidade(entidade)}
                 />
@@ -604,7 +483,7 @@ export default function EntidadesPage() {
                 <ProjetoCard
                   key={entidade.id}
                   nome={entidade.nome}
-                  descricao="Clique para gerenciar membros"
+                  descricao=""
                   imagem={entidade.linkLogo || undefined}
                   onClick={() => setSelectedEntidade(entidade)}
                 />
@@ -628,7 +507,7 @@ export default function EntidadesPage() {
                 <ProjetoCard
                   key={entidade.id}
                   nome={entidade.nome}
-                  descricao="Clique para ver membros"
+                  descricao=""
                   imagem={entidade.linkLogo || undefined}
                   onClick={() => setSelectedEntidade(entidade)}
                 />
