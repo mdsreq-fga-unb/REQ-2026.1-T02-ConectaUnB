@@ -1,23 +1,65 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Bell, Briefcase, Building2, Home, User } from 'lucide-react';
+import { Bell, Briefcase, Building2, Home, User, LogIn, UserPlus } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 
 export const Sidebar: React.FC = () => {
   const pathname = usePathname();
   const { user } = useAuth();
+  const { logout } = useAuth();
 
-  const navItems = [
-    { href: '/', label: 'Feed', icon: Home },
-    { href: '/projetos', label: 'Projetos', icon: Briefcase },
-    { href: '/entidades', label: 'Entidades', icon: Building2 },
-    { href: '#', label: 'Notificações', icon: Bell },
-    { href: user?.sub ? `/perfil/${user.sub}` : '/perfil', label: 'Perfil', icon: User },
+  const navItemsLogado = [
+    { href: '/conecta/feed', label: 'Feed', icon: Home },
+    { href: '/conecta/projetos', label: 'Projetos', icon: Briefcase },
+    { href: '/conecta/entidades', label: 'Entidades', icon: Building2 },
+    { href: '/conecta/notificacoes', label: 'Notificações', icon: Bell },
+    { href: user?.sub ? `/conecta/perfil/${user.sub}` : '/conecta/perfil', label: 'Perfil', icon: User },
   ];
+
+  const navItemsDesLogado = [
+    { href: '/conecta/feed', label: 'Feed', icon: Home },
+    { href: '/auth/login', label: 'Login', icon: LogIn },
+    { href: '/auth/cadastro', label: 'Cadastro', icon: UserPlus },
+  ];
+  
+  const navItems = user ? navItemsLogado : navItemsDesLogado;
+  
+useEffect(() => {
+    // 1. Escuta mudanças no localStorage (ex: usuário fez logout em outra aba)
+    const syncLogout = (event: StorageEvent) => {
+      if (event.key === "conecta_unb_token" && !event.newValue) {
+        logout();
+      }
+    };
+    window.addEventListener('storage', syncLogout);
+
+    // 2. Desloga automaticamente no exato milissegundo em que o token expirar
+    let timeoutId: NodeJS.Timeout;
+    
+    if (user?.exp) {
+      const tempoRestanteMs = (user.exp * 1000) - Date.now();
+      
+      if (tempoRestanteMs > 0) {
+        timeoutId = setTimeout(() => {
+          console.warn("Sessão expirada. Atualizando sidebar...");
+          logout();
+        }, tempoRestanteMs);
+      } else {
+        logout(); // Já expirou
+      }
+    }
+
+    // Função de limpeza para evitar vazamento de memória
+    return () => {
+      window.removeEventListener('storage', syncLogout);
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [user, logout]);
+
 
   return (
     <aside className="w-64 bg-[#0d2a54] text-white flex flex-col h-screen sticky top-0 justify-between">
