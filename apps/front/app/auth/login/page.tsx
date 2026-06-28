@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { api } from "@/guards/api";
 import { useAuth } from "@/hooks/useAuth";
 import AuthBanner from "@/components/auth/AuthBanner";
+import { BackButton } from "@/components/Voltar";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -67,13 +68,18 @@ try {
     }
   };
 
-  return (
+return (
     <main className="min-h-screen grid grid-cols-1 md:grid-cols-2 text-[#1D1D1D]">
         
         <AuthBanner/>
 
-      {/* Seção do Formulário de Login */}
-      <section className="flex flex-col items-center justify-center bg-white p-8 sm:p-12">
+      <section className="relative flex flex-col items-center justify-center bg-white p-8 sm:p-12">
+        
+        <div className="absolute top-6 left-6 sm:top-8 sm:left-8">
+          <BackButton />
+        </div>
+
+        {/* O restante continua igualzinho, perfeitamente centralizado */}
         <div className="w-full max-w-md space-y-8">
           
           <div className="text-center">
