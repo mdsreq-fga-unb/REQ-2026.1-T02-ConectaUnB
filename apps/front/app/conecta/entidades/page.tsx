@@ -1,7 +1,6 @@
 "use client";
 import React, { useCallback, useEffect, useState } from 'react';
 import { Trash2, X } from 'lucide-react';
-import { Sidebar } from '@/components/Sidebar';
 import { ButtonGreen } from '@/components/ButtonGreen';
 import { ProjetoCard } from '@/components/projetoCard';
 import { CreateEntidadeModal } from '@/components/CreateEntidadeModal';
@@ -559,7 +558,6 @@ export default function EntidadesPage() {
   return (
     <div className="flex min-h-screen bg-[#fafafa]">
       {/* Barra Lateral Fixa à esquerda */}
-      <Sidebar />
 
       {/* Conteúdo Principal */}
       <main className="flex-1 p-12">

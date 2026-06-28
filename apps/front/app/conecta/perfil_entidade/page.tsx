@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { Bell } from 'lucide-react';
-import { Sidebar } from '@/components/Sidebar';
 import { ProjetoCardLarge } from '@/components/ProjetoCardLarge';
 import { api } from '@/guards/api';
 
@@ -72,7 +71,6 @@ export default function PerfilEntidadePage() {
   if (loading) {
     return (
       <div className="flex min-h-screen bg-white">
-        <Sidebar />
         <main className="flex flex-1 items-center justify-center">
           <p className="text-gray-600">Carregando entidade...</p>
         </main>
@@ -83,7 +81,6 @@ export default function PerfilEntidadePage() {
   if (error || !entidade) {
     return (
       <div className="flex min-h-screen bg-white">
-        <Sidebar />
         <main className="flex flex-1 items-center justify-center px-8">
           <p className="max-w-xl text-center text-red-600">
             {error || 'Entidade nao encontrada.'}
@@ -95,7 +92,6 @@ export default function PerfilEntidadePage() {
 
   return (
     <div className="flex min-h-screen bg-white">
-      <Sidebar />
 
       <main className="flex-1 overflow-y-auto bg-white">
         <div

@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { api } from "../../guards/api";
+import { api } from "@/guards/api";
 import {useRouter} from "next/navigation";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "@/hooks/useAuth";
 import AuthBanner from "@/components/auth/AuthBanner";
 import { CAMPUS_OPTIONS, CURSO_OPTIONS, DEPARTAMENTO_OPTIONS } from "@/constants/options";
 
@@ -414,7 +414,7 @@ export default function CadastroPage() {
                 Cadastro
               </button>
 
-              <a href="/login" className="text-sm text-[#003366] hover:underline mt-4">
+              <a href="/auth/login" className="text-sm text-[#003366] hover:underline mt-4">
                 Login
               </a>
 

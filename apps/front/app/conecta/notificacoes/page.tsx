@@ -1,7 +1,6 @@
 "use client";
 
 import { useAuth } from "@/hooks/useAuth"; 
-import { Sidebar } from "@/components/Sidebar";
 
 export default function HomePage() {
   const { user, loading, logout } = useAuth();
@@ -18,7 +17,7 @@ export default function HomePage() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center space-y-4 bg-gray-50 text-[#1D1D1D]">
         <h1 className="text-2xl text-red-600 font-bold">Não Logado</h1>
-        <p>Faça o Login - INICIAL</p>
+        <p>Faça o Login - NOTIFICAÇÕES</p>
         <a href="/auth/login" className="px-4 py-2 bg-[#003366] text-white rounded-full">
           Ir para o Login
         </a>
@@ -28,7 +27,6 @@ export default function HomePage() {
 
   return (
     <div className="flex min-h-screen bg-gray-50 text-[#1D1D1D]">
-      <Sidebar />
       <main className="flex-1 p-8">
         <div className="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-md">
           

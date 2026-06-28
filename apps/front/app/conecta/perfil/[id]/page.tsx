@@ -1,14 +1,14 @@
 "use client";
 
 import { api } from "@/guards/api";
-import { ProjetoCard } from "../../../components/projetoCard";
+import { ProjetoCard } from "@/components/projetoCard";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { CAMPUS_OPTIONS, CURSO_OPTIONS, DEPARTAMENTO_OPTIONS } from "@/constants/options";
 import { Sidebar } from '@/components/Sidebar';
-import {ConfirmModal} from "../../../components/ConfirmModal";
+import {ConfirmModal} from "@/components/ConfirmModal";
 
 export default function PerfilPage() {
   const { user, logout } = useAuth();
@@ -42,7 +42,7 @@ export default function PerfilPage() {
     } catch (error: any) {
       console.error("Erro ao carregar perfil:", error);
       toast.error("Ocorreu um erro ao carregar o perfil.");
-      router.push("/");
+      router.push("/conecta/feed");
     }
   };
 
@@ -82,8 +82,8 @@ export default function PerfilPage() {
     try {
       await api.delete(`/perfil`);
       toast.success("Perfil excluído com sucesso");
-      localStorage.removeItem("conecta_unb_token");
-      router.push("/");
+      // Substitua a remoção manual e o router.push por:
+      logout(); 
     } catch (error: any) {
       console.error("Erro ao excluir perfil:", error);
       toast.error("Ocorreu um erro ao tentar excluir o perfil.");
@@ -91,18 +91,16 @@ export default function PerfilPage() {
   };
 
   const handleLogout = () => {
-    logout();
     toast("Sessão encerrada", { description: "Até logo!" });
-    router.push("/");
+    // Só chame o logout. Ele já tem o router.push e já avisa a Sidebar!
+    logout(); 
   };
 
   return (
     <div className="min-h-screen flex bg-white">
-      <Sidebar />
-
       <main className="flex-1 p-8 sm:p-12 flex justify-center">
         <div className="w-full max-w-4xl space-y-16">
-<div className="flex flex-col md:flex-row items-center justify-between gap-8 bg-white">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8 bg-white">
             
             {/* foto */}
             <div className="w-48 h-48 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 font-medium text-lg border border-gray-300 flex-shrink-0">

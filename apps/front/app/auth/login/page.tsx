@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { api } from "../../guards/api";
-import { useAuth } from "../../hooks/useAuth";
+import { api } from "@/guards/api";
+import { useAuth } from "@/hooks/useAuth";
 import AuthBanner from "@/components/auth/AuthBanner";
 
 export default function LoginPage() {
@@ -151,7 +151,7 @@ try {
                 {loading ? "Entrando..." : "Entrar"}
               </button>
 
-              <Link href="/cadastro" className="text-sm text-[#003366] hover:underline mt-4">
+              <Link href="/auth/cadastro" className="text-sm text-[#003366] hover:underline mt-4">
                 Ainda não tem uma conta? Cadastre-se
               </Link>
             </div>

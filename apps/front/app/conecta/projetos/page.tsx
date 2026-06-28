@@ -87,8 +87,6 @@ export default function ProjectsPage() {
 
   return (
     <div className="flex min-h-screen bg-[#fafafa]">
-      {/* Barra Lateral Fixa à esquerda */}
-      <Sidebar />
 
       {/* Conteúdo Principal */}
       <main className="flex-1 p-12">
