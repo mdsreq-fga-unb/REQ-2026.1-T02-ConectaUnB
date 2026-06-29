@@ -1,83 +1,105 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProjetoController } from './projeto.controller';
 import { ProjetoService } from './projeto.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { CreateProjetoDto } from './dto/create-projeto.dto';
 
 describe('ProjetoController', () => {
   let controller: ProjetoController;
-  const projetoService = {
+  let service: ProjetoService;
+
+  const mockProjetoService = {
     create: jest.fn(),
-    findAll: jest.fn(),
-    findMinhasProjetos: jest.fn(),
+    findProjetosEntidade: jest.fn(),
     findOne: jest.fn(),
     update: jest.fn(),
     remove: jest.fn(),
+    addMembro: jest.fn(),
+    updateMembro: jest.fn(),
+    removeMembro: jest.fn(),
   };
+
+  const mockRequest = {
+    user: { id: '1', email: 'teste@teste.com' },
+  } as any;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ProjetoController],
       providers: [
-        {
-          provide: ProjetoService,
-          useValue: projetoService,
-        },
+        { provide: ProjetoService, useValue: mockProjetoService },
       ],
-    }).compile();
+    })
+      .overrideGuard(JwtAuthGuard)
+      .useValue({ canActivate: () => true }) // Bypassa o guard para testes unitários
+      .compile();
 
     controller = module.get<ProjetoController>(ProjetoController);
+    service = module.get<ProjetoService>(ProjetoService);
+  });
+
+  afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
-
-  it('should create project using authenticated user id', () => {
-    const dto = {
-      idEntidade: 1,
-      nome: 'Novo Projeto',
-      status: 'PLANEJAMENTO',
-      dataInicio: new Date('2026-06-25T00:00:00.000Z'),
-    };
-    const req = { user: { id: '7', email: 'user@aluno.unb.br' } };
-    projetoService.create.mockReturnValue({ id: 10, ...dto });
-
-    expect(controller.create(dto as never, req as never)).toEqual({
-      id: 10,
-      ...dto,
+  describe('create', () => {
+    it('deve chamar o service.create com DTO e userId convertido', async () => {
+      const dto = { nome: 'Novo Projeto', idEntidade: 5 } as any;
+      await controller.create(dto, mockRequest);
+      expect(service.create).toHaveBeenCalledWith(dto, 1); // req.user.id '1' convertido para Number
     });
-    expect(projetoService.create).toHaveBeenCalledWith(dto, 7);
   });
 
-  it('should list projects for authenticated user', () => {
-    projetoService.findMinhasProjetos.mockReturnValue([
-      { id: 2, nome: 'App Conecta', vinculoProjeto: 'GERENTE' },
-    ]);
-    const req = { user: { id: '7', email: 'user@aluno.unb.br' } };
-
-    expect(controller.findMinhasProjetos(req as never)).toEqual([
-      { id: 2, nome: 'App Conecta', vinculoProjeto: 'GERENTE' },
-    ]);
-    expect(projetoService.findMinhasProjetos).toHaveBeenCalledWith(7);
-  });
-
-  it('should update project using authenticated user id', () => {
-    const dto = { nome: 'Projeto Atualizado' };
-    const req = { user: { id: '7', email: 'user@aluno.unb.br' } };
-    projetoService.update.mockReturnValue({ id: 2, ...dto });
-
-    expect(controller.update('2', dto, req as never)).toEqual({
-      id: 2,
-      ...dto,
+  describe('findProjetosEntidade', () => {
+    it('deve chamar o service passando o id da entidade convertido para number', async () => {
+      await controller.findProjetosEntidade('5');
+      expect(service.findProjetosEntidade).toHaveBeenCalledWith(5);
     });
-    expect(projetoService.update).toHaveBeenCalledWith(2, 7, dto);
   });
 
-  it('should remove project using authenticated user id', () => {
-    const req = { user: { id: '7', email: 'user@aluno.unb.br' } };
-    projetoService.remove.mockReturnValue({ id: 2 });
+  describe('findOne', () => {
+    it('deve chamar o service passando o id do projeto convertido', async () => {
+      await controller.findOne('10');
+      expect(service.findOne).toHaveBeenCalledWith(10);
+    });
+  });
 
-    expect(controller.remove('2', req as never)).toEqual({ id: 2 });
-    expect(projetoService.remove).toHaveBeenCalledWith(2, 7);
+  describe('update', () => {
+    it('deve chamar o service.update com idProjeto, userId e DTO', async () => {
+      const dto = { descricao: 'Atualizada' } as any;
+      await controller.update('10', dto, mockRequest);
+      expect(service.update).toHaveBeenCalledWith(10, 1, dto);
+    });
+  });
+
+  describe('remove', () => {
+    it('deve chamar o service.remove com idProjeto e userId', async () => {
+      await controller.remove('10', mockRequest);
+      expect(service.remove).toHaveBeenCalledWith(10, 1);
+    });
+  });
+
+  describe('addMembro', () => {
+    it('deve chamar o service.addMembro com os dados corretos', async () => {
+      const dto = { email: 'membro@unb.br', papel: 'COLABORADOR' } as any;
+      await controller.addMembro('10', dto, mockRequest);
+      expect(service.addMembro).toHaveBeenCalledWith(10, 1, dto);
+    });
+  });
+
+  describe('updateMembro', () => {
+    it('deve chamar o service.updateMembro convertendo os IDs', async () => {
+      const dto = { papel: 'GERENTE' } as any;
+      await controller.updateMembro('10', '2', dto, mockRequest);
+      // idProjeto (10), idPerfilSolicitante (1), idPerfilAlterado (2), DTO
+      expect(service.updateMembro).toHaveBeenCalledWith(10, 1, 2, dto);
+    });
+  });
+
+  describe('removeMembro', () => {
+    it('deve chamar o service.removeMembro convertendo os IDs', async () => {
+      await controller.removeMembro('10', '2', mockRequest);
+      expect(service.removeMembro).toHaveBeenCalledWith(10, 1, 2);
+    });
   });
 });

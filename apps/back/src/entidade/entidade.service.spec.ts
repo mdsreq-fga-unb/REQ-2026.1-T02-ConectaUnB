@@ -233,7 +233,7 @@ describe('EntidadeService', () => {
       expect(prisma.membro.create).toHaveBeenCalledWith({
         data: {
           idEntidade: 1,
-          email: 'test@unb.br',
+          idPerfil: 9,
           classificacao: 'MEMBRO',
         },
         include: {
@@ -404,7 +404,7 @@ describe('EntidadeService', () => {
 
       await expect(service.removeMembro(1, 7, 9)).resolves.toEqual({
         idEntidade: 1,
-        email: 'test@unb.br',
+        idPerfil: 9,
         removed: true,
       });
 
@@ -421,7 +421,7 @@ describe('EntidadeService', () => {
 
       await expect(service.removeMembro(1, 7, 9)).resolves.toEqual({
         idEntidade: 1,
-        email: 'test@unb.br',
+        idPerfil: 9,
         removed: true,
       });
 

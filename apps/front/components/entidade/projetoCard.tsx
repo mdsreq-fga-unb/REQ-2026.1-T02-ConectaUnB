@@ -12,10 +12,12 @@ type FormProjetoCard = {
 
 export function ProjetoCard({ nome, descricao, imagem, onClick, onEditClick, onAddMemberClick, vinculo }: FormProjetoCard) {
   return (
-    <button
-      type="button"
+    <div // <--- TROCAMOS DE <button> PARA <div>
       onClick={onClick}
-      className="flex w-full items-center gap-4 p-4 text-left bg-white border border-[#195b3d] rounded-xl shadow-[0_4px_6px_rgba(0,0,0,0.1)] hover:shadow-[0_6px_8px_rgba(0,0,0,0.15)] transition-shadow cursor-pointer disabled:cursor-default"
+      role="button" // Ajuda na acessibilidade para leitores de tela
+      tabIndex={0}  // Permite focar com a tecla Tab
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick(); }} // Permite clicar com Enter/Espaço
+      className="flex w-full items-center gap-4 p-4 text-left bg-white border border-[#195b3d] rounded-xl shadow-[0_4px_6px_rgba(0,0,0,0.1)] hover:shadow-[0_6px_8px_rgba(0,0,0,0.15)] transition-shadow cursor-pointer"
     >
       {/* Imagem */}
       {imagem ? (
@@ -36,6 +38,7 @@ export function ProjetoCard({ nome, descricao, imagem, onClick, onEditClick, onA
       {vinculo !== 'MEMBRO' && (
         <div className="flex items-center gap-2">
           <button
+            type="button" // É importante sempre dizer que o tipo é button para evitar submit acidental
             onClick={(e) => { e.stopPropagation(); onEditClick?.(); }}
             className="p-2 text-gray-500 hover:text-[#195b3d] transition-colors"
             title="Editar Entidade"
@@ -43,6 +46,7 @@ export function ProjetoCard({ nome, descricao, imagem, onClick, onEditClick, onA
             <Pencil size={20} />
           </button>
           <button
+            type="button"
             onClick={(e) => { e.stopPropagation(); onAddMemberClick?.(); }}
             className="p-2 text-gray-500 hover:text-[#195b3d] transition-colors"
             title="Gerenciar Membros"
@@ -51,6 +55,6 @@ export function ProjetoCard({ nome, descricao, imagem, onClick, onEditClick, onA
           </button>
         </div>
       )}
-    </button>
+    </div> // <--- FECHAMENTO DA DIV
   );
 }

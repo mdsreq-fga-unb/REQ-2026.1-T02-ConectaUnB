@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty, IsNumber } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export enum PapelProjeto {
@@ -8,12 +8,13 @@ export enum PapelProjeto {
 
 export class AddMembroProjetoDto {
   @ApiProperty({
-    description: 'ID do Membro da Entidade que será alocado no projeto',
-    example: 1,
+    description: 'E-mail do usuário que será adicionado ao projeto',
+    example: 'usuario@unb.br',
   })
-  @IsNumber()
+  @IsEmail()
   @IsNotEmpty()
-  idMembro!: number;
+  email!: string;
+
 
   @ApiProperty({
     enum: PapelProjeto,

@@ -46,7 +46,7 @@ export default function PerfilEntidadePage() {
       try {
         const [entidadeResponse, projetosResponse] = await Promise.all([
           api.get<Entidade>(`/entidade/${entidadeId}`),
-          api.get<Projeto[]>('/projeto'),
+          api.get<Projeto[]>(`/projeto/entidade/${entidadeId}`),
         ]);
 
         if (!entidadeResponse.data) {
@@ -141,13 +141,13 @@ export default function PerfilEntidadePage() {
               >
                 Seguir
               </button>
-              <button
+              {/* <button
                 type="button"
                 aria-label="Ativar notificacoes da entidade"
                 className="text-[#003366] transition-colors hover:text-[#001a33]"
               >
                 <Bell size={24} fill="currentColor" />
-              </button>
+              </button> */}
             </div>
           </div>
 
