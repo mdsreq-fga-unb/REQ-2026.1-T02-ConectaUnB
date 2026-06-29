@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Param, Delete, UseGuards } from '@nestjs/c
 import { NotificacaoService } from './notificacao.service';
 import { CreateNotificacaoDto } from './dto/create-notificacao.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { ApiBearerAuth } from 'node_modules/@nestjs/swagger/dist/decorators/api-bearer.decorator';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { Request } from '@nestjs/common';
 
 @Controller('notificacao')
