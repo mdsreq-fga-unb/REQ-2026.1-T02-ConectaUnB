@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Body, Param, Delete, UseGuards } from '@nestjs/common';
 import { NotificacaoService } from './notificacao.service';
 import { CreateNotificacaoDto } from './dto/create-notificacao.dto';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { UpdatePreferenciasDto } from './dto/update-preferencias.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { Request } from '@nestjs/common';
 
@@ -21,6 +22,23 @@ export class NotificacaoController {
     const idPerfil = Number(req.user.id);
     return this.notificacaoService.findAll(idPerfil);
   }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Patch()
+  updateUltimaLeitura(@Request() req) {
+    const idPerfil = Number(req.user.id);
+    return this.notificacaoService.updateUltimaLeitura(idPerfil);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Patch('/preferencias')
+  updatePreferencias(@Request() req, @Body() preferencias: UpdatePreferenciasDto) {
+    const idPerfil = Number(req.user.id);
+    return this.notificacaoService.updatePreferencias(idPerfil, preferencias);
+  }
+
 
   @Delete(':id')
   remove(@Param('id') id: string) {

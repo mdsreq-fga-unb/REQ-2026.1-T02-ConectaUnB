@@ -2,13 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { CreateNotificacaoDto } from './dto/create-notificacao.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { TipoNotificacao } from '@prisma/client';
+import { UpdatePreferenciasDto } from './dto/update-preferencias.dto';
 
 @Injectable()
 export class NotificacaoService {
   constructor(private readonly prisma: PrismaService) {}
 
   create(_createNotificacaoDto: CreateNotificacaoDto) {
-    return 'This action adds a new notificacao';
+    return this.prisma.notificacao.create({
+      data: _createNotificacaoDto,
+    });
   }
 
   async findAll(idPerfil: number) {
@@ -34,7 +37,7 @@ export class NotificacaoService {
       return [];
     }
 
-const tiposPermitidos: TipoNotificacao[] = []
+    const tiposPermitidos: TipoNotificacao[] = []
     const prefs = perfil.PreferenciaNotificacao;
 
     if (!prefs || prefs.processoSeletivo) {
@@ -69,7 +72,30 @@ const tiposPermitidos: TipoNotificacao[] = []
     });
   }
 
+  updateUltimaLeitura(idPerfil: number) {
+    return this.prisma.perfil.update({
+      where: { id: idPerfil },
+      data: { ultimaLeituraNotificacoes: new Date() },
+    });
+  }
+
+  updatePreferencias(idPerfil: number, preferencias: UpdatePreferenciasDto) {
+    return this.prisma.perfil.update({
+      where: { id: idPerfil },
+      data: {
+        PreferenciaNotificacao: {
+          upsert: {
+            create: preferencias,
+            update: preferencias,
+          },
+        },
+      },
+    });
+  }
+
   remove(id: number) {
-    return `This action removes a #${id} notificacao`;
+    return this.prisma.notificacao.delete({
+      where: { id },
+    });
   }
 }
