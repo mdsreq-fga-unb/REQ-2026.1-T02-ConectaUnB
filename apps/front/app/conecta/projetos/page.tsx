@@ -2,8 +2,8 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import { Sidebar } from '@/components/Sidebar';
-import { ButtonGreen } from '@/components/ButtonGreen';
-import { ProjetoCard } from '@/components/projetoCard';
+import { ButtonGreen } from '@/components/entidade/ButtonGreen';
+import { ProjetoCard } from '@/components/entidade/projetoCard';
 import { CreateProjetoModal } from '@/components/CreateProjetoModal';
 import { api } from '@/guards/api';
 import { toast } from 'sonner';
@@ -87,8 +87,6 @@ export default function ProjectsPage() {
 
   return (
     <div className="flex min-h-screen bg-[#fafafa]">
-      {/* Barra Lateral Fixa à esquerda */}
-      <Sidebar />
 
       {/* Conteúdo Principal */}
       <main className="flex-1 p-12">

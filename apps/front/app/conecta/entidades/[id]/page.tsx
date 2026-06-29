@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { Bell } from 'lucide-react';
-import { Sidebar } from '@/components/Sidebar';
 import { ProjetoCardLarge } from '@/components/ProjetoCardLarge';
 import { api } from '@/guards/api';
+import { useParams } from 'next/navigation';
 
 type Entidade = {
   id: number;
@@ -30,9 +30,11 @@ export default function PerfilEntidadePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  const params = useParams();
+  const idParam = params?.id;
+
   useEffect(() => {
     const carregarPerfil = async () => {
-      const idParam = new URLSearchParams(window.location.search).get('id');
       const entidadeId = Number(idParam);
 
       if (!idParam || !Number.isInteger(entidadeId) || entidadeId <= 0) {
@@ -72,7 +74,6 @@ export default function PerfilEntidadePage() {
   if (loading) {
     return (
       <div className="flex min-h-screen bg-white">
-        <Sidebar />
         <main className="flex flex-1 items-center justify-center">
           <p className="text-gray-600">Carregando entidade...</p>
         </main>
@@ -83,7 +84,6 @@ export default function PerfilEntidadePage() {
   if (error || !entidade) {
     return (
       <div className="flex min-h-screen bg-white">
-        <Sidebar />
         <main className="flex flex-1 items-center justify-center px-8">
           <p className="max-w-xl text-center text-red-600">
             {error || 'Entidade nao encontrada.'}
@@ -95,7 +95,6 @@ export default function PerfilEntidadePage() {
 
   return (
     <div className="flex min-h-screen bg-white">
-      <Sidebar />
 
       <main className="flex-1 overflow-y-auto bg-white">
         <div

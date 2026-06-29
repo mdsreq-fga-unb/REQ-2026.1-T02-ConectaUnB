@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
-import { ImageUploadBox } from './ImageUploadBox';
-import { CAMPUS_OPTIONS, ClassificacaoEntidade, DEPARTAMENTO_OPTIONS } from '../constants/options';
-import { api } from '../guards/api';
+import { ImageUploadBox } from '../ImageUploadBox';
+import { CAMPUS_OPTIONS, ClassificacaoEntidade, DEPARTAMENTO_OPTIONS } from '../../constants/options';
+import { api } from '@/guards/api';
+import { toast } from 'sonner';
 
 interface CreateEntidadeModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSuccess?: () => void;
 }
 
-export function CreateEntidadeModal({ isOpen, onClose }: CreateEntidadeModalProps) {
+export function CreateEntidadeModal({ isOpen, onClose, onSuccess }: CreateEntidadeModalProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     nome: '',
@@ -30,12 +32,30 @@ export function CreateEntidadeModal({ isOpen, onClose }: CreateEntidadeModalProp
     
     try {
       await api.post('/entidade', formData);
-      alert('Entidade criada com sucesso!');
+      toast.success('Entidade criada com sucesso!');
+
+      setFormData({
+        nome: '',
+        descricao: '',
+        classificacao: '',
+        campus: '',
+        departamento: '',
+      });
+      setBanner(null);
+      setLogo(null);
+
       onClose();
-      window.location.reload(); // Recarrega a página para exibir a nova entidade
+      
+      if (onSuccess) {
+        onSuccess();
+      } else {
+        setTimeout(() => {
+          window.location.reload(); 
+        }, 1500);
+      }
     } catch (error) {
       console.error("Erro ao criar entidade:", error);
-      alert('Ocorreu um erro ao criar a entidade. Verifique os dados e tente novamente.');
+      toast.error('Ocorreu um erro ao criar a entidade. Verifique os dados e tente novamente.');
     } finally {
       setIsLoading(false);
     }
@@ -78,7 +98,7 @@ export function CreateEntidadeModal({ isOpen, onClose }: CreateEntidadeModalProp
                 value={formData.descricao}
                 onChange={handleInputChange}
                 rows={3}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#195b3d] focus:border-[#195b3d] outline-none transition-colors text-black"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#195b3d] focus:border-[#195b3d] outline-none transition-colors text-black resize-y"
                 placeholder="Descreva a entidade..."
               />
             </div>

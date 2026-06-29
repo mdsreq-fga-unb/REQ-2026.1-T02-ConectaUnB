@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { api } from "../../guards/api";
+import { api } from "@/guards/api";
 import {useRouter} from "next/navigation";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "@/hooks/useAuth";
 import AuthBanner from "@/components/auth/AuthBanner";
 import { CAMPUS_OPTIONS, CURSO_OPTIONS, DEPARTAMENTO_OPTIONS } from "@/constants/options";
+import { BackButton } from "@/components/auth/Voltar";
 
 type FieldErrors = Record<string, string>;
 
@@ -162,7 +163,12 @@ export default function CadastroPage() {
 
       <AuthBanner/>
 
-      <section className="flex flex-col items-center justify-center bg-white p-8 sm:p-12">
+      <section className="relative flex flex-col items-center justify-center bg-white p-8 sm:p-12">
+              
+        <div className="absolute top-6 left-6 sm:top-8 sm:left-8">
+          <BackButton />
+        </div>
+              
         <div className="w-full max-w-md space-y-8">
 
           <div className="text-center">
@@ -219,7 +225,6 @@ export default function CadastroPage() {
               )}
             </div>
 
-            {formData.cargo === "DISCENTE" && (
               <div className="flex flex-col">
                 <label className="mb-1 ml-4 text-[#003366] font-medium">Matrícula</label>
                 <input
@@ -237,7 +242,6 @@ export default function CadastroPage() {
                   <p className="mt-1 ml-4 text-xs text-red-500">{fieldErrors.matricula}</p>
                 )}
               </div>
-            )}
 
             <div className="flex flex-col">
               <label className="mb-1 ml-4 text-[#003366] font-medium">Campus</label>
@@ -414,7 +418,7 @@ export default function CadastroPage() {
                 Cadastro
               </button>
 
-              <a href="/login" className="text-sm text-[#003366] hover:underline mt-4">
+              <a href="/auth/login" className="text-sm text-[#003366] hover:underline mt-4">
                 Login
               </a>
 
