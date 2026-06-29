@@ -1,6 +1,9 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, UseGuards } from '@nestjs/common';
 import { NotificacaoService } from './notificacao.service';
 import { CreateNotificacaoDto } from './dto/create-notificacao.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { ApiBearerAuth } from 'node_modules/@nestjs/swagger/dist/decorators/api-bearer.decorator';
+import { Request } from '@nestjs/common';
 
 @Controller('notificacao')
 export class NotificacaoController {
@@ -11,8 +14,11 @@ export class NotificacaoController {
     return this.notificacaoService.create(createNotificacaoDto);
   }
 
-  @Get(':idPerfil')
-  findAll(@Param('idPerfil') idPerfil: number) {
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  findAll(@Request() req) {
+    const idPerfil = Number(req.user.id);
     return this.notificacaoService.findAll(idPerfil);
   }
 
