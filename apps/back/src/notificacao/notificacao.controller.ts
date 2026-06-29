@@ -11,14 +11,9 @@ export class NotificacaoController {
     return this.notificacaoService.create(createNotificacaoDto);
   }
 
-  @Get()
-  findAll() {
-    return this.notificacaoService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.notificacaoService.findOne(+id);
+  @Get(':idPerfil')
+  findAll(@Param('idPerfil') idPerfil: number) {
+    return this.notificacaoService.findAll(idPerfil);
   }
 
   @Delete(':id')
