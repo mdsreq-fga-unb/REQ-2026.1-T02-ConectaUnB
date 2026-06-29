@@ -14,6 +14,7 @@ import { CreatePostagemDto } from './dto/create-postagem.dto';
 import { UpdatePostagemDto } from './dto/update-postagem.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
 
 @Controller('postagem')
 export class PostagemController {
@@ -74,8 +75,9 @@ export class PostagemController {
   }
 
   @Get(':id/likes')
+  @UseGuards(OptionalJwtAuthGuard)
   getLikes(@Param('id') id: string, @Request() req) {
-    const userId = req.user.id;
+    const userId = req.user.id || null;
     return this.postagemService.getLikes(+id, userId);
   }
 

@@ -15,6 +15,8 @@ import { ProjetoService } from './projeto.service';
 import { CreateProjetoDto } from './dto/create-projeto.dto';
 import { UpdateProjetoDto } from './dto/update-projeto.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { UpdateMembroProjetoDto } from './dto/update-membro-projeto.dto';
+import { AddMembroProjetoDto } from './dto/add-membro-projeto.dto';
 
 type AuthenticatedRequest = ExpressRequest & {
   user: { id: string; email: string };
@@ -31,24 +33,22 @@ export class ProjetoController {
     @Body() createProjetoDto: CreateProjetoDto,
     @Request() req: AuthenticatedRequest,
   ) {
-    return this.projetoService.create(createProjetoDto, Number(req.user.id));
+    const userId = Number(req.user.id);
+    return this.projetoService.create(createProjetoDto, userId);
   }
 
-  @Get()
-  findAll() {
-    return this.projetoService.findAll();
+  @Get('entidade/:id')
+  findProjetosEntidade(
+    @Param('id') id: string,
+  ) {
+    return this.projetoService.findProjetosEntidade(+id);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  @Get('minhas')
-  findMinhasProjetos(@Request() req: AuthenticatedRequest) {
-    return this.projetoService.findMinhasProjetos(Number(req.user.id));
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.projetoService.findOne(+id);
+  @Get(':idProjeto')
+  findOne(
+    @Param('idProjeto') idProjeto: string
+  ) {
+    return this.projetoService.findOne(+idProjeto);
   }
 
   @Patch(':id')
@@ -70,6 +70,58 @@ export class ProjetoController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   remove(@Param('id') id: string, @Request() req: AuthenticatedRequest) {
-    return this.projetoService.remove(+id, Number(req.user.id));
+    const userId = Number(req.user.id);
+    return this.projetoService.remove(+id, userId);
   }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/membros')
+  addMembro(
+    @Param('id') id: string,
+    @Body() addMembroDto: AddMembroProjetoDto,
+    @Request() req: AuthenticatedRequest,
+  ) {
+    const userId = Number(req.user.id);
+    return this.projetoService.addMembro(
+      +id,
+      userId,
+      addMembroDto,
+    );
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id/membros/:idPerfil')
+  updateMembro(
+    @Param('id') id: string,
+    @Param('idPerfil') idPerfil: string,
+    @Body() updateMembroDto: UpdateMembroProjetoDto,
+    @Request() req: AuthenticatedRequest,
+  ) {
+    const userId = Number(req.user.id);
+    return this.projetoService.updateMembro(
+      +id,
+      userId,
+      +idPerfil,
+      updateMembroDto,
+    );
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id/membros/:idPerfil')
+  removeMembro(
+    @Param('id') id: string,
+    @Param('idPerfil') idPerfil: string,
+    @Request() req: AuthenticatedRequest,
+  ) {
+    const userId = Number(req.user.id);
+    return this.projetoService.removeMembro(
+      +id,
+      userId,
+      +idPerfil,
+    );
+  }
+
 }

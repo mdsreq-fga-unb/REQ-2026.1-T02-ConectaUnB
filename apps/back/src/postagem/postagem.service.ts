@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePostagemDto } from './dto/create-postagem.dto';
 import { UpdatePostagemDto } from './dto/update-postagem.dto';
 import { PrismaService } from '../prisma/prisma.service';
@@ -85,13 +85,13 @@ export class PostagemService {
     });
   }
 
-  async validateUser(Userid: number, EntidadeId: number) {
+  private async validateUser(Userid: number, EntidadeId: number) {
     const user = await this.prisma.perfil.findUnique({
       where: { id: Userid },
     });
 
     if (!user) {
-      throw new Error("Usuário não encontrado");
+      throw new NotFoundException("Usuário não encontrado");
     }
 
     const entidade = await this.prisma.entidade.findUnique({
@@ -99,23 +99,21 @@ export class PostagemService {
     });
 
     if (!entidade) {
-      throw new Error("Entidade não encontrada");
+      throw new NotFoundException("Entidade não encontrada");
     }
 
-    const permissao = await this.prisma.membro.findUnique({
+    const permissao = await this.prisma.membro.findFirst({
       where: {
-          idPerfil_idEntidade: {
-            idPerfil: Userid,
-            idEntidade: EntidadeId,
-          }
-        },
+        idPerfil: Userid,
+        idEntidade: EntidadeId,
+      },
       select: {
         classificacao: true,
       },
     });
 
     if (permissao?.classificacao !== 'GESTOR' && permissao?.classificacao !== 'CO_GESTOR') {
-      throw new Error("Usuário não autorizado para esta ação");
+      throw new ForbiddenException("Usuário não autorizado para esta ação");
     }
 
     return true;
@@ -139,22 +137,27 @@ export class PostagemService {
     });
   }
 
-  async getLikes(id: number, userId: number) {
-    const numero = await this.prisma.curtidas.count({});
-
-    const curtida = await this.prisma.curtidas.findFirst({
-      where: {
-        idPostagem: id,
-        idPerfil: userId,
-      },
+async getLikes(id: number, userId: number | null) {
+    const numero = await this.prisma.curtidas.count({
+      where: { idPostagem: id }
     });
 
-    const likes = {
-      numeroCurtidas: numero,
-      usuarioCurtiu: curtida ? true : false,
-    };
+    let usuarioCurtiu = false;
 
-    return likes;
+    if (userId) {
+      const curtida = await this.prisma.curtidas.findFirst({
+        where: {
+          idPostagem: id,
+          idPerfil: userId,
+        },
+      });
+      usuarioCurtiu = !!curtida;
+    }
+
+    return {
+      numeroCurtidas: numero,
+      usuarioCurtiu: usuarioCurtiu,
+    };
   }
 
 }

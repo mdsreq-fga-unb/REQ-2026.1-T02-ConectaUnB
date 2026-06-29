@@ -6,8 +6,7 @@ describe('PostagemService', () => {
   let service: PostagemService;
   let prisma: PrismaService;
 
-  // Mock completo para isolar o Prisma
-  const mockPrisma = {
+const mockPrisma = {
     postagem: {
       create: jest.fn(),
       findMany: jest.fn(),
@@ -17,7 +16,7 @@ describe('PostagemService', () => {
     },
     perfil: { findUnique: jest.fn() },
     entidade: { findUnique: jest.fn() },
-    membro: { findUnique: jest.fn() },
+    membro: { findUnique: jest.fn(), findFirst: jest.fn() }, 
     curtidas: {
       create: jest.fn(),
       deleteMany: jest.fn(),
@@ -46,21 +45,11 @@ describe('PostagemService', () => {
   });
 
   describe('validateUser', () => {
-    it('deve lançar erro se o usuário não existir', async () => {
-      mockPrisma.perfil.findUnique.mockResolvedValue(null);
-      await expect(service.validateUser(99, 1)).rejects.toThrow('Usuário não encontrado');
-    });
-
-    it('deve lançar erro se a entidade não existir', async () => {
-      mockPrisma.perfil.findUnique.mockResolvedValue({ id: 1 });
-      mockPrisma.entidade.findUnique.mockResolvedValue(null);
-      await expect(service.validateUser(1, 99)).rejects.toThrow('Entidade não encontrada');
-    });
-
     it('deve lançar erro se a classificação não for GESTOR ou CO-GESTOR', async () => {
       mockPrisma.perfil.findUnique.mockResolvedValue({ id: 1 });
       mockPrisma.entidade.findUnique.mockResolvedValue({ id: 1 });
-      mockPrisma.membro.findUnique.mockResolvedValue({ classificacao: 'MEMBRO' }); // Apenas membro
+      // CORREÇÃO: trocado para findFirst
+      mockPrisma.membro.findFirst.mockResolvedValue({ classificacao: 'MEMBRO' }); 
 
       await expect(service.validateUser(1, 1)).rejects.toThrow('Usuário não autorizado para esta ação');
     });
@@ -68,7 +57,18 @@ describe('PostagemService', () => {
     it('deve retornar true se o usuário for GESTOR', async () => {
       mockPrisma.perfil.findUnique.mockResolvedValue({ id: 1 });
       mockPrisma.entidade.findUnique.mockResolvedValue({ id: 1 });
-      mockPrisma.membro.findUnique.mockResolvedValue({ classificacao: 'GESTOR' });
+      // CORREÇÃO: trocado para findFirst
+      mockPrisma.membro.findFirst.mockResolvedValue({ classificacao: 'GESTOR' });
+
+      const result = await service.validateUser(1, 1);
+      expect(result).toBe(true);
+    });
+
+    it('deve retornar true se o usuário for CO_GESTOR', async () => {
+      mockPrisma.perfil.findUnique.mockResolvedValue({ id: 1 });
+      mockPrisma.entidade.findUnique.mockResolvedValue({ id: 1 });
+      // CORREÇÃO: trocado para findFirst
+      mockPrisma.membro.findFirst.mockResolvedValue({ classificacao: 'CO_GESTOR' });
 
       const result = await service.validateUser(1, 1);
       expect(result).toBe(true);

@@ -3,44 +3,24 @@ import { ClassificacaoMembro } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateProjetoDto } from './dto/create-projeto.dto';
 import { UpdateProjetoDto } from './dto/update-projeto.dto';
+import { TipoNotificacao } from '@prisma/client';
+import { AddMembroProjetoDto } from './dto/add-membro-projeto.dto';
+import { UpdateMembroProjetoDto } from './dto/update-membro-projeto.dto';
 
 @Injectable()
 export class ProjetoService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createProjetoDto: CreateProjetoDto, idPerfilSolicitante: number) {
-    const membroGestor = await this.prisma.membro.findFirst({
-      where: {
-        idPerfil: idPerfilSolicitante,
-        idEntidade: createProjetoDto.idEntidade,
-        classificacao: {
-          in: [ClassificacaoMembro.GESTOR, ClassificacaoMembro.CO_GESTOR],
-        },
-      },
-      select: { id: true },
-    });
+    
+    await this.validateUser(idPerfilSolicitante, createProjetoDto.idEntidade);
 
-    if (!membroGestor) {
-      const entidade = await this.prisma.entidade.findUnique({
-        where: { id: createProjetoDto.idEntidade },
-        select: { id: true },
-      });
-
-      if (!entidade) {
-        throw new NotFoundException('Entidade não encontrada');
-      }
-
-      throw new ForbiddenException(
-        'Apenas gestores ou co-gestores da entidade podem criar projetos',
-      );
-    }
-
-    return this.prisma.projeto.create({
+    const projeto = await this.prisma.projeto.create({
       data: {
         ...createProjetoDto,
         gerentes: {
           create: {
-            idMembro: membroGestor.id,
+            idMembro: idPerfilSolicitante,
           },
         },
       },
@@ -53,10 +33,24 @@ export class ProjetoService {
         },
       },
     });
+
+    await this.prisma.notificacao.create({
+      data: {
+        idEntidade: createProjetoDto.idEntidade,
+        tipo: TipoNotificacao.NOVA_PUBLICACAO,
+        mensagem: `Nova Projeto Criado: ${createProjetoDto.nome}`,
+        referenciaId: projeto.id
+      },
+    });
+
+    return projeto;
+
   }
 
-  findAll() {
-    return this.prisma.projeto.findMany({
+  async findProjetosEntidade(idEntidade: number) {
+    
+    const projetos = await this.prisma.projeto.findMany({
+      where: { idEntidade },
       orderBy: { nome: 'asc' },
       include: {
         entidade: {
@@ -67,70 +61,12 @@ export class ProjetoService {
         },
       },
     });
+
+    return projetos;
   }
 
-  async findMinhasProjetos(idPerfil: number) {
-    const membros = await this.prisma.membro.findMany({
-      where: { idPerfil },
-      select: {
-        id: true,
-        gerenteProjetos: {
-          select: {
-            projeto: {
-              include: {
-                entidade: {
-                  select: {
-                    id: true,
-                    nome: true,
-                  },
-                },
-              },
-            },
-          },
-        },
-        colaboradorProjetos: {
-          select: {
-            projeto: {
-              include: {
-                entidade: {
-                  select: {
-                    id: true,
-                    nome: true,
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-    });
+  async findOne(id: number) {
 
-    const projetos = new Map<number, Record<string, unknown>>();
-
-    for (const membro of membros) {
-      for (const vinculo of membro.gerenteProjetos) {
-        projetos.set(vinculo.projeto.id, {
-          ...vinculo.projeto,
-          vinculoProjeto: 'GERENTE',
-        });
-      }
-
-      for (const vinculo of membro.colaboradorProjetos) {
-        if (!projetos.has(vinculo.projeto.id)) {
-          projetos.set(vinculo.projeto.id, {
-            ...vinculo.projeto,
-            vinculoProjeto: 'COLABORADOR',
-          });
-        }
-      }
-    }
-
-    return Array.from(projetos.values()).sort((a, b) =>
-      String(a.nome).localeCompare(String(b.nome)),
-    );
-  }
-
-  findOne(id: number) {
     return this.prisma.projeto.findUnique({
       where: { id },
       include: {
@@ -174,12 +110,31 @@ export class ProjetoService {
     });
   }
 
+  async remove(id: number, idPerfilSolicitante: number) {
+
+    await this.podeEditarProjeto(id, idPerfilSolicitante);
+
+    const idEntidade = (await this.prisma.projeto.findUnique({
+      where: { id },
+      select: { idEntidade: true },
+    }))?.idEntidade;
+
+    if (!idEntidade) {
+      throw new NotFoundException('Projeto não encontrado');
+    }
+    
+    await this.validateUser(idPerfilSolicitante, idEntidade);
+
+    return this.prisma.projeto.delete({ where: { id } });
+  }
+
   async update(
     id: number,
     idPerfilSolicitante: number,
     updateProjetoDto: UpdateProjetoDto,
   ) {
-    await this.ensureProjetoGerenciadoPorPerfil(id, idPerfilSolicitante);
+
+    await this.podeEditarProjeto(id, idPerfilSolicitante);
 
     return this.prisma.projeto.update({
       where: { id },
@@ -187,19 +142,171 @@ export class ProjetoService {
     });
   }
 
-  async remove(id: number, idPerfilSolicitante: number) {
-    await this.ensureProjetoGerenciadoPorPerfil(id, idPerfilSolicitante);
+  async addMembro(idProjeto: number, idPerfilSolicitante: number, addMembroProjetoDto: AddMembroProjetoDto) {
 
-    return this.prisma.projeto.delete({ where: { id } });
+    await this.podeEditarProjeto(idProjeto, idPerfilSolicitante);
+
+    const idPerfilNovoMembro = (await this.prisma.perfil.findUnique({
+      where: { email: addMembroProjetoDto.email },
+      select: { id: true },
+    }))?.id;
+
+    if (!idPerfilNovoMembro) {
+      throw new NotFoundException('Perfil do novo membro não encontrado');
+    }
+
+    const novoMembro = await this.prisma.membro.findFirst({
+      where: {
+        idPerfil: idPerfilNovoMembro,
+        idEntidade: (await this.prisma.projeto.findUnique({
+          where: { id: idProjeto },
+          select: { idEntidade: true },
+        }))?.idEntidade,
+      },
+    });
+
+    if (!novoMembro) {
+      throw new NotFoundException('Membro não encontrado na entidade do projeto');
+    }
+
+    const classificacao = addMembroProjetoDto.papel === 'GERENTE' ? 'GERENTE' : 'COLABORADOR';
+
+    const existe = await this.prisma.gerentesProjetos.findFirst({
+      where: {
+        idProjeto,
+        idMembro: novoMembro.id,
+      },
+    });
+
+    if (existe) {
+      throw new ForbiddenException('Membro já é gerente deste projeto');
+    }
+
+    const existeColaborador = await this.prisma.colaboradoresProjetos.findFirst({
+      where: {
+        idProjeto,
+        idMembro: novoMembro.id,
+      },
+    });
+
+    if (existeColaborador) {
+      throw new ForbiddenException('Membro já é colaborador deste projeto');
+    }
+
+    if (classificacao === 'GERENTE') {
+      return await this.prisma.gerentesProjetos.create({
+        data: {
+          idProjeto,
+          idMembro: novoMembro.id,
+        },
+      });
+    } else {
+      return await this.prisma.colaboradoresProjetos.create({
+        data: {
+          idProjeto,
+          idMembro: novoMembro.id,
+        },
+      });
+    }
   }
 
-  private async ensureProjetoGerenciadoPorPerfil(
+  async removeMembro(idProjeto: number, idPerfilSolicitante: number, idPerfilMembro: number) {
+
+    await this.podeEditarProjeto(idProjeto, idPerfilSolicitante);
+
+    const membro = await this.prisma.membro.findFirst({
+      where: {
+        idPerfil: idPerfilMembro,
+        idEntidade: (await this.prisma.projeto.findUnique({
+          where: { id: idProjeto },
+          select: { idEntidade: true },
+        }))?.idEntidade,
+      },
+    });
+
+    if (!membro) {
+      throw new NotFoundException('Membro não encontrado na entidade do projeto');
+    }
+
+    await this.prisma.colaboradoresProjetos.deleteMany({ where: { idProjeto, idMembro: membro.id } });
+    
+    return this.prisma.gerentesProjetos.deleteMany({ where: { idProjeto, idMembro: membro.id } });
+
+  }
+
+  async updateMembro(idProjeto: number, idPerfilSolicitante: number, idPerfilAlterado: number, updateMembroProjetoDto: UpdateMembroProjetoDto) {
+
+    await this.podeEditarProjeto(idProjeto, idPerfilSolicitante);
+
+    const membro = await this.prisma.membro.findFirst({
+      where: {
+        idPerfil: idPerfilAlterado,
+        idEntidade: (await this.prisma.projeto.findUnique({
+          where: { id: idProjeto },
+          select: { idEntidade: true },
+        }))?.idEntidade,
+      },
+    });
+
+    if (!membro) {
+      throw new NotFoundException('Membro não encontrado na entidade do projeto');
+    }
+
+    if (updateMembroProjetoDto.papel === 'GERENTE') {
+      
+      await this.prisma.colaboradoresProjetos.deleteMany({
+        where: {
+          idProjeto,
+          idMembro: membro.id,
+        },
+      });
+
+      return await this.prisma.gerentesProjetos.upsert({
+        where: {
+          idProjeto_idMembro: {
+            idProjeto,
+            idMembro: membro.id,
+          },
+        },
+        update: {},
+        create: {
+          idProjeto,
+          idMembro: membro.id,
+        },
+      });
+
+    } else {
+      
+      await this.prisma.gerentesProjetos.deleteMany({
+        where: {
+          idProjeto,
+          idMembro: membro.id,
+        },
+      });
+
+      return await this.prisma.colaboradoresProjetos.upsert({
+        where: {
+          idProjeto_idMembro: {
+            idProjeto,
+            idMembro: membro.id,
+          },
+        },
+        update: {},
+        create: {
+          idProjeto,
+          idMembro: membro.id,
+        },
+      });
+    }
+  }
+
+  private async podeEditarProjeto(
     idProjeto: number,
     idPerfil: number,
   ) {
     const projeto = await this.prisma.projeto.findUnique({
       where: { id: idProjeto },
-      select: { id: true },
+      select: { id: true, idEntidade: true },
     });
 
     if (!projeto) {
@@ -214,10 +321,53 @@ export class ProjetoService {
       select: { idProjeto: true },
     });
 
-    if (!gerente) {
+    const Gestor = await this.prisma.membro.findFirst({
+      where: {
+        idPerfil,
+        idEntidade: projeto.idEntidade,
+        classificacao: { in: [ClassificacaoMembro.GESTOR, ClassificacaoMembro.CO_GESTOR] },
+      },
+      select: { id: true },
+    });
+
+    if (!gerente && !Gestor) {
       throw new ForbiddenException(
-        'Apenas gerentes do projeto podem editar ou excluir o projeto',
+        'Apenas gerentes do projeto ou gestores/co-gestores da entidade podem editar ou excluir o projeto',
       );
     }
+  }
+
+  private async validateUser(Userid: number, EntidadeId: number) {
+    const user = await this.prisma.perfil.findUnique({
+      where: { id: Userid },
+    });
+
+    if (!user) {
+      throw new NotFoundException("Usuário não encontrado");
+    }
+
+    const entidade = await this.prisma.entidade.findUnique({
+      where: { id: EntidadeId },
+    });
+
+    if (!entidade) {
+      throw new NotFoundException("Entidade não encontrada");
+    }
+
+    const permissao = await this.prisma.membro.findFirst({
+      where: {
+        idPerfil: Userid,
+        idEntidade: EntidadeId,
+      },
+      select: {
+        classificacao: true,
+      },
+    });
+
+    if (permissao?.classificacao !== 'GESTOR' && permissao?.classificacao !== 'CO_GESTOR') {
+      throw new ForbiddenException("Usuário não autorizado para esta ação");
+    }
+
+    return true;
   }
 }
