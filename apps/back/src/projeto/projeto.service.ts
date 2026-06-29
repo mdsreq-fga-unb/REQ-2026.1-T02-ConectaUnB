@@ -37,8 +37,8 @@ export class ProjetoService {
     await this.prisma.notificacao.create({
       data: {
         idEntidade: createProjetoDto.idEntidade,
-        tipo: TipoNotificacao.NOVA_PUBLICACAO,
-        mensagem: `Nova Projeto Criado: ${createProjetoDto.nome}`,
+        tipo: TipoNotificacao.ATUALIZACAO_PROJETO,
+        mensagem: `Novo Projeto Criado: ${createProjetoDto.nome}`,
         referenciaId: projeto.id
       },
     });

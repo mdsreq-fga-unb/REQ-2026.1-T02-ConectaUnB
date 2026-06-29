@@ -63,7 +63,7 @@ describe('ProjetoService', () => {
       expect(mockPrisma.projeto.create).toHaveBeenCalled();
       expect(mockPrisma.notificacao.create).toHaveBeenCalledWith({
         data: expect.objectContaining({
-          tipo: TipoNotificacao.NOVA_PUBLICACAO,
+          tipo: TipoNotificacao.ATUALIZACAO_PROJETO,
           referenciaId: 10,
         }),
       });
