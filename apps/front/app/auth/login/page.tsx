@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { api } from "@/guards/api";
 import { useAuth } from "@/hooks/useAuth";
 import AuthBanner from "@/components/auth/AuthBanner";
-import { BackButton } from "@/components/Voltar";
+import { BackButton } from "@/components/auth/Voltar";
 
 export default function LoginPage() {
   const router = useRouter();

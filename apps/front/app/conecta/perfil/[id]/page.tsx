@@ -1,13 +1,12 @@
 "use client";
 
 import { api } from "@/guards/api";
-import { ProjetoCard } from "@/components/projetoCard";
+import { SeguindoCard } from "@/components/perfil/SeguindoCard";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { CAMPUS_OPTIONS, CURSO_OPTIONS, DEPARTAMENTO_OPTIONS } from "@/constants/options";
-import { Sidebar } from '@/components/Sidebar';
 import {ConfirmModal} from "@/components/ConfirmModal";
 
 export default function PerfilPage() {
@@ -92,7 +91,6 @@ export default function PerfilPage() {
 
   const handleLogout = () => {
     toast("Sessão encerrada", { description: "Até logo!" });
-    // Só chame o logout. Ele já tem o router.push e já avisa a Sidebar!
     logout(); 
   };
 
@@ -250,10 +248,12 @@ export default function PerfilPage() {
               <p className="text-gray-500">Este usuário ainda não segue nenhum projeto.</p>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {projetosSeguidos.map((projeto) => (
-                  <ProjetoCard
-                    key={projeto.id}
-                    nome={projeto.nome || "Projeto Sem Nome"}
+                {projetosSeguidos.map((entidade) => (
+                  <SeguindoCard
+                    key={entidade.id}
+                    nome={entidade.nome || "Projeto Sem Nome"}
+                    imagem={entidade.linkFoto || undefined}
+                    onClick={() => router.push(`/conecta/entidades/${entidade.id}`)}
                   />
                 ))}
               </div>

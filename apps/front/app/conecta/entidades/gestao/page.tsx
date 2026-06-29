@@ -1,15 +1,12 @@
 "use client";
-import React, { useCallback, useEffect, useState } from 'react';
-import { Trash2, X } from 'lucide-react';
-import { ButtonGreen } from '@/components/ButtonGreen';
-import { ProjetoCard } from '@/components/projetoCard';
+import { useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { ButtonGreen } from '@/components/entidade/ButtonGreen';
+import { ProjetoCard } from '@/components/entidade/projetoCard';
 import { CreateEntidadeModal } from '@/components/entidade/CreateEntidadeModal';
+import { ManageMembersModal } from '@/components/entidade/ManageMembersModal';
+import { EditEntidadeModal } from '@/components/entidade/EditEntidadeModal';
 import { api } from '@/guards/api';
-import { CAMPUS_OPTIONS, ClassificacaoEntidade, ClassificacaoMembro, DEPARTAMENTO_OPTIONS } from '@/constants/options';
-import { toast } from 'sonner';
-import { EditEntidadeForm } from '@/components/entidade/EditEntidadeForm';
-
-// Tipagem dos Dados
 
 type VinculoEntidade = {
   id: number;
@@ -28,504 +25,127 @@ type EntidadeResumo = {
   vinculo: VinculoEntidade;
 };
 
-type MembroEntidade = {
-  id: number;
-  idPerfil: number;
-  classificacao: 'GESTOR' | 'CO_GESTOR' | 'MEMBRO';
-  perfil: {
-    id: number;
-    name: string;
-    email: string;
-  };
-};
-
-type EntidadeDetalhada = EntidadeResumo & {
-  membros: MembroEntidade[];
-};
-
-type MemberManagerModalProps = {
-  entidade: EntidadeResumo | null;
-  onClose: () => void;
-  onChanged: () => void;
-};
-
-// Funções auxiliares
-
-function getErrorMessage(error: unknown) {
-  if (
-    typeof error === 'object' &&
-    error !== null &&
-    'response' in error &&
-    typeof error.response === 'object' &&
-    error.response !== null &&
-    'data' in error.response &&
-    typeof error.response.data === 'object' &&
-    error.response.data !== null &&
-    'message' in error.response.data
-  ) {
-    const message = error.response.data.message;
-    return Array.isArray(message) ? message.join('\n') : String(message);
-  }
-
-  return 'Não foi possível concluir a ação. Tente novamente.';
-}
-
-// Componente para editar o cargo de um membro
-
-function MemberRoleEditor({
-  membro,
-  entidadeId,
-  isSaving,
-  setIsSaving,
-  setErrorMessage,
-  setSuccessMessage,
-  refreshDetalhe,
-}: {
-  membro: MembroEntidade;
-  entidadeId: number;
-  isSaving: boolean;
-  setIsSaving: (s: boolean) => void;
-  setErrorMessage: (msg: string) => void;
-  setSuccessMessage: (msg: string) => void;
-  refreshDetalhe: () => Promise<void>;
-}) {
-  const [selectedRole, setSelectedRole] = useState(membro.classificacao);
-
-  // Update local state if prop changes from outside (e.g. after refreshDetalhe)
-  useEffect(() => {
-    setSelectedRole(membro.classificacao);
-  }, [membro.classificacao]);
-
-  const hasChanged = selectedRole !== membro.classificacao;
-
-  const handleUpdateRole = async () => {
-    setIsSaving(true);
-    setErrorMessage('');
-    setSuccessMessage('');
-
-    try {
-      await api.patch(`/entidade/${entidadeId}/membros/${membro.idPerfil}`, {
-        classificacao: selectedRole,
-      });
-      await refreshDetalhe();
-      setSuccessMessage('Cargo atualizado com sucesso');
-      setTimeout(() => setSuccessMessage(''), 3000);
-    } catch (error) {
-      console.error('Erro ao atualizar cargo:', error);
-      setErrorMessage(getErrorMessage(error));
-      setSelectedRole(membro.classificacao); // revert on error
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  return (
-    <div className="flex items-center gap-2">
-      <select
-        value={selectedRole}
-        onChange={(e) => setSelectedRole(e.target.value as any)}
-        disabled={isSaving}
-        className="px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:ring-[#195b3d] focus:border-[#195b3d] outline-none bg-white text-black"
-      >
-        {ClassificacaoMembro.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-      {hasChanged && (
-        <button
-          type="button"
-          disabled={isSaving}
-          onClick={handleUpdateRole}
-          className="inline-flex h-8 px-3 items-center justify-center rounded-md bg-[#195b3d] text-white hover:bg-[#13472f] disabled:opacity-50 text-sm font-medium"
-        >
-          Confirmar
-        </button>
-      )}
-    </div>
-  );
-}
-
-// Componente principal do modal de gerenciamento de membros
-
-function MemberManagerModal({ entidade, onClose, onChanged }: MemberManagerModalProps) {
-  const [detalhe, setDetalhe] = useState<EntidadeDetalhada | null>(null);
-  const [email, setEmail] = useState('');
-  const [classificacao, setClassificacao] = useState('MEMBRO');
-  const [editForm, setEditForm] = useState({
-    nome: '',
-    descricao: '',
-    classificacao: '',
-    campus: '',
-    departamento: '',
-  });
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-
-  // Função para buscar os dados detalhados da entidade aberta no modal
-
-  useEffect(() => {
-    if (!entidade) return;
-    const entidadeId = entidade.id;
-
-    async function fetchDetalhe() {
-      setIsLoading(true);
-      setErrorMessage('');
-      try {
-        const response = await api.get(`/entidade/${entidadeId}`);
-        setDetalhe(response.data);
-        setEditForm({
-          nome: response.data.nome ?? '',
-          descricao: response.data.descricao ?? '',
-          classificacao: response.data.classificacao ?? '',
-          campus: response.data.campus ?? '',
-          departamento: response.data.departamento ?? '',
-        });
-      } catch (error) {
-        console.error('Erro ao buscar membros da entidade:', error);
-        setErrorMessage(getErrorMessage(error));
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    fetchDetalhe();
-  }, [entidade]);
-
-  if (!entidade) return null;
-
-  const canManage = entidade.vinculo.classificacao === 'GESTOR' || entidade.vinculo.classificacao === 'CO_GESTOR';
-  const canDelete = entidade.vinculo.classificacao === 'GESTOR';
-
-  const refreshDetalhe = async () => {
-    const response = await api.get(`/entidade/${entidade.id}`);
-    setDetalhe(response.data);
-  };
-
-  const handleAddMember = async (event: React.FormEvent) => {
-    event.preventDefault();
-    setIsSaving(true);
-    setErrorMessage('');
-    setSuccessMessage('');
-
-    try {
-      await api.post(`/entidade/${entidade.id}/membros`, {
-        email,
-        classificacao,
-      });
-      setEmail('');
-      setClassificacao('MEMBRO');
-      await refreshDetalhe();
-      setSuccessMessage('Membro adicionado com sucesso');
-      setTimeout(() => setSuccessMessage(''), 3000);
-    } catch (error) {
-      console.error('Erro ao adicionar membro:', error);
-      setErrorMessage(getErrorMessage(error));
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  const handleRemoveMember = async (memberIdPerfil: number) => {
-    const shouldRemove = window.confirm('Remover este membro da entidade?');
-    if (!shouldRemove) return;
-
-    setIsSaving(true);
-    setErrorMessage('');
-    setSuccessMessage('');
-
-    try {
-      await api.delete(`/entidade/${entidade.id}/membros/${memberIdPerfil}`);
-      await refreshDetalhe();
-      setSuccessMessage('Membro removido com sucesso');
-      setTimeout(() => setSuccessMessage(''), 3000);
-    } catch (error) {
-      console.error('Erro ao remover membro:', error);
-      setErrorMessage(getErrorMessage(error));
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  //interface modal
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-      <div className="w-full max-w-3xl bg-white rounded-xl shadow-xl">
-        <div className="flex items-start justify-between gap-4 p-6 border-b border-gray-100">
-          <div>
-            <h2 className="text-xl font-bold text-[#0d2a54]">{entidade.nome}</h2>
-            <p className="text-sm text-gray-500">Gerenciamento de membros</p>
-          </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors" aria-label="Fechar">
-            <X size={24} />
-          </button>
-        </div>
-
-        <div className="p-6 space-y-6">
-          {errorMessage ? (
-            <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-              {errorMessage}
-            </div>
-          ) : null}
-
-          {successMessage ? (
-            <div className="rounded-md border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
-              {successMessage}
-            </div>
-          ) : null}
-
-          {/* SUB-SEÇÃO A: FORMULÁRIO DE EDIÇÃO DE DADOS AGORA VIA COMPONENTE */}
-          {canManage && detalhe ? (
-            <EditEntidadeForm 
-              entidadeId={entidade.id}
-              initialData={{
-                nome: detalhe.nome || '',
-                descricao: detalhe.descricao || '',
-                classificacao: detalhe.classificacao || '',
-                campus: detalhe.campus || '',
-                departamento: detalhe.departamento || ''
-              }}
-              canDelete={canDelete}
-              onSuccess={() => {
-                refreshDetalhe();
-                onChanged();
-              }}
-              onDeleted={() => {
-                onChanged();
-                onClose();
-              }}
-            />
-          ) : null}
-
-          {canManage ? (
-            <form onSubmit={handleAddMember} className="grid grid-cols-1 md:grid-cols-[1fr_180px_auto] gap-3 items-end">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">E-mail do usuário</label>
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#195b3d] focus:border-[#195b3d] outline-none text-black"
-                  placeholder="Ex: usuario@unb.br"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Papel</label>
-                <select
-                  value={classificacao}
-                  onChange={(event) => setClassificacao(event.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#195b3d] focus:border-[#195b3d] outline-none bg-white text-black"
-                >
-                  {ClassificacaoMembro.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <button
-                type="submit"
-                disabled={isSaving}
-                className="px-5 py-2 text-sm font-medium text-white bg-[#195b3d] rounded-md hover:bg-[#13472f] transition-colors disabled:opacity-50"
-              >
-                Adicionar
-              </button>
-            </form>
-          ) : null}
-
-          <div>
-            <h3 className="text-sm font-semibold text-[#0d2a54] mb-3">Membros atuais</h3>
-            {isLoading ? (
-              <p className="text-gray-500">Carregando membros...</p>
-            ) : detalhe?.membros?.length ? (
-              <div className="divide-y divide-gray-100 border border-gray-100 rounded-md">
-                {detalhe.membros.map((membro) => (
-                  <div key={membro.id} className="flex items-center justify-between gap-4 p-4">
-                    <div className="min-w-0">
-                      <p className="font-medium text-[#1D1D1D] truncate">{membro.perfil.name}</p>
-                      <p className="text-sm text-gray-500 truncate">
-                        #{membro.idPerfil} - {membro.perfil.email}
-                      </p>
-                    </div>
-                    {canManage ? (
-                      <div className="flex items-center gap-4">
-                        <MemberRoleEditor
-                          membro={membro}
-                          entidadeId={entidade.id}
-                          isSaving={isSaving}
-                          setIsSaving={setIsSaving}
-                          setErrorMessage={setErrorMessage}
-                          setSuccessMessage={setSuccessMessage}
-                          refreshDetalhe={refreshDetalhe}
-                        />
-                        <button
-                          type="button"
-                          disabled={isSaving}
-                          onClick={() => handleRemoveMember(membro.idPerfil)}
-                          className="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md text-red-600 hover:bg-red-50 disabled:opacity-50"
-                          aria-label={`Remover ${membro.perfil.name}`}
-                        >
-                          <Trash2 size={18} />
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="text-sm text-gray-700 bg-gray-100 px-3 py-1.5 rounded-md">
-                        {membro.classificacao}
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-gray-500">Nenhum membro encontrado.</p>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// Pagina Principal
-
 export default function EntidadesPage() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedEntidade, setSelectedEntidade] = useState<EntidadeResumo | null>(null);
+  const router = useRouter();
+
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  
+  const [entidadeToEdit, setEntidadeToEdit] = useState<EntidadeResumo | null>(null);
+  const [entidadeToManageMembers, setEntidadeToManageMembers] = useState<EntidadeResumo | null>(null);
+  
   const [minhasEntidades, setMinhasEntidades] = useState<EntidadeResumo[]>([]);
   const [entidadesCogestao, setEntidadesCogestao] = useState<EntidadeResumo[]>([]);
   const [entidadesMembro, setEntidadesMembro] = useState<EntidadeResumo[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchEntidades = useCallback(async () => {
-      try {
-        const response = await api.get('/entidade/minhas');
-        const entidades = response.data;
-        console.log("Entidades recebidas da API:", entidades);
-        
-        const minhas = entidades.filter((e: EntidadeResumo) =>
-          e.vinculo.classificacao === 'GESTOR'
-        );
-        const cogestao = entidades.filter((e: EntidadeResumo) =>
-          e.vinculo.classificacao === 'CO_GESTOR'
-        );
-        const membro = entidades.filter((e: EntidadeResumo) =>
-          e.vinculo.classificacao === 'MEMBRO'
-        );
-        
-        setMinhasEntidades(minhas);
-        setEntidadesCogestao(cogestao);
-        setEntidadesMembro(membro);
-      } catch (error) {
-        console.error("Erro ao buscar entidades", error);
-      } finally {
-        setIsLoading(false);
-      }
+    try {
+      const response = await api.get('/entidade/minhas');
+      const entidades = response.data;
+      
+      setMinhasEntidades(entidades.filter((e: EntidadeResumo) => e.vinculo.classificacao === 'GESTOR'));
+      setEntidadesCogestao(entidades.filter((e: EntidadeResumo) => e.vinculo.classificacao === 'CO_GESTOR'));
+      setEntidadesMembro(entidades.filter((e: EntidadeResumo) => e.vinculo.classificacao === 'MEMBRO'));
+    } catch (error) {
+      console.error("Erro ao buscar entidades", error);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchEntidades();
   }, [fetchEntidades]);
 
   return (
     <div className="flex min-h-screen bg-[#fafafa]">
-      {/* Barra Lateral Fixa à esquerda */}
-
-      {/* Conteúdo Principal */}
       <main className="flex-1 p-12">
-        {/* Cabeçalho com o botão à direita */}
         <div className="flex justify-end mb-12">
-          <ButtonGreen text="Criar Entidade" onClick={() => setIsModalOpen(true)} />
+          <ButtonGreen text="Criar Entidade" onClick={() => setIsCreateModalOpen(true)} />
         </div>
 
-        {/* Seção: Minhas Entidades */}
         <section className="mb-12">
           <h2 className="text-2xl font-bold text-[#0d2a54] mb-6 border-b-2 border-[#195b3d] pb-2">
             Minhas Entidades
           </h2>
-          {/* Grid responsivo: 1 coluna no mobile, 2 colunas em telas médias para cima */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {isLoading ? (
-              <p className="text-gray-500">Carregando...</p>
-            ) : minhasEntidades.length > 0 ? (
+            {isLoading ? <p className="text-gray-500">Carregando...</p> : minhasEntidades.length > 0 ? (
               minhasEntidades.map((entidade) => (
                 <ProjetoCard
                   key={entidade.id}
                   nome={entidade.nome}
                   descricao=""
                   imagem={entidade.linkLogo || undefined}
-                  onClick={() => setSelectedEntidade(entidade)}
+                  onClick={() => router.push(`/conecta/entidades/${entidade.id}`)}
+                  onEditClick={() => setEntidadeToEdit(entidade)}
+                  onAddMemberClick={() => setEntidadeToManageMembers(entidade)}
+                  vinculo={entidade.vinculo.classificacao}
                 />
               ))
-            ) : (
-              <p className="text-gray-500">Você não possui entidades nesta categoria.</p>
-            )}
+            ) : <p className="text-gray-500">Você não possui entidades nesta categoria.</p>}
           </div>
         </section>
 
-        {/* Seção: Cogestão */}
         <section className="mb-12">
           <h2 className="text-2xl font-bold text-[#0d2a54] mb-6 border-b-2 border-[#195b3d] pb-2">
             Cogestão
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {isLoading ? (
-              <p className="text-gray-500">Carregando...</p>
-            ) : entidadesCogestao.length > 0 ? (
+            {isLoading ? <p className="text-gray-500">Carregando...</p> : entidadesCogestao.length > 0 ? (
               entidadesCogestao.map((entidade) => (
                 <ProjetoCard
                   key={entidade.id}
                   nome={entidade.nome}
                   descricao=""
                   imagem={entidade.linkLogo || undefined}
-                  onClick={() => setSelectedEntidade(entidade)}
+                  onClick={() => router.push(`/conecta/entidades/${entidade.id}`)}
+                  onEditClick={() => setEntidadeToEdit(entidade)}
+                  onAddMemberClick={() => setEntidadeToManageMembers(entidade)}
+                  vinculo={entidade.vinculo.classificacao}
                 />
               ))
-            ) : (
-              <p className="text-gray-500">Nenhuma entidade em cogestão.</p>
-            )}
+            ) : <p className="text-gray-500">Nenhuma entidade em cogestão.</p>}
           </div>
         </section>
 
-        {/* Seção: Sou Membro */}
         <section>
           <h2 className="text-2xl font-bold text-[#0d2a54] mb-6 border-b-2 border-[#195b3d] pb-2">
             Sou Membro
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {isLoading ? (
-              <p className="text-gray-500">Carregando...</p>
-            ) : entidadesMembro.length > 0 ? (
+            {isLoading ? <p className="text-gray-500">Carregando...</p> : entidadesMembro.length > 0 ? (
               entidadesMembro.map((entidade) => (
                 <ProjetoCard
                   key={entidade.id}
                   nome={entidade.nome}
                   descricao=""
                   imagem={entidade.linkLogo || undefined}
-                  onClick={() => setSelectedEntidade(entidade)}
+                  onClick={() => router.push(`/conecta/entidades/${entidade.id}`)}
+                  vinculo={entidade.vinculo.classificacao}
                 />
               ))
-            ) : (
-              <p className="text-gray-500">Você não é membro de nenhuma entidade.</p>
-            )}
+            ) : <p className="text-gray-500">Você não é membro de nenhuma entidade.</p>}
           </div>
         </section>
       </main>
 
       <CreateEntidadeModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
+        isOpen={isCreateModalOpen} 
+        onClose={() => setIsCreateModalOpen(false)} 
+        onSuccess={fetchEntidades}
       />
-      <MemberManagerModal
-        entidade={selectedEntidade}
-        onClose={() => setSelectedEntidade(null)}
+
+      <EditEntidadeModal
+        isOpen={!!entidadeToEdit}
+        entidade={entidadeToEdit}
+        onClose={() => setEntidadeToEdit(null)}
+        onChanged={fetchEntidades}
+      />
+
+      <ManageMembersModal
+        isOpen={!!entidadeToManageMembers}
+        entidade={entidadeToManageMembers}
+        onClose={() => setEntidadeToManageMembers(null)}
         onChanged={fetchEntidades}
       />
     </div>

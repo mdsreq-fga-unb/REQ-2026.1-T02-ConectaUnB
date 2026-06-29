@@ -1,15 +1,16 @@
-import { Pencil, UserPlus } from 'lucide-react'; // Importe os ícones
+import { Pencil, UserPlus } from 'lucide-react';
 
-type ProjetoCardProps = {
+type FormProjetoCard = {
   nome: string;
-  descricao?: string;
+  descricao: string;
   imagem?: string;
-  onClick?: () => void;
-  onEdit?: () => void;      // Nova prop
-  onAddMember?: () => void; // Nova prop
+  onClick: () => void;
+  onEditClick?: () => void; 
+  onAddMemberClick?: () => void;
+  vinculo: 'GESTOR' | 'CO_GESTOR' | 'MEMBRO';
 };
 
-export function ProjetoCard({ nome, descricao, imagem, onClick, onEdit, onAddMember }: ProjetoCardProps) {
+export function ProjetoCard({ nome, descricao, imagem, onClick, onEditClick, onAddMemberClick, vinculo }: FormProjetoCard) {
   return (
     <button
       type="button"
@@ -32,22 +33,24 @@ export function ProjetoCard({ nome, descricao, imagem, onClick, onEdit, onAddMem
       </span>
 
       {/* Botões de Ação na Lateral Direita */}
-      <div className="flex items-center gap-2">
-        <button
-          onClick={(e) => { e.stopPropagation(); onEdit?.(); }}
-          className="p-2 text-gray-500 hover:text-[#195b3d] transition-colors"
-          title="Editar Entidade"
-        >
-          <Pencil size={20} />
-        </button>
-        <button
-          onClick={(e) => { e.stopPropagation(); onAddMember?.(); }}
-          className="p-2 text-gray-500 hover:text-[#195b3d] transition-colors"
-          title="Adicionar Membro"
-        >
-          <UserPlus size={20} />
-        </button>
-      </div>
+      {vinculo !== 'MEMBRO' && (
+        <div className="flex items-center gap-2">
+          <button
+            onClick={(e) => { e.stopPropagation(); onEditClick?.(); }}
+            className="p-2 text-gray-500 hover:text-[#195b3d] transition-colors"
+            title="Editar Entidade"
+          >
+            <Pencil size={20} />
+          </button>
+          <button
+            onClick={(e) => { e.stopPropagation(); onAddMemberClick?.(); }}
+            className="p-2 text-gray-500 hover:text-[#195b3d] transition-colors"
+            title="Gerenciar Membros"
+          >
+            <UserPlus size={20} />
+          </button>
+        </div>
+      )}
     </button>
   );
 }

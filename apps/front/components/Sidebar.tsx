@@ -14,7 +14,6 @@ export const Sidebar: React.FC = () => {
 
   const navItemsLogado = [
     { href: '/conecta/feed', label: 'Feed', icon: Home },
-    { href: '/conecta/projetos', label: 'Projetos', icon: Briefcase },
     { href: '/conecta/entidades/gestao', label: 'Entidades', icon: Building2 },
     { href: '/conecta/notificacoes', label: 'Notificações', icon: Bell },
     { href: user?.sub ? `/conecta/perfil/${user.sub}` : '/conecta/perfil', label: 'Perfil', icon: User },
@@ -29,7 +28,6 @@ export const Sidebar: React.FC = () => {
   const navItems = user ? navItemsLogado : navItemsDesLogado;
   
 useEffect(() => {
-    // 1. Escuta mudanças no localStorage (ex: usuário fez logout em outra aba)
     const syncLogout = (event: StorageEvent) => {
       if (event.key === "conecta_unb_token" && !event.newValue) {
         logout();
@@ -37,7 +35,6 @@ useEffect(() => {
     };
     window.addEventListener('storage', syncLogout);
 
-    // 2. Desloga automaticamente no exato milissegundo em que o token expirar
     let timeoutId: NodeJS.Timeout;
     
     if (user?.exp) {
@@ -49,11 +46,10 @@ useEffect(() => {
           logout();
         }, tempoRestanteMs);
       } else {
-        logout(); // Já expirou
+        logout();
       }
     }
 
-    // Função de limpeza para evitar vazamento de memória
     return () => {
       window.removeEventListener('storage', syncLogout);
       if (timeoutId) clearTimeout(timeoutId);

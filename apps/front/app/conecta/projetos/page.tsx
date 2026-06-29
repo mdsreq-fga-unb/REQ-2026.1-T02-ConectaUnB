@@ -2,8 +2,8 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import { Sidebar } from '@/components/Sidebar';
-import { ButtonGreen } from '@/components/ButtonGreen';
-import { ProjetoCard } from '@/components/projetoCard';
+import { ButtonGreen } from '@/components/entidade/ButtonGreen';
+import { ProjetoCard } from '@/components/entidade/projetoCard';
 import { CreateProjetoModal } from '@/components/CreateProjetoModal';
 import { api } from '@/guards/api';
 import { toast } from 'sonner';

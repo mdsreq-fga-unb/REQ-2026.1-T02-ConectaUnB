@@ -14,7 +14,6 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  // Função centralizada para ler e validar o token
   const checkToken = useCallback(() => {
     const token = localStorage.getItem("conecta_unb_token");
 
@@ -43,13 +42,11 @@ export function useAuth() {
   }, []);
 
   useEffect(() => {
-    // 1. Checa o token assim que o hook é montado
+
     checkToken();
 
-    // 2. Escuta mudanças de auth na MESMA aba
     window.addEventListener("auth_changed", checkToken);
     
-    // 3. Escuta mudanças de auth em OUTRAS abas (evento nativo do navegador)
     window.addEventListener("storage", checkToken);
 
     return () => {
@@ -62,7 +59,6 @@ export function useAuth() {
     localStorage.removeItem("conecta_unb_token");
     setUser(null);
     
-    // DISPARA O AVISO PARA A SIDEBAR E OUTROS COMPONENTES ATUALIZAREM IMEDIATAMENTE
     window.dispatchEvent(new Event("auth_changed")); 
     
     router.push("/conecta/feed");

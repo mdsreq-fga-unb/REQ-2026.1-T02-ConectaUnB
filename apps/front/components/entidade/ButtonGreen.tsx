@@ -5,7 +5,7 @@ interface ButtonGreenProps extends React.ButtonHTMLAttributes<HTMLButtonElement>
   text?: string;
 }
 
-export const ButtonGreen: React.FC<ButtonGreenProps> = ({ text = "Criar Projeto", ...props }) => {
+export const ButtonGreen: React.FC<ButtonGreenProps> = ({ text = "", ...props }) => {
   return (
     <button 
       {...props}
@@ -15,4 +15,4 @@ export const ButtonGreen: React.FC<ButtonGreenProps> = ({ text = "Criar Projeto"
       {text}
     </button>
   );
-};
+};

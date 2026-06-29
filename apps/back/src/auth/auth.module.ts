@@ -25,7 +25,7 @@ import { PerfilModule } from '../perfil/perfil.module';
         }
         return {
           secret: secret,
-          signOptions: { expiresIn: '1h' },
+          signOptions: { expiresIn: '24h' },
         };
       },
     }),

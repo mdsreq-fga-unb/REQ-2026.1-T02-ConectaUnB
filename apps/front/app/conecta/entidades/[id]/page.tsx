@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Bell } from 'lucide-react';
 import { ProjetoCardLarge } from '@/components/ProjetoCardLarge';
 import { api } from '@/guards/api';
+import { useParams } from 'next/navigation';
 
 type Entidade = {
   id: number;
@@ -29,9 +30,11 @@ export default function PerfilEntidadePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  const params = useParams();
+  const idParam = params?.id;
+
   useEffect(() => {
     const carregarPerfil = async () => {
-      const idParam = new URLSearchParams(window.location.search).get('id');
       const entidadeId = Number(idParam);
 
       if (!idParam || !Number.isInteger(entidadeId) || entidadeId <= 0) {

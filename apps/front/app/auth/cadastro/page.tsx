@@ -7,7 +7,7 @@ import {useRouter} from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import AuthBanner from "@/components/auth/AuthBanner";
 import { CAMPUS_OPTIONS, CURSO_OPTIONS, DEPARTAMENTO_OPTIONS } from "@/constants/options";
-import { BackButton } from "@/components/Voltar";
+import { BackButton } from "@/components/auth/Voltar";
 
 type FieldErrors = Record<string, string>;
 
