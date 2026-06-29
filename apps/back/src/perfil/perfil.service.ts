@@ -55,8 +55,8 @@ export class PerfilService {
 
   async remove(id: number) {
     try {
-      return await this.prisma.perfil.delete({ 
-        where: { id } 
+      return await this.prisma.perfil.delete({
+        where: { id },
       });
     } catch (error: any) {
       if (error.code === 'P2025') {

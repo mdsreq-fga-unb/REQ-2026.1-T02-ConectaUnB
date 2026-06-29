@@ -125,7 +125,7 @@ export default function CadastroPage() {
 
     const { confirmacaoSenha, ...dadosLimpos } = formData;
 
-    let payloadFinal: Record<string, unknown> = { ...dadosLimpos };
+    const payloadFinal: Record<string, unknown> = { ...dadosLimpos };
     if (payloadFinal.cargo === "DISCENTE") {
       payloadFinal.matricula = Number(payloadFinal.matricula);
     } else {

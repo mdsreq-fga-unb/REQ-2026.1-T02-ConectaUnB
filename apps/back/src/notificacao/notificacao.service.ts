@@ -15,20 +15,19 @@ export class NotificacaoService {
   }
 
   async findAll(idPerfil: number) {
-
     const perfil = await this.prisma.perfil.findUnique({
       where: { id: idPerfil },
-      select: { 
+      select: {
         ultimaLeituraNotificacoes: true,
         PreferenciaNotificacao: true,
         Seguindo: {
-          select: { idEntidade: true }
-        }
+          select: { idEntidade: true },
+        },
       },
     });
 
     if (!perfil) {
-      throw new Error("Perfil não encontrado");
+      throw new Error('Perfil não encontrado');
     }
 
     const entidadesSeguidasIds = perfil.Seguindo.map((s) => s.idEntidade);
@@ -37,7 +36,7 @@ export class NotificacaoService {
       return [];
     }
 
-    const tiposPermitidos: TipoNotificacao[] = []
+    const tiposPermitidos: TipoNotificacao[] = [];
     const prefs = perfil.PreferenciaNotificacao;
 
     if (!prefs || prefs.processoSeletivo) {
@@ -59,16 +58,16 @@ export class NotificacaoService {
       where: {
         idEntidade: { in: entidadesSeguidasIds },
         createdAt: { gt: perfil.ultimaLeituraNotificacoes },
-        tipo: { in: tiposPermitidos as any }, 
+        tipo: { in: tiposPermitidos as any },
       },
       include: {
         entidade: {
           select: {
             nome: true,
-            linkLogo: true
-          }
-        }
-      }
+            linkLogo: true,
+          },
+        },
+      },
     });
   }
 
@@ -79,7 +78,10 @@ export class NotificacaoService {
     });
   }
 
-  async updatePreferencias(idPerfil: number, preferencias: UpdatePreferenciasDto) {
+  async updatePreferencias(
+    idPerfil: number,
+    preferencias: UpdatePreferenciasDto,
+  ) {
     return this.prisma.perfil.update({
       where: { id: idPerfil },
       data: {

@@ -23,7 +23,7 @@ export class PostagemController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Request()req, @Body() createPostagemDto: CreatePostagemDto) {
+  create(@Request() req, @Body() createPostagemDto: CreatePostagemDto) {
     const userId = req.user.id;
     return this.postagemService.create(createPostagemDto, userId);
   }
@@ -44,7 +44,7 @@ export class PostagemController {
   update(
     @Param('id') id: string,
     @Body() updatePostagemDto: UpdatePostagemDto,
-    @Request() req
+    @Request() req,
   ) {
     const userId = req.user.id;
     return this.postagemService.update(+id, updatePostagemDto, userId);
@@ -80,5 +80,4 @@ export class PostagemController {
     const userId = req.user.id || null;
     return this.postagemService.getLikes(+id, userId);
   }
-
 }

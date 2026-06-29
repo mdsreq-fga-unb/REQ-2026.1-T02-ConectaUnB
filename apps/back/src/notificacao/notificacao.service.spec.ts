@@ -38,19 +38,21 @@ describe('NotificacaoService', () => {
 
   describe('create', () => {
     it('deve criar e retornar uma notificação com sucesso', async () => {
-      const createDto = { 
-        idEntidade: 1, 
-        tipo: TipoNotificacao.PROCESSO_SELETIVO, 
-        mensagem: 'Nova notificação', 
-        referenciaId: 10 
+      const createDto = {
+        idEntidade: 1,
+        tipo: TipoNotificacao.PROCESSO_SELETIVO,
+        mensagem: 'Nova notificação',
+        referenciaId: 10,
       };
-      
+
       const mockResult = { id: 1, createdAt: new Date(), ...createDto };
       mockPrisma.notificacao.create.mockResolvedValue(mockResult);
 
-      const result = await service.create(createDto as any);
+      const result = await service.create(createDto);
 
-      expect(prisma.notificacao.create).toHaveBeenCalledWith({ data: createDto });
+      expect(prisma.notificacao.create).toHaveBeenCalledWith({
+        data: createDto,
+      });
       expect(result).toEqual(mockResult);
     });
   });
@@ -59,15 +61,17 @@ describe('NotificacaoService', () => {
     it('deve lançar erro se o perfil não for encontrado', async () => {
       mockPrisma.perfil.findUnique.mockResolvedValue(null);
 
-      await expect(service.findAll(999)).rejects.toThrow('Perfil não encontrado');
+      await expect(service.findAll(999)).rejects.toThrow(
+        'Perfil não encontrado',
+      );
       expect(prisma.perfil.findUnique).toHaveBeenCalledWith(
-        expect.objectContaining({ where: { id: 999 } })
+        expect.objectContaining({ where: { id: 999 } }),
       );
     });
 
     it('deve retornar array vazio se o perfil não segue nenhuma entidade', async () => {
-      mockPrisma.perfil.findUnique.mockResolvedValue({ 
-        Seguindo: [] 
+      mockPrisma.perfil.findUnique.mockResolvedValue({
+        Seguindo: [],
       });
 
       const result = await service.findAll(1);
@@ -109,17 +113,17 @@ describe('NotificacaoService', () => {
         where: {
           idEntidade: { in: [1] },
           createdAt: { gt: dataMock },
-          tipo: { 
+          tipo: {
             in: [
-              TipoNotificacao.PROCESSO_SELETIVO, 
-              TipoNotificacao.ATUALIZACAO_PROJETO, 
-              TipoNotificacao.NOVA_PUBLICACAO
-            ] 
+              TipoNotificacao.PROCESSO_SELETIVO,
+              TipoNotificacao.ATUALIZACAO_PROJETO,
+              TipoNotificacao.NOVA_PUBLICACAO,
+            ],
           },
         },
         include: {
-          entidade: { select: { nome: true, linkLogo: true } }
-        }
+          entidade: { select: { nome: true, linkLogo: true } },
+        },
       });
     });
 
@@ -143,11 +147,14 @@ describe('NotificacaoService', () => {
         expect.objectContaining({
           where: expect.objectContaining({
             idEntidade: { in: [2, 3] },
-            tipo: { 
-              in: [TipoNotificacao.PROCESSO_SELETIVO, TipoNotificacao.NOVA_PUBLICACAO] 
+            tipo: {
+              in: [
+                TipoNotificacao.PROCESSO_SELETIVO,
+                TipoNotificacao.NOVA_PUBLICACAO,
+              ],
             },
           }),
-        })
+        }),
       );
     });
   });

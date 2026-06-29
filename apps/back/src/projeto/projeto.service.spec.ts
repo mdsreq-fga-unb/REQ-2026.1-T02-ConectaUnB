@@ -6,7 +6,6 @@ import { TipoNotificacao } from '@prisma/client';
 
 describe('ProjetoService', () => {
   let service: ProjetoService;
-  let prisma: PrismaService;
 
   const mockPrisma = {
     projeto: {
@@ -43,7 +42,6 @@ describe('ProjetoService', () => {
     }).compile();
 
     service = module.get<ProjetoService>(ProjetoService);
-    prisma = module.get<PrismaService>(PrismaService);
   });
 
   afterEach(() => {
@@ -55,7 +53,7 @@ describe('ProjetoService', () => {
       jest.spyOn(service as any, 'validateUser').mockResolvedValue(true);
       const dto = { nome: 'Novo Projeto', idEntidade: 1 } as any;
       const projetoMock = { id: 10, ...dto };
-      
+
       mockPrisma.projeto.create.mockResolvedValue(projetoMock);
 
       const result = await service.create(dto, 1);
@@ -77,7 +75,7 @@ describe('ProjetoService', () => {
       const result = await service.findProjetosEntidade(5);
       expect(result).toHaveLength(2);
       expect(mockPrisma.projeto.findMany).toHaveBeenCalledWith(
-        expect.objectContaining({ where: { idEntidade: 5 } })
+        expect.objectContaining({ where: { idEntidade: 5 } }),
       );
     });
 
@@ -99,7 +97,7 @@ describe('ProjetoService', () => {
     it('deve atualizar o projeto se permitido', async () => {
       jest.spyOn(service as any, 'podeEditarProjeto').mockResolvedValue(true);
       const dto = { descricao: 'Nova' } as any;
-      
+
       await service.update(1, 1, dto);
       expect(mockPrisma.projeto.update).toHaveBeenCalledWith({
         where: { id: 1 },
@@ -116,13 +114,17 @@ describe('ProjetoService', () => {
 
     it('deve lançar NotFound se perfil não for encontrado', async () => {
       mockPrisma.perfil.findUnique.mockResolvedValue(null);
-      await expect(service.addMembro(1, 1, { email: 'a@a.com', papel: 'GERENTE' } as any)).rejects.toThrow(NotFoundException);
+      await expect(
+        service.addMembro(1, 1, { email: 'a@a.com', papel: 'GERENTE' } as any),
+      ).rejects.toThrow(NotFoundException);
     });
 
     it('deve lançar NotFound se usuário não for membro da entidade', async () => {
       mockPrisma.perfil.findUnique.mockResolvedValue({ id: 2 });
       mockPrisma.membro.findFirst.mockResolvedValue(null);
-      await expect(service.addMembro(1, 1, { email: 'a@a.com', papel: 'GERENTE' } as any)).rejects.toThrow(NotFoundException);
+      await expect(
+        service.addMembro(1, 1, { email: 'a@a.com', papel: 'GERENTE' } as any),
+      ).rejects.toThrow(NotFoundException);
     });
 
     it('deve impedir adição se o membro já for gerente do projeto', async () => {
@@ -130,7 +132,9 @@ describe('ProjetoService', () => {
       mockPrisma.membro.findFirst.mockResolvedValue({ id: 20 });
       mockPrisma.gerentesProjetos.findFirst.mockResolvedValue({ idProjeto: 1 }); // Já é gerente
 
-      await expect(service.addMembro(1, 1, { email: 'a@a.com', papel: 'GERENTE' } as any)).rejects.toThrow(ForbiddenException);
+      await expect(
+        service.addMembro(1, 1, { email: 'a@a.com', papel: 'GERENTE' } as any),
+      ).rejects.toThrow(ForbiddenException);
     });
 
     it('deve adicionar com sucesso na tabela de gerentes', async () => {
@@ -139,8 +143,13 @@ describe('ProjetoService', () => {
       mockPrisma.gerentesProjetos.findFirst.mockResolvedValue(null);
       mockPrisma.colaboradoresProjetos.findFirst.mockResolvedValue(null);
 
-      await service.addMembro(1, 1, { email: 'a@a.com', papel: 'GERENTE' } as any);
-      expect(mockPrisma.gerentesProjetos.create).toHaveBeenCalledWith({ data: { idProjeto: 1, idMembro: 20 } });
+      await service.addMembro(1, 1, {
+        email: 'a@a.com',
+        papel: 'GERENTE',
+      } as any);
+      expect(mockPrisma.gerentesProjetos.create).toHaveBeenCalledWith({
+        data: { idProjeto: 1, idMembro: 20 },
+      });
     });
   });
 
@@ -152,8 +161,12 @@ describe('ProjetoService', () => {
 
       await service.removeMembro(1, 1, 2);
 
-      expect(mockPrisma.colaboradoresProjetos.deleteMany).toHaveBeenCalledWith({ where: { idProjeto: 1, idMembro: 20 } });
-      expect(mockPrisma.gerentesProjetos.deleteMany).toHaveBeenCalledWith({ where: { idProjeto: 1, idMembro: 20 } });
+      expect(mockPrisma.colaboradoresProjetos.deleteMany).toHaveBeenCalledWith({
+        where: { idProjeto: 1, idMembro: 20 },
+      });
+      expect(mockPrisma.gerentesProjetos.deleteMany).toHaveBeenCalledWith({
+        where: { idProjeto: 1, idMembro: 20 },
+      });
     });
   });
 
@@ -166,14 +179,14 @@ describe('ProjetoService', () => {
 
     it('transição para GERENTE: deve deletar de colaboradores e upsert em gerentes', async () => {
       await service.updateMembro(1, 1, 2, { papel: 'GERENTE' } as any);
-      
+
       expect(mockPrisma.colaboradoresProjetos.deleteMany).toHaveBeenCalled();
       expect(mockPrisma.gerentesProjetos.upsert).toHaveBeenCalled();
     });
 
     it('transição para COLABORADOR: deve deletar de gerentes e upsert em colaboradores', async () => {
       await service.updateMembro(1, 1, 2, { papel: 'COLABORADOR' } as any);
-      
+
       expect(mockPrisma.gerentesProjetos.deleteMany).toHaveBeenCalled();
       expect(mockPrisma.colaboradoresProjetos.upsert).toHaveBeenCalled();
     });
@@ -182,7 +195,9 @@ describe('ProjetoService', () => {
   describe('Validações Internas (Privadas)', () => {
     it('podeEditarProjeto: deve lançar erro se projeto não existir', async () => {
       mockPrisma.projeto.findUnique.mockResolvedValue(null);
-      await expect(service['podeEditarProjeto'](1, 1)).rejects.toThrow(NotFoundException);
+      await expect(service['podeEditarProjeto'](1, 1)).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('podeEditarProjeto: deve bloquear se não for gerente do projeto e nem gestor da entidade', async () => {
@@ -190,12 +205,16 @@ describe('ProjetoService', () => {
       mockPrisma.gerentesProjetos.findFirst.mockResolvedValue(null);
       mockPrisma.membro.findFirst.mockResolvedValue(null); // Não é gestor
 
-      await expect(service['podeEditarProjeto'](1, 1)).rejects.toThrow(ForbiddenException);
+      await expect(service['podeEditarProjeto'](1, 1)).rejects.toThrow(
+        ForbiddenException,
+      );
     });
 
     it('validateUser: deve lançar erro genérico se usuário não existir', async () => {
       mockPrisma.perfil.findUnique.mockResolvedValue(null);
-      await expect(service['validateUser'](1, 1)).rejects.toThrow("Usuário não encontrado");
+      await expect(service['validateUser'](1, 1)).rejects.toThrow(
+        'Usuário não encontrado',
+      );
     });
   });
 });

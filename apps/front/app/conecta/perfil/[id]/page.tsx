@@ -21,7 +21,9 @@ export default function PerfilPage() {
 
   const isOwner = user?.sub === profileId;
 
-  const [projetosSeguidos, setProjetosSeguidos] = useState<any[]>([]);
+  const [projetosSeguidos, setProjetosSeguidos] = useState<
+    { id: string; nome?: string; linkFoto?: string }[]
+  >([]);
 
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
@@ -38,7 +40,7 @@ export default function PerfilPage() {
       setFormData(resPerfil.data);
       const resSeguindo = await api.get(`/perfil/seguindo/${profileId}`);
       setProjetosSeguidos(resSeguindo.data);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Erro ao carregar perfil:", error);
       toast.error("Ocorreu um erro ao carregar o perfil.");
       router.push("/conecta/feed");
@@ -47,8 +49,9 @@ export default function PerfilPage() {
 
   useEffect(() => {
     if (profileId) {
-      fetchDados();
+      void fetchDados();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profileId, router]);
 
   const handleCancelEdit = () => {
@@ -71,7 +74,7 @@ export default function PerfilPage() {
       await api.patch(`/perfil`, payload);
       toast.success("Edição concluída com sucesso");
       setIsEditing(false);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Erro ao salvar perfil:", error);
       toast.error("Ocorreu um erro ao tentar salvar as alterações.");
     }
@@ -81,9 +84,8 @@ export default function PerfilPage() {
     try {
       await api.delete(`/perfil`);
       toast.success("Perfil excluído com sucesso");
-      // Substitua a remoção manual e o router.push por:
-      logout(); 
-    } catch (error: any) {
+      logout();
+    } catch (error: unknown) {
       console.error("Erro ao excluir perfil:", error);
       toast.error("Ocorreu um erro ao tentar excluir o perfil.");
     }

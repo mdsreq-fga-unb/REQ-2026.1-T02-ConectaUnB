@@ -7,7 +7,7 @@ describe('PostagemController', () => {
   let service: PostagemService;
 
   const mockPostagemService = {
-create: jest.fn(),
+    create: jest.fn(),
     findAll: jest.fn(),
     findOne: jest.fn(),
     update: jest.fn(),
