@@ -8,7 +8,7 @@ import { UpdatePreferenciasDto } from './dto/update-preferencias.dto';
 export class NotificacaoService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(_createNotificacaoDto: CreateNotificacaoDto) {
+  async create(_createNotificacaoDto: CreateNotificacaoDto) {
     return this.prisma.notificacao.create({
       data: _createNotificacaoDto,
     });
@@ -72,14 +72,14 @@ export class NotificacaoService {
     });
   }
 
-  updateUltimaLeitura(idPerfil: number) {
+  async updateUltimaLeitura(idPerfil: number) {
     return this.prisma.perfil.update({
       where: { id: idPerfil },
       data: { ultimaLeituraNotificacoes: new Date() },
     });
   }
 
-  updatePreferencias(idPerfil: number, preferencias: UpdatePreferenciasDto) {
+  async updatePreferencias(idPerfil: number, preferencias: UpdatePreferenciasDto) {
     return this.prisma.perfil.update({
       where: { id: idPerfil },
       data: {
@@ -93,7 +93,7 @@ export class NotificacaoService {
     });
   }
 
-  remove(id: number) {
+  async remove(id: number) {
     return this.prisma.notificacao.delete({
       where: { id },
     });
