@@ -86,7 +86,9 @@ describe('AuthController', () => {
     it('should throw UnauthorizedException when credentials are invalid', async () => {
       mockAuthService.validateUser.mockResolvedValue(null);
 
-      await expect(controller.login(loginDto)).rejects.toThrow(UnauthorizedException);
+      await expect(controller.login(loginDto)).rejects.toThrow(
+        UnauthorizedException,
+      );
     });
   });
 

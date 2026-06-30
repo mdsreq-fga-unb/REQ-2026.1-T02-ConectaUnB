@@ -33,7 +33,9 @@ describe('ProcessoSeletivoController', () => {
       .useValue({ canActivate: () => true }) // Bypassa o guard para focar na lógica do controller
       .compile();
 
-    controller = module.get<ProcessoSeletivoController>(ProcessoSeletivoController);
+    controller = module.get<ProcessoSeletivoController>(
+      ProcessoSeletivoController,
+    );
     service = module.get<ProcessoSeletivoService>(ProcessoSeletivoService);
   });
 
@@ -49,7 +51,7 @@ describe('ProcessoSeletivoController', () => {
     it('deve chamar o service.create com o DTO e o userId (convertido para number)', async () => {
       const dto = { titulo: 'Trainee 2026', idEntidade: 5 } as any;
       await controller.create(dto, mockRequest);
-      
+
       expect(service.create).toHaveBeenCalledWith(dto, 1);
     });
   });
@@ -72,7 +74,7 @@ describe('ProcessoSeletivoController', () => {
     it('deve chamar o service.update com id, DTO e userId', async () => {
       const dto = { titulo: 'Atualizado' } as any;
       await controller.update('15', dto, mockRequest);
-      
+
       expect(service.update).toHaveBeenCalledWith(15, dto, 1);
     });
   });
@@ -80,7 +82,7 @@ describe('ProcessoSeletivoController', () => {
   describe('remove', () => {
     it('deve chamar o service.remove com id e userId', async () => {
       await controller.remove('15', mockRequest);
-      
+
       expect(service.remove).toHaveBeenCalledWith(15, 1);
     });
   });

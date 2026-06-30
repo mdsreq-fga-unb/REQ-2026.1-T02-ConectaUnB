@@ -12,15 +12,25 @@ type MembroEntidade = {
   perfil: { id: number; name: string; email: string; };
 };
 
+type OpcaoClassificacao = { value: string; label: string };
+
 type ManageMembersModalProps = {
   isOpen: boolean;
-  entidade: any | null;
+  entidade: { id: number; nome: string; vinculo?: { classificacao?: string } } | null;
   onClose: () => void;
   onChanged: () => void;
 };
 
-function MemberRoleEditor({ membro, entidadeId, isSaving, refreshDetalhe, allowedRoles }: any) {
-  const [selectedRole, setSelectedRole] = useState(membro.classificacao);
+type MemberRoleEditorProps = {
+  membro: MembroEntidade;
+  entidadeId: number;
+  isSaving: boolean;
+  refreshDetalhe: () => Promise<void>;
+  allowedRoles: OpcaoClassificacao[];
+};
+
+function MemberRoleEditor({ membro, entidadeId, isSaving, refreshDetalhe, allowedRoles }: MemberRoleEditorProps) {
+  const [selectedRole, setSelectedRole] = useState<string>(membro.classificacao);
 
   useEffect(() => setSelectedRole(membro.classificacao), [membro.classificacao]);
 
@@ -43,7 +53,7 @@ function MemberRoleEditor({ membro, entidadeId, isSaving, refreshDetalhe, allowe
         disabled={isSaving} 
         className="px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:ring-[#195b3d] outline-none bg-white text-black"
       >
-        {allowedRoles.map((opt: any) => (
+        {allowedRoles.map((opt: OpcaoClassificacao) => (
           <option key={opt.value} value={opt.value}>{opt.label}</option>
         ))}
       </select>
@@ -62,7 +72,7 @@ function MemberRoleEditor({ membro, entidadeId, isSaving, refreshDetalhe, allowe
 }
 
 export function ManageMembersModal({ isOpen, entidade, onClose, onChanged }: ManageMembersModalProps) {
-  const [detalhe, setDetalhe] = useState<any>(null);
+  const [detalhe, setDetalhe] = useState<{ membros?: MembroEntidade[] } | null>(null);
   const [email, setEmail] = useState('');
   const [classificacao, setClassificacao] = useState('MEMBRO');
   const [isLoading, setIsLoading] = useState(false);
@@ -112,8 +122,9 @@ export function ManageMembersModal({ isOpen, entidade, onClose, onChanged }: Man
       await fetchDetalhe();
       toast.success('Membro adicionado com sucesso!');
       onChanged();
-    } catch (error: any) {
-      const msg = error.response?.data?.message || 'Erro ao adicionar membro.';
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string | string[] } } };
+      const msg = err.response?.data?.message || 'Erro ao adicionar membro.';
       toast.error(Array.isArray(msg) ? msg[0] : msg);
     } finally {
       setIsSaving(false);

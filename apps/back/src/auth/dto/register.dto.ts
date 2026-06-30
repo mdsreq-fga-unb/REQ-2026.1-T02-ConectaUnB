@@ -5,10 +5,8 @@ import {
   IsString,
   MinLength,
   MaxLength,
-  IsNumber,
   Matches,
   IsStrongPassword,
-  IsOptional,
   ValidateIf,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';

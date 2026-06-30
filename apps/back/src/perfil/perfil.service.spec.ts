@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PerfilService } from './perfil.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotFoundException } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 
 const mockPerfil = {
   id: 1,
@@ -42,7 +41,7 @@ describe('PerfilService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         PerfilService,
-        
+
         { provide: PrismaService, useValue: mockPrismaService },
       ],
     }).compile();
@@ -51,7 +50,6 @@ describe('PerfilService', () => {
     prisma = module.get<PrismaService>(PrismaService);
   });
 
-  
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -77,9 +75,8 @@ describe('PerfilService', () => {
     });
 
     it('deve lançar NotFoundException se o perfil não existir', async () => {
-      
       mockPrismaService.perfil.findUnique.mockResolvedValue(null);
-      
+
       await expect(service.findOne(999)).rejects.toThrow(NotFoundException);
     });
   });
@@ -99,7 +96,9 @@ describe('PerfilService', () => {
       const mockError = { code: 'P2025' };
       mockPrismaService.perfil.update.mockRejectedValue(mockError);
 
-      await expect(service.update(999, updateDto as any)).rejects.toThrow(NotFoundException);
+      await expect(service.update(999, updateDto as any)).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 
@@ -120,13 +119,11 @@ describe('PerfilService', () => {
 
   describe('findSeguindo', () => {
     it('deve retornar as entidades que o perfil segue', async () => {
-      
       const relacoes = [{ idPerfil: 1, idEntidade: 5, entidade: mockEntidade }];
       mockPrismaService.seguindo.findMany.mockResolvedValue(relacoes);
 
       const result = await service.findSeguindo(1);
-      
-      
+
       expect(result).toEqual([mockEntidade]);
       expect(prisma.seguindo.findMany).toHaveBeenCalledWith({
         where: { idPerfil: 1 },
@@ -147,7 +144,7 @@ describe('PerfilService', () => {
     it('deve criar um novo perfil', async () => {
       const createDto = { email: 'novo.usuario@exemplo.com', senha: '123' };
       mockPrismaService.perfil.create.mockResolvedValue(mockPerfil);
-      
+
       const result = await service.create(createDto as any);
       expect(result).toEqual(mockPerfil);
     });

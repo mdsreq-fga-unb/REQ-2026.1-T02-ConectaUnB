@@ -1,9 +1,11 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreatePostagemDto } from './dto/create-postagem.dto';
 import { UpdatePostagemDto } from './dto/update-postagem.dto';
 import { PrismaService } from '../prisma/prisma.service';
-import { Curtidas, Postagem, Notificacao } from '@prisma/client';
-import { NotificacaoService } from '../notificacao/notificacao.service';
 import { TipoNotificacao } from '@prisma/client';
 
 @Injectable()
@@ -11,10 +13,14 @@ export class PostagemService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(_createPostagemDto: CreatePostagemDto, userId: number) {
-    
-    const permissao = await this.validateUser(userId, _createPostagemDto.idEntidade);
+    const permissao = await this.validateUser(
+      userId,
+      _createPostagemDto.idEntidade,
+    );
     if (!permissao) {
-      throw new Error("Usuário não autorizado para criar postagem nesta entidade");
+      throw new Error(
+        'Usuário não autorizado para criar postagem nesta entidade',
+      );
     }
 
     const postagem = await this.prisma.postagem.create({
@@ -26,12 +32,11 @@ export class PostagemService {
         idEntidade: _createPostagemDto.idEntidade,
         tipo: TipoNotificacao.NOVA_PUBLICACAO,
         mensagem: `Nova postagem: ${_createPostagemDto.titulo}`,
-        referenciaId: postagem.id
+        referenciaId: postagem.id,
       },
     });
 
     return postagem;
-
   }
 
   async findAll() {
@@ -44,19 +49,24 @@ export class PostagemService {
     });
   }
 
-  async update(id: number, _updatePostagemDto: UpdatePostagemDto, userId: number) {
-  
+  async update(
+    id: number,
+    _updatePostagemDto: UpdatePostagemDto,
+    userId: number,
+  ) {
     const postagem = await this.prisma.postagem.findUnique({
       where: { id },
     });
 
     if (!postagem) {
-      throw new Error("Postagem não encontrada");
+      throw new Error('Postagem não encontrada');
     }
 
     const permissao = await this.validateUser(userId, postagem.idEntidade);
     if (!permissao) {
-      throw new Error("Usuário não autorizado para atualizar postagem nesta entidade");
+      throw new Error(
+        'Usuário não autorizado para atualizar postagem nesta entidade',
+      );
     }
 
     return this.prisma.postagem.update({
@@ -66,18 +76,19 @@ export class PostagemService {
   }
 
   async remove(id: number, userId: number) {
-
     const postagem = await this.prisma.postagem.findUnique({
       where: { id },
     });
 
     if (!postagem) {
-      throw new Error("Postagem não encontrada");
+      throw new Error('Postagem não encontrada');
     }
 
     const permissao = await this.validateUser(userId, postagem.idEntidade);
     if (!permissao) {
-      throw new Error("Usuário não autorizado para remover postagem nesta entidade");
+      throw new Error(
+        'Usuário não autorizado para remover postagem nesta entidade',
+      );
     }
 
     return this.prisma.postagem.delete({
@@ -93,7 +104,7 @@ export class PostagemService {
     });
 
     if (!user) {
-      throw new NotFoundException("Usuário não encontrado");
+      throw new NotFoundException('Usuário não encontrado');
     }
 
     const entidade = await this.prisma.entidade.findUnique({
@@ -101,7 +112,7 @@ export class PostagemService {
     });
 
     if (!entidade) {
-      throw new NotFoundException("Entidade não encontrada");
+      throw new NotFoundException('Entidade não encontrada');
     }
 
     const permissao = await this.prisma.membro.findFirst({
@@ -114,8 +125,11 @@ export class PostagemService {
       },
     });
 
-    if (permissao?.classificacao !== 'GESTOR' && permissao?.classificacao !== 'CO_GESTOR') {
-      throw new ForbiddenException("Usuário não autorizado para esta ação");
+    if (
+      permissao?.classificacao !== 'GESTOR' &&
+      permissao?.classificacao !== 'CO_GESTOR'
+    ) {
+      throw new ForbiddenException('Usuário não autorizado para esta ação');
     }
 
     return true;
@@ -139,9 +153,9 @@ export class PostagemService {
     });
   }
 
-async getLikes(id: number, userId: number | null) {
+  async getLikes(id: number, userId: number | null) {
     const numero = await this.prisma.curtidas.count({
-      where: { idPostagem: id }
+      where: { idPostagem: id },
     });
 
     let usuarioCurtiu = false;

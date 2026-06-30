@@ -49,7 +49,7 @@ export class PostagemController {
   update(
     @Param('id') id: string,
     @Body() updatePostagemDto: UpdatePostagemDto,
-    @Request() req
+    @Request() req,
   ) {
     const userId = Number(req.user.id);
     return this.postagemService.update(+id, updatePostagemDto, userId);
@@ -85,5 +85,4 @@ export class PostagemController {
     const userId = Number(req.user.id) || null;
     return this.postagemService.getLikes(+id, userId);
   }
-
 }

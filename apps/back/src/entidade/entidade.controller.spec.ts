@@ -52,7 +52,10 @@ describe('EntidadeController', () => {
   });
 
   it('should add members using authenticated manager id', () => {
-    const dto = { email: 'test@unb.br', classificacao: ClassificacaoMembro.MEMBRO };
+    const dto = {
+      email: 'test@unb.br',
+      classificacao: ClassificacaoMembro.MEMBRO,
+    };
     entidadeService.addMembro.mockReturnValue({
       id: 11,
       idPerfil: 9,

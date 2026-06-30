@@ -25,16 +25,19 @@ export class ProcessoSeletivoController {
   constructor(
     private readonly processoSeletivoService: ProcessoSeletivoService,
   ) {}
-  
+
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post()
   create(
     @Body() createProcessoSeletivoDto: CreateProcessoSeletivoDto,
-    @Request() req: AuthenticatedRequest
+    @Request() req: AuthenticatedRequest,
   ) {
     const userId = Number(req.user.id);
-    return this.processoSeletivoService.create(createProcessoSeletivoDto, userId);
+    return this.processoSeletivoService.create(
+      createProcessoSeletivoDto,
+      userId,
+    );
   }
 
   @Get()
@@ -53,19 +56,20 @@ export class ProcessoSeletivoController {
   update(
     @Param('id') id: string,
     @Body() updateProcessoSeletivoDto: UpdateProcessoSeletivoDto,
-    @Request() req : AuthenticatedRequest
+    @Request() req: AuthenticatedRequest,
   ) {
     const userId = Number(req.user.id);
-    return this.processoSeletivoService.update(+id, updateProcessoSeletivoDto, userId);
+    return this.processoSeletivoService.update(
+      +id,
+      updateProcessoSeletivoDto,
+      userId,
+    );
   }
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(
-    @Param('id') id: string,
-    @Request() req : AuthenticatedRequest
-  ) {
+  remove(@Param('id') id: string, @Request() req: AuthenticatedRequest) {
     const userId = Number(req.user.id);
     return this.processoSeletivoService.remove(+id, userId);
   }
