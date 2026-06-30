@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { SlidersHorizontal, X } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { api } from "@/guards/api";
 import { CAMPUS_OPTIONS, DEPARTAMENTO_OPTIONS } from "@/constants/options";
@@ -108,103 +109,109 @@ export default function HomePage() {
   return (
     <div className="flex min-h-screen bg-gray-50 text-[#1D1D1D]">
       <main className="flex-1 p-8">
-        <div className="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-md">
-          <div className="flex justify-between items-start gap-4 mb-2">
-            <h1 className="text-3xl font-bold text-[#003366]">
-              Painel do ConectaUnB
-            </h1>
-            <button
-              onClick={logout}
-              className="px-6 py-2 bg-red-600 text-white font-semibold rounded-full hover:bg-red-700 transition-colors"
-            >
-              Sair da Conta
-            </button>
+        <div className="max-w-4xl mx-auto">
+
+          {/* Barra de filtros */}
+          <div className="mb-8 flex flex-wrap items-end gap-x-5 gap-y-3 bg-white border border-gray-200 rounded-xl shadow-sm px-5 py-4">
+            <span className="inline-flex items-center gap-2 text-sm font-semibold text-[#0d2a54] pr-3 border-r border-gray-200 self-center">
+              <SlidersHorizontal size={18} /> Filtros
+            </span>
+
+            <label className="flex flex-col gap-1">
+              <span className="text-xs font-medium text-gray-600">Campus</span>
+              <select
+                name="campus"
+                value={filtros.campus}
+                onChange={handleFiltroChange}
+                className="min-w-[10rem] px-3 py-2 border border-gray-300 rounded-md focus:ring-[#195b3d] focus:border-[#195b3d] outline-none bg-white text-black text-sm"
+              >
+                <option value="">Todos</option>
+                {CAMPUS_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="flex flex-col gap-1">
+              <span className="text-xs font-medium text-gray-600">Departamento</span>
+              <select
+                name="departamento"
+                value={filtros.departamento}
+                onChange={handleFiltroChange}
+                className="min-w-[10rem] px-3 py-2 border border-gray-300 rounded-md focus:ring-[#195b3d] focus:border-[#195b3d] outline-none bg-white text-black text-sm"
+              >
+                <option value="">Todos</option>
+                {DEPARTAMENTO_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="flex flex-col gap-1">
+              <span className="text-xs font-medium text-gray-600">Entidade</span>
+              <select
+                name="nome"
+                value={filtros.nome}
+                onChange={handleFiltroChange}
+                className="min-w-[12rem] px-3 py-2 border border-gray-300 rounded-md focus:ring-[#195b3d] focus:border-[#195b3d] outline-none bg-white text-black text-sm"
+              >
+                <option value="">Todas</option>
+                {nomesEntidades.map((nome) => (
+                  <option key={nome} value={nome}>
+                    {nome}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            {filtrosAtivos ? (
+              <button
+                type="button"
+                onClick={limparFiltros}
+                className="ml-auto inline-flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+              >
+                <X size={16} /> Limpar
+              </button>
+            ) : null}
           </div>
 
-          <p className="text-gray-600 mb-4">
-            Logado como:{" "}
-            <span className="font-semibold text-green-700">{user.email}</span>
-          </p>
+          {/* Painel */}
+          <div className="bg-white p-8 rounded-xl shadow-md">
+            <div className="flex justify-between items-start gap-4 mb-2">
+              <h1 className="text-3xl font-bold text-[#003366]">
+                Painel do ConectaUnB
+              </h1>
+              <button
+                onClick={logout}
+                className="px-6 py-2 bg-red-600 text-white font-semibold rounded-full hover:bg-red-700 transition-colors"
+              >
+                Sair da Conta
+              </button>
+            </div>
 
-          <div className="p-4 border border-gray-200 rounded-lg mb-8">
-            <h2 className="font-semibold mb-2">Seus Dados de Sessão:</h2>
-            <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
-              <li><strong>ID no Banco:</strong> {user.sub}</li>
-              <li><strong>Sessão expira em:</strong> {new Date(user.exp * 1000).toLocaleTimeString()}</li>
-            </ul>
+            <p className="text-gray-600 mb-4">
+              Logado como:{" "}
+              <span className="font-semibold text-green-700">{user.email}</span>
+            </p>
+
+            <div className="p-4 border border-gray-200 rounded-lg">
+              <h2 className="font-semibold mb-2">Seus Dados de Sessão:</h2>
+              <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
+                <li><strong>ID no Banco:</strong> {user.sub}</li>
+                <li><strong>Sessão expira em:</strong> {new Date(user.exp * 1000).toLocaleTimeString()}</li>
+              </ul>
+            </div>
           </div>
-        </div>
 
-        <div className="max-w-4xl mx-auto mt-8">
-          <section className="bg-white p-6 rounded-xl shadow-md">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-bold text-[#0d2a54] border-b-2 border-[#195b3d] pb-2">
-                Entidades
-              </h2>
-              {filtrosAtivos ? (
-                <button
-                  type="button"
-                  onClick={limparFiltros}
-                  className="px-4 py-1 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
-                >
-                  Limpar filtros
-                </button>
-              ) : null}
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Campus</label>
-                <select
-                  name="campus"
-                  value={filtros.campus}
-                  onChange={handleFiltroChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#195b3d] focus:border-[#195b3d] outline-none bg-white text-black"
-                >
-                  <option value="">Todos</option>
-                  {CAMPUS_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Departamento</label>
-                <select
-                  name="departamento"
-                  value={filtros.departamento}
-                  onChange={handleFiltroChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#195b3d] focus:border-[#195b3d] outline-none bg-white text-black"
-                >
-                  <option value="">Todos</option>
-                  {DEPARTAMENTO_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Entidade</label>
-                <select
-                  name="nome"
-                  value={filtros.nome}
-                  onChange={handleFiltroChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#195b3d] focus:border-[#195b3d] outline-none bg-white text-black"
-                >
-                  <option value="">Todas</option>
-                  {nomesEntidades.map((nome) => (
-                    <option key={nome} value={nome}>
-                      {nome}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
+          {/* Entidades */}
+          <section className="mt-8">
+            <h2 className="text-2xl font-bold text-[#0d2a54] mb-6 border-b-2 border-[#195b3d] pb-2">
+              Entidades
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {isLoading ? (
                 <p className="text-gray-500">Carregando...</p>
