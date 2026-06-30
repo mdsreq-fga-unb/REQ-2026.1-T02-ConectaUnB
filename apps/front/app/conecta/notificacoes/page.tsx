@@ -6,24 +6,26 @@ import { PreferenciasModal } from "@/components/notificacao/PreferenciasModal";
 import { NotificacaoCard } from "@/components/notificacao/NotificacaoCard";
 import { Settings } from "lucide-react";
 
+interface Notificacao {
+  id: string;
+  tipo: "ATUALIZACAO_PROJETO" | "NOVA_PUBLICACAO" | "PROCESSO_SELETIVO";
+  entidade?: {
+    nome: string;
+    linkLogo?: string;
+  };
+  idEntidade: string;
+}
+
 export default function NotificacoesPage() {
-  const { user, loading, logout } = useAuth();
+  const { user, loading } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
   
-
-  const [notificacoes, setNotificacoes] = useState<any[]>([]);
+  const [notificacoes, setNotificacoes] = useState<Notificacao[]>([]);
   const [loadingNotificacoes, setLoadingNotificacoes] = useState(false);
-
-  useEffect(() => {
-    if (user) {
-      buscarNotificacoes();
-    }
-  }, [user]);
 
   const buscarNotificacoes = async () => {
     setLoadingNotificacoes(true);
     try {
-
       const token = localStorage.getItem("conecta_unb_token");
       
       const response = await fetch('http://localhost:3000/notificacao', {
@@ -47,7 +49,13 @@ export default function NotificacoesPage() {
     }
   };
 
-  const formatarDadosNotificacao = (notificacao: any) => {
+  useEffect(() => {
+    if (user) {
+      buscarNotificacoes();
+    }
+  }, [user]);
+
+  const formatarDadosNotificacao = (notificacao: Notificacao) => {
     let tipoFormatado: "PROCESSO_SELETIVO" | "PROJETO" | "POSTAGEM" = "PROJETO";
     let textoFormatado = "Você tem uma nova notificação.";
 
@@ -124,7 +132,7 @@ export default function NotificacoesPage() {
                     nome={notif.entidade?.nome || "Sistema"} 
                     texto={textoFormatado}
                     fotoLogo={notif.entidade?.linkLogo} 
-                    idReferencia={notif.idEntidade} 
+                    idReferencia={Number(notif.idEntidade)} 
                     tipoNotificacao={tipoFormatado} 
                   />
                 );
