@@ -1,0 +1,33 @@
+# Reverse proxy do ConectaUnB na Akamai (Linode).
+# O Caddy emite/renova certificados Let's Encrypt automaticamente para os
+# dominios abaixo. Ajuste os hostnames conforme seu DNS.
+#
+# Requer variaveis de ambiente no servico `caddy` do docker-compose.prod.yml:
+#   - API_DOMAIN   (ex.: api.conectaunb.org)
+#   - APP_DOMAIN   (ex.: app.conectaunb.org)
+
+{
+	email {$ACME_EMAIL}
+}
+
+# API (backend NestJS)
+{$API_DOMAIN} {
+	reverse_proxy api:3000 {
+		header_up Host {host}
+		header_up X-Real-IP {remote_host}
+		header_up X-Forwarded-For {remote_host}
+		header_up X-Forwarded-Proto {scheme}
+	}
+	encode gzip zstd
+}
+
+# Frontend (Next.js)
+{$APP_DOMAIN} {
+	reverse_proxy front:3001 {
+		header_up Host {host}
+		header_up X-Real-IP {remote_host}
+		header_up X-Forwarded-For {remote_host}
+		header_up X-Forwarded-Proto {scheme}
+	}
+	encode gzip zstd
+}

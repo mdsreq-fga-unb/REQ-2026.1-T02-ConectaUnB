@@ -1,0 +1,94 @@
+# Stack de producao do ConectaUnB para a Akamai (Linode).
+# Uso (na VM):
+#   docker compose -f infra/docker/docker-compose.prod.yml pull
+#   docker compose -f infra/docker/docker-compose.prod.yml up -d
+#
+# Requer um arquivo .env na raiz com as variaveis listadas em .env.prod.example.
+# As imagens sao publicadas no GHCR pelo CI (ci-cd.yml) e referenciadas por tag.
+
+services:
+  caddy:
+    image: caddy:2-alpine
+    container_name: conecta_caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ../akamai/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    environment:
+      ACME_EMAIL: ${ACME_EMAIL}
+      API_DOMAIN: ${API_DOMAIN}
+      APP_DOMAIN: ${APP_DOMAIN}
+    depends_on:
+      - api
+      - front
+    networks:
+      - edge
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: conecta_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks:
+      - internal
+
+  api:
+    image: ghcr.io/${GHCR_OWNER:-mdsreq-fga-unb}/conectaunb-back:${IMAGE_TAG:-latest}
+    container_name: conecta_api
+    restart: unless-stopped
+    env_file:
+      - ../../.env
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/health >/dev/null 2>&1 || curl -fsS http://localhost:3000/health >/dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - edge
+      - internal
+
+  front:
+    image: ghcr.io/${GHCR_OWNER:-mdsreq-fga-unb}/conectaunb-front:${IMAGE_TAG:-latest}
+    container_name: conecta_front
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+    depends_on:
+      - api
+    networks:
+      - edge
+
+volumes:
+  pgdata:
+  caddy_data:
+  caddy_config:
+
+networks:
+  edge:
+  internal:
+    internal: true
