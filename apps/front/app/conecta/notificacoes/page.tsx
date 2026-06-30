@@ -4,6 +4,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useState, useEffect } from "react";
 import { PreferenciasModal } from "@/components/notificacao/PreferenciasModal";
 import { NotificacaoCard } from "@/components/notificacao/NotificacaoCard";
+import { Settings } from "lucide-react";
 
 export default function NotificacoesPage() {
   const { user, loading, logout } = useAuth();
@@ -98,11 +99,11 @@ export default function NotificacoesPage() {
               Notificações
             </h1>
             
-           <button 
+            <button 
               onClick={() => setIsModalOpen(true)}
               className="flex items-center gap-2 px-4 py-2 bg-[#006633] text-white font-medium rounded-full hover:bg-[#004d26] transition-colors"
             >
-               Preferências
+               <Settings className="w-5 h-5" /> Preferências
             </button>
           </div>
           
