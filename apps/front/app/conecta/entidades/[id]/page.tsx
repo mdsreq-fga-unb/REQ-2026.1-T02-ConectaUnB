@@ -469,8 +469,8 @@ useEffect(() => {
         <CriarProjetoModal
           isOpen={isCriarProjetoModalOpen}
           onClose={() => setIsCriarProjetoModalOpen(false)}
-          idEntidade={entidade.id}
-          onSuccess={recarregarProjetos}
+          entidades={[{ id: entidade.id, nome: entidade.nome }]}
+          onCreated={recarregarProjetos}
         />
       )}
       {entidade && (
