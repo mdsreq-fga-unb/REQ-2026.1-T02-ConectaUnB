@@ -15,12 +15,6 @@ const mockPerfil = {
   createdAt: new Date(),
 };
 
-const mockEntidade = {
-  id: 5,
-  nome: 'Projeto Teste Genérico',
-};
-
-
 const mockPerfilService = {
   findAll: jest.fn(),
   findOne: jest.fn(),
@@ -69,8 +63,8 @@ describe('PerfilController', () => {
   describe('findOne', () => {
     it('deve retornar um único perfil pelo ID', async () => {
       // ...
-      const result = await controller.findOne(1);
-      expect(service.findOne).toHaveBeenCalledWith(1);
+    await controller.findOne(1);
+    expect(service.findOne).toHaveBeenCalledWith(1);
     });
   });
 
