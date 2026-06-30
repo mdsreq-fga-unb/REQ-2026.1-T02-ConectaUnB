@@ -147,3 +147,13 @@ SWAGGER_ENABLED=true
 | `BCRYPT_SALT_ROUNDS` | Não | `10` | Número de rounds do bcrypt para hash de senha |
 | `CORS_ORIGIN` | Não | `*` | Origem permitida pelo CORS |
 | `SWAGGER_ENABLED` | Não | `false` | Habilita Swagger fora de development |
+
+## Deploy de produção (Akamai / Linode)
+
+O backend e o frontend são publicados juntos numa única VM da Akamai, em containers Docker orquestrados por `infra/docker/docker-compose.prod.yml`, com o Caddy como reverse proxy (HTTPS automático via Let's Encrypt).
+
+- **Deploy automático**: a cada `push` em `main`, o workflow `.github/workflows/ci-cd.yml` builda as imagens (`conectaunb-back` e `conectaunb-front`), publica no GHCR e dispara o restart na VM via SSH.
+- **Migrações**: aplicadas automaticamente no start do container `api` (`infra/akamai/back-entrypoint`).
+- **Passo a passo completo**: ver [`docs/deploy/akamai.md`](docs/deploy/akamai.md).
+
+Secrets do GitHub Actions necessários: `AKAMAI_HOST`, `AKAMAI_USER`, `AKAMAI_SSH_KEY`, `NEXT_PUBLIC_API_URL` (e `GHCR_PULL_TOKEN` opcional, se as imagens forem privadas).
