@@ -14,14 +14,6 @@ const mockPerfil = {
   createdAt: new Date(),
 };
 
-<<<<<<< HEAD
-=======
-const mockEntidade = {
-  id: 5,
-  nome: 'Projeto Teste Genérico',
-};
-
->>>>>>> 293ff79ed66dbd2dc3a90027fb4dbe771014cbce
 const mockPerfilService = {
   findAll: jest.fn(),
   findOne: jest.fn(),
