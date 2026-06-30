@@ -72,8 +72,14 @@ export function useAuth() {
     router.push("/conecta/feed");
   }, [router]);
 
+  const login = useCallback((token: string) => {
+    localStorage.setItem("conecta_unb_token", token);
+    clientCache = null;
+    window.dispatchEvent(new Event("auth_changed"));
+  }, []);
+
   const user = state.status === "authenticated" ? state.user : null;
   const loading = state.status === "loading";
 
-  return { user, loading, logout };
+  return { user, loading, logout, login };
 }
