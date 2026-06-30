@@ -1,7 +1,7 @@
 "use client";
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ButtonGreen } from '@/components/entidade/ButtonGreen';
+import { ButtonGreen } from '@/components/ButtonGreen';
 import { ProjetoCard } from '@/components/entidade/projetoCard';
 import { CreateEntidadeModal } from '@/components/entidade/CreateEntidadeModal';
 import { ManageMembersModal } from '@/components/entidade/ManageMembersModal';
