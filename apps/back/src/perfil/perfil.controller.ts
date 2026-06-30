@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Body, Patch, Param, Delete, Post, ParseIntPipe } from '@nestjs/common';
 import { PerfilService } from './perfil.service';
 import { UpdatePerfilDto } from './dto/update-perfil.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -14,14 +14,14 @@ export class PerfilController {
     return this.perfilService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.perfilService.findOne(+id);
+  @Get('seguindo/:id')
+  findSeguindo(@Param('id', ParseIntPipe) id: number) {
+    return this.perfilService.findSeguindo(id);
   }
 
-  @Get('seguindo/:id')
-  findSeguindo(@Param('id') id: string) {
-    return this.perfilService.findSeguindo(+id);
+  @Get(':id')
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.perfilService.findOne(id);
   }
 
   @ApiBearerAuth()
@@ -40,4 +40,14 @@ export class PerfilController {
     return this.perfilService.remove(id);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Post('seguir/:id')
+  seguir(
+    @Param('id') id: string,
+    @Request() req
+  ) {
+    const idUsuario = Number(req.user.id);
+    return this.perfilService.seguir(Number(id), idUsuario);
+  }
 }

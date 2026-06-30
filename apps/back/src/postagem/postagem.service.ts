@@ -34,11 +34,11 @@ export class PostagemService {
 
   }
 
-  findAll() {
+  async findAll() {
     return this.prisma.postagem.findMany();
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     return this.prisma.postagem.findUnique({
       where: { id },
     });
@@ -86,6 +86,8 @@ export class PostagemService {
   }
 
   private async validateUser(Userid: number, EntidadeId: number) {
+    
+    
     const user = await this.prisma.perfil.findUnique({
       where: { id: Userid },
     });
@@ -158,6 +160,12 @@ async getLikes(id: number, userId: number | null) {
       numeroCurtidas: numero,
       usuarioCurtiu: usuarioCurtiu,
     };
+  }
+
+  async findPostagensByEntidade(entidadeId: number) {
+    return this.prisma.postagem.findMany({
+      where: { idEntidade: entidadeId },
+    });
   }
 
 }

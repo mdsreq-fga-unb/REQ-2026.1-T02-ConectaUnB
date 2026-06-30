@@ -81,4 +81,35 @@ export class PerfilService {
   async create(data: Prisma.PerfilCreateInput): Promise<Perfil> {
     return this.prisma.perfil.create({ data });
   }
+
+  async seguir(idEntidade: number, idUsuario: number) {
+
+    const jaSeguindo = await this.prisma.seguindo.findFirst({
+      where: {
+        idPerfil: idUsuario,
+        idEntidade: idEntidade,
+      },
+    });
+
+    if (jaSeguindo) {
+      await this.prisma.seguindo.delete({
+        where: { 
+          idPerfil_idEntidade: {
+            idPerfil: idUsuario,
+            idEntidade: idEntidade,
+          }
+        },
+      });
+      return { message: 'Deixou de seguir a entidade.' };
+    } else {
+      await this.prisma.seguindo.create({
+        data: {
+          idPerfil: idUsuario,
+          idEntidade: idEntidade,
+        },
+      });
+      return { message: 'Seguiu a entidade com sucesso.' };
+    }
+  }
+
 }
