@@ -65,7 +65,7 @@ describe('PerfilController', () => {
 
   describe('findSeguindo', () => {
     it('deve retornar as entidades seguidas pelo perfil', async () => {
-      const result = await controller.findSeguindo(1); // Mande o número diretamente!
+      await controller.findSeguindo(1); // Mande o número diretamente!
       expect(service.findSeguindo).toHaveBeenCalledWith(1);
     });
   });
