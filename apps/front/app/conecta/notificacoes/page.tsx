@@ -9,6 +9,7 @@ import { Settings } from "lucide-react";
 interface Notificacao {
   id: string;
   tipo: "ATUALIZACAO_PROJETO" | "NOVA_PUBLICACAO" | "PROCESSO_SELETIVO";
+  referenciaId: number; 
   entidade?: {
     nome: string;
     linkLogo?: string;
@@ -22,6 +23,20 @@ export default function NotificacoesPage() {
   
   const [notificacoes, setNotificacoes] = useState<Notificacao[]>([]);
   const [loadingNotificacoes, setLoadingNotificacoes] = useState(false);
+
+  const marcarNotificacoesComoLidas = async () => {
+    try {
+      const token = localStorage.getItem("conecta_unb_token");
+      await fetch('http://localhost:3000/notificacao', {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${token}` 
+        }
+      });
+    } catch (error) {
+      console.error("Erro ao registrar última leitura:", error);
+    }
+  };
 
   const buscarNotificacoes = async () => {
     setLoadingNotificacoes(true);
@@ -42,6 +57,7 @@ export default function NotificacoesPage() {
 
       const data = await response.json();
       setNotificacoes(data);
+      marcarNotificacoesComoLidas();
     } catch (error) {
       console.error("Erro ao buscar notificações:", error);
     } finally {
@@ -132,7 +148,7 @@ export default function NotificacoesPage() {
                     nome={notif.entidade?.nome || "Sistema"} 
                     texto={textoFormatado}
                     fotoLogo={notif.entidade?.linkLogo} 
-                    idReferencia={Number(notif.idEntidade)} 
+                    idReferencia={notif.referenciaId} 
                     tipoNotificacao={tipoFormatado} 
                   />
                 );
