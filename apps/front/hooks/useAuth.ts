@@ -9,35 +9,30 @@ interface TokenPayload {
   exp: number;
 }
 
+function readToken(): TokenPayload | null {
+  if (typeof window === "undefined") return null;
+  const token = localStorage.getItem("conecta_unb_token");
+  if (!token) return null;
+  try {
+    const decoded = jwtDecode<TokenPayload>(token);
+    if (decoded.exp < Date.now() / 1000) {
+      localStorage.removeItem("conecta_unb_token");
+      return null;
+    }
+    return decoded;
+  } catch {
+    localStorage.removeItem("conecta_unb_token");
+    return null;
+  }
+}
+
 export function useAuth() {
-  const [user, setUser] = useState<TokenPayload | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<TokenPayload | null>(readToken);
+  const [loading, setLoading] = useState(() => typeof window === "undefined");
   const router = useRouter();
 
   const checkToken = useCallback(() => {
-    const token = localStorage.getItem("conecta_unb_token");
-
-    if (token) {
-      try {
-        const decoded = jwtDecode<TokenPayload>(token);
-        const tempoAtual = Date.now() / 1000;
-        
-        if (decoded.exp < tempoAtual) {
-          console.warn("Sessão expirada. Removendo token...");
-          localStorage.removeItem("conecta_unb_token");
-          setUser(null);
-        } else {
-          setUser(decoded);
-        }
-      } catch {
-        console.error("Token inválido ou corrompido.");
-        localStorage.removeItem("conecta_unb_token");
-        setUser(null);
-      }
-    } else {
-      setUser(null);
-    }
-    
+    setUser(readToken());
     setLoading(false);
   }, []);
 
