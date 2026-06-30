@@ -1,293 +1,205 @@
-import React, { useEffect, useState } from 'react';
-import { Trash2, X } from 'lucide-react';
-import { StatusProjeto } from '@/constants/options';
+import { useState } from 'react';
+import { X } from 'lucide-react';
 import { api } from '@/guards/api';
+import { StatusProjeto } from '@/constants/options'; 
+import { ImageUploadBox } from '@/components//ImageUploadBox';
 
-type EntidadeGerenciavel = {
-  id: number;
-  nome: string;
-};
-
-type ProjetoEditavel = {
-  id: number;
-  idEntidade?: number;
-  nome: string;
-  descricao?: string | null;
-  status?: string;
-  dataInicio?: string;
-  dataFim?: string | null;
-};
-
-type CreateProjetoModalProps = {
+type CriarProjetoModalProps = {
   isOpen: boolean;
-  entidades: EntidadeGerenciavel[];
-  projeto?: ProjetoEditavel | null;
   onClose: () => void;
-  onCreated: () => void;
+  idEntidade: number;
+  onSuccess: () => void;
 };
 
-function getErrorMessage(error: unknown) {
-  if (
-    typeof error === 'object' &&
-    error !== null &&
-    'response' in error &&
-    typeof error.response === 'object' &&
-    error.response !== null &&
-    'data' in error.response &&
-    typeof error.response.data === 'object' &&
-    error.response.data !== null &&
-    'message' in error.response.data
-  ) {
-    const message = error.response.data.message;
-    return Array.isArray(message) ? message.join('\n') : String(message);
-  }
-
-  return 'Não foi possível criar o projeto. Tente novamente.';
-}
-
-export function CreateProjetoModal({
-  isOpen,
-  entidades,
-  projeto,
-  onClose,
-  onCreated,
-}: CreateProjetoModalProps) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [formData, setFormData] = useState({
-    idEntidade: '',
-    nome: '',
-    descricao: '',
-    status: 'PLANEJAMENTO',
-    dataInicio: '',
-    dataFim: '',
-  });
-  const isEditing = Boolean(projeto);
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setErrorMessage('');
-    setFormData({
-      idEntidade: projeto?.idEntidade ? String(projeto.idEntidade) : '',
-      nome: projeto?.nome ?? '',
-      descricao: projeto?.descricao ?? '',
-      status: projeto?.status ?? 'PLANEJAMENTO',
-      dataInicio: projeto?.dataInicio ? projeto.dataInicio.slice(0, 10) : '',
-      dataFim: projeto?.dataFim ? projeto.dataFim.slice(0, 10) : '',
-    });
-  }, [isOpen, projeto]);
+export function CriarProjetoModal({ isOpen, onClose, idEntidade, onSuccess }: CriarProjetoModalProps) {
+  const [nome, setNome] = useState('');
+  const [descricao, setDescricao] = useState('');
+  const [foto, setFoto] = useState<File | null>(null);
+  const [status, setStatus] = useState('PLANEJAMENTO');
+  const [dataInicio, setDataInicio] = useState('');
+  const [dataFim, setDataFim] = useState('');
+  
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   if (!isOpen) return null;
 
-  const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
-  ) => {
-    const { name, value } = event.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  // Função simulada para o upload na Cloudflare
+  const uploadParaCloudflare = async (arquivo: File): Promise<string> => {
+    
+    console.log("Fazendo upload para a Cloudflare...", arquivo.name);
+    return "https://link-ficticio-da-cloudflare.com/imagem.png"; 
   };
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    setIsLoading(true);
-    setErrorMessage('');
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
 
     try {
-      const payload = {
-        nome: formData.nome,
-        descricao: formData.descricao || undefined,
-        status: formData.status,
-        dataInicio: formData.dataInicio,
-        dataFim: formData.dataFim || undefined,
-      };
+      let linkDaFotoGerado = '';
 
-      if (projeto) {
-        await api.patch(`/projeto/${projeto.id}`, payload);
-      } else {
-        await api.post('/projeto', {
-          ...payload,
-          idEntidade: Number(formData.idEntidade),
-        });
+      if (foto) {
+        linkDaFotoGerado = await uploadParaCloudflare(foto);
       }
 
-      onCreated();
+      const inicioIso = dataInicio ? new Date(`${dataInicio}T00:00:00`).toISOString() : undefined;
+      const fimIso = dataFim ? new Date(`${dataFim}T00:00:00`).toISOString() : undefined;
+
+      const payload = {
+        idEntidade: Number(idEntidade),
+        nome: nome,
+        descricao: descricao,
+        linkFoto: linkDaFotoGerado || undefined,
+        status: status,
+        dataInicio: inicioIso,
+        dataFim: fimIso,
+      };
+
+      await api.post('/projeto', payload);
+
+      setNome('');
+      setDescricao('');
+      setFoto(null);
+      setStatus('PLANEJAMENTO');
+      setDataInicio('');
+      setDataFim('');
+
+      onSuccess();
       onClose();
-      setFormData({
-        idEntidade: '',
-        nome: '',
-        descricao: '',
-        status: 'PLANEJAMENTO',
-        dataInicio: '',
-        dataFim: '',
-      });
-    } catch (error) {
-      console.error('Erro ao criar projeto:', error);
-      setErrorMessage(getErrorMessage(error));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      console.error('Erro ao criar projeto:', err);
+      const mensagemErro = Array.isArray(err.response?.data?.message) 
+        ? err.response.data.message[0] 
+        : err.response?.data?.message;
+        
+      setError(mensagemErro || 'Ocorreu um erro ao criar o projeto.');
     } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleDelete = async () => {
-    if (!projeto) return;
-
-    const shouldDelete = window.confirm('Excluir este projeto? Esta ação não pode ser desfeita.');
-    if (!shouldDelete) return;
-
-    setIsLoading(true);
-    setErrorMessage('');
-
-    try {
-      await api.delete(`/projeto/${projeto.id}`);
-      onCreated();
-      onClose();
-    } catch (error) {
-      console.error('Erro ao excluir projeto:', error);
-      setErrorMessage(getErrorMessage(error));
-    } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 overflow-y-auto">
-      <div className="w-full max-w-2xl bg-white rounded-xl shadow-xl my-8">
-        <div className="flex justify-between items-center p-6 border-b border-gray-100">
-          <h2 className="text-xl font-bold text-[#0d2a54]">
-            {isEditing ? 'Editar Projeto' : 'Criar Novo Projeto'}
-          </h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors" aria-label="Fechar">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+      <div className="w-full max-w-2xl rounded-lg bg-white shadow-xl max-h-[90vh] overflow-y-auto">
+        {/* Cabeçalho */}
+        <div className="flex items-center justify-between border-b border-gray-200 p-4 sticky top-0 bg-white z-10 rounded-t-lg">
+          <h2 className="text-xl font-bold text-[#003366]">Criar Novo Projeto</h2>
+          <button
+            onClick={onClose}
+            className="rounded-full p-1 text-gray-500 hover:bg-gray-100 transition-colors"
+          >
             <X size={24} />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-5">
-          {errorMessage ? (
-            <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-              {errorMessage}
-            </div>
-          ) : null}
-
-          {isEditing ? (
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Entidade responsável</label>
-              <div className="w-full px-4 py-2 border border-gray-200 rounded-md bg-gray-100 text-gray-700">
-                {entidades.find((entidade) => String(entidade.id) === formData.idEntidade)?.nome ?? 'Entidade vinculada'}
-              </div>
-            </div>
-          ) : (
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Entidade responsável *</label>
-              <select
-                name="idEntidade"
-                required
-                value={formData.idEntidade}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#195b3d] focus:border-[#195b3d] outline-none bg-white text-black"
-              >
-                <option value="">Selecione...</option>
-                {entidades.map((entidade) => (
-                  <option key={entidade.id} value={entidade.id}>
-                    {entidade.nome}
-                  </option>
-                ))}
-              </select>
+        {/* Formulário */}
+        <form onSubmit={handleSubmit} className="p-6">
+          {error && (
+            <div className="mb-4 rounded bg-red-50 p-3 text-sm text-red-600">
+              {error}
             </div>
           )}
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Nome do projeto *</label>
-            <input
-              type="text"
-              name="nome"
-              required
-              value={formData.nome}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#195b3d] focus:border-[#195b3d] outline-none text-black"
-              placeholder="Ex: Plataforma de divulgação científica"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
-            <textarea
-              name="descricao"
-              value={formData.descricao}
-              onChange={handleInputChange}
-              rows={3}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#195b3d] focus:border-[#195b3d] outline-none text-black"
-              placeholder="Descreva o objetivo do projeto..."
-            />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Status *</label>
-              <select
-                name="status"
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="md:col-span-2">
+              <label className="mb-1 block text-sm font-medium text-gray-700">
+                Nome do Projeto *
+              </label>
+              <input
+                type="text"
                 required
-                value={formData.status}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#195b3d] focus:border-[#195b3d] outline-none bg-white text-black"
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+                className="w-full rounded-md border border-gray-300 bg-white p-2 text-gray-900 placeholder-gray-400 focus:border-[#195b3d] focus:outline-none focus:ring-1 focus:ring-[#195b3d]"
+                placeholder="Ex: Sistema de Gerenciamento"
+              />
+            </div>
+
+            <div className="md:col-span-2">
+              <label className="mb-1 block text-sm font-medium text-gray-700">
+                Descrição
+              </label>
+              <textarea
+                rows={3}
+                value={descricao}
+                onChange={(e) => setDescricao(e.target.value)}
+                className="w-full rounded-md border border-gray-300 bg-white p-2 text-gray-900 placeholder-gray-400 focus:border-[#195b3d] focus:outline-none focus:ring-1 focus:ring-[#195b3d]"
+                placeholder="Descreva o projeto..."
+              />
+            </div>
+
+            <div className="md:col-span-2">
+              <ImageUploadBox 
+                id="foto-projeto" 
+                label="Capa do Projeto" 
+                file={foto} 
+                onChange={setFoto} 
+                imageClassName="object-cover" 
+              />
+            </div>
+
+            <div>
+              <label className="mb-1 block text-sm font-medium text-gray-700">
+                Status
+              </label>
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                className="w-full rounded-md border border-gray-300 bg-white p-2 text-gray-900 focus:border-[#195b3d] focus:outline-none focus:ring-1 focus:ring-[#195b3d]"
               >
-                {StatusProjeto.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
+                {StatusProjeto.map((opcao) => (
+                  <option key={opcao.value} value={opcao.value}>
+                    {opcao.label}
                   </option>
                 ))}
               </select>
             </div>
 
+            <div className="hidden md:block"></div>
+
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Início *</label>
+              <label className="mb-1 block text-sm font-medium text-gray-700">
+                Data de Início *
+              </label>
               <input
                 type="date"
-                name="dataInicio"
                 required
-                value={formData.dataInicio}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#195b3d] focus:border-[#195b3d] outline-none text-black"
+                value={dataInicio}
+                onChange={(e) => setDataInicio(e.target.value)}
+                className="w-full rounded-md border border-gray-300 bg-white p-2 text-gray-900 focus:border-[#195b3d] focus:outline-none focus:ring-1 focus:ring-[#195b3d]"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Fim</label>
+              <label className="mb-1 block text-sm font-medium text-gray-700">
+                Data de Fim
+              </label>
               <input
                 type="date"
-                name="dataFim"
-                value={formData.dataFim}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#195b3d] focus:border-[#195b3d] outline-none text-black"
+                value={dataFim}
+                onChange={(e) => setDataFim(e.target.value)}
+                className="w-full rounded-md border border-gray-300 bg-white p-2 text-gray-900 focus:border-[#195b3d] focus:outline-none focus:ring-1 focus:ring-[#195b3d]"
               />
             </div>
           </div>
 
-          <div className="flex justify-end gap-3 pt-5 border-t border-gray-100">
-            {isEditing ? (
-              <button
-                type="button"
-                onClick={handleDelete}
-                disabled={isLoading}
-                className="mr-auto inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-700 bg-red-50 rounded-md hover:bg-red-100 transition-colors disabled:opacity-50"
-              >
-                <Trash2 size={16} />
-                Excluir
-              </button>
-            ) : null}
+          <div className="mt-6 flex justify-end gap-3 border-t border-gray-200 pt-4">
             <button
               type="button"
               onClick={onClose}
-              className="px-6 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+              className="rounded-md px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+              disabled={loading}
             >
               Cancelar
             </button>
             <button
               type="submit"
-              disabled={isLoading || (!isEditing && entidades.length === 0)}
-              className="px-6 py-2 text-sm font-medium text-white bg-[#195b3d] rounded-md hover:bg-[#13472f] transition-colors disabled:opacity-50"
+              disabled={loading}
+              className="rounded-md bg-[#195b3d] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#12452c] disabled:opacity-50"
             >
-              {isLoading ? 'Salvando...' : isEditing ? 'Salvar Alterações' : 'Criar Projeto'}
+              {loading ? 'Salvando...' : 'Criar Projeto'}
             </button>
           </div>
         </form>

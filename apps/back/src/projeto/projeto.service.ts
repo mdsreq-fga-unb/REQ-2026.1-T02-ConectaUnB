@@ -24,12 +24,23 @@ export class ProjetoService {
   ) {
     await this.validateUser(idPerfilSolicitante, createProjetoDto.idEntidade);
 
+    const membro = await this.prisma.membro.findFirst({
+      where: {
+        idPerfil: idPerfilSolicitante,
+        idEntidade: createProjetoDto.idEntidade,
+      },
+    });
+
+    if (!membro) {
+      throw new NotFoundException('Membro não encontrado na entidade');
+    }
+
     const projeto = await this.prisma.projeto.create({
       data: {
         ...createProjetoDto,
         gerentes: {
           create: {
-            idMembro: idPerfilSolicitante,
+            idMembro: membro.id,
           },
         },
       },

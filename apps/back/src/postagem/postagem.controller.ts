@@ -23,8 +23,8 @@ export class PostagemController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Request() req, @Body() createPostagemDto: CreatePostagemDto) {
-    const userId = req.user.id;
+  create(@Request()req, @Body() createPostagemDto: CreatePostagemDto) {
+    const userId = Number(req.user.id);
     return this.postagemService.create(createPostagemDto, userId);
   }
 
@@ -38,6 +38,11 @@ export class PostagemController {
     return this.postagemService.findOne(+id);
   }
 
+  @Get('/entidade/:entidadeId')
+  findPostagensByEntidade(@Param('entidadeId') entidadeId: string) {
+    return this.postagemService.findPostagensByEntidade(+entidadeId);
+  }
+
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
@@ -46,7 +51,7 @@ export class PostagemController {
     @Body() updatePostagemDto: UpdatePostagemDto,
     @Request() req,
   ) {
-    const userId = req.user.id;
+    const userId = Number(req.user.id);
     return this.postagemService.update(+id, updatePostagemDto, userId);
   }
 
@@ -54,7 +59,7 @@ export class PostagemController {
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string, @Request() req) {
-    const userId = req.user.id;
+    const userId = Number(req.user.id);
     return this.postagemService.remove(+id, userId);
   }
 
@@ -62,7 +67,7 @@ export class PostagemController {
   @UseGuards(JwtAuthGuard)
   @Post(':id/like')
   like(@Param('id') id: string, @Request() req) {
-    const userId = req.user.id;
+    const userId = Number(req.user.id);
     return this.postagemService.like(+id, userId);
   }
 
@@ -70,14 +75,14 @@ export class PostagemController {
   @UseGuards(JwtAuthGuard)
   @Delete(':id/like')
   Dislike(@Param('id') id: string, @Request() req) {
-    const userId = req.user.id;
+    const userId = Number(req.user.id);
     return this.postagemService.dislike(+id, userId);
   }
 
   @Get(':id/likes')
   @UseGuards(OptionalJwtAuthGuard)
   getLikes(@Param('id') id: string, @Request() req) {
-    const userId = req.user.id || null;
+    const userId = Number(req.user.id) || null;
     return this.postagemService.getLikes(+id, userId);
   }
 }

@@ -9,7 +9,7 @@ export const ButtonGreen: React.FC<ButtonGreenProps> = ({ text = "", ...props })
   return (
     <button 
       {...props}
-      className={`flex items-center gap-2 bg-[#195b3d] hover:bg-[#13472f] text-white px-6 py-3 rounded-md font-medium transition-colors ${props.className || ''}`}
+      className={`flex items-center gap-2 bg-[#195b3d] hover:bg-[#13472f] text-white px-6 py-2 rounded-md font-medium transition-colors ${props.className || ''}`}
     >
       <Plus size={20} />
       {text}
