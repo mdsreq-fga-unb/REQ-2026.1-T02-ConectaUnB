@@ -8,7 +8,7 @@ export function NotificacaoCard({ nome, texto }: NotificacaoCardProps) {
     <div className="flex items-start gap-4 p-4 border border-[#006633] rounded-xl bg-white w-full shadow-sm">
       
       {/* Círculo cinza simulando a foto/logo da entidade */}
-      <div className="w-14 h-14 rounded-full bg-gray-300 flex-shrink-0" />
+      <div className="w-14 h-14 rounded-full bg-gray-300 shrink-0" />
       
       {/* Textos: Nome do Projeto e o Conteúdo da Notificação */}
       <div className="flex flex-col">
