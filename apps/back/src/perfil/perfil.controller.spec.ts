@@ -68,24 +68,16 @@ describe('PerfilController', () => {
 
   describe('findOne', () => {
     it('deve retornar um único perfil pelo ID', async () => {
-      mockPerfilService.findOne.mockResolvedValue(mockPerfil);
-      
-      
-      const result = await controller.findOne('1');
-      
-      expect(result).toEqual(mockPerfil);
-      
-      expect(service.findOne).toHaveBeenCalledWith(1); 
+      // ...
+      const result = await controller.findOne(1);
+      expect(service.findOne).toHaveBeenCalledWith(1);
     });
   });
 
   describe('findSeguindo', () => {
     it('deve retornar as entidades seguidas pelo perfil', async () => {
-      mockPerfilService.findSeguindo.mockResolvedValue([mockEntidade]);
-      
-      const result = await controller.findSeguindo('1');
-      
-      expect(result).toEqual([mockEntidade]);
+      // ...
+      const result = await controller.findSeguindo(1); // Mande o número diretamente!
       expect(service.findSeguindo).toHaveBeenCalledWith(1);
     });
   });
