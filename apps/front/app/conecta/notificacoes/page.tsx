@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import { PreferenciasModal } from "@/components/notificacao/PreferenciasModal";
 import { NotificacaoCard } from "@/components/notificacao/NotificacaoCard";
 import { Settings } from "lucide-react";
+import { ProjetoModal, ProjetoDetalhe } from "@/components/ProjetoModal";
+import { PostagemModal, PostagemDetalhe } from "@/components/PostagemModal";
 
 interface Notificacao {
   id: string;
@@ -23,6 +25,10 @@ export default function NotificacoesPage() {
   
   const [notificacoes, setNotificacoes] = useState<Notificacao[]>([]);
   const [loadingNotificacoes, setLoadingNotificacoes] = useState(false);
+  const [isProjetoModalOpen, setIsProjetoModalOpen] = useState(false);
+  const [projetoSelecionado, setProjetoSelecionado] = useState<ProjetoDetalhe | null>(null);
+  const [isPostagemModalOpen, setIsPostagemModalOpen] = useState(false);
+  const [postagemSelecionada, setPostagemSelecionada] = useState<PostagemDetalhe | null>(null);
 
   const marcarNotificacoesComoLidas = async () => {
     try {
@@ -62,6 +68,47 @@ export default function NotificacoesPage() {
       console.error("Erro ao buscar notificações:", error);
     } finally {
       setLoadingNotificacoes(false);
+    }
+  };
+
+  const handleCardClick = async (id: number, tipo: "PROJETO" | "POSTAGEM" | "PROCESSO_SELETIVO") => {
+    const token = localStorage.getItem("conecta_unb_token");
+    
+    try {
+      if (tipo === "PROJETO") {
+        const response = await fetch(`http://localhost:3000/projeto/${id}`, {
+          method: 'GET',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setProjetoSelecionado(data);
+          setIsProjetoModalOpen(true);
+        }
+      } else if (tipo === "POSTAGEM") {
+        const response = await fetch(`http://localhost:3000/postagem/${id}`, {
+          method: 'GET',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setPostagemSelecionada(data);
+          setIsPostagemModalOpen(true);
+        }
+      } else if (tipo === "PROCESSO_SELETIVO") {
+
+        const response = await fetch(`http://localhost:3000/processo-seletivo/${id}`, {
+          method: 'GET',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (response.ok) {
+          const data = await response.json();
+
+          alert(`Dados do Processo Seletivo carregados: ${data.titulo || id}`);
+        }
+      }
+    } catch (error) {
+      console.error("Erro ao carregar detalhes para o modal:", error);
     }
   };
 
@@ -150,6 +197,7 @@ export default function NotificacoesPage() {
                     fotoLogo={notif.entidade?.linkLogo} 
                     idReferencia={notif.referenciaId} 
                     tipoNotificacao={tipoFormatado} 
+                    onClick={handleCardClick}
                   />
                 );
               })
@@ -161,6 +209,18 @@ export default function NotificacoesPage() {
       <PreferenciasModal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
+      />
+
+      <ProjetoModal 
+        isOpen={isProjetoModalOpen} 
+        onClose={() => setIsProjetoModalOpen(false)} 
+        projeto={projetoSelecionado} 
+      />
+
+      <PostagemModal 
+        isOpen={isPostagemModalOpen} 
+        onClose={() => setIsPostagemModalOpen(false)} 
+        postagem={postagemSelecionada} 
       />
 
     </div>
