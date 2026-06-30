@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useSyncExternalStore } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 
@@ -9,55 +9,71 @@ interface TokenPayload {
   exp: number;
 }
 
-function readToken(): TokenPayload | null {
-  if (typeof window === "undefined") return null;
+type AuthState =
+  | { status: "loading" }
+  | { status: "unauthenticated" }
+  | { status: "authenticated"; user: TokenPayload };
+
+const LOADING_STATE: AuthState = { status: "loading" };
+const UNAUTH_STATE: AuthState = { status: "unauthenticated" };
+
+let clientCache: AuthState | null = null;
+
+function computeAuthState(): AuthState {
   const token = localStorage.getItem("conecta_unb_token");
-  if (!token) return null;
+  if (!token) return UNAUTH_STATE;
   try {
     const decoded = jwtDecode<TokenPayload>(token);
     if (decoded.exp < Date.now() / 1000) {
       localStorage.removeItem("conecta_unb_token");
-      return null;
+      return UNAUTH_STATE;
     }
-    return decoded;
+    return { status: "authenticated", user: decoded };
   } catch {
     localStorage.removeItem("conecta_unb_token");
-    return null;
+    return UNAUTH_STATE;
   }
 }
 
+function getSnapshot(): AuthState {
+  if (clientCache === null) {
+    clientCache = computeAuthState();
+  }
+  return clientCache;
+}
+
+function getServerSnapshot(): AuthState {
+  return LOADING_STATE;
+}
+
+function subscribe(callback: () => void): () => void {
+  const handler = () => {
+    clientCache = null;
+    callback();
+  };
+
+  window.addEventListener("auth_changed", handler);
+  window.addEventListener("storage", handler);
+
+  return () => {
+    window.removeEventListener("auth_changed", handler);
+    window.removeEventListener("storage", handler);
+  };
+}
+
 export function useAuth() {
-  const [user, setUser] = useState<TokenPayload | null>(readToken);
-  const [loading, setLoading] = useState(() => typeof window === "undefined");
   const router = useRouter();
-
-  const checkToken = useCallback(() => {
-    setUser(readToken());
-    setLoading(false);
-  }, []);
-
-  useEffect(() => {
-
-    checkToken();
-
-    window.addEventListener("auth_changed", checkToken);
-    
-    window.addEventListener("storage", checkToken);
-
-    return () => {
-      window.removeEventListener("auth_changed", checkToken);
-      window.removeEventListener("storage", checkToken);
-    };
-  }, [checkToken]);
+  const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   const logout = useCallback(() => {
     localStorage.removeItem("conecta_unb_token");
-    setUser(null);
-    
-    window.dispatchEvent(new Event("auth_changed")); 
-    
+    clientCache = null;
+    window.dispatchEvent(new Event("auth_changed"));
     router.push("/conecta/feed");
   }, [router]);
+
+  const user = state.status === "authenticated" ? state.user : null;
+  const loading = state.status === "loading";
 
   return { user, loading, logout };
 }
