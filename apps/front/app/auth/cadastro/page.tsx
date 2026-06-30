@@ -15,7 +15,7 @@ export default function CadastroPage() {
 
   const router = useRouter();
 
-  const { user } = useAuth();
+  const { user, login } = useAuth();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -37,7 +37,7 @@ export default function CadastroPage() {
 
   useEffect(() => {
     if (user) {
-      router.push("/");
+      router.push("/conecta/feed");
     }
   }, [user, router]);
   
@@ -126,17 +126,26 @@ export default function CadastroPage() {
     const { confirmacaoSenha, ...dadosLimpos } = formData;
 
     const payloadFinal: Record<string, unknown> = { ...dadosLimpos };
-    if (payloadFinal.cargo === "DISCENTE") {
-      payloadFinal.matricula = Number(payloadFinal.matricula);
-    } else {
-      delete payloadFinal.matricula;
-    }
 
     try {
       const response = await api.post("/auth/register", payloadFinal);
       console.log("Sucesso!", response.data);
       setSubmitSuccess(true);
-      router.push("/login");
+
+      const responseLogin = await api.post("/auth/login", {
+        email: formData.email.trim(),
+        senha: formData.senha,
+      });
+
+      const token = responseLogin.data?.access_token;
+
+      if (token) {
+        login(token);
+        api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      }
+
+      router.refresh();
+      router.push("/conecta/feed");
     } catch (error: unknown) {
       const err = error as { response?: { data?: { message?: string | string[] }; status?: number } };
       const rawMsg = Array.isArray(err.response?.data?.message)
