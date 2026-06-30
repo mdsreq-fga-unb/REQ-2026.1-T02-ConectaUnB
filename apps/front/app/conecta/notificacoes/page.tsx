@@ -1,10 +1,13 @@
 "use client";
 
 import { useAuth } from "@/hooks/useAuth"; 
+import { useState } from "react";
+import { PreferenciasModal } from "@/components/notificacao/PreferenciasModal";
 import { NotificacaoCard } from "@/components/notificacao/NotificacaoCard";
 
 export default function NotificacoesPage() {
   const { user, loading, logout } = useAuth();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   if (loading) {
     return (
@@ -39,8 +42,11 @@ export default function NotificacoesPage() {
               Notificações
             </h1>
             
-            <button className="flex items-center gap-2 px-4 py-2 bg-[#006633] text-white font-medium rounded-full hover:bg-[#004d26] transition-colors">
-              ⚙️ Preferências
+           <button 
+              onClick={() => setIsModalOpen(true)} // AÇÃO AO CLICAR
+              className="flex items-center gap-2 px-4 py-2 bg-[#006633] text-white font-medium rounded-full hover:bg-[#004d26] transition-colors"
+            >
+               Preferências
             </button>
           </div>
           
@@ -59,10 +65,15 @@ export default function NotificacoesPage() {
               nome="Projeto 03" 
               texto="O processo seletivo foi encerrado." 
             />
-          </div>
-
+        </div>
         </div>
       </main>
+
+      <PreferenciasModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
+
     </div>
   );
 }
