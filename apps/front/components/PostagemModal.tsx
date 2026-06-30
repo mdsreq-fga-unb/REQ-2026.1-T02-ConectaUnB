@@ -83,6 +83,7 @@ export function PostagemModal({
       
       setLinkFotoAtual(linkDaFotoGerado);
       setIsEditing(false);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error('Erro ao editar postagem:', err);
       const mensagemErro = Array.isArray(err.response?.data?.message) 

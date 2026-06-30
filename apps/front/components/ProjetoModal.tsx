@@ -97,6 +97,7 @@ export function ProjetoModal({ isOpen, onClose, projeto, onSuccess, startEditing
       
       setLinkFotoAtual(linkDaFotoGerado);
       setIsEditing(false);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       const mensagemErro = Array.isArray(err.response?.data?.message) 
         ? err.response.data.message[0] 

@@ -53,6 +53,7 @@ export function CriarPostagemModal({ isOpen, onClose, idEntidade, onSuccess }: C
 
       onSuccess();
       onClose();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error('Erro ao criar postagem:', err);
       const mensagemErro = Array.isArray(err.response?.data?.message) 

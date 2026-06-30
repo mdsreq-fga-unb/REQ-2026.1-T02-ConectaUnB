@@ -67,6 +67,7 @@ export function CriarProjetoModal({ isOpen, onClose, idEntidade, onSuccess }: Cr
 
       onSuccess();
       onClose();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error('Erro ao criar projeto:', err);
       const mensagemErro = Array.isArray(err.response?.data?.message) 

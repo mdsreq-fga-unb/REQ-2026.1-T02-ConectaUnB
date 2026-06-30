@@ -173,6 +173,7 @@ useEffect(() => {
           try {
             const minhasResponse = await api.get('/entidade/minhas');
             
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const minhaEntidade = minhasResponse.data.find((e: any) => e.id === entidadeId);
             
             if (minhaEntidade && minhaEntidade.vinculo) {
