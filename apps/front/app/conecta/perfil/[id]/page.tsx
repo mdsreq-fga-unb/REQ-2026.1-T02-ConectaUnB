@@ -2,12 +2,13 @@
 
 import { api } from "@/guards/api";
 import { SeguindoCard } from "@/components/perfil/SeguindoCard";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { CAMPUS_OPTIONS, CURSO_OPTIONS, DEPARTAMENTO_OPTIONS } from "@/constants/options";
 import {ConfirmModal} from "@/components/ConfirmModal";
+import { EditablePhoto } from "@/components/EditablePhoto";
 
 export default function PerfilPage() {
   const { user, logout } = useAuth();
@@ -26,6 +27,8 @@ export default function PerfilPage() {
   >([]);
 
   const [isEditing, setIsEditing] = useState(false);
+  const [fotoUrl, setFotoUrl] = useState<string>("");
+  const fotoFileRef = useRef<File | null>(null);
   const [formData, setFormData] = useState({
     name: "",
     matricula: "",
@@ -38,6 +41,7 @@ export default function PerfilPage() {
     try {
       const resPerfil = await api.get(`/perfil/${profileId}`);
       setFormData(resPerfil.data);
+      setFotoUrl(resPerfil.data?.fotoUrl ?? "");
       const resSeguindo = await api.get(`/perfil/seguindo/${profileId}`);
       setProjetosSeguidos(resSeguindo.data);
     } catch (error: unknown) {
@@ -103,9 +107,24 @@ export default function PerfilPage() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-8 bg-white">
             
             {/* foto */}
-            <div className="w-48 h-48 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 font-medium text-lg border border-gray-300 flex-shrink-0">
-              Foto
-            </div>
+            <EditablePhoto
+              src={fotoUrl}
+              alt="Foto de perfil"
+              variant="badge"
+              editable={isOwner && isEditing}
+              onFileSelected={(file) => {
+                fotoFileRef.current = file;
+                toast("Foto selecionada", {
+                  description: "A integração com o Cloudflare R2 está em breve.",
+                });
+              }}
+              className="w-48 h-48 rounded-full border border-gray-300 flex-shrink-0"
+              fallback={
+                <div className="flex h-full w-full items-center justify-center bg-gray-200 text-gray-500 font-medium text-lg">
+                  Foto
+                </div>
+              }
+            />
 
             {/* dados perfil */}
             <div className="flex-1 w-full space-y-4 max-w-md">
