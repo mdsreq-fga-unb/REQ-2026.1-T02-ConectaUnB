@@ -9,7 +9,7 @@ nav:
 
   - Cronograma: cronograma/cronograma.md
 
-  - Reuniões:
+  - Reuniões grupo:
       - Reunião 1: reunioes/reuniao1.md
       - Reunião 2: reunioes/reuniao2.md
       - Reunião 3: reunioes/reuniao3.md
@@ -27,7 +27,6 @@ nav:
       - "Intervenção social": visaoDeProdutoProjeto/intervencaoSocial.md
       - "Estratégias de Engenharia de Software": visaoDeProdutoProjeto/estrategias.md
       - "Engenharia de Requisitos": visaoDeProdutoProjeto/engenhariaDeRequisitos.md
-      - "Cronograma": visaoDeProdutoProjeto/cronograma.md
       - "Interação entre equipe e cliente": visaoDeProdutoProjeto/interacao.md
       # - "Requisitos de Software": visaoDeProdutoProjeto/requisitosDeSoftware.md
       - "DoR e Dod": visaoDeProdutoProjeto/DoReDod.md
@@ -39,8 +38,6 @@ nav:
   - Requisitos:
       - "Requisitos Funcionais": requisitos/requisitosFuncionais.md
       - "Requisitos Não Funcionais": requisitos/requisitosNaoFuncionais.md
-      - "Representação (Telas)": requisitos/representacao.md
-      - "Matriz de Rastreabilidade": requisitos/matrizRastreabilidade.md
       - "Priorização de Requisitos": requisitos/priorizacao.md
       - "Backlog do Produto": requisitos/backlog.md
 
