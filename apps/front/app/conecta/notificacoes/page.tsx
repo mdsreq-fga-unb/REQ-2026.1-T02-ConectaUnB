@@ -1,14 +1,86 @@
 "use client";
 
 import { useAuth } from "@/hooks/useAuth"; 
+import { useState, useEffect } from "react";
+import { PreferenciasModal } from "@/components/notificacao/PreferenciasModal";
+import { NotificacaoCard } from "@/components/notificacao/NotificacaoCard";
+import { Settings } from "lucide-react";
 
-export default function HomePage() {
-  const { user, loading, logout } = useAuth();
+interface Notificacao {
+  id: string;
+  tipo: "ATUALIZACAO_PROJETO" | "NOVA_PUBLICACAO" | "PROCESSO_SELETIVO";
+  entidade?: {
+    nome: string;
+    linkLogo?: string;
+  };
+  idEntidade: string;
+}
+
+export default function NotificacoesPage() {
+  const { user, loading } = useAuth();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  const [notificacoes, setNotificacoes] = useState<Notificacao[]>([]);
+  const [loadingNotificacoes, setLoadingNotificacoes] = useState(false);
+
+  const buscarNotificacoes = async () => {
+    setLoadingNotificacoes(true);
+    try {
+      const token = localStorage.getItem("conecta_unb_token");
+      
+      const response = await fetch('http://localhost:3000/notificacao', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` 
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Falha ao buscar notificações');
+      }
+
+      const data = await response.json();
+      setNotificacoes(data);
+    } catch (error) {
+      console.error("Erro ao buscar notificações:", error);
+    } finally {
+      setLoadingNotificacoes(false);
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      buscarNotificacoes();
+    }
+  }, [user]);
+
+  const formatarDadosNotificacao = (notificacao: Notificacao) => {
+    let tipoFormatado: "PROCESSO_SELETIVO" | "PROJETO" | "POSTAGEM" = "PROJETO";
+    let textoFormatado = "Você tem uma nova notificação.";
+
+    switch (notificacao.tipo) {
+      case "ATUALIZACAO_PROJETO":
+        tipoFormatado = "PROJETO";
+        textoFormatado = "Você tem uma nova atualização pendente neste projeto.";
+        break;
+      case "NOVA_PUBLICACAO":
+        tipoFormatado = "POSTAGEM";
+        textoFormatado = "Nova publicação adicionada ao feed da entidade.";
+        break;
+      case "PROCESSO_SELETIVO":
+        tipoFormatado = "PROCESSO_SELETIVO";
+        textoFormatado = "Um novo processo seletivo foi aberto ou atualizado!";
+        break;
+    }
+
+    return { tipoFormatado, textoFormatado };
+  };
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p>Carregando perfil...</p>
+        <p>A carregar notificações...</p>
       </div>
     );
   }
@@ -16,8 +88,8 @@ export default function HomePage() {
   if (!user) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center space-y-4 bg-gray-50 text-[#1D1D1D]">
-        <h1 className="text-2xl text-red-600 font-bold">Não Logado</h1>
-        <p>Faça o Login - NOTIFICAÇÕES</p>
+        <h1 className="text-2xl text-red-600 font-bold">Não tem sessão iniciada</h1>
+        <p>Inicie sessão para ver as suas Notificações</p>
         <a href="/auth/login" className="px-4 py-2 bg-[#003366] text-white rounded-full">
           Ir para o Login
         </a>
@@ -26,37 +98,55 @@ export default function HomePage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50 text-[#1D1D1D]">
-      <main className="flex-1 p-8">
-        <div className="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-md">
+    <div className="min-h-screen flex bg-white text-[#1D1D1D]">
+      <main className="flex-1 p-8 sm:p-12 flex justify-center">
+        <div className="w-full max-w-4xl">
           
-          <h1 className="text-3xl font-bold text-[#003366] mb-2">
-            Painel do ConectaUnB
-          </h1>
-          
-          {/* Acessando os dados extraídos do Token */}
-          <p className="text-gray-600 mb-6">
-            Logado como: <span className="font-semibold text-green-700">{user.email}</span>
-          </p>
-
-          <div className="p-4 border border-gray-200 rounded-lg mb-8">
-            <h2 className="font-semibold mb-2">Seus Dados de Sessão:</h2>
-            <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
-              <li><strong>ID no Banco:</strong> {user.sub}</li>
-              <li><strong>Sessão expira em:</strong> {new Date(user.exp * 1000).toLocaleTimeString()}</li>
-            </ul>
+          <div className="flex items-center justify-between mb-2">
+            <h1 className="text-[#003366] font-bold text-xl tracking-wide">
+              Notificações
+            </h1>
+            
+            <button 
+              onClick={() => setIsModalOpen(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-[#006633] text-white font-medium rounded-full hover:bg-[#004d26] transition-colors"
+            >
+               <Settings className="w-5 h-5" /> Preferências
+            </button>
           </div>
+          
+          <hr className="border-[#006633] border-t-2 mb-6" />
 
-          {/* Usando a função de logout do Hook */}
-          <button
-            onClick={logout}
-            className="px-6 py-2 bg-red-600 text-white font-semibold rounded-full hover:bg-red-700 transition-colors"
-          >
-            Sair da Conta
-          </button>
-
+          <div className="flex flex-col gap-4">
+            {loadingNotificacoes ? (
+              <p className="text-gray-500 text-center py-4">A procurar as suas notificações mais recentes...</p>
+            ) : notificacoes.length === 0 ? (
+              <p className="text-gray-500 text-center py-4">Ainda não tem nenhuma notificação.</p>
+            ) : (
+              notificacoes.map((notif) => {
+                const { tipoFormatado, textoFormatado } = formatarDadosNotificacao(notif);
+                
+                return (
+                  <NotificacaoCard 
+                    key={notif.id}
+                    nome={notif.entidade?.nome || "Sistema"} 
+                    texto={textoFormatado}
+                    fotoLogo={notif.entidade?.linkLogo} 
+                    idReferencia={Number(notif.idEntidade)} 
+                    tipoNotificacao={tipoFormatado} 
+                  />
+                );
+              })
+            )}
+          </div>
         </div>
       </main>
+
+      <PreferenciasModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
+
     </div>
   );
 }
