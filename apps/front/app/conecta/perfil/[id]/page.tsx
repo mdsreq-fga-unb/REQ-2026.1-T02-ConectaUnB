@@ -29,6 +29,7 @@ export default function PerfilPage() {
   const [formData, setFormData] = useState({
     name: "",
     matricula: "",
+    email: "",
     campus: "",
     curso: "",
     departamento: "",
@@ -103,7 +104,7 @@ export default function PerfilPage() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-8 bg-white">
             
             {/* foto */}
-            <div className="w-48 h-48 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 font-medium text-lg border border-gray-300 flex-shrink-0">
+            <div className="w-48 h-48 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 font-medium text-lg border border-gray-300 shrink-0">
               Foto
             </div>
 
@@ -126,6 +127,16 @@ export default function PerfilPage() {
                 onChange={handleChange}
                 disabled={!isEditing}
                 placeholder="Matrícula"
+                className="w-full px-5 py-2.5 bg-transparent border border-[#006633] rounded-full text-[#1D1D1D] font-medium focus:outline-none disabled:bg-gray-50 disabled:text-gray-500 transition-colors"
+              />
+
+              <input
+                type="text"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                disabled={!isEditing}
+                placeholder="Email"
                 className="w-full px-5 py-2.5 bg-transparent border border-[#006633] rounded-full text-[#1D1D1D] font-medium focus:outline-none disabled:bg-gray-50 disabled:text-gray-500 transition-colors"
               />
 
@@ -193,7 +204,7 @@ export default function PerfilPage() {
               </div>
             </div>
 
-            <div className="flex flex-col justify-start gap-4 w-full md:w-52 flex-shrink-0 min-h-[160px]">
+            <div className="flex flex-col justify-start gap-4 w-full md:w-52 shrink-0 min-h-40">
               {isOwner && (
                 isEditing ? (
                   <>
