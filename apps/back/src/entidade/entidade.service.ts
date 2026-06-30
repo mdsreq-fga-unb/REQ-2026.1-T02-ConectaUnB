@@ -17,7 +17,7 @@ export class EntidadeService {
 
   create(createEntidadeDto: CreateEntidadeDto, idCriador: number) {
     const { linkLogo, linkBanner, ...rest } = createEntidadeDto;
-    
+
     return this.prisma.entidade.create({
       data: {
         ...rest,
@@ -317,7 +317,10 @@ export class EntidadeService {
       );
     }
 
-    if (alvo.classificacao === ClassificacaoMembro.GESTOR && updateMembroDto.classificacao !== ClassificacaoMembro.GESTOR) {
+    if (
+      alvo.classificacao === ClassificacaoMembro.GESTOR &&
+      updateMembroDto.classificacao !== ClassificacaoMembro.GESTOR
+    ) {
       const totalGestores = await this.prisma.membro.count({
         where: {
           idEntidade,

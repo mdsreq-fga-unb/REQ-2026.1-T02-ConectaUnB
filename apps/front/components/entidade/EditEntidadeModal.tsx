@@ -19,9 +19,15 @@ type EditEntidadeFormProps = {
   onDeleted: () => void;
 };
 
+type EntidadeResumo = {
+  id: number;
+  nome: string;
+  vinculo?: { classificacao?: string };
+};
+
 type EditEntidadeModalProps = {
   isOpen: boolean;
-  entidade: any | null;
+  entidade: EntidadeResumo | null;
   onClose: () => void;
   onChanged: () => void;
 };
@@ -63,7 +69,7 @@ export function EditEntidadeForm({
       });
       toast.success('Mudanças salvas com sucesso!');
       onSuccess();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Erro ao editar entidade:', error);
       toast.error('Erro ao salvar. Verifique os dados e tente novamente.');
     } finally {
@@ -179,7 +185,13 @@ export function EditEntidadeForm({
 }
 
 export function EditEntidadeModal({ isOpen, entidade, onClose, onChanged }: EditEntidadeModalProps) {
-  const [detalhe, setDetalhe] = useState<any>(null);
+  const [detalhe, setDetalhe] = useState<{
+    nome?: string;
+    descricao?: string;
+    classificacao?: string;
+    campus?: string;
+    departamento?: string;
+  } | null>(null);
 
   const papel = entidade?.vinculo?.classificacao;
   const isGestor = papel === 'GESTOR';

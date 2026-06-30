@@ -1,4 +1,4 @@
-import { IsEmail, IsEnum, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export enum PapelProjeto {
@@ -14,7 +14,6 @@ export class AddMembroProjetoDto {
   @IsEmail()
   @IsNotEmpty()
   email!: string;
-
 
   @ApiProperty({
     enum: PapelProjeto,

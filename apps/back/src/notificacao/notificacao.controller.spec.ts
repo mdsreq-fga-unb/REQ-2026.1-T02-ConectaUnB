@@ -41,7 +41,12 @@ describe('NotificacaoController', () => {
 
   describe('create', () => {
     it('deve chamar notificacaoService.create com o DTO recebido', async () => {
-      const dto = { idEntidade: 1, tipo: 'PROCESSO_SELETIVO', mensagem: 'msg', referenciaId: 1 } as any;
+      const dto = {
+        idEntidade: 1,
+        tipo: 'PROCESSO_SELETIVO',
+        mensagem: 'msg',
+        referenciaId: 1,
+      } as any;
       await controller.create(dto);
       expect(service.create).toHaveBeenCalledWith(dto);
     });

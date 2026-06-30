@@ -6,7 +6,6 @@ import { TipoNotificacao } from '@prisma/client';
 
 describe('ProcessoSeletivoService', () => {
   let service: ProcessoSeletivoService;
-  let prisma: PrismaService;
 
   const mockPrisma = {
     processoSeletivo: {
@@ -33,7 +32,6 @@ describe('ProcessoSeletivoService', () => {
     }).compile();
 
     service = module.get<ProcessoSeletivoService>(ProcessoSeletivoService);
-    prisma = module.get<PrismaService>(PrismaService);
   });
 
   afterEach(() => {
@@ -44,7 +42,7 @@ describe('ProcessoSeletivoService', () => {
     it('deve criar um processo seletivo e disparar notificação', async () => {
       // Isola a validação
       jest.spyOn(service as any, 'validateUser').mockResolvedValue(true);
-      
+
       const dto = { titulo: 'Processo Trainee 2026', idEntidade: 1 } as any;
       const processoMock = { id: 10, ...dto };
 
@@ -92,13 +90,17 @@ describe('ProcessoSeletivoService', () => {
   describe('update', () => {
     it('deve lançar NotFoundException se o processo seletivo não for encontrado', async () => {
       mockPrisma.processoSeletivo.findUnique.mockResolvedValue(null);
-      await expect(service.update(1, {} as any, 1)).rejects.toThrow(NotFoundException);
+      await expect(service.update(1, {} as any, 1)).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('deve atualizar o processo se o usuário tiver permissão', async () => {
-      mockPrisma.processoSeletivo.findUnique.mockResolvedValue({ idEntidade: 5 });
+      mockPrisma.processoSeletivo.findUnique.mockResolvedValue({
+        idEntidade: 5,
+      });
       jest.spyOn(service as any, 'validateUser').mockResolvedValue(true);
-      
+
       const dto = { titulo: 'Atualizado' } as any;
       mockPrisma.processoSeletivo.update.mockResolvedValue({ id: 1, ...dto });
 
@@ -120,7 +122,9 @@ describe('ProcessoSeletivoService', () => {
     });
 
     it('deve remover o processo se o usuário tiver permissão', async () => {
-      mockPrisma.processoSeletivo.findUnique.mockResolvedValue({ idEntidade: 5 });
+      mockPrisma.processoSeletivo.findUnique.mockResolvedValue({
+        idEntidade: 5,
+      });
       jest.spyOn(service as any, 'validateUser').mockResolvedValue(true);
       mockPrisma.processoSeletivo.delete.mockResolvedValue({ id: 1 });
 
@@ -136,27 +140,37 @@ describe('ProcessoSeletivoService', () => {
   describe('validateUser', () => {
     it('deve lançar NotFoundException se o usuário não for encontrado', async () => {
       mockPrisma.perfil.findUnique.mockResolvedValue(null);
-      await expect(service['validateUser'](1, 1)).rejects.toThrow(NotFoundException);
+      await expect(service['validateUser'](1, 1)).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('deve lançar NotFoundException se a entidade não for encontrada', async () => {
       mockPrisma.perfil.findUnique.mockResolvedValue({ id: 1 });
       mockPrisma.entidade.findUnique.mockResolvedValue(null);
-      await expect(service['validateUser'](1, 1)).rejects.toThrow(NotFoundException);
+      await expect(service['validateUser'](1, 1)).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('deve lançar ForbiddenException se a classificação não for GESTOR ou CO_GESTOR', async () => {
       mockPrisma.perfil.findUnique.mockResolvedValue({ id: 1 });
       mockPrisma.entidade.findUnique.mockResolvedValue({ id: 1 });
-      mockPrisma.membro.findFirst.mockResolvedValue({ classificacao: 'MEMBRO' });
+      mockPrisma.membro.findFirst.mockResolvedValue({
+        classificacao: 'MEMBRO',
+      });
 
-      await expect(service['validateUser'](1, 1)).rejects.toThrow(ForbiddenException);
+      await expect(service['validateUser'](1, 1)).rejects.toThrow(
+        ForbiddenException,
+      );
     });
 
     it('deve retornar true se o usuário for GESTOR', async () => {
       mockPrisma.perfil.findUnique.mockResolvedValue({ id: 1 });
       mockPrisma.entidade.findUnique.mockResolvedValue({ id: 1 });
-      mockPrisma.membro.findFirst.mockResolvedValue({ classificacao: 'GESTOR' });
+      mockPrisma.membro.findFirst.mockResolvedValue({
+        classificacao: 'GESTOR',
+      });
 
       const result = await service['validateUser'](1, 1);
       expect(result).toBe(true);
@@ -165,7 +179,9 @@ describe('ProcessoSeletivoService', () => {
     it('deve retornar true se o usuário for CO_GESTOR', async () => {
       mockPrisma.perfil.findUnique.mockResolvedValue({ id: 1 });
       mockPrisma.entidade.findUnique.mockResolvedValue({ id: 1 });
-      mockPrisma.membro.findFirst.mockResolvedValue({ classificacao: 'CO_GESTOR' });
+      mockPrisma.membro.findFirst.mockResolvedValue({
+        classificacao: 'CO_GESTOR',
+      });
 
       const result = await service['validateUser'](1, 1);
       expect(result).toBe(true);

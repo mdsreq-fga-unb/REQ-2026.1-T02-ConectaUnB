@@ -500,9 +500,14 @@ describe('EntidadeService', () => {
         .mockResolvedValueOnce({ id: 2, classificacao: 'GESTOR' })
         .mockResolvedValueOnce({ id: 3, classificacao: 'MEMBRO' });
 
-      prisma.membro.update.mockResolvedValue({ id: 3, classificacao: 'CO_GESTOR' });
+      prisma.membro.update.mockResolvedValue({
+        id: 3,
+        classificacao: 'CO_GESTOR',
+      });
 
-      await service.updateMembro(1, 7, 9, { classificacao: ClassificacaoMembro.CO_GESTOR });
+      await service.updateMembro(1, 7, 9, {
+        classificacao: ClassificacaoMembro.CO_GESTOR,
+      });
 
       expect(prisma.membro.update).toHaveBeenCalledWith({
         where: { id: 3 },
@@ -512,11 +517,15 @@ describe('EntidadeService', () => {
 
     it('should reject CO_GESTOR trying to promote MEMBRO to CO_GESTOR', async () => {
       prisma.entidade.findUnique.mockResolvedValue({ id: 1 });
-      prisma.membro.findFirst
-        .mockResolvedValueOnce({ id: 2, classificacao: 'CO_GESTOR' });
+      prisma.membro.findFirst.mockResolvedValueOnce({
+        id: 2,
+        classificacao: 'CO_GESTOR',
+      });
 
       await expect(
-        service.updateMembro(1, 7, 9, { classificacao: ClassificacaoMembro.CO_GESTOR })
+        service.updateMembro(1, 7, 9, {
+          classificacao: ClassificacaoMembro.CO_GESTOR,
+        }),
       ).rejects.toBeInstanceOf(ForbiddenException);
 
       expect(prisma.membro.update).not.toHaveBeenCalled();
@@ -529,7 +538,9 @@ describe('EntidadeService', () => {
         .mockResolvedValueOnce({ id: 3, classificacao: 'GESTOR' });
 
       await expect(
-        service.updateMembro(1, 7, 9, { classificacao: ClassificacaoMembro.MEMBRO })
+        service.updateMembro(1, 7, 9, {
+          classificacao: ClassificacaoMembro.MEMBRO,
+        }),
       ).rejects.toBeInstanceOf(ForbiddenException);
 
       expect(prisma.membro.update).not.toHaveBeenCalled();
@@ -540,11 +551,13 @@ describe('EntidadeService', () => {
       prisma.membro.findFirst
         .mockResolvedValueOnce({ id: 2, classificacao: 'GESTOR' })
         .mockResolvedValueOnce({ id: 3, classificacao: 'GESTOR' });
-      
+
       prisma.membro.count.mockResolvedValue(1);
 
       await expect(
-        service.updateMembro(1, 7, 9, { classificacao: ClassificacaoMembro.MEMBRO })
+        service.updateMembro(1, 7, 9, {
+          classificacao: ClassificacaoMembro.MEMBRO,
+        }),
       ).rejects.toBeInstanceOf(ConflictException);
 
       expect(prisma.membro.update).not.toHaveBeenCalled();

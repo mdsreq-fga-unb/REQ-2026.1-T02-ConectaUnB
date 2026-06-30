@@ -61,7 +61,9 @@ describe('AuthService', () => {
 
       const result = await service.register(registerData);
 
-      expect(mockPerfilService.findByEmail).toHaveBeenCalledWith(registerData.email);
+      expect(mockPerfilService.findByEmail).toHaveBeenCalledWith(
+        registerData.email,
+      );
       expect(mockPerfilService.create).toHaveBeenCalledWith(
         expect.objectContaining({
           email: registerData.email,
@@ -75,7 +77,9 @@ describe('AuthService', () => {
     it('should throw ConflictException if email already exists', async () => {
       mockPerfilService.findByEmail.mockResolvedValue({ id: 1 });
 
-      await expect(service.register(registerData)).rejects.toThrow(ConflictException);
+      await expect(service.register(registerData)).rejects.toThrow(
+        ConflictException,
+      );
     });
   });
 

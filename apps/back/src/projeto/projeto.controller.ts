@@ -38,16 +38,12 @@ export class ProjetoController {
   }
 
   @Get('entidade/:id')
-  findProjetosEntidade(
-    @Param('id') id: string,
-  ) {
+  findProjetosEntidade(@Param('id') id: string) {
     return this.projetoService.findProjetosEntidade(+id);
   }
 
   @Get(':idProjeto')
-  findOne(
-    @Param('idProjeto') idProjeto: string
-  ) {
+  findOne(@Param('idProjeto') idProjeto: string) {
     return this.projetoService.findOne(+idProjeto);
   }
 
@@ -83,11 +79,7 @@ export class ProjetoController {
     @Request() req: AuthenticatedRequest,
   ) {
     const userId = Number(req.user.id);
-    return this.projetoService.addMembro(
-      +id,
-      userId,
-      addMembroDto,
-    );
+    return this.projetoService.addMembro(+id, userId, addMembroDto);
   }
 
   @ApiBearerAuth()
@@ -117,11 +109,6 @@ export class ProjetoController {
     @Request() req: AuthenticatedRequest,
   ) {
     const userId = Number(req.user.id);
-    return this.projetoService.removeMembro(
-      +id,
-      userId,
-      +idPerfil,
-    );
+    return this.projetoService.removeMembro(+id, userId, +idPerfil);
   }
-
 }
