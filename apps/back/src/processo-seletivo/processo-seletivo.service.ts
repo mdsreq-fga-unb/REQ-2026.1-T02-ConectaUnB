@@ -18,9 +18,12 @@ export class ProcessoSeletivoService {
   ) {
     await this.validateUser(userId, _createProcessoSeletivoDto.idEntidade);
 
+    const { linkInscricao, ...rest } = _createProcessoSeletivoDto as any;
+
     const processoSeletivo = await this.prisma.processoSeletivo.create({
       data: {
-        ..._createProcessoSeletivoDto,
+        ...rest,
+        linkIncricao: linkInscricao,
       },
     });
 
