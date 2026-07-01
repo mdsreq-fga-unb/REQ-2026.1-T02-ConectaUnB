@@ -40,6 +40,7 @@ export default function PerfilPage() {
     campus: "",
     curso: "",
     departamento: "",
+    cargo: "" as string,
     linkFoto: "" as string | null | undefined,
   });
 
@@ -94,6 +95,7 @@ export default function PerfilPage() {
         campus: formData.campus,
         curso: formData.curso,
         departamento: formData.departamento,
+        cargo: formData.cargo,
         linkFoto,
       };
       await api.patch(`/perfil`, payload);
