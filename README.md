@@ -60,11 +60,11 @@ Grupo de desenvolvimento:
 
 ---
 
-# 👥 Equipe
+# Equipe
 
 <div align="center" markdown="1">
 
-| ![](docs/assets/fotos/integrantes/gabriel.png){: .foto-equipe } | ![](docs/assets/fotos/integrantes/giovanna.png){: .foto-equipe } | ![](docs/assets/fotos/integrantes/ana.png){: .foto-equipe } | ![](docs/assets/fotos/integrantes/joao.png){: .foto-equipe } | ![](docs/assets/fotos/integrantes/matheus.png){: .foto-equipe } | ![](docs/assets/fotos/integrantes/pedro.png){: .foto-equipe } |
+| ![](docs/assets/fotos/integrantes/gabriel.png) | ![](docs/assets/fotos/integrantes/giovanna.png)| ![](docs/assets/fotos/integrantes/ana.png)| ![](docs/assets/fotos/integrantes/joao.png)| ![](docs/assets/fotos/integrantes/matheus.png) | ![](docs/assets/fotos/integrantes/pedro.png) |
 | :--------------------------------------------------------: | :---------------------------------------------------------: | :----------------------------------------------------: | :-----------------------------------------------------: | :--------------------------------------------------------: | :------------------------------------------------------: |
 |     [Gabriel Diniz](https://github.com/GabrielDiniz12)     |     [Giovanna Brito](https://github.com/giovannabrito19)    |  [Ana Luiza Abrantes](https://github.com/luabrantess)  |          [João Pedro](https://github.com/ojplc)         |     [Matheus Lemes](https://github.com/matheuslemesam)     |      [Pedro Américo](https://github.com/dev-americo)     |
 
