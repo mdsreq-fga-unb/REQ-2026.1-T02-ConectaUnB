@@ -207,8 +207,8 @@ export default function HomePage() {
   return (
     <div className="p-8 bg-gray-50 text-[#1D1D1D]">
       <div className="max-w-4xl mx-auto">
-        {/* Barra superior: filtros (esquerda) + buscar entidades (direita) */}
-        <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
+        {/* Barra superior: filtros + buscar entidades à direita deles */}
+        <div className="mb-8 flex flex-wrap items-center gap-4">
           {/* Filtros compactos */}
           <div className="flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0d2a54]">
@@ -269,7 +269,7 @@ export default function HomePage() {
           </div>
 
           {/* Buscar entidades */}
-          <div ref={searchRef} className="relative w-full max-w-sm">
+          <div ref={searchRef} className="relative w-56">
             <div className="relative">
               <Search
                 size={18}
