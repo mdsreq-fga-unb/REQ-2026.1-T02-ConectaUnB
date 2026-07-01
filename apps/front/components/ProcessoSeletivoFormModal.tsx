@@ -49,11 +49,20 @@ export function ProcessoSeletivoFormModal({
   let statusAutomatico = 'ABERTA';
   if (dataFim) {
     const hoje = new Date();
-    const dataEncerramento = new Date(`${dataFim}T23:59:59`);
+    const dataEncerramento = new Date(`${dataFim}T23:59:00`);
     if (hoje > dataEncerramento) {
       statusAutomatico = 'FECHADA';
     }
   }
+
+  const formatarDataParaInput = (dataIso?: string) => {
+    if (!dataIso) return '';
+    const data = new Date(dataIso);
+    const ano = data.getFullYear();
+    const mes = String(data.getMonth() + 1).padStart(2, '0');
+    const dia = String(data.getDate()).padStart(2, '0');
+    return `${ano}-${mes}-${dia}`;
+  };
 
   useEffect(() => {
     if (isOpen) {
@@ -61,8 +70,8 @@ export function ProcessoSeletivoFormModal({
         setTitulo(processo.titulo);
         setDescricao(processo.descricao || '');
         setLinkInscricao(processo.linkIncricao || processo.linkInscricao || '');
-        setDataInicio(processo.inicioInscricao ? new Date(processo.inicioInscricao).toISOString().split('T')[0] : '');
-        setDataFim(processo.fimInscricao ? new Date(processo.fimInscricao).toISOString().split('T')[0] : '');
+        setDataInicio(formatarDataParaInput(processo.inicioInscricao));
+        setDataFim(formatarDataParaInput(processo.fimInscricao));
         setFoto(processo.linkFoto || null);
       } else {
         setTitulo('');
@@ -110,7 +119,7 @@ export function ProcessoSeletivoFormModal({
         linkInscricao,
         linkFoto: linkDaFotoGerado || undefined,
         inicioInscricao: dataInicio ? new Date(`${dataInicio}T00:00:00`).toISOString() : undefined,
-        fimInscricao: dataFim ? new Date(`${dataFim}T23:59:59`).toISOString() : undefined,
+        fimInscricao: dataFim ? new Date(`${dataFim}T23:59:00`).toISOString() : undefined,
       };
 
       if (isEditing) {

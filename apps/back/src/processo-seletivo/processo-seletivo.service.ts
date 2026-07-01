@@ -101,9 +101,14 @@ export class ProcessoSeletivoService {
 
     await this.validateUser(userId, processo.idEntidade);
 
+    const { linkInscricao, ...rest } = _updateProcessoSeletivoDto as any;
+
     return await this.prisma.processoSeletivo.update({
       where: { id },
-      data: _updateProcessoSeletivoDto,
+      data: {
+        ...rest,
+        linkIncricao: linkInscricao,
+      },
     });
   }
 

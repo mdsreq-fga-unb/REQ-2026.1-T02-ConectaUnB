@@ -17,18 +17,11 @@ export function ProcessoSeletivoViewModal({
   const dataFim = processo.fimInscricao ? new Date(processo.fimInscricao).toISOString().split('T')[0] : '';
   const dataInicioFormatada = processo.inicioInscricao ? new Date(processo.inicioInscricao).toLocaleDateString('pt-BR') : '';
   const dataFimFormatada = processo.fimInscricao ? new Date(processo.fimInscricao).toLocaleDateString('pt-BR') : '';
+  const status = processo.classificacao || 'FECHADA';
   
   const linkInscricao = processo.linkIncricao || processo.linkInscricao || '';
 
-  // Cálculo automático do status baseado na data de fim
-  let statusAutomatico = 'ABERTA';
-  if (dataFim) {
-    const hoje = new Date();
-    const dataEncerramento = new Date(`${dataFim}T23:59:59`);
-    if (hoje > dataEncerramento) {
-      statusAutomatico = 'FECHADA';
-    }
-  }
+  const isProcessoFechado = status === 'FECHADA';
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
@@ -59,9 +52,9 @@ export function ProcessoSeletivoViewModal({
           <div className="flex justify-between items-start mb-6">
             <h3 className="text-2xl font-bold text-gray-900">{processo.titulo}</h3>
             <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider shrink-0 ${
-              statusAutomatico === 'ABERTA' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+              status === 'ABERTA' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
             }`}>
-              {statusAutomatico}
+              {status}
             </span>
           </div>
 
@@ -86,15 +79,25 @@ export function ProcessoSeletivoViewModal({
           {/* Ação Principal: Botão de Inscrição */}
           <div className="mt-8 border-t border-gray-200 pt-6 flex flex-col items-center justify-center">
             {linkInscricao ? (
-              <a
-                href={linkInscricao}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-[#195b3d] px-8 py-3 font-semibold text-white shadow-md transition-all hover:bg-[#12452c] hover:shadow-lg hover:-translate-y-0.5"
-              >
-                <LinkIcon size={18} />
-                Acessar Link de Inscrição
-              </a>
+              isProcessoFechado ? (
+                <button
+                  disabled
+                  className="inline-flex items-center gap-2 rounded-full bg-gray-400 px-8 py-3 font-semibold text-white shadow-sm cursor-not-allowed opacity-80"
+                >
+                  <LinkIcon size={18} />
+                  Inscrições Encerradas
+                </button>
+              ) : (
+                <a
+                  href={linkInscricao}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full bg-[#195b3d] px-8 py-3 font-semibold text-white shadow-md transition-all hover:bg-[#12452c] hover:shadow-lg hover:-translate-y-0.5"
+                >
+                  <LinkIcon size={18} />
+                  Acessar Link de Inscrição
+                </a>
+              )
             ) : (
               <p className="text-sm text-gray-500 italic">Nenhum link de inscrição disponibilizado.</p>
             )}
