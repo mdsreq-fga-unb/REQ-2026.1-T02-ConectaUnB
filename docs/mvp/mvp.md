@@ -22,12 +22,15 @@
 | [**RF-02**](../RFuncionais/RF_02.md) - Filtrar processos seletivos abertos |  |  |
 | [**RF-03**](../RFuncionais/RF_03.md) - Atualizar status de um processo seletivo |  |  |
 | [**RF-05**](../RFuncionais/RF_05.md) - Criar um processo seletivo |  |  |
-| [**RF-21**](../RFuncionais/RF_21.md) - Exibir um painel listando<br>entidades nas quais o usuário é gestor/membro |  |  |
+| [**RF-21**](../RFuncionais/RF_21.md) - Exibir entidades nas quais o usuário é gestor/membro |  |  |
 | Escopo realizado| | |
-| [**RF-04**](../RFuncionais/escopo/RF_04.md) - Permitir a finalização de um processo seletivo. |  |  |
-| [**RF-16**](../RFuncionais/escopo/RF_16.md) - Permitir a adição e a remoção de co-gestores. |  |  |
-| [**RF-06**](../RFuncionais/escopo/RF_06.md) - Permitir configuração de filtros de interesses pessoais no feed. |  |  |
-| [**RF-29**](../RFuncionais/escopo/RF_29.md) - Permitir busca por posts através de filtros de pesquisa. |  |  |
-| [**RF-30**](../RFuncionais/escopo/RF_30.md) - Personalizar preferências de notificação de processo seletivo abertos/publicações/atualização de projetos. |  |  |
+| [**RF-04**](../RFuncionais/escopo/RF_04.md) - Finalizar um processo seletivo |  |  |
+| [**RF-16.1**](../RFuncionais/escopo/RF_16.1.md) - Adicionar Co-gestores das entidades |  |  |
+| [**RF-16.2**](../RFuncionais/escopo/RF_16.2.md) - Remover Co-gestores das entidades |  |  |
+| [**RF-16.3**](../RFuncionais/escopo/RF_16.3.md) - Visualizar Co-gestores das entidades |  |  |
+| [**RF-16.4**](../RFuncionais/escopo/RF_16.4.md) - Atualizar cargos dos Co-gestores das entidades |  |  |
+| [**RF-06**](../RFuncionais/escopo/RF_06.md) - Filtrar feed em relação a capums/área de interesse/tipo da entidade |  |  |
+| [**RF-29**](../RFuncionais/escopo/RF_29.md) - Pesquisar publicações com filtros de busca de capums/área de interesse/tipo da entidade |  |  |
+| [**RF-30**](../RFuncionais/escopo/RF_30.md) - Personalizar preferências de notificação de processo seletivo abertos/publicações/atualização de projetos |  |  |
 
 
