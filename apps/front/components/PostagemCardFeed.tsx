@@ -7,9 +7,10 @@ type PostagemCardFeedProps = {
   onClick?: () => void;
   onEditClick?: () => void;
   onDeleteClick?: () => void;
+  tipoLabel?: string;
 };
 
-export function PostagemCardFeed({ postagem, vinculo, onClick, onEditClick, onDeleteClick }: PostagemCardFeedProps) {
+export function PostagemCardFeed({ postagem, vinculo, onClick, onEditClick, onDeleteClick, tipoLabel }: PostagemCardFeedProps) {
   const podeEditar = vinculo === 'GESTOR' || vinculo === 'CO_GESTOR';
 
   return (
@@ -68,6 +69,11 @@ export function PostagemCardFeed({ postagem, vinculo, onClick, onEditClick, onDe
           <span className="truncate font-bold text-black transition-colors group-hover:text-[#195b3d]">
             {postagem.entidadeNome}
           </span>
+          {tipoLabel && (
+            <span className="shrink-0 rounded-full bg-[#195b3d]/10 px-2 py-0.5 text-xs font-semibold text-[#195b3d]">
+              {tipoLabel}
+            </span>
+          )}
           {postagem.dataPublicacao && (
             <span className="shrink-0 text-gray-500">· {postagem.dataPublicacao}</span>
           )}
