@@ -24,4 +24,10 @@
 | [**RF-05**](../RFuncionais/RF_05.md) - Criar um processo seletivo |  |  |
 | [**RF-21**](../RFuncionais/RF_21.md) - Exibir um painel listando<br>entidades nas quais o usuário é gestor/membro |  |  |
 | Escopo realizado| | |
-| | | |
+| [**RF-04**](../RFuncionais/escopo/RF_04.md) - Permitir a finalização de um processo seletivo. |  |  |
+| [**RF-16**](../RFuncionais/escopo/RF_16.md) - Permitir a adição e a remoção de co-gestores. |  |  |
+| [**RF-06**](../RFuncionais/escopo/RF_06.md) - Permitir configuração de filtros de interesses pessoais no feed. |  |  |
+| [**RF-29**](../RFuncionais/escopo/RF_29.md) - Permitir busca por posts através de filtros de pesquisa. |  |  |
+| [**RF-30**](../RFuncionais/escopo/RF_30.md) - Personalizar preferências de notificação de processo seletivo abertos/publicações/atualização de projetos. |  |  |
+
+
