@@ -2,6 +2,19 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PostagemService } from './postagem.service';
 import { PrismaService } from '../prisma/prisma.service';
 
+const postagemSelect = {
+  conteudo: true,
+  createdAt: true,
+  linkFoto: true,
+  titulo: true,
+  entidade: {
+    select: {
+      id: true,
+      nome: true,
+    },
+  },
+};
+
 describe('PostagemService', () => {
   let service: PostagemService;
 
@@ -142,6 +155,7 @@ describe('PostagemService', () => {
       expect(result.id).toBe(5);
       expect(mockPrisma.postagem.findUnique).toHaveBeenCalledWith({
         where: { id: 5 },
+        select: postagemSelect,
       });
     });
   });

@@ -16,6 +16,7 @@ const perfilSelectPublico = {
   departamento: true,
   linkFoto: true,
   createdAt: true,
+  PreferenciaNotificacao: true,
 };
 
 @Injectable()
