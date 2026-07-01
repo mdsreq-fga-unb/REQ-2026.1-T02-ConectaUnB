@@ -192,18 +192,6 @@ export default function HomePage() {
     );
   }
 
-  if (!user) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center space-y-4 bg-gray-50 text-[#1D1D1D]">
-        <h1 className="text-2xl text-red-600 font-bold">Não Logado</h1>
-        <p>Faça o Login - FEED</p>
-        <a href="/auth/login" className="px-4 py-2 bg-[#003366] text-white rounded-full">
-          Ir para o Login
-        </a>
-      </div>
-    );
-  }
-
   return (
     <div className="p-8 bg-gray-50 text-[#1D1D1D]">
       <div className="max-w-4xl mx-auto">
@@ -327,21 +315,23 @@ export default function HomePage() {
                           </p>
                         </div>
                       </div>
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleSeguir(entidade.id);
-                        }}
-                        disabled={followingIds.has(entidade.id)}
-                        className={`flex-shrink-0 px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${
-                          followingIds.has(entidade.id)
-                            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                            : "bg-[#195b3d] text-white hover:bg-[#13472f]"
-                        }`}
-                      >
-                        {followingIds.has(entidade.id) ? "Seguindo" : "Seguir"}
-                      </button>
+                      {user && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleSeguir(entidade.id);
+                          }}
+                          disabled={followingIds.has(entidade.id)}
+                          className={`flex-shrink-0 px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${
+                            followingIds.has(entidade.id)
+                              ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                              : "bg-[#195b3d] text-white hover:bg-[#13472f]"
+                          }`}
+                        >
+                          {followingIds.has(entidade.id) ? "Seguindo" : "Seguir"}
+                        </button>
+                      )}
                     </div>
                   ))
                 ) : (
