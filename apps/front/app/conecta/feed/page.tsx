@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { SlidersHorizontal, X } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { api } from "@/guards/api";
-import { CAMPUS_OPTIONS, DEPARTAMENTO_OPTIONS } from "@/constants/options";
+import { CAMPUS_OPTIONS, DEPARTAMENTO_OPTIONS, ClassificacaoEntidade } from "@/constants/options";
 import { ProjetoCard } from "@/components/entidade/projetoCard";
 
 type EntidadeResumo = {
@@ -21,11 +21,11 @@ type EntidadeResumo = {
 type Filtros = {
   campus: string;
   departamento: string;
-  nome: string;
+  classificacao: string;
 };
 
 export default function HomePage() {
-  const { user, loading, logout } = useAuth();
+  const { user, loading } = useAuth();
   const router = useRouter();
 
   const [entidades, setEntidades] = useState<EntidadeResumo[]>([]);
@@ -33,7 +33,7 @@ export default function HomePage() {
   const [filtros, setFiltros] = useState<Filtros>({
     campus: "",
     departamento: "",
-    nome: "",
+    classificacao: "",
   });
 
   const fetchEntidades = useCallback(async () => {
@@ -52,20 +52,13 @@ export default function HomePage() {
     fetchEntidades();
   }, [fetchEntidades]);
 
-  const nomesEntidades = useMemo(() => {
-    const nomes = entidades
-      .map((e) => e.nome)
-      .filter(Boolean)
-      .sort((a, b) => a.localeCompare(b));
-    return Array.from(new Set(nomes));
-  }, [entidades]);
-
   const entidadesFiltradas = useMemo(() => {
     return entidades.filter((entidade) => {
       if (filtros.campus && entidade.campus !== filtros.campus) return false;
       if (filtros.departamento && entidade.departamento !== filtros.departamento)
         return false;
-      if (filtros.nome && entidade.nome !== filtros.nome) return false;
+      if (filtros.classificacao && entidade.classificacao !== filtros.classificacao)
+        return false;
       return true;
     });
   }, [entidades, filtros]);
@@ -73,7 +66,7 @@ export default function HomePage() {
   const filtrosAtivos =
     Boolean(filtros.campus) ||
     Boolean(filtros.departamento) ||
-    Boolean(filtros.nome);
+    Boolean(filtros.classificacao);
 
   const handleFiltroChange = (
     event: React.ChangeEvent<HTMLSelectElement>,
@@ -83,7 +76,7 @@ export default function HomePage() {
   };
 
   const limparFiltros = () => {
-    setFiltros({ campus: "", departamento: "", nome: "" });
+    setFiltros({ campus: "", departamento: "", classificacao: "" });
   };
 
   if (loading) {
@@ -107,9 +100,8 @@ export default function HomePage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50 text-[#1D1D1D]">
-      <main className="flex-1 p-8">
-        <div className="max-w-4xl mx-auto">
+    <div className="p-8 bg-gray-50 text-[#1D1D1D]">
+      <div className="max-w-4xl mx-auto">
 
           {/* Barra de filtros */}
           <div className="mb-8 flex flex-wrap items-end gap-x-5 gap-y-3 bg-white border border-gray-200 rounded-xl shadow-sm px-5 py-4">
@@ -152,17 +144,17 @@ export default function HomePage() {
             </label>
 
             <label className="flex flex-col gap-1">
-              <span className="text-xs font-medium text-gray-600">Entidade</span>
+              <span className="text-xs font-medium text-gray-600">Tipos</span>
               <select
-                name="nome"
-                value={filtros.nome}
+                name="classificacao"
+                value={filtros.classificacao}
                 onChange={handleFiltroChange}
                 className="min-w-[12rem] px-3 py-2 border border-gray-300 rounded-md focus:ring-[#195b3d] focus:border-[#195b3d] outline-none bg-white text-black text-sm"
               >
-                <option value="">Todas</option>
-                {nomesEntidades.map((nome) => (
-                  <option key={nome} value={nome}>
-                    {nome}
+                <option value="">Todos</option>
+                {ClassificacaoEntidade.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
                   </option>
                 ))}
               </select>
@@ -177,34 +169,6 @@ export default function HomePage() {
                 <X size={16} /> Limpar
               </button>
             ) : null}
-          </div>
-
-          {/* Painel */}
-          <div className="bg-white p-8 rounded-xl shadow-md">
-            <div className="flex justify-between items-start gap-4 mb-2">
-              <h1 className="text-3xl font-bold text-[#003366]">
-                Painel do ConectaUnB
-              </h1>
-              <button
-                onClick={logout}
-                className="px-6 py-2 bg-red-600 text-white font-semibold rounded-full hover:bg-red-700 transition-colors"
-              >
-                Sair da Conta
-              </button>
-            </div>
-
-            <p className="text-gray-600 mb-4">
-              Logado como:{" "}
-              <span className="font-semibold text-green-700">{user.email}</span>
-            </p>
-
-            <div className="p-4 border border-gray-200 rounded-lg">
-              <h2 className="font-semibold mb-2">Seus Dados de Sessão:</h2>
-              <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
-                <li><strong>ID no Banco:</strong> {user.sub}</li>
-                <li><strong>Sessão expira em:</strong> {new Date(user.exp * 1000).toLocaleTimeString()}</li>
-              </ul>
-            </div>
           </div>
 
           {/* Entidades */}
@@ -232,7 +196,6 @@ export default function HomePage() {
             </div>
           </section>
         </div>
-      </main>
     </div>
   );
 }

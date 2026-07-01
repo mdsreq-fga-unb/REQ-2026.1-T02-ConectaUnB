@@ -8,7 +8,7 @@ import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { CAMPUS_OPTIONS, CURSO_OPTIONS, DEPARTAMENTO_OPTIONS } from "@/constants/options";
 import {ConfirmModal} from "@/components/ConfirmModal";
-import { ImageUploadBox } from "@/components/ImageUploadBox";
+import { EditablePhoto } from "@/components/EditablePhoto";
 import { uploadImage } from "@/lib/upload";
 
 export default function PerfilPage() {
@@ -89,12 +89,11 @@ export default function PerfilPage() {
         campus: formData.campus,
         curso: formData.curso,
         departamento: formData.departamento,
+        linkFoto,
       };
       await api.patch(`/perfil`, payload);
 
-      if (pendingFoto && linkFoto) {
-        setFormData((prev) => ({ ...prev, linkFoto }));
-      }
+      setFormData((prev) => ({ ...prev, linkFoto }));
       setPendingFoto(null);
       toast.success("Edição concluída com sucesso");
       setIsEditing(false);
@@ -129,30 +128,19 @@ export default function PerfilPage() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-8 bg-white">
 
             {/* foto */}
-            {isEditing && isOwner ? (
-              <div className="w-48 flex-shrink-0">
-                <ImageUploadBox
-                  id="avatar-upload"
-                  label="Foto de Perfil"
-                  file={pendingFoto}
-                  onChange={setPendingFoto}
-                  imageClassName="object-cover rounded-full"
-                />
-              </div>
-            ) : (
-              <div className="w-48 h-48 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 font-medium text-lg border border-gray-300 flex-shrink-0 overflow-hidden">
-                {formData.linkFoto ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={formData.linkFoto}
-                    alt="Foto de perfil"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  "Foto"
-                )}
-              </div>
-            )}
+            <EditablePhoto
+              src={formData.linkFoto}
+              alt="Foto de perfil"
+              variant="badge"
+              editable={isOwner && isEditing}
+              onFileSelected={setPendingFoto}
+              className="w-48 h-48 rounded-full border border-gray-300 flex-shrink-0"
+              fallback={
+                <div className="flex h-full w-full items-center justify-center bg-gray-200 text-gray-500 font-medium text-lg">
+                  Foto
+                </div>
+              }
+            />
 
             {/* dados perfil */}
             <div className="flex-1 w-full space-y-4 max-w-md">
