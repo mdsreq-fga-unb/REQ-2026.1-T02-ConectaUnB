@@ -110,7 +110,7 @@ export function ProcessoSeletivoFormModal({
         linkInscricao,
         linkFoto: linkDaFotoGerado || undefined,
         inicioInscricao: dataInicio ? new Date(`${dataInicio}T00:00:00`).toISOString() : undefined,
-        fimInscricao: dataFim ? new Date(`${dataFim}T00:00:00`).toISOString() : undefined,
+        fimInscricao: dataFim ? new Date(`${dataFim}T23:59:59`).toISOString() : undefined,
       };
 
       if (isEditing) {

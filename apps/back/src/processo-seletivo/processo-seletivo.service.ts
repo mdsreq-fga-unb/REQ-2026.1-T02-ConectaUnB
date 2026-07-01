@@ -7,10 +7,42 @@ import { CreateProcessoSeletivoDto } from './dto/create-processo-seletivo.dto';
 import { UpdateProcessoSeletivoDto } from './dto/update-processo-seletivo.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { TipoNotificacao } from '@prisma/client';
+import { CronExpression } from '@nestjs/schedule/dist/enums/cron-expression.enum';
+import { Cron } from '@nestjs/schedule/dist/decorators/cron.decorator';
 
 @Injectable()
 export class ProcessoSeletivoService {
   constructor(private readonly prisma: PrismaService) {}
+
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, {
+    name: 'fecharProcessosExpirados',
+    timeZone: 'America/Sao_Paulo',
+  }) 
+  async fecharProcessosExpirados() {
+    try {
+      const dataAtual = new Date();
+
+      const resultado = await this.prisma.processoSeletivo.updateMany({
+        where: {
+          fimInscricao: {
+            lt: dataAtual,
+          },
+          classificacao: {
+            not: 'FECHADA',
+          }
+        },
+        data: {
+          classificacao: 'FECHADA',
+        },
+      });
+
+      if (resultado.count > 0) {
+        console.log(`[Cron] ${resultado.count} processos seletivos foram fechados automaticamente.`);
+      }
+    } catch (error) {
+      console.error('[Cron] Erro ao tentar fechar processos seletivos:', error);
+    }
+  }
 
   async create(
     _createProcessoSeletivoDto: CreateProcessoSeletivoDto,
