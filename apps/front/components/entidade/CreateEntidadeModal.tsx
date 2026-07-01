@@ -26,12 +26,25 @@ export function CreateEntidadeModal({ isOpen, onClose, onSuccess }: CreateEntida
 
   if (!isOpen) return null;
 
+  const uploadFile = async (file: File, slot: string, entityId: number) => {
+    const fd = new FormData();
+    fd.append('file', file);
+    await api.post(`/entidade/${entityId}/${slot}`, fd, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      timeout: 30000,
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     try {
-      await api.post('/entidade', formData);
+      const { data: entidade } = await api.post('/entidade', formData);
+
+      if (logo) await uploadFile(logo, 'logo', entidade.id);
+      if (banner) await uploadFile(banner, 'banner', entidade.id);
+
       toast.success('Entidade criada com sucesso!');
 
       setFormData({
@@ -45,12 +58,12 @@ export function CreateEntidadeModal({ isOpen, onClose, onSuccess }: CreateEntida
       setLogo(null);
 
       onClose();
-      
+
       if (onSuccess) {
         onSuccess();
       } else {
         setTimeout(() => {
-          window.location.reload(); 
+          window.location.reload();
         }, 1500);
       }
     } catch (error) {

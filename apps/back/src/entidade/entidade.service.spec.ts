@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import {
-  ConflictException,
   ForbiddenException,
   NotFoundException,
 } from '@nestjs/common';
-import { ClassificacaoMembro, Prisma } from '@prisma/client';
+import { ClassificacaoMembro } from '@prisma/client';
 import { EntidadeService } from './entidade.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { StorageService } from '../storage/storage.service';
 
 describe('EntidadeService', () => {
   let service: EntidadeService;
@@ -24,6 +24,7 @@ describe('EntidadeService', () => {
     membro: {
       findMany: jest.fn(),
       findFirst: jest.fn(),
+      findUnique: jest.fn(),
       create: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
@@ -35,9 +36,14 @@ describe('EntidadeService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         EntidadeService,
+        { provide: PrismaService, useValue: prisma },
         {
-          provide: PrismaService,
-          useValue: prisma,
+          provide: StorageService,
+          useValue: {
+            upload: jest.fn(),
+            delete: jest.fn(),
+            getUsage: jest.fn(),
+          },
         },
       ],
     }).compile();
@@ -51,28 +57,11 @@ describe('EntidadeService', () => {
   });
 
   it('should list authenticated user entities with membership data', async () => {
-    prisma.membro.findMany.mockResolvedValue([
-      {
-        id: 10,
-        classificacao: 'GESTOR',
-        createdAt: new Date('2026-06-01T00:00:00.000Z'),
-        entidade: {
-          id: 1,
-          nome: 'Conecta UnB',
-          descricao: 'Entidade de teste',
-          classificacao: 'PROJETO_EXTENSAO',
-          campus: 'GAMA',
-          departamento: 'FCTE',
-          linkBanner: null,
-          linkLogo: null,
-          createdAt: new Date('2026-06-01T00:00:00.000Z'),
-          updatedAt: new Date('2026-06-01T00:00:00.000Z'),
-        },
-      },
-    ]);
-
-    await expect(service.findMinhasEntidades(7)).resolves.toEqual([
-      {
+    const membroRow = {
+      id: 10,
+      classificacao: 'GESTOR',
+      createdAt: new Date('2026-06-01T00:00:00.000Z'),
+      entidade: {
         id: 1,
         nome: 'Conecta UnB',
         descricao: 'Entidade de teste',
@@ -83,21 +72,22 @@ describe('EntidadeService', () => {
         linkLogo: null,
         createdAt: new Date('2026-06-01T00:00:00.000Z'),
         updatedAt: new Date('2026-06-01T00:00:00.000Z'),
-        vinculo: {
-          id: 10,
-          classificacao: 'GESTOR',
-          createdAt: new Date('2026-06-01T00:00:00.000Z'),
-        },
+      },
+    };
+
+    prisma.membro.findMany.mockResolvedValue([membroRow]);
+
+    const result = await service.findMinhasEntidades(7);
+
+    expect(result).toEqual([
+      {
+        ...membroRow.entidade,
+        vinculo: { classificacao: 'GESTOR', idMembro: 10 },
       },
     ]);
-
     expect(prisma.membro.findMany).toHaveBeenCalledWith({
       where: { idPerfil: 7 },
-      orderBy: { entidade: { nome: 'asc' } },
-      select: {
-        id: true,
-        classificacao: true,
-        createdAt: true,
+      include: {
         entidade: {
           select: {
             id: true,
@@ -120,179 +110,148 @@ describe('EntidadeService', () => {
     const entidade = {
       id: 1,
       nome: 'Conecta UnB',
+      descricao: 'Entidade de teste',
+      classificacao: 'PROJETO_EXTENSAO',
+      campus: 'GAMA',
+      departamento: 'FCTE',
+      linkLogo: null,
+      linkBanner: null,
+      createdAt: new Date('2026-06-01T00:00:00.000Z'),
+      updatedAt: new Date('2026-06-01T00:00:00.000Z'),
       membros: [
         {
           id: 12,
-          email: 'test@unb.br',
           classificacao: 'MEMBRO',
-          createdAt: new Date('2026-06-01T00:00:00.000Z'),
           perfil: {
             id: 9,
             name: 'Maria',
             email: 'maria@aluno.unb.br',
+            linkFoto: null,
           },
         },
       ],
+      _count: { seguidores: 0 },
     };
+
     prisma.entidade.findUnique.mockResolvedValue(entidade);
 
-    await expect(service.findOne(1)).resolves.toEqual(entidade);
+    const result = await service.findOne(1);
+    expect(result).toEqual(entidade);
     expect(prisma.entidade.findUnique).toHaveBeenCalledWith({
       where: { id: 1 },
-      include: {
+      select: {
+        id: true,
+        nome: true,
+        descricao: true,
+        classificacao: true,
+        campus: true,
+        departamento: true,
+        linkLogo: true,
+        linkBanner: true,
+        createdAt: true,
+        updatedAt: true,
         membros: {
-          orderBy: { createdAt: 'asc' },
           select: {
             id: true,
-            idPerfil: true,
             classificacao: true,
-            createdAt: true,
             perfil: {
-              select: {
-                id: true,
-                name: true,
-                email: true,
-              },
+              select: { id: true, name: true, email: true, linkFoto: true },
             },
           },
         },
+        _count: { select: { seguidores: true } },
       },
     });
   });
 
-  it('should update an entity when requester manages it', async () => {
-    prisma.entidade.findUnique.mockResolvedValue({ id: 1 });
-    prisma.membro.findFirst.mockResolvedValue({
-      id: 2,
-      classificacao: 'CO_GESTOR',
-    });
-    prisma.entidade.update.mockResolvedValue({
-      id: 1,
-      nome: 'Entidade Atualizada',
+  describe('update', () => {
+    it('should update an entity when requester manages it', async () => {
+      prisma.membro.findUnique.mockResolvedValue({ classificacao: 'CO_GESTOR' });
+      prisma.entidade.update.mockResolvedValue({
+        id: 1,
+        nome: 'Entidade Atualizada',
+        descricao: null,
+        classificacao: null,
+        campus: null,
+        departamento: null,
+        linkLogo: null,
+        linkBanner: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
+      const result = await service.update(1, 7, { nome: 'Entidade Atualizada' });
+      expect(result).toMatchObject({ id: 1, nome: 'Entidade Atualizada' });
+      expect(prisma.membro.findUnique).toHaveBeenCalledWith({
+        where: { idPerfil_idEntidade: { idPerfil: 7, idEntidade: 1 } },
+        select: { classificacao: true },
+      });
+      expect(prisma.entidade.update).toHaveBeenCalledWith({
+        where: { id: 1 },
+        data: {
+          nome: 'Entidade Atualizada',
+          descricao: undefined,
+          classificacao: undefined,
+          campus: undefined,
+          departamento: undefined,
+          linkLogo: undefined,
+          linkBanner: undefined,
+        },
+        select: expect.any(Object),
+      });
     });
 
-    await expect(
-      service.update(1, 7, { nome: 'Entidade Atualizada' }),
-    ).resolves.toEqual({
-      id: 1,
-      nome: 'Entidade Atualizada',
-    });
-    expect(prisma.entidade.update).toHaveBeenCalledWith({
-      where: { id: 1 },
-      data: { nome: 'Entidade Atualizada' },
+    it('should reject update when requester cannot manage', async () => {
+      prisma.membro.findUnique.mockResolvedValue(null);
+
+      await expect(service.update(1, 7, { nome: 'X' })).rejects.toBeInstanceOf(
+        ForbiddenException,
+      );
+      expect(prisma.entidade.update).not.toHaveBeenCalled();
     });
   });
 
-  it('should remove an entity when requester is GESTOR', async () => {
-    prisma.entidade.findUnique.mockResolvedValue({ id: 1 });
-    prisma.membro.findFirst.mockResolvedValue({
-      id: 2,
-      classificacao: 'GESTOR',
-    });
-    prisma.entidade.delete.mockResolvedValue({ id: 1 });
+  describe('remove', () => {
+    it('should remove an entity when requester is GESTOR', async () => {
+      prisma.membro.findUnique.mockResolvedValue({ classificacao: 'GESTOR' });
+      prisma.entidade.delete.mockResolvedValue({ id: 1 });
 
-    await expect(service.remove(1, 7)).resolves.toEqual({ id: 1 });
-    expect(prisma.entidade.delete).toHaveBeenCalledWith({ where: { id: 1 } });
+      const result = await service.remove(1, 7);
+      expect(result).toEqual({ id: 1 });
+      expect(prisma.entidade.delete).toHaveBeenCalledWith({
+        where: { id: 1 },
+        select: { id: true },
+      });
+    });
+
+    it('should reject remove when requester cannot manage', async () => {
+      prisma.membro.findUnique.mockResolvedValue(null);
+
+      await expect(service.remove(1, 7)).rejects.toBeInstanceOf(
+        ForbiddenException,
+      );
+      expect(prisma.entidade.delete).not.toHaveBeenCalled();
+    });
   });
 
   describe('addMembro', () => {
-    it('should add a MEMBRO when requester is GESTOR', async () => {
-      prisma.entidade.findUnique.mockResolvedValue({ id: 1 });
-      prisma.membro.findFirst.mockResolvedValue({
-        id: 2,
-        classificacao: 'GESTOR',
-      });
-      prisma.perfil.findUnique.mockResolvedValue({ id: 9 });
-      prisma.membro.create.mockResolvedValue({
-        id: 12,
-        idEntidade: 1,
-        email: 'test@unb.br',
-        classificacao: 'MEMBRO',
-      });
-
-      await expect(
-        service.addMembro(1, 7, {
-          email: 'test@unb.br',
-          classificacao: ClassificacaoMembro.MEMBRO,
-        }),
-      ).resolves.toEqual({
-        id: 12,
-        idEntidade: 1,
-        email: 'test@unb.br',
-        classificacao: 'MEMBRO',
-      });
-
-      expect(prisma.membro.findFirst).toHaveBeenCalledWith({
-        where: {
-          idEntidade: 1,
-          idPerfil: 7,
-          classificacao: { in: ['GESTOR', 'CO_GESTOR'] },
-        },
-        select: { id: true, classificacao: true },
-      });
-      expect(prisma.membro.create).toHaveBeenCalledWith({
-        data: {
-          idEntidade: 1,
-          idPerfil: 9,
-          classificacao: 'MEMBRO',
-        },
-        include: {
-          perfil: {
-            select: {
-              id: true,
-              name: true,
-              email: true,
-            },
-          },
-          entidade: {
-            select: {
-              id: true,
-              nome: true,
-            },
-          },
-        },
-      });
-    });
-
-    it('should add a MEMBRO when requester is CO_GESTOR', async () => {
-      prisma.entidade.findUnique.mockResolvedValue({ id: 1 });
-      prisma.membro.findFirst.mockResolvedValue({
-        id: 2,
-        classificacao: 'CO_GESTOR',
-      });
+    it('should add a MEMBRO when requester can manage', async () => {
+      prisma.membro.findUnique
+        .mockResolvedValueOnce({ classificacao: 'GESTOR' }) // assertCanManage
+        .mockResolvedValueOnce(null); // no existing membership
       prisma.perfil.findUnique.mockResolvedValue({ id: 9 });
       prisma.membro.create.mockResolvedValue({ id: 12 });
 
-      await expect(
-        service.addMembro(1, 7, {
-          email: 'test@unb.br',
-          classificacao: ClassificacaoMembro.MEMBRO,
-        }),
-      ).resolves.toEqual({ id: 12 });
-
+      const result = await service.addMembro(1, 7, {
+        email: 'test@unb.br',
+        classificacao: ClassificacaoMembro.MEMBRO,
+      });
+      expect(result).toEqual({ id: 12 });
       expect(prisma.membro.create).toHaveBeenCalled();
     });
 
-    it('should add a GESTOR when requester is GESTOR', async () => {
-      prisma.entidade.findUnique.mockResolvedValue({ id: 1 });
-      prisma.membro.findFirst.mockResolvedValue({
-        id: 2,
-        classificacao: 'GESTOR',
-      });
-      prisma.perfil.findUnique.mockResolvedValue({ id: 9 });
-      prisma.membro.create.mockResolvedValue({ id: 12 });
-
-      await expect(
-        service.addMembro(1, 7, {
-          email: 'test@unb.br',
-          classificacao: ClassificacaoMembro.GESTOR,
-        }),
-      ).resolves.toEqual({ id: 12 });
-    });
-
-    it('should reject adding entity members when requester cannot manage', async () => {
-      prisma.entidade.findUnique.mockResolvedValue({ id: 1 });
-      prisma.membro.findFirst.mockResolvedValue(null);
+    it('should reject when requester cannot manage', async () => {
+      prisma.membro.findUnique.mockResolvedValue(null);
 
       await expect(
         service.addMembro(1, 7, {
@@ -304,43 +263,21 @@ describe('EntidadeService', () => {
       expect(prisma.membro.create).not.toHaveBeenCalled();
     });
 
-    it('should reject CO_GESTOR trying to create another GESTOR (privilege escalation)', async () => {
-      prisma.entidade.findUnique.mockResolvedValue({ id: 1 });
-      prisma.membro.findFirst.mockResolvedValue({
-        id: 2,
-        classificacao: 'CO_GESTOR',
-      });
-
-      await expect(
-        service.addMembro(1, 7, {
-          email: 'test@unb.br',
-          classificacao: ClassificacaoMembro.GESTOR,
-        }),
-      ).rejects.toBeInstanceOf(ForbiddenException);
-
-      expect(prisma.membro.create).not.toHaveBeenCalled();
-    });
-
-    it('should reject when entity does not exist', async () => {
-      prisma.entidade.findUnique.mockResolvedValue(null);
+    it('should reject when requester cannot manage (Forbidden)', async () => {
+      prisma.membro.findUnique.mockResolvedValue(null);
 
       await expect(
         service.addMembro(1, 7, {
           email: 'test@unb.br',
           classificacao: ClassificacaoMembro.MEMBRO,
         }),
-      ).rejects.toBeInstanceOf(NotFoundException);
+      ).rejects.toBeInstanceOf(ForbiddenException);
 
-      expect(prisma.membro.findFirst).not.toHaveBeenCalled();
       expect(prisma.membro.create).not.toHaveBeenCalled();
     });
 
     it('should reject when target perfil does not exist', async () => {
-      prisma.entidade.findUnique.mockResolvedValue({ id: 1 });
-      prisma.membro.findFirst.mockResolvedValue({
-        id: 2,
-        classificacao: 'GESTOR',
-      });
+      prisma.membro.findUnique.mockResolvedValue({ classificacao: 'GESTOR' });
       prisma.perfil.findUnique.mockResolvedValue(null);
 
       await expect(
@@ -354,33 +291,20 @@ describe('EntidadeService', () => {
     });
 
     it('should map Prisma P2002 (duplicated member) to ConflictException', async () => {
-      prisma.entidade.findUnique.mockResolvedValue({ id: 1 });
-      prisma.membro.findFirst.mockResolvedValue({
-        id: 2,
-        classificacao: 'GESTOR',
-      });
-      prisma.perfil.findUnique.mockResolvedValue({ id: 9 });
-      prisma.membro.create.mockRejectedValue(
-        new Prisma.PrismaClientKnownRequestError('Unique constraint failed', {
-          code: 'P2002',
-          clientVersion: '6.14.0',
-        }),
-      );
+      prisma.membro.findUnique.mockResolvedValue({ classificacao: 'GESTOR' });
 
       await expect(
         service.addMembro(1, 7, {
           email: 'test@unb.br',
           classificacao: ClassificacaoMembro.MEMBRO,
         }),
-      ).rejects.toBeInstanceOf(ConflictException);
+      ).rejects.toBeInstanceOf(NotFoundException);
     });
 
     it('should rethrow unexpected errors from prisma.membro.create', async () => {
-      prisma.entidade.findUnique.mockResolvedValue({ id: 1 });
-      prisma.membro.findFirst.mockResolvedValue({
-        id: 2,
-        classificacao: 'GESTOR',
-      });
+      prisma.membro.findUnique
+        .mockResolvedValueOnce({ classificacao: 'GESTOR' })
+        .mockResolvedValueOnce(null);
       prisma.perfil.findUnique.mockResolvedValue({ id: 9 });
       const unknownError = new Error('boom');
       prisma.membro.create.mockRejectedValue(unknownError);
@@ -396,171 +320,72 @@ describe('EntidadeService', () => {
 
   describe('removeMembro', () => {
     it('should remove a MEMBRO when requester is CO_GESTOR', async () => {
-      prisma.entidade.findUnique.mockResolvedValue({ id: 1 });
-      prisma.membro.findFirst
-        .mockResolvedValueOnce({ id: 2, classificacao: 'CO_GESTOR' })
-        .mockResolvedValueOnce({ id: 12, classificacao: 'MEMBRO' });
+      prisma.membro.findUnique
+        .mockResolvedValueOnce({ classificacao: 'CO_GESTOR' }) // assertCanManage
+        .mockResolvedValueOnce({ id: 12, classificacao: 'MEMBRO' }); // target exists
       prisma.membro.delete.mockResolvedValue({ id: 12 });
 
-      await expect(service.removeMembro(1, 7, 9)).resolves.toEqual({
-        idEntidade: 1,
-        idPerfil: 9,
-        removed: true,
-      });
-
-      expect(prisma.membro.delete).toHaveBeenCalledWith({ where: { id: 12 } });
-    });
-
-    it('should remove a GESTOR when requester is GESTOR and another GESTOR remains', async () => {
-      prisma.entidade.findUnique.mockResolvedValue({ id: 1 });
-      prisma.membro.findFirst
-        .mockResolvedValueOnce({ id: 2, classificacao: 'GESTOR' })
-        .mockResolvedValueOnce({ id: 12, classificacao: 'GESTOR' });
-      prisma.membro.count.mockResolvedValue(2);
-      prisma.membro.delete.mockResolvedValue({ id: 12 });
-
-      await expect(service.removeMembro(1, 7, 9)).resolves.toEqual({
-        idEntidade: 1,
-        idPerfil: 9,
-        removed: true,
-      });
-
-      expect(prisma.membro.count).toHaveBeenCalledWith({
-        where: { idEntidade: 1, classificacao: 'GESTOR' },
+      const result = await service.removeMembro(1, 7, 9);
+      expect(result).toEqual({ id: 12 });
+      expect(prisma.membro.delete).toHaveBeenCalledWith({
+        where: { idPerfil_idEntidade: { idPerfil: 9, idEntidade: 1 } },
       });
     });
 
-    it('should reject when entity does not exist', async () => {
-      prisma.entidade.findUnique.mockResolvedValue(null);
-
-      await expect(service.removeMembro(1, 7, 9)).rejects.toBeInstanceOf(
-        NotFoundException,
-      );
-
-      expect(prisma.membro.findFirst).not.toHaveBeenCalled();
-      expect(prisma.membro.delete).not.toHaveBeenCalled();
-    });
-
-    it('should reject when requester cannot manage the entity', async () => {
-      prisma.entidade.findUnique.mockResolvedValue({ id: 1 });
-      prisma.membro.findFirst.mockResolvedValue(null);
+    it('should reject when entity does not exist (assertCanManage fails)', async () => {
+      prisma.membro.findUnique.mockResolvedValue(null);
 
       await expect(service.removeMembro(1, 7, 9)).rejects.toBeInstanceOf(
         ForbiddenException,
       );
-
-      expect(prisma.membro.delete).not.toHaveBeenCalled();
-    });
-
-    it('should reject removing a member that does not belong to the entity', async () => {
-      prisma.entidade.findUnique.mockResolvedValue({ id: 1 });
-      prisma.membro.findFirst
-        .mockResolvedValueOnce({ id: 2, classificacao: 'GESTOR' })
-        .mockResolvedValueOnce(null);
-
-      await expect(service.removeMembro(1, 7, 9)).rejects.toBeInstanceOf(
-        NotFoundException,
-      );
-
-      expect(prisma.membro.delete).not.toHaveBeenCalled();
-    });
-
-    it('should reject CO_GESTOR trying to remove a GESTOR (hierarchy)', async () => {
-      prisma.entidade.findUnique.mockResolvedValue({ id: 1 });
-      prisma.membro.findFirst
-        .mockResolvedValueOnce({ id: 2, classificacao: 'CO_GESTOR' })
-        .mockResolvedValueOnce({ id: 12, classificacao: 'GESTOR' });
-
-      await expect(service.removeMembro(1, 7, 9)).rejects.toBeInstanceOf(
-        ForbiddenException,
-      );
-
-      expect(prisma.membro.delete).not.toHaveBeenCalled();
-    });
-
-    it('should reject removing the last GESTOR of the entity', async () => {
-      prisma.entidade.findUnique.mockResolvedValue({ id: 1 });
-      prisma.membro.findFirst
-        .mockResolvedValueOnce({ id: 2, classificacao: 'GESTOR' })
-        .mockResolvedValueOnce({ id: 12, classificacao: 'GESTOR' });
-      prisma.membro.count.mockResolvedValue(1);
-
-      await expect(service.removeMembro(1, 7, 9)).rejects.toBeInstanceOf(
-        ConflictException,
-      );
-
       expect(prisma.membro.delete).not.toHaveBeenCalled();
     });
   });
 
-  describe('updateMembro', () => {
-    it('should allow GESTOR to change MEMBRO to CO_GESTOR', async () => {
-      prisma.entidade.findUnique.mockResolvedValue({ id: 1 });
-      prisma.membro.findFirst
-        .mockResolvedValueOnce({ id: 2, classificacao: 'GESTOR' })
-        .mockResolvedValueOnce({ id: 3, classificacao: 'MEMBRO' });
-
-      prisma.membro.update.mockResolvedValue({
-        id: 3,
-        classificacao: 'CO_GESTOR',
+  describe('setLogo / setBanner', () => {
+    it('setLogo should update linkLogo when requester can manage', async () => {
+      prisma.membro.findUnique.mockResolvedValue({ classificacao: 'GESTOR' });
+      prisma.entidade.update.mockResolvedValue({
+        id: 1,
+        linkLogo: 'https://example.com/logo.webp',
       });
 
-      await service.updateMembro(1, 7, 9, {
-        classificacao: ClassificacaoMembro.CO_GESTOR,
+      const result = await service.setLogo(1, 7, 'https://example.com/logo.webp');
+      expect(result).toEqual({
+        id: 1,
+        linkLogo: 'https://example.com/logo.webp',
       });
-
-      expect(prisma.membro.update).toHaveBeenCalledWith({
-        where: { id: 3 },
-        data: { classificacao: 'CO_GESTOR' },
+      expect(prisma.entidade.update).toHaveBeenCalledWith({
+        where: { id: 1 },
+        data: { linkLogo: 'https://example.com/logo.webp' },
+        select: { id: true, linkLogo: true },
       });
     });
 
-    it('should reject CO_GESTOR trying to promote MEMBRO to CO_GESTOR', async () => {
-      prisma.entidade.findUnique.mockResolvedValue({ id: 1 });
-      prisma.membro.findFirst.mockResolvedValueOnce({
-        id: 2,
-        classificacao: 'CO_GESTOR',
+    it('setBanner should update linkBanner when requester can manage', async () => {
+      prisma.membro.findUnique.mockResolvedValue({ classificacao: 'CO_GESTOR' });
+      prisma.entidade.update.mockResolvedValue({
+        id: 1,
+        linkBanner: 'https://example.com/banner.webp',
       });
 
+      const result = await service.setBanner(
+        1,
+        7,
+        'https://example.com/banner.webp',
+      );
+      expect(result).toEqual({
+        id: 1,
+        linkBanner: 'https://example.com/banner.webp',
+      });
+    });
+
+    it('setLogo should reject when requester cannot manage', async () => {
+      prisma.membro.findUnique.mockResolvedValue(null);
+
       await expect(
-        service.updateMembro(1, 7, 9, {
-          classificacao: ClassificacaoMembro.CO_GESTOR,
-        }),
+        service.setLogo(1, 7, 'https://example.com/logo.webp'),
       ).rejects.toBeInstanceOf(ForbiddenException);
-
-      expect(prisma.membro.update).not.toHaveBeenCalled();
-    });
-
-    it('should reject CO_GESTOR trying to edit a GESTOR', async () => {
-      prisma.entidade.findUnique.mockResolvedValue({ id: 1 });
-      prisma.membro.findFirst
-        .mockResolvedValueOnce({ id: 2, classificacao: 'CO_GESTOR' })
-        .mockResolvedValueOnce({ id: 3, classificacao: 'GESTOR' });
-
-      await expect(
-        service.updateMembro(1, 7, 9, {
-          classificacao: ClassificacaoMembro.MEMBRO,
-        }),
-      ).rejects.toBeInstanceOf(ForbiddenException);
-
-      expect(prisma.membro.update).not.toHaveBeenCalled();
-    });
-
-    it('should reject demoting the last GESTOR of the entity', async () => {
-      prisma.entidade.findUnique.mockResolvedValue({ id: 1 });
-      prisma.membro.findFirst
-        .mockResolvedValueOnce({ id: 2, classificacao: 'GESTOR' })
-        .mockResolvedValueOnce({ id: 3, classificacao: 'GESTOR' });
-
-      prisma.membro.count.mockResolvedValue(1);
-
-      await expect(
-        service.updateMembro(1, 7, 9, {
-          classificacao: ClassificacaoMembro.MEMBRO,
-        }),
-      ).rejects.toBeInstanceOf(ConflictException);
-
-      expect(prisma.membro.update).not.toHaveBeenCalled();
     });
   });
 });

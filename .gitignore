@@ -27,3 +27,6 @@ pnpm-debug.log*
 .env
 .env.prod
 .env*.local
+
+# Uploads locais (fallback quando STORAGE_DRIVER=local)
+apps/back/uploads/

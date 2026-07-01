@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ClassificacaoMembro } from '@prisma/client';
 import { EntidadeController } from './entidade.controller';
 import { EntidadeService } from './entidade.service';
+import { StorageService } from '../storage/storage.service';
 
 describe('EntidadeController', () => {
   let controller: EntidadeController;
@@ -23,6 +24,14 @@ describe('EntidadeController', () => {
         {
           provide: EntidadeService,
           useValue: entidadeService,
+        },
+        {
+          provide: StorageService,
+          useValue: {
+            upload: jest.fn(),
+            delete: jest.fn(),
+            getUsage: jest.fn(),
+          },
         },
       ],
     }).compile();

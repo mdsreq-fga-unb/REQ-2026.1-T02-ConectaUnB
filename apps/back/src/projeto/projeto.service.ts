@@ -83,6 +83,22 @@ export class ProjetoService {
     return projetos;
   }
 
+  async setFoto(idProjeto: number, idPerfilSolicitante: number, url: string) {
+    await this.podeEditarProjeto(idProjeto, idPerfilSolicitante);
+    return this.prisma.projeto.update({
+      where: { id: idProjeto },
+      data: { linkFoto: url },
+    });
+  }
+
+  async setBanner(idProjeto: number, idPerfilSolicitante: number, url: string) {
+    await this.podeEditarProjeto(idProjeto, idPerfilSolicitante);
+    return this.prisma.projeto.update({
+      where: { id: idProjeto },
+      data: { linkBanner: url },
+    });
+  }
+
   async findOne(id: number) {
     return this.prisma.projeto.findUnique({
       where: { id },

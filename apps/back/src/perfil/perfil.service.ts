@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { StorageService } from '../storage/storage.service';
 import { UpdatePerfilDto } from './dto/update-perfil.dto';
 import { Prisma, Perfil } from '@prisma/client';
 import { NotFoundException } from '@nestjs/common';
@@ -13,12 +14,16 @@ const perfilSelectPublico = {
   campus: true,
   cargo: true,
   departamento: true,
+  linkFoto: true,
   createdAt: true,
 };
 
 @Injectable()
 export class PerfilService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private readonly storage: StorageService,
+  ) {}
 
   async findAll() {
     return this.prisma.perfil.findMany({
@@ -76,6 +81,21 @@ export class PerfilService {
 
   async findByEmail(email: string) {
     return this.prisma.perfil.findUnique({ where: { email } });
+  }
+
+  async setFoto(id: number, url: string) {
+    try {
+      return await this.prisma.perfil.update({
+        where: { id },
+        data: { linkFoto: url },
+        select: perfilSelectPublico,
+      });
+    } catch (error: any) {
+      if (error.code === 'P2025') {
+        throw new NotFoundException(`Perfil nao encontrado.`);
+      }
+      throw error;
+    }
   }
 
   async create(data: Prisma.PerfilCreateInput): Promise<Perfil> {

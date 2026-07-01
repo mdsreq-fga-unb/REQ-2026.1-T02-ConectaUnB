@@ -8,17 +8,25 @@ import {
   Delete,
   Request,
   UseGuards,
+  UseInterceptors,
+  UploadedFile,
+  BadRequestException,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { PostagemService } from './postagem.service';
 import { CreatePostagemDto } from './dto/create-postagem.dto';
 import { UpdatePostagemDto } from './dto/update-postagem.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
+import { StorageService } from '../storage/storage.service';
 
 @Controller('postagem')
 export class PostagemController {
-  constructor(private readonly postagemService: PostagemService) {}
+  constructor(
+    private readonly postagemService: PostagemService,
+    private readonly storage: StorageService,
+  ) {}
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
@@ -26,6 +34,30 @@ export class PostagemController {
   create(@Request()req, @Body() createPostagemDto: CreatePostagemDto) {
     const userId = Number(req.user.id);
     return this.postagemService.create(createPostagemDto, userId);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Post('imagem')
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: { file: { type: 'string', format: 'binary' } },
+      required: ['file'],
+    },
+  })
+  async uploadImagem(
+    @UploadedFile() file: Express.Multer.File,
+    @Request() req,
+  ) {
+    if (!file) throw new BadRequestException('Arquivo "file" eh obrigatorio.');
+    const userId = Number(req.user.id);
+    return this.storage.upload(file.buffer, {
+      slot: 'postagem',
+      ownerId: userId,
+    });
   }
 
   @Get()

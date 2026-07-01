@@ -7,16 +7,22 @@ import {
   Param,
   Patch,
   Post,
-  Request,
+  Query,
+  Req,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
+  BadRequestException,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { EntidadeService } from './entidade.service';
 import { AddMembroDto } from './dto/add-membro.dto';
 import { CreateEntidadeDto } from './dto/create-entidade.dto';
 import { UpdateEntidadeDto } from './dto/update-entidade.dto';
 import { UpdateMembroDto } from './dto/update-membro.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { StorageService } from '../storage/storage.service';
 
 type AuthenticatedRequest = ExpressRequest & {
   user: { id: string; email: string };
@@ -25,22 +31,24 @@ type AuthenticatedRequest = ExpressRequest & {
 @ApiTags('Entidade')
 @Controller('entidade')
 export class EntidadeController {
-  constructor(private readonly entidadeService: EntidadeService) {}
+  constructor(
+    private readonly entidadeService: EntidadeService,
+    private readonly storage: StorageService,
+  ) {}
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post()
   create(
-    @Request() req: AuthenticatedRequest,
+    @Req() req: AuthenticatedRequest,
     @Body() createEntidadeDto: CreateEntidadeDto,
   ) {
-    console.log(
-      '=> CREATE CHAMADO! idCriador:',
-      req.user.id,
-      'DTO:',
-      createEntidadeDto,
-    );
     return this.entidadeService.create(createEntidadeDto, Number(req.user.id));
+  }
+
+  @Get('buscar')
+  search(@Query('q') q: string) {
+    return this.entidadeService.search(q || '');
   }
 
   @Get()
@@ -51,7 +59,7 @@ export class EntidadeController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Get('minhas')
-  findMinhasEntidades(@Request() req: AuthenticatedRequest) {
+  findMinhasEntidades(@Req() req: AuthenticatedRequest) {
     return this.entidadeService.findMinhasEntidades(Number(req.user.id));
   }
 
@@ -61,7 +69,7 @@ export class EntidadeController {
   addMembro(
     @Param('id') id: string,
     @Body() addMembroDto: AddMembroDto,
-    @Request() req: AuthenticatedRequest,
+    @Req() req: AuthenticatedRequest,
   ) {
     return this.entidadeService.addMembro(
       +id,
@@ -76,7 +84,7 @@ export class EntidadeController {
   removeMembro(
     @Param('id') id: string,
     @Param('idPerfil') idPerfil: string,
-    @Request() req: AuthenticatedRequest,
+    @Req() req: AuthenticatedRequest,
   ) {
     return this.entidadeService.removeMembro(
       +id,
@@ -92,7 +100,7 @@ export class EntidadeController {
     @Param('id') id: string,
     @Param('idPerfil') idPerfil: string,
     @Body() updateMembroDto: UpdateMembroDto,
-    @Request() req: AuthenticatedRequest,
+    @Req() req: AuthenticatedRequest,
   ) {
     return this.entidadeService.updateMembro(
       +id,
@@ -113,7 +121,7 @@ export class EntidadeController {
   update(
     @Param('id') id: string,
     @Body() updateEntidadeDto: UpdateEntidadeDto,
-    @Request() req: AuthenticatedRequest,
+    @Req() req: AuthenticatedRequest,
   ) {
     return this.entidadeService.update(
       +id,
@@ -125,7 +133,77 @@ export class EntidadeController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string, @Request() req: AuthenticatedRequest) {
+  remove(@Param('id') id: string, @Req() req: AuthenticatedRequest) {
     return this.entidadeService.remove(+id, Number(req.user.id));
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/seguir')
+  seguir(@Param('id') id: string, @Req() req: AuthenticatedRequest) {
+    return this.entidadeService.seguir(+id, Number(req.user.id));
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id/seguir')
+  unfollow(@Param('id') id: string, @Req() req: AuthenticatedRequest) {
+    return this.entidadeService.unfollow(+id, Number(req.user.id));
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/logo')
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: { file: { type: 'string', format: 'binary' } },
+      required: ['file'],
+    },
+  })
+  async uploadLogo(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+    @Req() req: AuthenticatedRequest,
+  ) {
+    if (!file) throw new BadRequestException('Arquivo "file" eh obrigatorio.');
+    const ownerId = Number(req.user.id);
+    const uploaded = await this.storage.upload(file.buffer, {
+      slot: 'logo',
+      ownerId,
+      entityType: 'entidade',
+      entityId: +id,
+    });
+    return this.entidadeService.setLogo(+id, ownerId, uploaded.url);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/banner')
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: { file: { type: 'string', format: 'binary' } },
+      required: ['file'],
+    },
+  })
+  async uploadBanner(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+    @Req() req: AuthenticatedRequest,
+  ) {
+    if (!file) throw new BadRequestException('Arquivo "file" eh obrigatorio.');
+    const ownerId = Number(req.user.id);
+    const uploaded = await this.storage.upload(file.buffer, {
+      slot: 'banner',
+      ownerId,
+      entityType: 'entidade',
+      entityId: +id,
+    });
+    return this.entidadeService.setBanner(+id, ownerId, uploaded.url);
   }
 }
