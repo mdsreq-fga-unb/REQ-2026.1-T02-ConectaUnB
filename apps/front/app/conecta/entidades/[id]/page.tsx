@@ -14,7 +14,6 @@ import { toast } from 'sonner';
 import { CriarProjetoModal } from '@/components/CreateProjetoModal';
 import { CriarPostagemModal } from '@/components/CriarPostagemModal';
 import { ConfirmModal } from '@/components/ConfirmModal';
-//import { ProcessoSeletivoModal, type ProcessoSeletivo } from '@/components/ProcessoSeletivoModal';
 import { ProcessoSeletivoFormModal, type ProcessoSeletivo } from '@/components/ProcessoSeletivoFormModal';
 import { ProcessoSeletivoViewModal } from '@/components/ProcessoSeletivoViewModal';
 
@@ -330,7 +329,6 @@ useEffect(() => {
           {/* LÓGICA DO BOTÃO DE PROCESSO SELETIVO */}
           <div className="flex shrink-0 items-center pt-2">
             {processoSeletivo ? (
-              // Se EXISTE processo seletivo
               (vinculoUsuario === 'GESTOR' || vinculoUsuario === 'CO_GESTOR') ? (
                 <ButtonGreen
                   text="Editar Processo Seletivo"
@@ -343,7 +341,6 @@ useEffect(() => {
                 />
               )
             ) : (
-              // Se NÃO EXISTE processo seletivo
               (vinculoUsuario === 'GESTOR' || vinculoUsuario === 'CO_GESTOR') && (
                 <ButtonGreen
                   text="Criar Processo Seletivo"
