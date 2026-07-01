@@ -1,4 +1,11 @@
-import { IsString, IsNotEmpty, MaxLength, IsEnum } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  MaxLength,
+  IsEnum,
+  IsOptional,
+  IsUrl,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Campus, Departamento, ClassificacaoEntidade } from '@prisma/client';
 
@@ -11,6 +18,12 @@ export class CreateEntidadeDto {
     example: 'ConectaUnB',
   })
   nome!: string;
+
+  @IsString()
+  @IsOptional()
+  @MaxLength(1000)
+  @ApiProperty({ required: false })
+  descricao?: string;
 
   @ApiProperty({ enum: ClassificacaoEntidade, required: true })
   @IsEnum(ClassificacaoEntidade)
@@ -26,4 +39,14 @@ export class CreateEntidadeDto {
   @IsEnum(Departamento)
   @IsNotEmpty()
   departamento!: Departamento;
+
+  @IsUrl()
+  @IsOptional()
+  @ApiProperty({ required: false })
+  linkLogo?: string;
+
+  @IsUrl()
+  @IsOptional()
+  @ApiProperty({ required: false })
+  linkBanner?: string;
 }

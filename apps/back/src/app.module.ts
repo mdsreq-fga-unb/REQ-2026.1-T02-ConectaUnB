@@ -13,11 +13,13 @@ import { ProjetoModule } from './projeto/projeto.module';
 import { PostagemModule } from './postagem/postagem.module';
 import { ProcessoSeletivoModule } from './processo-seletivo/processo-seletivo.module';
 import { NotificacaoModule } from './notificacao/notificacao.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '../../.env' }),
     ThrottlerModule.forRoot({ ttl: 60, limit: 20 }),
+    ScheduleModule.forRoot(),
     PrismaModule,
     AuthModule,
     StorageModule,

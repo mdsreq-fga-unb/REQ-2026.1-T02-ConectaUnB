@@ -31,6 +31,9 @@ COPY --from=builder /workspace/apps/back/dist apps/back/dist
 
 RUN pnpm --filter back prisma:generate
 
+COPY infra/akamai/back-entrypoint /usr/local/bin/back-entrypoint
+RUN chmod +x /usr/local/bin/back-entrypoint
+
 EXPOSE 3000
 
-CMD ["node", "apps/back/dist/main.js"]
+CMD ["/usr/local/bin/back-entrypoint"]

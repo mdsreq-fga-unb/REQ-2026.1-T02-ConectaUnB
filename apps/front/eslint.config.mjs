@@ -13,6 +13,14 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  {
+    rules: {
+      // Regra nova do React 19 que flagriza setState dentro de effects.
+      // O padrão de fetch-on-mount é intentional em várias páginas; refatorar
+      // para useSyncExternalStore fica fora de escopo.
+      "react-hooks/set-state-in-effect": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;

@@ -11,7 +11,7 @@ model Perfil {
   id                        Int @id @default(autoincrement())
   name                      String @db.Text
   email                     String @unique
-  matricula                 Int? @unique
+  matricula                 String? @unique
   senha                     String
   linkFoto                  String?
   curso                     Curso
@@ -27,6 +27,7 @@ model Perfil {
   Seguindo            Seguindo[]
   Curtidas            Curtidas[]
   Inscricao           Inscricao[]
+  files               File[]
 }
 
 model Entidade {
@@ -61,6 +62,8 @@ model Membro {
 
   gerenteProjetos     gerentesProjetos[]
   colaboradorProjetos colaboradoresProjetos[]
+
+  @@unique([idPerfil, idEntidade])
 }
 
 model Seguindo {
@@ -104,6 +107,7 @@ model Projeto {
   nome            String @db.Text
   descricao       String? @db.Text
   linkFoto        String?
+  linkBanner      String?
   status          StatusProjeto
   gerentes         gerentesProjetos[]
   colaboradores   colaboradoresProjetos[]
@@ -186,6 +190,31 @@ model PreferenciaNotificacao {
   perfil                Perfil @relation(fields: [idPerfil], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@id([idPerfil])
+}
+
+/// Rastreia objetos armazenados no R2 (ou local) para permitir
+/// quota por dono, limpeza de orfaos e substituicao no update.
+model File {
+  id            String   @id @default(uuid())
+  key           String   @unique
+  url           String
+  originalName  String   @db.Text
+  mimeType      String
+  size          Int
+  /// Slot do arquivo: avatar | logo | banner | postagem | projeto_foto | projeto_banner | processo_foto
+  slot          String
+  /// Perfil.id de quem subiu o arquivo (dono para efeito de quota).
+  ownerId       Int
+  /// Tipo da entidade referenciada (entidade | projeto | postagem | processo_seletivo). Null para perfil.
+  entityType    String?
+  /// ID da entidade referenciada.
+  entityId      Int?
+  createdAt     DateTime @default(now())
+
+  owner         Perfil @relation(fields: [ownerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([ownerId, slot])
+  @@index([entityType, entityId])
 }
 
 enum Cargo {

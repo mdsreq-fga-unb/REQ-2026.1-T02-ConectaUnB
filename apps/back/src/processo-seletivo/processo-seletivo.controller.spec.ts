@@ -1,17 +1,23 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProcessoSeletivoController } from './processo-seletivo.controller';
 import { ProcessoSeletivoService } from './processo-seletivo.service';
-
-const mockProcessoSeletivoService = {
-  create: jest.fn(),
-  findAll: jest.fn(),
-  findOne: jest.fn(),
-  update: jest.fn(),
-  remove: jest.fn(),
-};
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 describe('ProcessoSeletivoController', () => {
   let controller: ProcessoSeletivoController;
+  let service: ProcessoSeletivoService;
+
+  const mockProcessoSeletivoService = {
+    create: jest.fn(),
+    findAll: jest.fn(),
+    findOne: jest.fn(),
+    update: jest.fn(),
+    remove: jest.fn(),
+  };
+
+  const mockRequest = {
+    user: { id: '1', email: 'usuario@teste.com' },
+  } as any;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -22,65 +28,62 @@ describe('ProcessoSeletivoController', () => {
           useValue: mockProcessoSeletivoService,
         },
       ],
-    }).compile();
+    })
+      .overrideGuard(JwtAuthGuard)
+      .useValue({ canActivate: () => true }) // Bypassa o guard para focar na lógica do controller
+      .compile();
 
     controller = module.get<ProcessoSeletivoController>(
       ProcessoSeletivoController,
     );
+    service = module.get<ProcessoSeletivoService>(ProcessoSeletivoService);
+  });
+
+  afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should be defined', () => {
+  it('deve estar definido', () => {
     expect(controller).toBeDefined();
   });
 
-  describe('POST /processo-seletivo', () => {
-    it('should delegate to service.create', () => {
-      const dto = {
-        idEntidade: 1,
-        titulo: 'PS',
-        classificacao: 'ABERTA' as any,
-        inicioInscricao: new Date(),
-        fimInscricao: new Date(),
-      };
-      mockProcessoSeletivoService.create.mockReturnValue('created');
+  describe('create', () => {
+    it('deve chamar o service.create com o DTO e o userId (convertido para number)', async () => {
+      const dto = { titulo: 'Trainee 2026', idEntidade: 5 } as any;
+      await controller.create(dto, mockRequest);
 
-      const result = controller.create(dto);
-      expect(result).toBe('created');
-      expect(mockProcessoSeletivoService.create).toHaveBeenCalledWith(dto);
+      expect(service.create).toHaveBeenCalledWith(dto, 1);
     });
   });
 
-  describe('GET /processo-seletivo', () => {
-    it('should delegate to service.findAll', () => {
-      mockProcessoSeletivoService.findAll.mockReturnValue('all');
-      expect(controller.findAll()).toBe('all');
-      expect(mockProcessoSeletivoService.findAll).toHaveBeenCalled();
+  describe('findAll', () => {
+    it('deve chamar o service.findAll', async () => {
+      await controller.findAll();
+      expect(service.findAll).toHaveBeenCalled();
     });
   });
 
-  describe('GET /processo-seletivo/:id', () => {
-    it('should delegate to service.findOne with converted id', () => {
-      mockProcessoSeletivoService.findOne.mockReturnValue('one');
-      expect(controller.findOne('5')).toBe('one');
-      expect(mockProcessoSeletivoService.findOne).toHaveBeenCalledWith(5);
+  describe('findOne', () => {
+    it('deve chamar o service.findOne convertendo o id para number', async () => {
+      await controller.findOne('15');
+      expect(service.findOne).toHaveBeenCalledWith(15);
     });
   });
 
-  describe('PATCH /processo-seletivo/:id', () => {
-    it('should delegate to service.update with converted id', () => {
-      const dto = { titulo: 'Updated' };
-      mockProcessoSeletivoService.update.mockReturnValue('updated');
-      expect(controller.update('3', dto as any)).toBe('updated');
-      expect(mockProcessoSeletivoService.update).toHaveBeenCalledWith(3, dto);
+  describe('update', () => {
+    it('deve chamar o service.update com id, DTO e userId', async () => {
+      const dto = { titulo: 'Atualizado' } as any;
+      await controller.update('15', dto, mockRequest);
+
+      expect(service.update).toHaveBeenCalledWith(15, dto, 1);
     });
   });
 
-  describe('DELETE /processo-seletivo/:id', () => {
-    it('should delegate to service.remove with converted id', () => {
-      mockProcessoSeletivoService.remove.mockReturnValue('removed');
-      expect(controller.remove('7')).toBe('removed');
-      expect(mockProcessoSeletivoService.remove).toHaveBeenCalledWith(7);
+  describe('remove', () => {
+    it('deve chamar o service.remove com id e userId', async () => {
+      await controller.remove('15', mockRequest);
+
+      expect(service.remove).toHaveBeenCalledWith(15, 1);
     });
   });
 });

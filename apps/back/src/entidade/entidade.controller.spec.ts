@@ -1,78 +1,113 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { ClassificacaoMembro } from '@prisma/client';
 import { EntidadeController } from './entidade.controller';
 import { EntidadeService } from './entidade.service';
-
-const mockEntidadeService = {
-  create: jest.fn(),
-  findAll: jest.fn(),
-  findOne: jest.fn(),
-  update: jest.fn(),
-  remove: jest.fn(),
-};
+import { StorageService } from '../storage/storage.service';
 
 describe('EntidadeController', () => {
   let controller: EntidadeController;
+  const entidadeService = {
+    create: jest.fn(),
+    findAll: jest.fn(),
+    findMinhasEntidades: jest.fn(),
+    addMembro: jest.fn(),
+    removeMembro: jest.fn(),
+    findOne: jest.fn(),
+    update: jest.fn(),
+    remove: jest.fn(),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [EntidadeController],
-      providers: [{ provide: EntidadeService, useValue: mockEntidadeService }],
+      providers: [
+        {
+          provide: EntidadeService,
+          useValue: entidadeService,
+        },
+        {
+          provide: StorageService,
+          useValue: {
+            upload: jest.fn(),
+            delete: jest.fn(),
+            getUsage: jest.fn(),
+          },
+        },
+      ],
     }).compile();
 
     controller = module.get<EntidadeController>(EntidadeController);
     jest.clearAllMocks();
   });
 
+  const buildReq = () =>
+    ({ user: { id: '7', email: 'user@aluno.unb.br' } }) as Parameters<
+      EntidadeController['findMinhasEntidades']
+    >[0];
+
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
 
-  describe('POST /entidade', () => {
-    it('should delegate to service.create', () => {
-      const dto = {
-        nome: 'Test',
-        classificacao: 'EMPRESA_JUNIOR' as any,
-        campus: 'GAMA' as any,
-        departamento: 'FCTE' as any,
-      };
-      mockEntidadeService.create.mockReturnValue('created');
+  it('should list entities for the authenticated user', () => {
+    entidadeService.findMinhasEntidades.mockReturnValue([
+      { id: 1, nome: 'Conecta UnB', vinculo: { classificacao: 'GESTOR' } },
+    ]);
 
-      const result = controller.create(dto);
-      expect(result).toBe('created');
-      expect(mockEntidadeService.create).toHaveBeenCalledWith(dto);
-    });
+    expect(controller.findMinhasEntidades(buildReq())).toEqual([
+      { id: 1, nome: 'Conecta UnB', vinculo: { classificacao: 'GESTOR' } },
+    ]);
+    expect(entidadeService.findMinhasEntidades).toHaveBeenCalledWith(7);
   });
 
-  describe('GET /entidade', () => {
-    it('should delegate to service.findAll', () => {
-      mockEntidadeService.findAll.mockReturnValue('all');
-      expect(controller.findAll()).toBe('all');
-      expect(mockEntidadeService.findAll).toHaveBeenCalled();
+  it('should add members using authenticated manager id', () => {
+    const dto = {
+      email: 'test@unb.br',
+      classificacao: ClassificacaoMembro.MEMBRO,
+    };
+    entidadeService.addMembro.mockReturnValue({
+      id: 11,
+      idPerfil: 9,
+      idEntidade: 1,
+      classificacao: 'MEMBRO',
     });
+
+    expect(controller.addMembro('1', dto, buildReq())).toEqual({
+      id: 11,
+      idPerfil: 9,
+      idEntidade: 1,
+      classificacao: 'MEMBRO',
+    });
+    expect(entidadeService.addMembro).toHaveBeenCalledWith(1, 7, dto);
   });
 
-  describe('GET /entidade/:id', () => {
-    it('should delegate to service.findOne with converted id', () => {
-      mockEntidadeService.findOne.mockReturnValue('one');
-      expect(controller.findOne('5')).toBe('one');
-      expect(mockEntidadeService.findOne).toHaveBeenCalledWith(5);
+  it('should remove members using authenticated manager id', () => {
+    entidadeService.removeMembro.mockReturnValue({
+      idEntidade: 1,
+      idPerfil: 9,
+      removed: true,
     });
+
+    expect(controller.removeMembro('1', '9', buildReq())).toEqual({
+      idEntidade: 1,
+      idPerfil: 9,
+      removed: true,
+    });
+    expect(entidadeService.removeMembro).toHaveBeenCalledWith(1, 7, 9);
   });
 
-  describe('PATCH /entidade/:id', () => {
-    it('should delegate to service.update with converted id', () => {
-      const dto = { nome: 'Updated' };
-      mockEntidadeService.update.mockReturnValue('updated');
-      expect(controller.update('3', dto as any)).toBe('updated');
-      expect(mockEntidadeService.update).toHaveBeenCalledWith(3, dto);
-    });
+  it('should update entity using authenticated manager id', () => {
+    const dto = { nome: 'Entidade Atualizada' };
+    entidadeService.update.mockReturnValue({ id: 1, ...dto });
+
+    expect(controller.update('1', dto, buildReq())).toEqual({ id: 1, ...dto });
+    expect(entidadeService.update).toHaveBeenCalledWith(1, 7, dto);
   });
 
-  describe('DELETE /entidade/:id', () => {
-    it('should delegate to service.remove with converted id', () => {
-      mockEntidadeService.remove.mockReturnValue('removed');
-      expect(controller.remove('7')).toBe('removed');
-      expect(mockEntidadeService.remove).toHaveBeenCalledWith(7);
-    });
+  it('should remove entity using authenticated manager id', () => {
+    entidadeService.remove.mockReturnValue({ id: 1 });
+
+    expect(controller.remove('1', buildReq())).toEqual({ id: 1 });
+    expect(entidadeService.remove).toHaveBeenCalledWith(1, 7);
   });
 });

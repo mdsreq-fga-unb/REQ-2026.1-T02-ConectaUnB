@@ -1,0 +1,180 @@
+export const CURSO_OPTIONS = [
+  { value: "ADMINISTRACAO", label: "Administração" },
+  { value: "AGRONOMIA", label: "Agronomia" },
+  { value: "ARQUITETURA_E_URBANISMO", label: "Arquitetura e Urbanismo" },
+  { value: "ARQUIVOLOGIA", label: "Arquivologia" },
+  { value: "ARTES_CENICAS", label: "Artes Cênicas" },
+  { value: "ARTES_CENICAS_INTERPRETACAO_TEATRAL", label: "Artes Cênicas - Interpretação Teatral" },
+  { value: "ARTES_VISUAIS", label: "Artes Visuais" },
+  { value: "BIBLIOTECONOMIA", label: "Biblioteconomia" },
+  { value: "BIOTECNOLOGIA", label: "Biotecnologia" },
+  { value: "CIENCIA_DA_COMPUTACAO", label: "Ciência da Computação" },
+  { value: "CIENCIA_POLITICA", label: "Ciência Política" },
+  { value: "CIENCIAS_AMBIENTAIS", label: "Ciências Ambientais" },
+  { value: "CIENCIAS_BIOLOGICAS", label: "Ciências Biológicas" },
+  { value: "CIENCIAS_CONTABEIS", label: "Ciências Contábeis" },
+  { value: "CIENCIAS_ECONOMICAS", label: "Ciências Econômicas" },
+  { value: "CIENCIAS_NATURAIS", label: "Ciências Naturais" },
+  { value: "CIENCIAS_SOCIAIS", label: "Ciências Sociais" },
+  { value: "CIENCIAS_SOCIAIS_ANTROPOLOGIA", label: "Ciências Sociais - Antropologia" },
+  { value: "CIENCIAS_SOCIAIS_LATINO_AMERICANAS", label: "Ciências Sociais Latino-Americanas" },
+  { value: "CIENCIAS_SOCIAIS_SOCIOLOGIA", label: "Ciências Sociais - Sociologia" },
+  { value: "COMPUTACAO", label: "Computação" },
+  { value: "COMUNICACAO_SOCIAL_AUDIOVISUAL", label: "Comunicação Social - Audiovisual" },
+  { value: "COMUNICACAO_SOCIAL_COMUNICACAO_ORGANIZACIONAL", label: "Comunicação Social - Comunicação Organizacional" },
+  { value: "COMUNICACAO_SOCIAL_PUBLICIDADE_E_PROPAGANDA", label: "Comunicação Social - Publicidade e Propaganda" },
+  { value: "DESIGN_PROGRAMACAO_VISUAL", label: "Design - Programação Visual" },
+  { value: "DESIGN_PROJETO_DO_PRODUTO", label: "Design - Projeto do Produto" },
+  { value: "DIREITO", label: "Direito" },
+  { value: "EDUCACAO_DO_CAMPO_CIENCIAS_DA_NATUREZA", label: "Educação do Campo - Ciências da Natureza" },
+  { value: "EDUCACAO_DO_CAMPO_CIENCIAS_DA_NATUREZA_E_MATEMATICA", label: "Educação do Campo - Ciências da Natureza e Matemática" },
+  { value: "EDUCACAO_DO_CAMPO_LINGUAGENS_ARTES_E_LITERATURA", label: "Educação do Campo - Linguagens, Artes e Literatura" },
+  { value: "EDUCACAO_DO_CAMPO_MATEMATICA", label: "Educação do Campo - Matemática" },
+  { value: "EDUCACAO_FISICA", label: "Educação Física" },
+  { value: "EDUCACAO_FISICA_CICLO_BASICO", label: "Educação Física - Ciclo Básico" },
+  { value: "ENFERMAGEM", label: "Enfermagem" },
+  { value: "ENGENHARIA", label: "Engenharia" },
+  { value: "ENGENHARIA_AEROESPACIAL", label: "Engenharia Aeroespacial" },
+  { value: "ENGENHARIA_AMBIENTAL", label: "Engenharia Ambiental" },
+  { value: "ENGENHARIA_AMBIENTAL_E_SANITARIA", label: "Engenharia Ambiental e Sanitária" },
+  { value: "ENGENHARIA_AUTOMOTIVA", label: "Engenharia Automotiva" },
+  { value: "ENGENHARIA_CIVIL", label: "Engenharia Civil" },
+  { value: "ENGENHARIA_DE_COMPUTACAO", label: "Engenharia de Computação" },
+  { value: "ENGENHARIA_DE_ENERGIA", label: "Engenharia de Energia" },
+  { value: "ENGENHARIA_DE_PRODUCAO", label: "Engenharia de Produção" },
+  { value: "ENGENHARIA_DE_REDES_DE_COMUNICACAO", label: "Engenharia de Redes de Comunicação" },
+  { value: "ENGENHARIA_DE_SOFTWARE", label: "Engenharia de Software" },
+  { value: "ENGENHARIA_ELETRICA", label: "Engenharia Elétrica" },
+  { value: "ENGENHARIA_ELETRONICA", label: "Engenharia Eletrônica" },
+  { value: "ENGENHARIA_FLORESTAL", label: "Engenharia Florestal" },
+  { value: "ENGENHARIA_MECANICA", label: "Engenharia Mecânica" },
+  { value: "ENGENHARIA_MECATRONICA_CONTROLE_E_AUTOMACAO", label: "Engenharia Mecatrônica - Controle e Automação" },
+  { value: "ENGENHARIA_QUIMICA", label: "Engenharia Química" },
+  { value: "ESTATISTICA", label: "Estatística" },
+  { value: "FARMACIA", label: "Farmácia" },
+  { value: "FILOSOFIA", label: "Filosofia" },
+  { value: "FISICA", label: "Física" },
+  { value: "FISICA_COMPUTACIONAL", label: "Física Computacional" },
+  { value: "FISIOTERAPIA", label: "Fisioterapia" },
+  { value: "FONOAUDIOLOGIA", label: "Fonoaudiologia" },
+  { value: "GEOFISICA", label: "Geofísica" },
+  { value: "GEOGRAFIA", label: "Geografia" },
+  { value: "GEOLOGIA", label: "Geologia" },
+  { value: "GESTAO_AMBIENTAL", label: "Gestão Ambiental" },
+  { value: "GESTAO_DE_AGRONEGOCIOS", label: "Gestão de Agronegócios" },
+  { value: "GESTAO_DE_POLITICAS_PUBLICAS", label: "Gestão de Políticas Públicas" },
+  { value: "GESTAO_DO_AGRONEGOCIO", label: "Gestão do Agronegócio" },
+  { value: "HISTORIA", label: "História" },
+  { value: "INTELIGENCIA_ARTIFICIAL", label: "Inteligência Artificial" },
+  { value: "JORNALISMO", label: "Jornalismo" },
+  { value: "LETRAS_LINGUA_E_LITERATURA_JAPONESA", label: "Letras - Língua e Literatura Japonesa" },
+  { value: "LETRAS_LINGUA_ESPANHOLA_E_LITERATURA_ESPANHOLA_E_HISPANO_AMERICANA", label: "Letras - Língua Espanhola e Literaturas" },
+  { value: "LETRAS_LINGUA_FRANCESA_E_RESPECTIVA_LITERATURA", label: "Letras - Língua Francesa e Literatura" },
+  { value: "LETRAS_LINGUA_INGLESA_E_RESPECTIVA_LITERATURA", label: "Letras - Língua Inglesa e Literatura" },
+  { value: "LETRAS_LINGUA_PORTUGUESA_E_RESPECTIVA_LITERATURA", label: "Letras - Língua Portuguesa e Literatura" },
+  { value: "LETRAS_PORTUGUES_DO_BRASIL_COMO_SEGUNDA_LINGUA", label: "Letras - Português do Brasil como Segunda Língua" },
+  { value: "LETRAS_TRADUCAO_ESPANHOL", label: "Letras - Tradução Espanhol" },
+  { value: "LETRAS_TRADUCAO_FRANCES", label: "Letras - Tradução Francês" },
+  { value: "LETRAS_TRADUCAO_INGLES", label: "Letras - Tradução Inglês" },
+  { value: "LINGUA_DE_SINAIS_BRASILEIRA_PORTUGUES_COMO_SEGUNDA_LINGUA", label: "Língua de Sinais Brasileira/Português" },
+  { value: "LINGUAS_ESTRANGEIRAS_APLICADAS_MSI", label: "Línguas Estrangeiras Aplicadas (MSI)" },
+  { value: "MATEMATICA", label: "Matemática" },
+  { value: "MEDICINA", label: "Medicina" },
+  { value: "MEDICINA_VETERINARIA", label: "Medicina Veterinária" },
+  { value: "MUSEOLOGIA", label: "Museologia" },
+  { value: "MUSICA", label: "Música" },
+  { value: "MUSICA_CANTO", label: "Música - Canto" },
+  { value: "MUSICA_CLARINETA", label: "Música - Clarineta" },
+  { value: "MUSICA_COMPOSICAO", label: "Música - Composição" },
+  { value: "MUSICA_CONTRABAIXO", label: "Música - Contrabaixo" },
+  { value: "MUSICA_FAGOTE", label: "Música - Fagote" },
+  { value: "MUSICA_FLAUTA", label: "Música - Flauta" },
+  { value: "MUSICA_OBOE", label: "Música - Oboé" },
+  { value: "MUSICA_PIANO", label: "Música - Piano" },
+  { value: "MUSICA_REGENCIA", label: "Música - Regência" },
+  { value: "MUSICA_SAXOFONE", label: "Música - Saxofone" },
+  { value: "MUSICA_TROMBONE", label: "Música - Trombone" },
+  { value: "MUSICA_TROMPA", label: "Música - Trompa" },
+  { value: "MUSICA_TROMPETE", label: "Música - Trompete" },
+  { value: "MUSICA_VIOLA", label: "Música - Viola" },
+  { value: "MUSICA_VIOLAO", label: "Música - Violão" },
+  { value: "MUSICA_VIOLINO", label: "Música - Violino" },
+  { value: "MUSICA_VIOLONCELO", label: "Música - Violoncelo" },
+  { value: "NUTRICAO", label: "Nutrição" },
+  { value: "ODONTOLOGIA", label: "Odontologia" },
+  { value: "PSICOLOGIA", label: "Psicologia" },
+  { value: "QUIMICA", label: "Química" },
+  { value: "QUIMICA_TECNOLOGICA", label: "Química Tecnológica" },
+  { value: "RELACOES_INTERNACIONAIS", label: "Relações Internacionais" },
+  { value: "SAUDE_COLETIVA", label: "Saúde Coletiva" },
+  { value: "SERVICO_SOCIAL", label: "Serviço Social" },
+  { value: "TEATRO", label: "Teatro" },
+  { value: "TEORIA_CRITICA_E_HISTORIA_DA_ARTE", label: "Teoria, Crítica e História da Arte" },
+  { value: "TURISMO", label: "Turismo" }
+];
+
+export const DEPARTAMENTO_OPTIONS = [
+  { value: "ADM", label: "ADM" }, { value: "CCA", label: "CCA" }, { value: "CEN", label: "CEN" },
+  { value: "CET", label: "CET" }, { value: "CIC", label: "CIC" }, { value: "DAN", label: "DAN" },
+  { value: "DIN", label: "DIN" }, { value: "DSC", label: "DSC" }, { value: "ECO", label: "ECO" },
+  { value: "EFL", label: "EFL" }, { value: "ELA", label: "ELA" }, { value: "ENC", label: "ENC" },
+  { value: "ENE", label: "ENE" }, { value: "ENF", label: "ENF" }, { value: "ENM", label: "ENM" },
+  { value: "EPR", label: "EPR" }, { value: "EST", label: "EST" }, { value: "FAC_COM", label: "FAC_COM" },
+  { value: "FAC_DAP", label: "FAC_DAP" }, { value: "FAC_JOR", label: "FAC_JOR" }, { value: "FAU", label: "FAU" },
+  { value: "FAV", label: "FAV" }, { value: "FCI", label: "FCI" }, { value: "FCS", label: "FCS" },
+  { value: "FCTE", label: "FCTE" }, { value: "FCTS", label: "FCTS" }, { value: "FDD", label: "FDD" },
+  { value: "FED", label: "FED" }, { value: "FEF", label: "FEF" }, { value: "FIL", label: "FIL" },
+  { value: "FMD", label: "FMD" }, { value: "FTD", label: "FTD" }, { value: "FUP", label: "FUP" },
+  { value: "GEA", label: "GEA" }, { value: "GPP", label: "GPP" }, { value: "HIS", label: "HIS" },
+  { value: "ICB", label: "ICB" }, { value: "ICE", label: "ICE" }, { value: "ICH", label: "ICH" },
+  { value: "IDA1", label: "IDA1" }, { value: "IFD", label: "IFD" }, { value: "IGD", label: "IGD" },
+  { value: "ILD", label: "ILD" }, { value: "IPD", label: "IPD" }, { value: "IPOL", label: "IPOL" },
+  { value: "IQD", label: "IQD" }, { value: "IREL", label: "IREL" }, { value: "LET", label: "LET" },
+  { value: "LIP", label: "LIP" }, { value: "MAT", label: "MAT" }, { value: "MUS", label: "MUS" },
+  { value: "NUT", label: "NUT" }, { value: "ODT", label: "ODT" }, { value: "SER", label: "SER" },
+  { value: "SOL", label: "SOL" }, { value: "VIS", label: "VIS" }
+];
+
+export const CARGO_OPTIONS = [
+  { value: "DOCENTE", label: "Docente" },
+  { value: "DISCENTE", label: "Discente" }
+];
+
+export const CAMPUS_OPTIONS = [
+  { value: "CEILANDIA", label: "Ceilândia" },
+  { value: "GAMA", label: "Gama" },
+  { value: "DARCY", label: "Darcy" },
+  { value: "PLANALTINA", label: "Planaltina" }
+];
+
+export const ClassificacaoEntidade = [
+  { value: "EMPRESA_JUNIOR", label: "Empresa Júnior" },
+  { value: "EQUIPE_COMPETICAO", label: "Equipe de Competição" },
+  { value: "PROJETO_EXTENSAO", label: "Projeto de Extensão" },
+  { value: "ATLETICA", label: "Atletica" }
+];
+
+export const StatusProjeto = [
+  { value: "PLANEJAMENTO", label: "Em Planejamento" },
+  { value: "EM_ANDAMENTO", label: "Em Andamento" },
+  { value: "CONCLUIDO", label: "Concluído" },
+  { value: "CANCELADO", label: "Cancelado" },
+  { value: "PAUSADO", label: "Pausado" }
+];
+
+export const ClassificacaoMembro = [
+  { value: "GESTOR", label: "Gestor" },
+  { value: "CO_GESTOR", label: "Co-Gestor" },
+  { value: "MEMBRO", label: "Membro" }
+];
+
+export const ClassificacaoInscricao = [
+  { value: "ABERTA", label: "Aberta" },
+  { value: "FECHADA", label: "Fechada" }
+];
+
+export const TipoNotificacao = [
+  { value: "PROCESSO_SELETIVO", label: "Processo Seletivo" },
+  { value: "ATUALIZACAO_PROJETO", label: "Atualização de Projeto" },
+  { value: "NOVA_PUBLICACAO", label: "Nova Publicação" }
+];

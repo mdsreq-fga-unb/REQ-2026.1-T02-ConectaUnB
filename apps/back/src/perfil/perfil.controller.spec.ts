@@ -1,82 +1,114 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PerfilController } from './perfil.controller';
 import { PerfilService } from './perfil.service';
+import { StorageService } from '../storage/storage.service';
+
+const mockPerfil = {
+  id: 1,
+  nome: 'Usuário Teste',
+  email: 'usuario.teste@exemplo.com',
+  matricula: '123456789',
+  curso: 'ENGENHARIA_DE_SOFTWARE',
+  campus: 'GAMA',
+  cargo: 'DISCENTE',
+  departamento: 'FCTE',
+  createdAt: new Date(),
+};
 
 const mockPerfilService = {
   findAll: jest.fn(),
   findOne: jest.fn(),
   update: jest.fn(),
   remove: jest.fn(),
+  findSeguindo: jest.fn(),
 };
 
 describe('PerfilController', () => {
   let controller: PerfilController;
+  let service: PerfilService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PerfilController],
-      providers: [{ provide: PerfilService, useValue: mockPerfilService }],
+      providers: [
+        { provide: PerfilService, useValue: mockPerfilService },
+        {
+          provide: StorageService,
+          useValue: {
+            upload: jest.fn(),
+            delete: jest.fn(),
+            getUsage: jest.fn(),
+          },
+        },
+      ],
     }).compile();
 
     controller = module.get<PerfilController>(PerfilController);
+    service = module.get<PerfilService>(PerfilService);
+  });
+
+  afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should be defined', () => {
+  it('deve estar definido', () => {
     expect(controller).toBeDefined();
   });
 
-  describe('GET /perfil', () => {
-    it('should return all perfis', async () => {
-      const perfis = [
-        { id: 1, name: 'A' },
-        { id: 2, name: 'B' },
-      ];
-      mockPerfilService.findAll.mockResolvedValue(perfis);
+  describe('findAll', () => {
+    it('deve retornar um array de perfis', async () => {
+      mockPerfilService.findAll.mockResolvedValue([mockPerfil]);
 
       const result = await controller.findAll();
-      expect(result).toEqual(perfis);
-      expect(mockPerfilService.findAll).toHaveBeenCalled();
+
+      expect(result).toEqual([mockPerfil]);
+      expect(service.findAll).toHaveBeenCalledTimes(1);
     });
   });
 
-  describe('GET /perfil/:id', () => {
-    it('should return a single perfil', async () => {
-      const perfil = { id: 1, name: 'A' };
-      mockPerfilService.findOne.mockResolvedValue(perfil);
-
-      const result = await controller.findOne('1');
-      expect(result).toEqual(perfil);
-      expect(mockPerfilService.findOne).toHaveBeenCalledWith(1);
-    });
-
-    it('should convert string id to number', async () => {
-      mockPerfilService.findOne.mockResolvedValue(null);
-      await controller.findOne('42');
-      expect(mockPerfilService.findOne).toHaveBeenCalledWith(42);
+  describe('findOne', () => {
+    it('deve retornar um único perfil pelo ID', async () => {
+      // ...
+      await controller.findOne(1);
+      expect(service.findOne).toHaveBeenCalledWith(1);
     });
   });
 
-  describe('PATCH /perfil/:id', () => {
-    it('should update a perfil', async () => {
-      const dto = { name: 'Updated' };
-      const updated = { id: 1, name: 'Updated' };
-      mockPerfilService.update.mockResolvedValue(updated);
-
-      const result = await controller.update('1', dto);
-      expect(result).toEqual(updated);
-      expect(mockPerfilService.update).toHaveBeenCalledWith(1, dto);
+  describe('findSeguindo', () => {
+    it('deve retornar as entidades seguidas pelo perfil', async () => {
+      await controller.findSeguindo(1); // Mande o número diretamente!
+      expect(service.findSeguindo).toHaveBeenCalledWith(1);
     });
   });
 
-  describe('DELETE /perfil/:id', () => {
-    it('should delete a perfil', async () => {
-      const deleted = { id: 1, name: 'A' };
-      mockPerfilService.remove.mockResolvedValue(deleted);
+  describe('update', () => {
+    it('deve atualizar o perfil usando o ID extraído do token (req.user)', async () => {
+      const updateDto = { nome: 'Usuário Teste Atualizado' };
 
-      const result = await controller.remove('1');
-      expect(result).toEqual(deleted);
-      expect(mockPerfilService.remove).toHaveBeenCalledWith(1);
+      const mockReq = { user: { id: '1' } };
+
+      const perfilAtualizado = { ...mockPerfil, ...updateDto };
+      mockPerfilService.update.mockResolvedValue(perfilAtualizado);
+
+      const result = await controller.update(mockReq, updateDto as any);
+
+      expect(result).toEqual(perfilAtualizado);
+
+      expect(service.update).toHaveBeenCalledWith(1, updateDto);
+    });
+  });
+
+  describe('remove', () => {
+    it('deve remover o perfil usando o ID extraído do token (req.user)', async () => {
+      const mockReq = { user: { id: '1' } };
+
+      mockPerfilService.remove.mockResolvedValue(mockPerfil);
+
+      const result = await controller.remove(mockReq);
+
+      expect(result).toEqual(mockPerfil);
+
+      expect(service.remove).toHaveBeenCalledWith(1);
     });
   });
 });

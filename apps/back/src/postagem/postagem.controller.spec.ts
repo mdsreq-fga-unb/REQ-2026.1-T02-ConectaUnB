@@ -1,25 +1,47 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PostagemController } from './postagem.controller';
 import { PostagemService } from './postagem.service';
-
-const mockPostagemService = {
-  create: jest.fn(),
-  findAll: jest.fn(),
-  findOne: jest.fn(),
-  update: jest.fn(),
-  remove: jest.fn(),
-};
+import { StorageService } from '../storage/storage.service';
 
 describe('PostagemController', () => {
   let controller: PostagemController;
+  let service: PostagemService;
+
+  const mockPostagemService = {
+    create: jest.fn(),
+    findAll: jest.fn(),
+    findOne: jest.fn(),
+    update: jest.fn(),
+    remove: jest.fn(),
+    like: jest.fn(),
+    dislike: jest.fn(),
+    getLikes: jest.fn(),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PostagemController],
-      providers: [{ provide: PostagemService, useValue: mockPostagemService }],
+      providers: [
+        {
+          provide: PostagemService,
+          useValue: mockPostagemService,
+        },
+        {
+          provide: StorageService,
+          useValue: {
+            upload: jest.fn(),
+            delete: jest.fn(),
+            getUsage: jest.fn(),
+          },
+        },
+      ],
     }).compile();
 
     controller = module.get<PostagemController>(PostagemController);
+    service = module.get<PostagemService>(PostagemService);
+  });
+
+  afterEach(() => {
     jest.clearAllMocks();
   });
 
@@ -27,47 +49,96 @@ describe('PostagemController', () => {
     expect(controller).toBeDefined();
   });
 
-  describe('POST /postagem', () => {
-    it('should delegate to service.create', () => {
-      const dto = { idEntidade: 1, titulo: 'Post', conteudo: 'Content' };
-      mockPostagemService.create.mockReturnValue('created');
+  describe('create', () => {
+    it('should create a post with user id', async () => {
+      const dto = { titulo: 'Teste', conteudo: 'Conteudo' } as any;
+      const req = { user: { id: 1 } };
+      mockPostagemService.create.mockResolvedValue({ id: 1, ...dto });
 
-      const result = controller.create(dto);
-      expect(result).toBe('created');
-      expect(mockPostagemService.create).toHaveBeenCalledWith(dto);
+      const result = await controller.create(req, dto);
+
+      expect(service.create).toHaveBeenCalledWith(dto, 1);
+      expect(result).toEqual({ id: 1, ...dto });
     });
   });
 
-  describe('GET /postagem', () => {
-    it('should delegate to service.findAll', () => {
-      mockPostagemService.findAll.mockReturnValue('all');
-      expect(controller.findAll()).toBe('all');
-      expect(mockPostagemService.findAll).toHaveBeenCalled();
+  describe('findAll', () => {
+    it('should return an array of posts', async () => {
+      const posts = [{ id: 1, titulo: 'Teste' }];
+      mockPostagemService.findAll.mockResolvedValue(posts);
+
+      const result = await controller.findAll();
+
+      expect(service.findAll).toHaveBeenCalled();
+      expect(result).toEqual(posts);
     });
   });
 
-  describe('GET /postagem/:id', () => {
-    it('should delegate to service.findOne with converted id', () => {
-      mockPostagemService.findOne.mockReturnValue('one');
-      expect(controller.findOne('5')).toBe('one');
-      expect(mockPostagemService.findOne).toHaveBeenCalledWith(5);
+  describe('findOne', () => {
+    it('should return a single post by id', async () => {
+      const post = { id: 1, titulo: 'Teste' };
+      mockPostagemService.findOne.mockResolvedValue(post);
+
+      const result = await controller.findOne('1');
+
+      expect(service.findOne).toHaveBeenCalledWith(1);
+      expect(result).toEqual(post);
     });
   });
 
-  describe('PATCH /postagem/:id', () => {
-    it('should delegate to service.update with converted id', () => {
-      const dto = { titulo: 'Updated' };
-      mockPostagemService.update.mockReturnValue('updated');
-      expect(controller.update('3', dto as any)).toBe('updated');
-      expect(mockPostagemService.update).toHaveBeenCalledWith(3, dto);
+  describe('update', () => {
+    it('should update a post', async () => {
+      const dto = { titulo: 'Novo Titulo' } as any;
+      const req = { user: { id: 1 } };
+      mockPostagemService.update.mockResolvedValue({ id: 1, ...dto });
+
+      const result = await controller.update('1', dto, req);
+
+      expect(service.update).toHaveBeenCalledWith(1, dto, 1);
+      expect(result).toEqual({ id: 1, ...dto });
     });
   });
 
-  describe('DELETE /postagem/:id', () => {
-    it('should delegate to service.remove with converted id', () => {
-      mockPostagemService.remove.mockReturnValue('removed');
-      expect(controller.remove('7')).toBe('removed');
-      expect(mockPostagemService.remove).toHaveBeenCalledWith(7);
+  describe('like', () => {
+    it('should like a post', async () => {
+      const req = { user: { id: 1 } };
+      mockPostagemService.like.mockResolvedValue({ id: 1, likes: 1 });
+
+      const result = await controller.like('1', req);
+
+      expect(service.like).toHaveBeenCalledWith(1, 1);
+      expect(result).toEqual({ id: 1, likes: 1 });
+    });
+  });
+
+  describe('remove', () => {
+    it('should remove a post', async () => {
+      const req = { user: { id: 1 } };
+      mockPostagemService.remove.mockResolvedValue({ deleted: true });
+
+      const result = await controller.remove('1', req);
+
+      expect(service.remove).toHaveBeenCalledWith(1, 1);
+      expect(result).toEqual({ deleted: true });
+    });
+  });
+
+  describe('like/dislike/getLikes', () => {
+    const req = { user: { id: 2 } };
+
+    it('like: deve chamar o serviço com ID da postagem e usuário', async () => {
+      await controller.like('10', req);
+      expect(service.like).toHaveBeenCalledWith(10, 2);
+    });
+
+    it('dislike: deve chamar o serviço com ID da postagem e usuário', async () => {
+      await controller.Dislike('10', req);
+      expect(service.dislike).toHaveBeenCalledWith(10, 2);
+    });
+
+    it('getLikes: deve chamar o serviço com ID da postagem e usuário', async () => {
+      await controller.getLikes('10', req);
+      expect(service.getLikes).toHaveBeenCalledWith(10, 2);
     });
   });
 });
