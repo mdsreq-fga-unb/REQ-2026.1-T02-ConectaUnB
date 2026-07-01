@@ -296,6 +296,7 @@ useEffect(() => {
               )}
             </div>
 
+            {user && (
             <button
               type="button"
               className="rounded-full bg-[#195b3d] px-6 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[#12452c]"
@@ -306,7 +307,7 @@ useEffect(() => {
               ) : (
                 'Seguir'
               )}
-            </button>
+            </button>)}
           </div>
 
           <div className="flex items-start justify-between gap-6">
