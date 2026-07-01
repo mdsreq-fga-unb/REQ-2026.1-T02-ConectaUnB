@@ -22,4 +22,6 @@
 | [**RF-02**](../RFuncionais/RF_02.md) - Filtrar processos seletivos abertos |  |  |
 | [**RF-03**](../RFuncionais/RF_03.md) - Atualizar status de um processo seletivo |  |  |
 | [**RF-05**](../RFuncionais/RF_05.md) - Criar um processo seletivo |  |  |
-| [**RF-21**](../RFuncionais/RF_21.md) - Exibir um painel listando entidades nas quais o usuário é gestor/membro |  |  |
+| [**RF-21**](../RFuncionais/RF_21.md) - Exibir um painel listando<br>entidades nas quais o usuário é gestor/membro |  |  |
+| Escopo realizado| | |
+| | | |
