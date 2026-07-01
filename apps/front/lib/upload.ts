@@ -37,14 +37,53 @@ export async function uploadImage(
   const params = new URLSearchParams({ slot });
   if (entityId != null) params.set("entityId", String(entityId));
 
-  const { data } = await api.post<UploadImageResult>(
-    `/storage/upload?${params.toString()}`,
-    formData,
-    {
-      headers: { "Content-Type": "multipart/form-data" },
-      timeout: 30000,
-    },
-  );
+  try {
+    const { data } = await api.post<UploadImageResult>(
+      `/storage/upload?${params.toString()}`,
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+        timeout: 30000,
+      },
+    );
 
-  return data;
+    return data;
+  } catch (error) {
+    const status = (error as { response?: { status?: number } }).response?.status;
+
+    if (slot === "avatar" && status === 404) {
+      const localFormData = new FormData();
+      localFormData.append("file", file);
+      if (entityId != null) localFormData.append("entityId", String(entityId));
+
+      const localResponse = await fetch("/api/uploads/avatar", {
+        method: "POST",
+        body: localFormData,
+      });
+
+      if (!localResponse.ok) {
+        throw error;
+      }
+
+      const data = (await localResponse.json()) as {
+        url?: string;
+        linkFoto?: string;
+      };
+
+      const localUrl = data.url ?? data.linkFoto;
+      if (!localUrl) {
+        throw error;
+      }
+
+      return {
+        fileId: "",
+        key: `perfil:${entityId ?? "me"}`,
+        url: localUrl,
+        size: file.size,
+        mimeType: file.type,
+      };
+    }
+
+    throw error;
+  }
 }
