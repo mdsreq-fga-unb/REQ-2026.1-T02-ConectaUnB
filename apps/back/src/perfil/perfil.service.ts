@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { UpdatePerfilDto } from './dto/update-perfil.dto';
 import { Prisma, Perfil } from '@prisma/client';
 import { NotFoundException } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 
 const perfilSelectPublico = {
   id: true,
@@ -109,6 +110,25 @@ export class PerfilService {
         },
       });
       return { message: 'Seguiu a entidade com sucesso.' };
+    }
+  }
+
+  async updateSenha(id: number, senhaDto: { senha: string }) {
+
+    const saltRounds = parseInt(process.env.BCRYPT_SALT_ROUNDS ?? '10', 10);
+    const hashed = await bcrypt.hash(senhaDto.senha, saltRounds);
+    
+    try {
+      return await this.prisma.perfil.update({
+        where: { id },
+        data: { senha: hashed },
+        select: perfilSelectPublico,
+      });
+    } catch (error: any) {
+      if (error.code === 'P2025') {
+        throw new NotFoundException(`Perfil não encontrado para atualização de senha.`);
+      }
+      throw error;
     }
   }
 

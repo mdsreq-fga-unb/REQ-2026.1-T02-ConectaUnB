@@ -22,7 +22,6 @@ export function AlterarSenhaModal({ isOpen, onClose }: AlterarSenhaModalProps) {
   const [showSenha, setShowSenha] = useState(false);
   const [showConfirmSenha, setShowConfirmSenha] = useState(false);
 
-  // Limpa o estado sempre que o modal for fechado/aberto
   useEffect(() => {
     if (!isOpen) {
       setSenha("");
@@ -76,12 +75,10 @@ export function AlterarSenhaModal({ isOpen, onClose }: AlterarSenhaModalProps) {
 
     try {
       setLoading(true);
-      // TODO: Ajuste a rota abaixo para a rota real de atualização de senha no seu backend
-      await api.patch("/perfil/senha", { novaSenha: senha });
+      await api.patch("/perfil/senha", { senha: senha });
       
       setSubmitSuccess(true);
       
-      // Fecha o modal após 2 segundos em caso de sucesso
       setTimeout(() => {
         onClose();
       }, 2000);

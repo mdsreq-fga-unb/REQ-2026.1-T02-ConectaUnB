@@ -13,11 +13,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "ConectaUnB",
-  description: "Plataforma de conexão da UnB",
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -29,7 +24,10 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       {/* O flex global permite que os filhos se ajustem à tela inteira */}
-      <body className="flex min-h-screen flex-col bg-gray-50 text-gray-900">
+      <body 
+        className="flex min-h-screen flex-col bg-gray-50 text-gray-900"
+        suppressHydrationWarning
+      >
         {children}
         <Toaster />
       </body>

@@ -4,6 +4,7 @@ import { UpdatePerfilDto } from './dto/update-perfil.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UseGuards, Request } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { UpdateSenhaDto } from './dto/update-senha.dto';
 
 @Controller('perfil')
 export class PerfilController {
@@ -30,6 +31,14 @@ export class PerfilController {
   update(@Request() req, @Body() updatePerfilDto: UpdatePerfilDto) {
     const id = Number(req.user.id);
     return this.perfilService.update(id, updatePerfilDto);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Patch('senha')
+  updateSenha(@Request() req, @Body() senhaDto: UpdateSenhaDto) {
+    const id = Number(req.user.id);
+    return this.perfilService.updateSenha(id, senhaDto);
   }
 
   @ApiBearerAuth()
