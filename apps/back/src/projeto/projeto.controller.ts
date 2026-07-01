@@ -8,15 +8,20 @@ import {
   Delete,
   Request,
   UseGuards,
+  UseInterceptors,
+  UploadedFile,
+  BadRequestException,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { Request as ExpressRequest } from 'express';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { ProjetoService } from './projeto.service';
 import { CreateProjetoDto } from './dto/create-projeto.dto';
 import { UpdateProjetoDto } from './dto/update-projeto.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UpdateMembroProjetoDto } from './dto/update-membro-projeto.dto';
 import { AddMembroProjetoDto } from './dto/add-membro-projeto.dto';
+import { StorageService } from '../storage/storage.service';
 
 type AuthenticatedRequest = ExpressRequest & {
   user: { id: string; email: string };
@@ -24,7 +29,10 @@ type AuthenticatedRequest = ExpressRequest & {
 
 @Controller('projeto')
 export class ProjetoController {
-  constructor(private readonly projetoService: ProjetoService) {}
+  constructor(
+    private readonly projetoService: ProjetoService,
+    private readonly storage: StorageService,
+  ) {}
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
@@ -110,5 +118,61 @@ export class ProjetoController {
   ) {
     const userId = Number(req.user.id);
     return this.projetoService.removeMembro(+id, userId, +idPerfil);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/foto')
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: { file: { type: 'string', format: 'binary' } },
+      required: ['file'],
+    },
+  })
+  async uploadFoto(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+    @Request() req: AuthenticatedRequest,
+  ) {
+    if (!file) throw new BadRequestException('Arquivo "file" eh obrigatorio.');
+    const userId = Number(req.user.id);
+    const uploaded = await this.storage.upload(file.buffer, {
+      slot: 'projeto_foto',
+      ownerId: userId,
+      entityType: 'projeto',
+      entityId: +id,
+    });
+    return this.projetoService.setFoto(+id, userId, uploaded.url);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/banner')
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: { file: { type: 'string', format: 'binary' } },
+      required: ['file'],
+    },
+  })
+  async uploadBanner(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+    @Request() req: AuthenticatedRequest,
+  ) {
+    if (!file) throw new BadRequestException('Arquivo "file" eh obrigatorio.');
+    const userId = Number(req.user.id);
+    const uploaded = await this.storage.upload(file.buffer, {
+      slot: 'projeto_banner',
+      ownerId: userId,
+      entityType: 'projeto',
+      entityId: +id,
+    });
+    return this.projetoService.setBanner(+id, userId, uploaded.url);
   }
 }

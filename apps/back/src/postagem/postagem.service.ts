@@ -43,7 +43,7 @@ export class PostagemService {
     return this.prisma.postagem.findMany();
   }
 
-  async findOne(id: number) {
+async findOne(id: number) {
     return this.prisma.postagem.findUnique({
       where: { id },
       select: {

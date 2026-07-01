@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { ProjetoCardLarge } from '@/components/ProjetoCardLarge';
 import { api } from '@/guards/api';
@@ -16,6 +16,7 @@ import { CriarPostagemModal } from '@/components/CriarPostagemModal';
 import { ConfirmModal } from '@/components/ConfirmModal';
 import { ProcessoSeletivoFormModal, type ProcessoSeletivo } from '@/components/ProcessoSeletivoFormModal';
 import { ProcessoSeletivoViewModal } from '@/components/ProcessoSeletivoViewModal';
+import { EditablePhoto } from '@/components/EditablePhoto';
 
 type Entidade = {
   id: number;
@@ -73,9 +74,12 @@ export default function PerfilEntidadePage() {
   const [isModalDeletePostagemOpen, setIsModalDeletePostagemOpen] = useState(false);
   const [postagemToDelete, setPostagemToDelete] = useState<PostagemDetalhe | null>(null);
 
-const [processoSeletivo, setProcessoSeletivo] = useState<ProcessoSeletivo | null>(null);
-const [isProcessoFormModalOpen, setIsProcessoFormModalOpen] = useState(false);
-const [isProcessoViewModalOpen, setIsProcessoViewModalOpen] = useState(false);
+  const [processoSeletivo, setProcessoSeletivo] = useState<ProcessoSeletivo | null>(null);
+  const [isProcessoFormModalOpen, setIsProcessoFormModalOpen] = useState(false);
+  const [isProcessoViewModalOpen, setIsProcessoViewModalOpen] = useState(false);
+
+  const bannerFileRef = useRef<File | null>(null);
+  const logoFileRef = useRef<File | null>(null);
 
   const recarregarProjetos = async () => {
     if (!entidade) return;
@@ -269,30 +273,43 @@ useEffect(() => {
     <div className="flex min-h-screen bg-white">
 
       <main className="flex-1 overflow-y-auto bg-white">
-        <div
-          className="h-48 w-full bg-[#E0E0E0] bg-cover bg-center"
-          style={
-            entidade.linkBanner
-              ? { backgroundImage: `url(${entidade.linkBanner})` }
-              : undefined
-          }
+        <EditablePhoto
+          src={entidade.linkBanner ?? undefined}
+          alt="Banner da entidade"
+          variant="overlay"
+          editable={vinculoUsuario === 'GESTOR' || vinculoUsuario === 'CO_GESTOR'}
+          onFileSelected={(file) => {
+            bannerFileRef.current = file;
+            toast('Banner selecionado', {
+              description: 'A integração com o Cloudflare R2 está em breve.',
+            });
+          }}
+          className="h-48 w-full bg-[#E0E0E0]"
+          fallback={<div className="h-full w-full bg-[#E0E0E0]" />}
         />
 
       <div className="mx-auto max-w-5xl px-8 pb-12">
           
           <div className="mb-4 flex items-end justify-between">
             <div className="-mt-16">
-              {entidade.linkLogo ? (
-                <img
-                  src={entidade.linkLogo}
-                  alt={`Logo da entidade ${entidade.nome}`}
-                  className="h-32 w-32 rounded-full border-4 border-white bg-white object-cover shadow-sm"
-                />
-              ) : (
-                <div className="flex h-32 w-32 items-center justify-center rounded-full border-4 border-white bg-[#A3A3A3] text-4xl font-bold text-white shadow-sm">
-                  {entidade.nome.charAt(0).toUpperCase()}
-                </div>
-              )}
+              <EditablePhoto
+                src={entidade.linkLogo ?? undefined}
+                alt={`Logo da entidade ${entidade.nome}`}
+                variant="badge"
+                editable={vinculoUsuario === 'GESTOR' || vinculoUsuario === 'CO_GESTOR'}
+                onFileSelected={(file) => {
+                  logoFileRef.current = file;
+                  toast('Logo selecionado', {
+                    description: 'A integração com o Cloudflare R2 está em breve.',
+                  });
+                }}
+                className="h-32 w-32 rounded-full border-4 border-white bg-white shadow-sm"
+                fallback={
+                  <div className="flex h-full w-full items-center justify-center rounded-full bg-[#A3A3A3] text-4xl font-bold text-white">
+                    {entidade.nome.charAt(0).toUpperCase()}
+                  </div>
+                }
+              />
             </div>
 
             {user && (
@@ -506,8 +523,8 @@ useEffect(() => {
         <CriarProjetoModal
           isOpen={isCriarProjetoModalOpen}
           onClose={() => setIsCriarProjetoModalOpen(false)}
-          idEntidade={entidade.id}
-          onSuccess={recarregarProjetos}
+          entidades={[{ id: entidade.id, nome: entidade.nome }]}
+          onCreated={recarregarProjetos}
         />
       )}
       {entidade && (

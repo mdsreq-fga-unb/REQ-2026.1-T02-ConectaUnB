@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Bell, Briefcase, Building2, Home, User, LogIn, UserPlus } from 'lucide-react';
+import { Bell, Briefcase, Building2, Home, LogOut, User, LogIn, UserPlus } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 
 export const Sidebar: React.FC = () => {
@@ -86,6 +86,15 @@ useEffect(() => {
             </Link>
           );
         })}
+
+        {user ? (
+          <button
+            onClick={logout}
+            className="flex items-center gap-4 px-8 py-4 transition-colors text-lg hover:bg-[#153b75] text-left"
+          >
+            <LogOut size={24} /> Sair da Conta
+          </button>
+        ) : null}
       </nav>
 
       {/* Estampa decorativa no fundo da sidebar */}

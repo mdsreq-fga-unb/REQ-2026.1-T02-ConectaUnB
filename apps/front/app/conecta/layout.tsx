@@ -9,7 +9,7 @@ export default function ConectaLayout({
   return (
     <div className="flex flex-1">
       <Sidebar />
-      <main className="flex-1 overflow-y-auto">
+      <main className="flex-1 overflow-y-auto bg-gray-50">
         {children}
       </main>
     </div>

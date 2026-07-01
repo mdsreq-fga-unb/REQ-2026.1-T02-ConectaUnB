@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PerfilController } from './perfil.controller';
 import { PerfilService } from './perfil.service';
+import { StorageService } from '../storage/storage.service';
 
 const mockPerfil = {
   id: 1,
@@ -29,7 +30,17 @@ describe('PerfilController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PerfilController],
-      providers: [{ provide: PerfilService, useValue: mockPerfilService }],
+      providers: [
+        { provide: PerfilService, useValue: mockPerfilService },
+        {
+          provide: StorageService,
+          useValue: {
+            upload: jest.fn(),
+            delete: jest.fn(),
+            getUsage: jest.fn(),
+          },
+        },
+      ],
     }).compile();
 
     controller = module.get<PerfilController>(PerfilController);
