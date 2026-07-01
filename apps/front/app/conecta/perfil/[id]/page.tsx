@@ -8,6 +8,7 @@ import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { CAMPUS_OPTIONS, CURSO_OPTIONS, DEPARTAMENTO_OPTIONS } from "@/constants/options";
 import {ConfirmModal} from "@/components/ConfirmModal";
+import { AlterarSenhaModal } from "@/components/auth/alterarSenhaModal";
 
 export default function PerfilPage() {
   const { user, logout } = useAuth();
@@ -18,6 +19,8 @@ export default function PerfilPage() {
 
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
   const [isModalLogoutOpen, setIsModalLogoutOpen] = useState(false);
+
+  const [isModalSenhaOpen, setIsModalSenhaOpen] = useState(false);
 
   const isOwner = user?.sub === profileId;
 
@@ -230,6 +233,13 @@ export default function PerfilPage() {
                       Editar Perfil
                     </button>
 
+                    <button 
+                      onClick={() => setIsModalSenhaOpen(true)}
+                      className="px-4 py-2 bg-[#003366] text-white rounded-full"
+                    >
+                      Alterar Senha
+                    </button>
+
                     <button
                       className="px-6 py-2.5 bg-blue-800 text-white font-medium rounded-full hover:bg-blue-950 transition-colors whitespace-nowrap"
                       onClick={() => setIsModalLogoutOpen(true)}
@@ -294,7 +304,11 @@ export default function PerfilPage() {
           onClose={() => setIsModalLogoutOpen(false)}
           onConfirm={handleLogout}
         />
-        
+
+        <AlterarSenhaModal
+          isOpen={isModalSenhaOpen}
+          onClose={() => setIsModalSenhaOpen(false)}
+        />
       </main>
     </div>
   );
