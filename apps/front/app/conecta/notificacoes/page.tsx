@@ -86,13 +86,19 @@ export default function NotificacoesPage() {
           setIsProjetoModalOpen(true);
         }
       } else if (tipo === "POSTAGEM") {
-        const response = await fetch(`http://localhost:3000/postagem/${id}`, {
+const response = await fetch(`http://localhost:3000/postagem/${id}`, {
           method: 'GET',
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (response.ok) {
           const data = await response.json();
-          setPostagemSelecionada(data);
+          
+          setPostagemSelecionada({
+            ...data,
+            entidadeNome: data.entidade?.nome || "Entidade Desconhecida",
+            entidadeLogo: data.entidade?.linkLogo || null
+          });
+          
           setIsPostagemModalOpen(true);
         }
       } else if (tipo === "PROCESSO_SELETIVO") {
