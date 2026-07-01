@@ -14,6 +14,7 @@ const perfilSelectPublico = {
   cargo: true,
   departamento: true,
   createdAt: true,
+  PreferenciaNotificacao: true,
 };
 
 @Injectable()
