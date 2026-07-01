@@ -49,7 +49,6 @@ export function CreateProjetoModal({
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [pendingFoto, setPendingFoto] = useState<File | null>(null);
-  const [pendingBanner, setPendingBanner] = useState<File | null>(null);
   const [formData, setFormData] = useState({
     idEntidade: '',
     nome: '',
@@ -59,21 +58,27 @@ export function CreateProjetoModal({
     dataFim: '',
   });
   const isEditing = Boolean(projeto);
+  // No fluxo de criação a entidade vem sempre do contexto (a página da própria
+  // entidade), então é preenchida automaticamente — sem seleção manual.
+  const defaultEntidadeId = entidades[0]?.id;
 
   useEffect(() => {
     if (!isOpen) return;
     setErrorMessage('');
     setPendingFoto(null);
-    setPendingBanner(null);
     setFormData({
-      idEntidade: projeto?.idEntidade ? String(projeto.idEntidade) : '',
+      idEntidade: projeto?.idEntidade
+        ? String(projeto.idEntidade)
+        : defaultEntidadeId
+          ? String(defaultEntidadeId)
+          : '',
       nome: projeto?.nome ?? '',
       descricao: projeto?.descricao ?? '',
       status: projeto?.status ?? 'PLANEJAMENTO',
       dataInicio: projeto?.dataInicio ? projeto.dataInicio.slice(0, 10) : '',
       dataFim: projeto?.dataFim ? projeto.dataFim.slice(0, 10) : '',
     });
-  }, [isOpen, projeto]);
+  }, [isOpen, projeto, defaultEntidadeId]);
 
   if (!isOpen) return null;
 
@@ -116,21 +121,17 @@ export function CreateProjetoModal({
 
       if (projeto) {
         await api.patch(`/projeto/${projeto.id}`, payload);
-        const pid = projeto.id;
-        if (pendingFoto) await uploadFile(pid, pendingFoto, 'foto');
-        if (pendingBanner) await uploadFile(pid, pendingBanner, 'banner');
+        if (pendingFoto) await uploadFile(projeto.id, pendingFoto, 'foto');
       } else {
         const { data: created } = await api.post('/projeto', {
           ...payload,
           idEntidade: Number(formData.idEntidade),
         });
         if (pendingFoto) await uploadFile(created.id, pendingFoto, 'foto');
-        if (pendingBanner) await uploadFile(created.id, pendingBanner, 'banner');
       }
 
       setFormData({ idEntidade: '', nome: '', descricao: '', status: 'PLANEJAMENTO', dataInicio: '', dataFim: '' });
       setPendingFoto(null);
-      setPendingBanner(null);
       onCreated();
       onClose();
     } catch (error) {
@@ -167,22 +168,6 @@ export function CreateProjetoModal({
                 className={inputClass} placeholder="Ex: Sistema de Gerenciamento"
               />
             </div>
-
-            {!isEditing && (
-              <div className="md:col-span-2">
-                <label className="mb-1 block text-sm font-medium text-gray-700">Entidade *</label>
-                <select
-                  required value={formData.idEntidade}
-                  onChange={(e) => setFormData({ ...formData, idEntidade: e.target.value })}
-                  className={inputClass}
-                >
-                  <option value="">Selecione uma entidade</option>
-                  {entidades.map((e) => (
-                    <option key={e.id} value={e.id}>{e.nome}</option>
-                  ))}
-                </select>
-              </div>
-            )}
 
             <div className="md:col-span-2">
               <label className="mb-1 block text-sm font-medium text-gray-700">Descrição</label>
@@ -226,9 +211,8 @@ export function CreateProjetoModal({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+          <div className="pt-2">
             <ImageUploadBox id="projeto-foto" label="Foto do Projeto" file={pendingFoto} onChange={setPendingFoto} imageClassName="object-cover" />
-            <ImageUploadBox id="projeto-banner" label="Banner do Projeto" file={pendingBanner} onChange={setPendingBanner} imageClassName="object-cover" />
           </div>
 
           <div className="flex justify-end gap-3 pt-5 border-t border-gray-100">

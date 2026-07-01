@@ -251,7 +251,7 @@ export default function HomePage() {
     <div className="p-8 bg-gray-50 text-[#1D1D1D]">
       <div className="max-w-4xl mx-auto">
         {/* Barra superior: filtros + buscar entidades à direita deles */}
-        <div className="mb-8 flex flex-wrap items-center gap-4">
+        <div className="mb-8 flex flex-wrap items-end gap-4">
           {/* Filtros compactos */}
           <div className="flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0d2a54]">
@@ -313,14 +313,21 @@ export default function HomePage() {
 
           {/* Buscar entidades */}
           <div ref={searchRef} className="relative w-56">
+            <label
+              htmlFor="busca-entidades"
+              className="mb-1 block text-sm font-semibold text-[#0d2a54]"
+            >
+              Buscar entidades
+            </label>
             <div className="relative">
               <Search
                 size={18}
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
               />
               <input
+                id="busca-entidades"
                 type="text"
-                placeholder="Buscar entidades..."
+                placeholder="Digite o nome da entidade..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => {
