@@ -90,6 +90,7 @@ export default function PerfilPage() {
       const payload = {
         name: formData.name,
         matricula: formData.matricula,
+        email: formData.email,
         campus: formData.campus,
         curso: formData.curso,
         departamento: formData.departamento,

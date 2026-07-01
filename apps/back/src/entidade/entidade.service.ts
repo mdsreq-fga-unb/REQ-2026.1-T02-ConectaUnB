@@ -69,6 +69,7 @@ export class EntidadeService {
         membros: {
           select: {
             id: true,
+            idPerfil: true,
             classificacao: true,
             perfil: {
               select: { id: true, name: true, email: true, linkFoto: true },

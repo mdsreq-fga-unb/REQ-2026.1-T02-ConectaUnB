@@ -7,6 +7,8 @@ import { ProjetoCard } from '@/components/entidade/projetoCard';
 import { CreateEntidadeModal } from '@/components/entidade/CreateEntidadeModal';
 import { ManageMembersModal } from '@/components/entidade/ManageMembersModal';
 import { EditEntidadeModal } from '@/components/entidade/EditEntidadeModal';
+import { ProcessoSeletivoViewModal } from '@/components/ProcessoSeletivoViewModal';
+import { type ProcessoSeletivo } from '@/components/ProcessoSeletivoFormModal';
 import { api } from '@/guards/api';
 
 type VinculoEntidade = {
@@ -38,29 +40,30 @@ export default function EntidadesPage() {
   const router = useRouter();
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  
+
   const [entidadeToEdit, setEntidadeToEdit] = useState<EntidadeResumo | null>(null);
   const [entidadeToManageMembers, setEntidadeToManageMembers] = useState<EntidadeResumo | null>(null);
-  
+
   const [minhasEntidades, setMinhasEntidades] = useState<EntidadeResumo[]>([]);
   const [entidadesCogestao, setEntidadesCogestao] = useState<EntidadeResumo[]>([]);
   const [entidadesMembro, setEntidadesMembro] = useState<EntidadeResumo[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<EntidadeBusca[]>([]);
-  const [isSearching, setIsSearching] = useState(false);
-  const [showResults, setShowResults] = useState(false);
-  const [followingIds, setFollowingIds] = useState<Set<number>>(new Set());
+  const [processosAbertos, setProcessosAbertos] = useState<ProcessoSeletivo[]>([]);
+  const [psSearchQuery, setPsSearchQuery] = useState('');
+  const [psSearchResults, setPsSearchResults] = useState<EntidadeBusca[]>([]);
+  const [psIsSearching, setPsIsSearching] = useState(false);
+  const [psShowResults, setPsShowResults] = useState(false);
+  const [processoSelecionado, setProcessoSelecionado] = useState<ProcessoSeletivo | null>(null);
 
-  const searchRef = useRef<HTMLDivElement>(null);
-  const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const psSearchRef = useRef<HTMLDivElement>(null);
+  const psDebounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const fetchEntidades = useCallback(async () => {
     try {
       const response = await api.get('/entidade/minhas');
       const entidades = response.data;
-      
+
       setMinhasEntidades(entidades.filter((e: EntidadeResumo) => e.vinculo.classificacao === 'GESTOR'));
       setEntidadesCogestao(entidades.filter((e: EntidadeResumo) => e.vinculo.classificacao === 'CO_GESTOR'));
       setEntidadesMembro(entidades.filter((e: EntidadeResumo) => e.vinculo.classificacao === 'MEMBRO'));
@@ -71,49 +74,59 @@ export default function EntidadesPage() {
     }
   }, []);
 
-  useEffect(() => {
-    fetchEntidades();
-  }, [fetchEntidades]);
+  const fetchProcessosAbertos = useCallback(async () => {
+    try {
+      const response = await api.get<ProcessoSeletivo[]>('/processo-seletivo');
+      const agora = new Date();
+      const abertos = response.data.filter(
+        (p) => p.classificacao === 'ABERTA' && new Date(p.fimInscricao as string) >= agora,
+      );
+      setProcessosAbertos(abertos);
+    } catch (error) {
+      console.error('Erro ao buscar processos seletivos:', error);
+    }
+  }, []);
 
   useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    if (!searchQuery.trim()) {
-      setSearchResults([]);
-      setShowResults(false);
+    fetchEntidades();
+    fetchProcessosAbertos();
+  }, [fetchEntidades, fetchProcessosAbertos]);
+
+  useEffect(() => {
+    if (psDebounceRef.current) clearTimeout(psDebounceRef.current);
+    if (!psSearchQuery.trim()) {
+      setPsSearchResults([]);
+      setPsShowResults(false);
       return;
     }
-    debounceRef.current = setTimeout(async () => {
-      setIsSearching(true);
+    psDebounceRef.current = setTimeout(async () => {
+      setPsIsSearching(true);
       try {
-        const res = await api.get('/entidade/buscar', { params: { q: searchQuery } });
-        setSearchResults(res.data);
-        setShowResults(true);
+        const res = await api.get<EntidadeBusca[]>('/entidade/buscar', {
+          params: { q: psSearchQuery },
+        });
+        const comProcessos = res.data.filter((entidade) =>
+          processosAbertos.some((p) => p.idEntidade === entidade.id),
+        );
+        setPsSearchResults(comProcessos);
+        setPsShowResults(true);
       } catch {
-        setSearchResults([]);
+        setPsSearchResults([]);
       } finally {
-        setIsSearching(false);
+        setPsIsSearching(false);
       }
     }, 300);
-  }, [searchQuery]);
+  }, [psSearchQuery, processosAbertos]);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
-      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
-        setShowResults(false);
+      if (psSearchRef.current && !psSearchRef.current.contains(e.target as Node)) {
+        setPsShowResults(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-
-  const handleSeguir = async (id: number) => {
-    try {
-      await api.post(`/entidade/${id}/seguir`);
-      setFollowingIds((prev) => new Set(prev).add(id));
-    } catch {
-      console.error('Erro ao seguir entidade');
-    }
-  };
 
   const classLabel = (c: string) =>
     c.replaceAll('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase());
@@ -122,7 +135,7 @@ export default function EntidadesPage() {
     <div className="flex min-h-screen bg-[#fafafa]">
       <main className="flex-1 p-12">
         <div className="flex justify-between items-center mb-12 gap-4">
-          <div ref={searchRef} className="relative flex-1 max-w-md">
+          <div ref={psSearchRef} className="relative flex-1 max-w-md">
             <div className="relative">
               <Search
                 size={18}
@@ -130,73 +143,72 @@ export default function EntidadesPage() {
               />
               <input
                 type="text"
-                placeholder="Buscar entidades..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onFocus={() => { if (searchResults.length > 0) setShowResults(true); }}
+                placeholder="Buscar processos seletivos por entidade..."
+                value={psSearchQuery}
+                onChange={(e) => setPsSearchQuery(e.target.value)}
+                onFocus={() => { if (psSearchResults.length > 0) setPsShowResults(true); }}
                 className="w-full pl-10 pr-4 py-3 rounded-md border border-gray-300 bg-white text-[#0d2a54] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#195b3d] focus:border-transparent text-sm"
               />
-              {isSearching && (
+              {psIsSearching && (
                 <div className="absolute right-3 top-1/2 -translate-y-1/2">
                   <div className="w-4 h-4 border-2 border-[#195b3d] border-t-transparent rounded-full animate-spin" />
                 </div>
               )}
             </div>
-            {showResults && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-lg z-50 max-h-80 overflow-y-auto">
-                {searchResults.length > 0 ? (
-                  searchResults.map((entidade) => (
-                    <div
-                      key={entidade.id}
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
-                    >
+            {psShowResults && (
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-lg z-50 max-h-96 overflow-y-auto">
+                {psSearchResults.length > 0 ? (
+                  psSearchResults.map((entidade) => {
+                    const processosDaEntidade = processosAbertos.filter(
+                      (p) => p.idEntidade === entidade.id,
+                    );
+                    return (
                       <div
-                        className="flex-1 flex items-center gap-3 min-w-0 cursor-pointer"
-                        onClick={() => {
-                          setShowResults(false);
-                          router.push(`/conecta/entidades/${entidade.id}`);
-                        }}
+                        key={entidade.id}
+                        className="px-4 py-3 hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
                       >
-                        {entidade.linkLogo ? (
-                          <img
-                            src={entidade.linkLogo}
-                            alt={entidade.nome}
-                            className="w-10 h-10 rounded-full object-cover flex-shrink-0"
-                          />
-                        ) : (
-                          <div className="w-10 h-10 rounded-full bg-gray-200 flex-shrink-0 flex items-center justify-center text-gray-400">
-                            <User size={20} />
+                        <div className="flex items-center gap-3 mb-2">
+                          {entidade.linkLogo ? (
+                            <img
+                              src={entidade.linkLogo}
+                              alt={entidade.nome}
+                              className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                            />
+                          ) : (
+                            <div className="w-10 h-10 rounded-full bg-gray-200 flex-shrink-0 flex items-center justify-center text-gray-400">
+                              <User size={20} />
+                            </div>
+                          )}
+                          <div className="min-w-0">
+                            <p className="font-medium text-[#0d2a54] text-sm truncate">
+                              {entidade.nome}
+                            </p>
+                            <p className="text-xs text-gray-500 truncate">
+                              {classLabel(entidade.classificacao)} &middot; {entidade.campus}
+                            </p>
                           </div>
-                        )}
-                        <div className="min-w-0">
-                          <p className="font-medium text-[#0d2a54] text-sm truncate">
-                            {entidade.nome}
-                          </p>
-                          <p className="text-xs text-gray-500 truncate">
-                            {classLabel(entidade.classificacao)} &middot; {entidade.campus}
-                          </p>
+                        </div>
+                        <div className="flex flex-col gap-1 pl-[3.25rem]">
+                          {processosDaEntidade.map((processo) => (
+                            <button
+                              key={processo.id}
+                              type="button"
+                              onClick={() => {
+                                setProcessoSelecionado(processo);
+                                setPsShowResults(false);
+                              }}
+                              className="text-left text-sm text-[#195b3d] font-medium hover:underline truncate"
+                            >
+                              {processo.titulo}
+                            </button>
+                          ))}
                         </div>
                       </div>
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleSeguir(entidade.id);
-                        }}
-                        disabled={followingIds.has(entidade.id)}
-                        className={`flex-shrink-0 px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${
-                          followingIds.has(entidade.id)
-                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                            : 'bg-[#195b3d] text-white hover:bg-[#13472f]'
-                        }`}
-                      >
-                        {followingIds.has(entidade.id) ? 'Seguindo' : 'Seguir'}
-                      </button>
-                    </div>
-                  ))
+                    );
+                  })
                 ) : (
                   <p className="px-4 py-6 text-center text-sm text-gray-500">
-                    Nenhuma entidade encontrada.
+                    Nenhum processo seletivo aberto encontrado.
                   </p>
                 )}
               </div>
@@ -270,9 +282,9 @@ export default function EntidadesPage() {
         </section>
       </main>
 
-      <CreateEntidadeModal 
-        isOpen={isCreateModalOpen} 
-        onClose={() => setIsCreateModalOpen(false)} 
+      <CreateEntidadeModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
         onSuccess={fetchEntidades}
       />
 
@@ -288,6 +300,12 @@ export default function EntidadesPage() {
         entidade={entidadeToManageMembers}
         onClose={() => setEntidadeToManageMembers(null)}
         onChanged={fetchEntidades}
+      />
+
+      <ProcessoSeletivoViewModal
+        isOpen={!!processoSelecionado}
+        onClose={() => setProcessoSelecionado(null)}
+        processo={processoSelecionado}
       />
     </div>
   );
