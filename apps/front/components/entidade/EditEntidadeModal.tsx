@@ -3,6 +3,7 @@ import { Trash2, X } from 'lucide-react';
 import { api } from '@/guards/api';
 import { CAMPUS_OPTIONS, ClassificacaoEntidade, DEPARTAMENTO_OPTIONS } from '@/constants/options';
 import { ConfirmModal } from '@/components/ConfirmModal';
+import { ImageUploadBox } from '@/components/ImageUploadBox';
 import { toast } from 'sonner';
 
 type EditEntidadeFormProps = {
@@ -41,7 +42,9 @@ export function EditEntidadeForm({
 }: EditEntidadeFormProps) {
   const [form, setForm] = useState(initialData);
   const [isSaving, setIsSaving] = useState(false);
-  
+  const [pendingLogo, setPendingLogo] = useState<File | null>(null);
+  const [pendingBanner, setPendingBanner] = useState<File | null>(null);
+
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
   const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
 
@@ -67,6 +70,18 @@ export function EditEntidadeForm({
         campus: form.campus,
         departamento: form.departamento,
       });
+
+      const upload = async (file: File, slot: string) => {
+        const fd = new FormData();
+        fd.append('file', file);
+        await api.post(`/entidade/${entidadeId}/${slot}`, fd, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+          timeout: 30000,
+        });
+      };
+      if (pendingLogo) await upload(pendingLogo, 'logo');
+      if (pendingBanner) await upload(pendingBanner, 'banner');
+
       toast.success('Mudanças salvas com sucesso!');
       onSuccess();
     } catch (error: unknown) {
@@ -152,6 +167,23 @@ export function EditEntidadeForm({
               {DEPARTAMENTO_OPTIONS.map((opt) => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
             </select>
           </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+          <ImageUploadBox
+            id="edit-logo"
+            label="Logo da Entidade"
+            file={pendingLogo}
+            onChange={setPendingLogo}
+            imageClassName="object-contain"
+          />
+          <ImageUploadBox
+            id="edit-banner"
+            label="Banner da Entidade"
+            file={pendingBanner}
+            onChange={setPendingBanner}
+            imageClassName="object-cover"
+          />
         </div>
 
         <div className="flex justify-end mt-4">

@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PostagemController } from './postagem.controller';
 import { PostagemService } from './postagem.service';
+import { StorageService } from '../storage/storage.service';
 
 describe('PostagemController', () => {
   let controller: PostagemController;
@@ -24,6 +25,14 @@ describe('PostagemController', () => {
         {
           provide: PostagemService,
           useValue: mockPostagemService,
+        },
+        {
+          provide: StorageService,
+          useValue: {
+            upload: jest.fn(),
+            delete: jest.fn(),
+            getUsage: jest.fn(),
+          },
         },
       ],
     }).compile();

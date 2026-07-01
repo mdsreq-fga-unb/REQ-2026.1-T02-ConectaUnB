@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PerfilService } from './perfil.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { StorageService } from '../storage/storage.service';
 import { NotFoundException } from '@nestjs/common';
 
 const mockPerfil = {
@@ -41,8 +42,15 @@ describe('PerfilService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         PerfilService,
-
         { provide: PrismaService, useValue: mockPrismaService },
+        {
+          provide: StorageService,
+          useValue: {
+            upload: jest.fn(),
+            delete: jest.fn(),
+            getUsage: jest.fn(),
+          },
+        },
       ],
     }).compile();
 

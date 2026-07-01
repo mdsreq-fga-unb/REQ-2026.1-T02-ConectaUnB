@@ -2,13 +2,14 @@
 
 import { api } from "@/guards/api";
 import { SeguindoCard } from "@/components/perfil/SeguindoCard";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { CAMPUS_OPTIONS, CURSO_OPTIONS, DEPARTAMENTO_OPTIONS } from "@/constants/options";
 import {ConfirmModal} from "@/components/ConfirmModal";
 import { EditablePhoto } from "@/components/EditablePhoto";
+import { uploadImage } from "@/lib/upload";
 
 export default function PerfilPage() {
   const { user, logout } = useAuth();
@@ -27,21 +28,21 @@ export default function PerfilPage() {
   >([]);
 
   const [isEditing, setIsEditing] = useState(false);
-  const [fotoUrl, setFotoUrl] = useState<string>("");
-  const fotoFileRef = useRef<File | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [pendingFoto, setPendingFoto] = useState<File | null>(null);
   const [formData, setFormData] = useState({
     name: "",
     matricula: "",
     campus: "",
     curso: "",
     departamento: "",
+    linkFoto: "" as string | null | undefined,
   });
 
   const fetchDados = async () => {
     try {
       const resPerfil = await api.get(`/perfil/${profileId}`);
       setFormData(resPerfil.data);
-      setFotoUrl(resPerfil.data?.fotoUrl ?? "");
       const resSeguindo = await api.get(`/perfil/seguindo/${profileId}`);
       setProjetosSeguidos(resSeguindo.data);
     } catch (error: unknown) {
@@ -60,6 +61,7 @@ export default function PerfilPage() {
 
   const handleCancelEdit = () => {
     setIsEditing(false);
+    setPendingFoto(null);
     fetchDados();
   };
 
@@ -73,14 +75,33 @@ export default function PerfilPage() {
   };
 
   const handleSave = async () => {
+    setIsSaving(true);
     try {
-      const payload = { ...formData };
+      let linkFoto = formData.linkFoto;
+      if (pendingFoto) {
+        const uploaded = await uploadImage(pendingFoto, "avatar");
+        linkFoto = uploaded.url;
+      }
+
+      const payload = {
+        name: formData.name,
+        matricula: formData.matricula,
+        campus: formData.campus,
+        curso: formData.curso,
+        departamento: formData.departamento,
+        linkFoto,
+      };
       await api.patch(`/perfil`, payload);
+
+      setFormData((prev) => ({ ...prev, linkFoto }));
+      setPendingFoto(null);
       toast.success("Edição concluída com sucesso");
       setIsEditing(false);
     } catch (error: unknown) {
       console.error("Erro ao salvar perfil:", error);
       toast.error("Ocorreu um erro ao tentar salvar as alterações.");
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -105,19 +126,14 @@ export default function PerfilPage() {
       <main className="flex-1 p-8 sm:p-12 flex justify-center">
         <div className="w-full max-w-4xl space-y-16">
           <div className="flex flex-col md:flex-row items-center justify-between gap-8 bg-white">
-            
+
             {/* foto */}
             <EditablePhoto
-              src={fotoUrl}
+              src={formData.linkFoto}
               alt="Foto de perfil"
               variant="badge"
               editable={isOwner && isEditing}
-              onFileSelected={(file) => {
-                fotoFileRef.current = file;
-                toast("Foto selecionada", {
-                  description: "A integração com o Cloudflare R2 está em breve.",
-                });
-              }}
+              onFileSelected={setPendingFoto}
               className="w-48 h-48 rounded-full border border-gray-300 flex-shrink-0"
               fallback={
                 <div className="flex h-full w-full items-center justify-center bg-gray-200 text-gray-500 font-medium text-lg">
@@ -218,13 +234,15 @@ export default function PerfilPage() {
                   <>
                     <button
                       onClick={handleSave}
-                      className="px-6 py-2.5 bg-[#006633] text-white font-medium rounded-full hover:bg-[#004d26] transition-colors whitespace-nowrap"
+                      disabled={isSaving}
+                      className="px-6 py-2.5 bg-[#006633] text-white font-medium rounded-full hover:bg-[#004d26] transition-colors whitespace-nowrap disabled:opacity-60"
                     >
-                      Salvar Alterações
+                      {isSaving ? "Salvando..." : "Salvar Alterações"}
                     </button>
                     <button
                       onClick={handleCancelEdit}
-                      className="px-6 py-2.5 bg-gray-500 text-white font-medium rounded-full hover:bg-gray-600 transition-colors whitespace-nowrap"
+                      disabled={isSaving}
+                      className="px-6 py-2.5 bg-gray-500 text-white font-medium rounded-full hover:bg-gray-600 transition-colors whitespace-nowrap disabled:opacity-60"
                     >
                       Cancelar
                     </button>

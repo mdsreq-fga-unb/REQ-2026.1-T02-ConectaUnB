@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProjetoController } from './projeto.controller';
 import { ProjetoService } from './projeto.service';
+import { StorageService } from '../storage/storage.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 describe('ProjetoController', () => {
@@ -25,7 +26,17 @@ describe('ProjetoController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ProjetoController],
-      providers: [{ provide: ProjetoService, useValue: mockProjetoService }],
+      providers: [
+        { provide: ProjetoService, useValue: mockProjetoService },
+        {
+          provide: StorageService,
+          useValue: {
+            upload: jest.fn(),
+            delete: jest.fn(),
+            getUsage: jest.fn(),
+          },
+        },
+      ],
     })
       .overrideGuard(JwtAuthGuard)
       .useValue({ canActivate: () => true }) // Bypassa o guard para testes unitários
