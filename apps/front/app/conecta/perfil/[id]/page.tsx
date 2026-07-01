@@ -8,6 +8,7 @@ import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { CAMPUS_OPTIONS, CURSO_OPTIONS, DEPARTAMENTO_OPTIONS } from "@/constants/options";
 import {ConfirmModal} from "@/components/ConfirmModal";
+import { AlterarSenhaModal } from "@/components/auth/alterarSenhaModal";
 import { EditablePhoto } from "@/components/EditablePhoto";
 import { uploadImage } from "@/lib/upload";
 
@@ -21,6 +22,8 @@ export default function PerfilPage() {
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
   const [isModalLogoutOpen, setIsModalLogoutOpen] = useState(false);
 
+  const [isModalSenhaOpen, setIsModalSenhaOpen] = useState(false);
+
   const isOwner = user?.sub === profileId;
 
   const [projetosSeguidos, setProjetosSeguidos] = useState<
@@ -33,6 +36,7 @@ export default function PerfilPage() {
   const [formData, setFormData] = useState({
     name: "",
     matricula: "",
+    email: "",
     campus: "",
     curso: "",
     departamento: "",
@@ -164,6 +168,16 @@ export default function PerfilPage() {
                 className="w-full px-5 py-2.5 bg-transparent border border-[#006633] rounded-full text-[#1D1D1D] font-medium focus:outline-none disabled:bg-gray-50 disabled:text-gray-500 transition-colors"
               />
 
+              <input
+                type="text"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                disabled={!isEditing}
+                placeholder="Email"
+                className="w-full px-5 py-2.5 bg-transparent border border-[#006633] rounded-full text-[#1D1D1D] font-medium focus:outline-none disabled:bg-gray-50 disabled:text-gray-500 transition-colors"
+              />
+
               <div className="relative w-full">
                 <select
                   name="campus"
@@ -228,7 +242,7 @@ export default function PerfilPage() {
               </div>
             </div>
 
-            <div className="flex flex-col justify-start gap-4 w-full md:w-52 flex-shrink-0 min-h-[160px]">
+            <div className="flex flex-col justify-start gap-4 w-full md:w-52 shrink-0 min-h-40">
               {isOwner && (
                 isEditing ? (
                   <>
@@ -254,6 +268,13 @@ export default function PerfilPage() {
                       className="px-6 py-2.5 bg-[#006633] text-white font-medium rounded-full hover:bg-[#004d26] transition-colors whitespace-nowrap"
                     >
                       Editar Perfil
+                    </button>
+
+                    <button 
+                      onClick={() => setIsModalSenhaOpen(true)}
+                      className="px-4 py-2 bg-[#003366] text-white rounded-full"
+                    >
+                      Alterar Senha
                     </button>
 
                     <button
@@ -320,7 +341,11 @@ export default function PerfilPage() {
           onClose={() => setIsModalLogoutOpen(false)}
           onConfirm={handleLogout}
         />
-        
+
+        <AlterarSenhaModal
+          isOpen={isModalSenhaOpen}
+          onClose={() => setIsModalSenhaOpen(false)}
+        />
       </main>
     </div>
   );

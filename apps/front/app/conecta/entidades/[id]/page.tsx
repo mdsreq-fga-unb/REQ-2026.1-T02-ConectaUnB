@@ -14,6 +14,8 @@ import { toast } from 'sonner';
 import { CriarProjetoModal } from '@/components/CreateProjetoModal';
 import { CriarPostagemModal } from '@/components/CriarPostagemModal';
 import { ConfirmModal } from '@/components/ConfirmModal';
+import { ProcessoSeletivoFormModal, type ProcessoSeletivo } from '@/components/ProcessoSeletivoFormModal';
+import { ProcessoSeletivoViewModal } from '@/components/ProcessoSeletivoViewModal';
 import { EditablePhoto } from '@/components/EditablePhoto';
 
 type Entidade = {
@@ -71,6 +73,10 @@ export default function PerfilEntidadePage() {
 
   const [isModalDeletePostagemOpen, setIsModalDeletePostagemOpen] = useState(false);
   const [postagemToDelete, setPostagemToDelete] = useState<PostagemDetalhe | null>(null);
+
+  const [processoSeletivo, setProcessoSeletivo] = useState<ProcessoSeletivo | null>(null);
+  const [isProcessoFormModalOpen, setIsProcessoFormModalOpen] = useState(false);
+  const [isProcessoViewModalOpen, setIsProcessoViewModalOpen] = useState(false);
 
   const bannerFileRef = useRef<File | null>(null);
   const logoFileRef = useRef<File | null>(null);
@@ -140,11 +146,13 @@ useEffect(() => {
       }
 
       try {
-        const [entidadeResponse, projetosResponse, postagensResponse] = await Promise.all([
+        const [entidadeResponse, projetosResponse, postagensResponse, processosResponse] = await Promise.all([
           api.get<Entidade>(`/entidade/${entidadeId}`),
           api.get<Projeto[]>(`/projeto/entidade/${entidadeId}`),
           api.get<PostagemDetalhe[]>(`/postagem/entidade/${entidadeId}`), 
+          api.get<ProcessoSeletivo[]>('/processo-seletivo'),
         ]);
+        
 
         if (!entidadeResponse.data) {
           setError('Entidade não encontrada.');
@@ -162,7 +170,10 @@ useEffect(() => {
             (postagem) => postagem.idEntidade === entidadeId,
           ),
         );
-        
+
+        const processoAberto = processosResponse.data.find((p) => p.idEntidade === entidadeId);
+        setProcessoSeletivo(processoAberto || null);
+
         if (user?.sub) {
           
           try {
@@ -221,6 +232,17 @@ useEffect(() => {
       alert('Ocorreu um erro ao tentar seguir a entidade.');
     } finally {
       setIsFollowLoading(false);
+    }
+  };
+
+  const recarregarProcessoSeletivo = async () => {
+    if (!entidade) return;
+    try {
+      const response = await api.get<ProcessoSeletivo[]>('/processo-seletivo');
+      const processoAberto = response.data.find((p) => p.idEntidade === entidade.id);
+      setProcessoSeletivo(processoAberto || null);
+    } catch (error) {
+      console.error('Erro ao recarregar processo seletivo:', error);
     }
   };
 
@@ -290,6 +312,7 @@ useEffect(() => {
               />
             </div>
 
+            {user && (
             <button
               type="button"
               className="rounded-full bg-[#195b3d] px-6 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[#12452c]"
@@ -300,7 +323,7 @@ useEffect(() => {
               ) : (
                 'Seguir'
               )}
-            </button>
+            </button>)}
           </div>
 
           <div className="flex items-start justify-between gap-6">
@@ -320,15 +343,29 @@ useEffect(() => {
               </div>
             </div>
 
-            {/* Botão de Processo Seletivo */}
-            {/* <div className="flex shrink-0 items-center pt-2">
-              <ButtonGreen
-                text="Criar Processo Seletivo"
-                onClick={() => {
-                  
-                }}
-              />
-            </div> */}
+          {/* LÓGICA DO BOTÃO DE PROCESSO SELETIVO */}
+          <div className="flex shrink-0 items-center pt-2">
+            {processoSeletivo ? (
+              (vinculoUsuario === 'GESTOR' || vinculoUsuario === 'CO_GESTOR') ? (
+                <ButtonGreen
+                  text="Editar Processo Seletivo"
+                  onClick={() => setIsProcessoFormModalOpen(true)}
+                />
+              ) : (
+                <ButtonGreen
+                  text="Visualizar Processo Seletivo"
+                  onClick={() => setIsProcessoViewModalOpen(true)}
+                />
+              )
+            ) : (
+              (vinculoUsuario === 'GESTOR' || vinculoUsuario === 'CO_GESTOR') && (
+                <ButtonGreen
+                  text="Criar Processo Seletivo"
+                  onClick={() => setIsProcessoFormModalOpen(true)}
+                />
+              )
+            )}
+          </div>
           </div>
 
           <section className="mt-10 rounded-lg border border-[#195b3d] p-6 shadow-sm">
@@ -521,6 +558,21 @@ useEffect(() => {
           setPostagemToDelete(null);
         }}
         onConfirm={handleDeletePostagem}
+      />
+      {entidade && (
+        <ProcessoSeletivoFormModal
+          isOpen={isProcessoFormModalOpen}
+          onClose={() => setIsProcessoFormModalOpen(false)}
+          idEntidade={entidade.id}
+          processo={processoSeletivo}
+          onSuccess={recarregarProcessoSeletivo}
+        />
+      )}
+
+      <ProcessoSeletivoViewModal
+        isOpen={isProcessoViewModalOpen}
+        onClose={() => setIsProcessoViewModalOpen(false)}
+        processo={processoSeletivo}
       />
     </div>
   );

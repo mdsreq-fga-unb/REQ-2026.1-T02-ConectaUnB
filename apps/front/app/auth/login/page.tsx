@@ -17,11 +17,11 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [showSenha, setShowSenha] = useState(false);
 
-  const { user } = useAuth();
-
+  const { user, login } = useAuth();
+  
   useEffect(() => {
     if (user) {
-      router.push("/");
+      router.push("/conecta/feed");
     }
   }, [user, router]);
 
@@ -34,7 +34,7 @@ export default function LoginPage() {
       return;
     }
 
-try {
+    try {
       setLoading(true);
       
       const response = await api.post("/auth/login", {
@@ -47,9 +47,11 @@ try {
       if (token) {
         localStorage.setItem("conecta_unb_token", token);
         api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        login(token);
       }
 
-      router.push("/"); 
+      router.refresh();
+      router.push("/conecta/feed");
 
     } catch (error: unknown) {
       const err = error as { response?: { data?: { message?: string | string[] }; status?: number } };

@@ -104,6 +104,7 @@ useEffect(() => {
           alt="Textura decorativa"
           fill
           className="object-cover"
+          sizes="100vw"
         />
       </div>
     </aside>
