@@ -17,7 +17,7 @@ export class ProcessoSeletivoService {
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, {
     name: 'fecharProcessosExpirados',
     timeZone: 'America/Sao_Paulo',
-  }) 
+  })
   async fecharProcessosExpirados() {
     try {
       const dataAtual = new Date();
@@ -29,7 +29,7 @@ export class ProcessoSeletivoService {
           },
           classificacao: {
             not: 'FECHADA',
-          }
+          },
         },
         data: {
           classificacao: 'FECHADA',
@@ -37,7 +37,9 @@ export class ProcessoSeletivoService {
       });
 
       if (resultado.count > 0) {
-        console.log(`[Cron] ${resultado.count} processos seletivos foram fechados automaticamente.`);
+        console.log(
+          `[Cron] ${resultado.count} processos seletivos foram fechados automaticamente.`,
+        );
       }
     } catch (error) {
       console.error('[Cron] Erro ao tentar fechar processos seletivos:', error);

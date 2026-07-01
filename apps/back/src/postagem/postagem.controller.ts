@@ -31,7 +31,7 @@ export class PostagemController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Request()req, @Body() createPostagemDto: CreatePostagemDto) {
+  create(@Request() req, @Body() createPostagemDto: CreatePostagemDto) {
     const userId = Number(req.user.id);
     return this.postagemService.create(createPostagemDto, userId);
   }

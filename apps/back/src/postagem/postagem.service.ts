@@ -43,7 +43,7 @@ export class PostagemService {
     return this.prisma.postagem.findMany();
   }
 
-async findOne(id: number) {
+  async findOne(id: number) {
     return this.prisma.postagem.findUnique({
       where: { id },
       select: {
@@ -60,7 +60,6 @@ async findOne(id: number) {
       },
     });
   }
-
 
   async update(
     id: number,
@@ -110,8 +109,6 @@ async findOne(id: number) {
   }
 
   private async validateUser(Userid: number, EntidadeId: number) {
-    
-    
     const user = await this.prisma.perfil.findUnique({
       where: { id: Userid },
     });
@@ -194,5 +191,4 @@ async findOne(id: number) {
       where: { idEntidade: entidadeId },
     });
   }
-
 }

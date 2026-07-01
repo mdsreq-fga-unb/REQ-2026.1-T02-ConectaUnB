@@ -1,8 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import {
-  ForbiddenException,
-  NotFoundException,
-} from '@nestjs/common';
+import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { ClassificacaoMembro } from '@prisma/client';
 import { EntidadeService } from './entidade.service';
 import { PrismaService } from '../prisma/prisma.service';
@@ -166,7 +163,9 @@ describe('EntidadeService', () => {
 
   describe('update', () => {
     it('should update an entity when requester manages it', async () => {
-      prisma.membro.findUnique.mockResolvedValue({ classificacao: 'CO_GESTOR' });
+      prisma.membro.findUnique.mockResolvedValue({
+        classificacao: 'CO_GESTOR',
+      });
       prisma.entidade.update.mockResolvedValue({
         id: 1,
         nome: 'Entidade Atualizada',
@@ -180,7 +179,9 @@ describe('EntidadeService', () => {
         updatedAt: new Date(),
       });
 
-      const result = await service.update(1, 7, { nome: 'Entidade Atualizada' });
+      const result = await service.update(1, 7, {
+        nome: 'Entidade Atualizada',
+      });
       expect(result).toMatchObject({ id: 1, nome: 'Entidade Atualizada' });
       expect(prisma.membro.findUnique).toHaveBeenCalledWith({
         where: { idPerfil_idEntidade: { idPerfil: 7, idEntidade: 1 } },
@@ -350,7 +351,11 @@ describe('EntidadeService', () => {
         linkLogo: 'https://example.com/logo.webp',
       });
 
-      const result = await service.setLogo(1, 7, 'https://example.com/logo.webp');
+      const result = await service.setLogo(
+        1,
+        7,
+        'https://example.com/logo.webp',
+      );
       expect(result).toEqual({
         id: 1,
         linkLogo: 'https://example.com/logo.webp',
@@ -363,7 +368,9 @@ describe('EntidadeService', () => {
     });
 
     it('setBanner should update linkBanner when requester can manage', async () => {
-      prisma.membro.findUnique.mockResolvedValue({ classificacao: 'CO_GESTOR' });
+      prisma.membro.findUnique.mockResolvedValue({
+        classificacao: 'CO_GESTOR',
+      });
       prisma.entidade.update.mockResolvedValue({
         id: 1,
         linkBanner: 'https://example.com/banner.webp',

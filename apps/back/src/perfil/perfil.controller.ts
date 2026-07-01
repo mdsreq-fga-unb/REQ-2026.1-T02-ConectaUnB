@@ -1,7 +1,17 @@
 import {
-  Controller, Get, Body, Patch, Param, Delete, Post,
-  ParseIntPipe, Req, UseGuards, UseInterceptors,
-  UploadedFile, BadRequestException,
+  Controller,
+  Get,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Post,
+  ParseIntPipe,
+  Req,
+  UseGuards,
+  UseInterceptors,
+  UploadedFile,
+  BadRequestException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Request as ExpressRequest } from 'express';
@@ -90,10 +100,7 @@ export class PerfilController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post('seguir/:id')
-  seguir(
-    @Param('id') id: string,
-    @Req() req
-  ) {
+  seguir(@Param('id') id: string, @Req() req) {
     const idUsuario = Number(req.user.id);
     return this.perfilService.seguir(Number(id), idUsuario);
   }

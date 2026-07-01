@@ -52,7 +52,11 @@ describe('ProjetoService', () => {
     it('deve criar um projeto e emitir uma notificação', async () => {
       jest.spyOn(service as any, 'validateUser').mockResolvedValue(true);
 
-      mockPrisma.membro.findFirst.mockResolvedValue({ id: 1, idPerfil: 1, idEntidade: 1 });
+      mockPrisma.membro.findFirst.mockResolvedValue({
+        id: 1,
+        idPerfil: 1,
+        idEntidade: 1,
+      });
 
       const dto = { nome: 'Novo Projeto', idEntidade: 1 } as any;
       const projetoMock = { id: 10, ...dto };
@@ -64,7 +68,7 @@ describe('ProjetoService', () => {
       expect(mockPrisma.projeto.create).toHaveBeenCalled();
       expect(mockPrisma.notificacao.create).toHaveBeenCalledWith({
         data: expect.objectContaining({
-          tipo: TipoNotificacao.ATUALIZACAO_PROJETO, 
+          tipo: TipoNotificacao.ATUALIZACAO_PROJETO,
           referenciaId: 10,
         }),
       });

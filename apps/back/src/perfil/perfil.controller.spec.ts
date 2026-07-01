@@ -69,8 +69,8 @@ describe('PerfilController', () => {
   describe('findOne', () => {
     it('deve retornar um único perfil pelo ID', async () => {
       // ...
-    await controller.findOne(1);
-    expect(service.findOne).toHaveBeenCalledWith(1);
+      await controller.findOne(1);
+      expect(service.findOne).toHaveBeenCalledWith(1);
     });
   });
 

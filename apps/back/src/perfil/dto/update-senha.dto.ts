@@ -1,8 +1,12 @@
-  import { ApiProperty } from '@nestjs/swagger';
-  import { IsNotEmpty, IsString, Matches, IsStrongPassword } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import {
+  IsNotEmpty,
+  IsString,
+  Matches,
+  IsStrongPassword,
+} from 'class-validator';
 
-  export class UpdateSenhaDto {
-
+export class UpdateSenhaDto {
   @IsString()
   @IsNotEmpty()
   @Matches(/^\S*$/, { message: 'A senha não pode conter espaços.' })
@@ -25,5 +29,4 @@
     example: 'Senha@123',
   })
   senha!: string;
-
 }

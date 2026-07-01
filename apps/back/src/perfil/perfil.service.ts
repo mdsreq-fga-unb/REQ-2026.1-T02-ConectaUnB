@@ -105,7 +105,6 @@ export class PerfilService {
   }
 
   async seguir(idEntidade: number, idUsuario: number) {
-
     const jaSeguindo = await this.prisma.seguindo.findFirst({
       where: {
         idPerfil: idUsuario,
@@ -115,11 +114,11 @@ export class PerfilService {
 
     if (jaSeguindo) {
       await this.prisma.seguindo.delete({
-        where: { 
+        where: {
           idPerfil_idEntidade: {
             idPerfil: idUsuario,
             idEntidade: idEntidade,
-          }
+          },
         },
       });
       return { message: 'Deixou de seguir a entidade.' };
@@ -135,10 +134,9 @@ export class PerfilService {
   }
 
   async updateSenha(id: number, senhaDto: { senha: string }) {
-
     const saltRounds = parseInt(process.env.BCRYPT_SALT_ROUNDS ?? '10', 10);
     const hashed = await bcrypt.hash(senhaDto.senha, saltRounds);
-    
+
     try {
       return await this.prisma.perfil.update({
         where: { id },
@@ -147,10 +145,11 @@ export class PerfilService {
       });
     } catch (error: any) {
       if (error.code === 'P2025') {
-        throw new NotFoundException(`Perfil não encontrado para atualização de senha.`);
+        throw new NotFoundException(
+          `Perfil não encontrado para atualização de senha.`,
+        );
       }
       throw error;
     }
   }
-
 }
