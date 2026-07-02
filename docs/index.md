@@ -1,6 +1,8 @@
 
 Somos estudantes da **Universidade de Brasília (UnB) | Faculdade de Ciências e Tecnologias em Engenharia (FCTE)** e este projeto está sendo desenvolvido no contexto da disciplina de **Requisitos de Software**, ministrada pelo professor e doutor **George Marsicano Correia**, sendo o nome escolhido para o grupo **Capoeira**.
 
+## Link aplicação [ConectaUnB](https://conectaunb.app/conecta/feed)
+
 ## Visualização de rastreabilidade
 Caso o iframe não carregue você pode [acessar nosso miro](https://miro.com/app/board/uXjVHTrU614=/?share_link_id=361857912339), visualizar o [pdf do miro](https://drive.google.com/file/d/1kBZ7op6atCi08PjgWoICVVxFz5fD078_/view?usp=sharing) ou acessar a [página de backup de rastreabilidade](assets/rastreabilidade/rastreabilidade).
 <iframe width="768" height="432" src="https://miro.com/app/live-embed/uXjVHTrU614=/?embedMode=view_only_without_ui&moveToViewport=26669,18490,30824,14416&embedId=650722289560" frameborder="0" scrolling="no" allow="fullscreen; clipboard-read; clipboard-write" allowfullscreen></iframe>
