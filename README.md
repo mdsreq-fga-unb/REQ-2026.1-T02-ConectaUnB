@@ -10,9 +10,15 @@
 **Universidade de Brasília (UnB)**
 **Faculdade de Ciências e Tecnologias em Engenharia (FCTE)**
 
+</div>
+
 ### Para Correção
 - Login: georgemarsicano@unb.br
 - Senha: Senha@123
+
+Link aplicação: https://conectaunb.app/conecta/feed
+
+Link gitpages entrega final: https://mdsreq-fga-unb.github.io/REQ-2026.1-T02-ConectaUnB/
 
 ---
 
@@ -20,7 +26,7 @@
 ![Universidade](https://img.shields.io/badge/Universidade-UnB-blue)
 ![Disciplina](https://img.shields.io/badge/Disciplina-Requisitos%20de%20Software-green)
 
-</div>
+
 
 ---
 
@@ -111,7 +117,7 @@ Repositório do projeto **Conecta UnB**, equipe **Capoeira** da disciplina de RE
 
 O Conecta UnB tem o objetivo de centralizar a comunicação e as oportunidades dentro do ecossistema acadêmico da Universidade de Brasília (UnB).
 
-Informações disponíveis em: https://mdsreq-fga-unb.github.io/REQ-2026.1-T02-ConectaUnB/.
+Informações disponíveis em: https://mdsreq-fga-unb.github.io/REQ-2026.1-T02-ConectaUnB/entrega4/
 
 ## Visão geral — Subir o ambiente local
 
