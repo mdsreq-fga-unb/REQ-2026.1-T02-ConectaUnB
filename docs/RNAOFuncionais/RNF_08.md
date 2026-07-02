@@ -12,11 +12,29 @@ LGPD
 ## Regras de negócio
 - [x] **RN1:** Todas as senhas devem ser salvas de forma irreversível no banco de dados utilizando função de hash (bcrypt padrão do NestJS).
 
-**Vídeo de Entrega com Justificativas**
+**Fotos com Evidências**
 
-<div style="text-align: center;">
-    <iframe width="100%" height="400" src="https://www.youtube.com/embed/Pb-5n4mukUM" title="TITULO" frameborder="0" allowfullscreen></iframe>
-    <figcaption>
-        <a href="https://youtu.be/Pb-5n4mukUM">Clique para assistir no YouTube</a>.
-    </figcaption>
+<div align="center">
+  <p class="table-source"><strong>Figura 1</strong> - Código no Cadastro</p>
+  
+  <img src="../../assets/fotosRNF/01.png" alt="Descrição">
+
+</div>
+
+---
+
+<div align="center">
+  <p class="table-source"><strong>Figura 2</strong> - Código no Trocar senha</p>
+  
+  <img src="../../assets/fotosRNF/02.png" alt="Descrição">
+
+</div>
+
+---
+
+<div align="center">
+  <p class="table-source"><strong>Figura 3</strong> - Código no Login</p>
+  
+  <img src="../../assets/fotosRNF/03.png" alt="Descrição">
+
 </div>
