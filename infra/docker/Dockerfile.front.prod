@@ -1,0 +1,34 @@
+FROM node:24-alpine AS builder
+
+WORKDIR /workspace
+
+RUN corepack enable && corepack prepare pnpm@11.3.0 --activate
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
+COPY apps/front/package.json apps/front/package.json
+
+RUN pnpm install --frozen-lockfile
+
+# NEXT_PUBLIC_* sao inlined em build time no Next.js
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+
+COPY apps/front apps/front
+
+RUN pnpm --filter front build
+
+FROM node:24-alpine AS production
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV PORT=3001
+ENV HOSTNAME=0.0.0.0
+
+COPY --from=builder /workspace/apps/front/.next/standalone ./
+COPY --from=builder /workspace/apps/front/.next/static ./apps/front/.next/static
+COPY --from=builder /workspace/apps/front/public ./apps/front/public
+
+EXPOSE 3001
+
+CMD ["node", "apps/front/server.js"]

@@ -1,0 +1,58 @@
+# ConectaUnB — proxy reverso de produção (single-domain, atrás da Cloudflare)
+# Domínio: conectaunb.app  (+ www redireciona para o apex)
+# HTTPS automático via Let's Encrypt (HTTP-01). Cloudflare em SSL/TLS "Full (strict)".
+
+{
+	email {$ACME_EMAIL}
+}
+
+# Redireciona www -> apex (Caddy emite cert para os dois nomes)
+www.{$APP_DOMAIN} {
+	redir https://{$APP_DOMAIN}{uri} permanent
+}
+
+{$APP_DOMAIN} {
+	encode zstd gzip
+
+	# --- Rotas da API (NestJS em api:3000) ---
+	# Mantém exatamente o roteamento por path que já funciona via IP.
+	reverse_proxy /health api:3000
+	reverse_proxy /storage* api:3000
+	reverse_proxy /entidade* api:3000
+	reverse_proxy /perfil* api:3000
+	reverse_proxy /projeto* api:3000
+	reverse_proxy /postagem* api:3000
+	reverse_proxy /processo-seletivo* api:3000
+	reverse_proxy /notificacao* api:3000
+	reverse_proxy /uploads* api:3000
+
+	@auth_register {
+		method POST
+		path /auth/register
+	}
+	reverse_proxy @auth_register api:3000
+
+	@auth_login_post {
+		method POST
+		path /auth/login
+	}
+	reverse_proxy @auth_login_post api:3000
+
+	@auth_me {
+		method GET
+		path /auth/me
+	}
+	reverse_proxy @auth_me api:3000
+
+	@auth_logout {
+		method POST
+		path /auth/logout*
+	}
+	reverse_proxy @auth_logout api:3000
+
+	reverse_proxy /api/docs* api:3000
+	reverse_proxy /api/docs-json* api:3000
+
+	# --- Fallback: frontend Next.js (front:3001) ---
+	reverse_proxy front:3001
+}

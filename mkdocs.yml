@@ -4,19 +4,25 @@ site_description: Site voltado para a documentação do Grupo 5 sobre Requisitos
 repo_url: https://github.com/mdsreq-fga-unb/REQ-2026.1-T02-ConectaUnB
 repo_name: REQ-2026.1-T02-ConectaUnB
 
+site_url: https://mdsreq-fga-unb.github.io/REQ-2026.1-T02-ConectaUnB/entrega4/
+
 nav:
   - Sobre: index.md
 
-  - Reuniões:
+  #- Cronograma: cronograma/cronograma.md
+
+  #- Backlog Realizado: mvp/mvp.md
+
+  - Reuniões grupo:
       - Reunião 1: reunioes/reuniao1.md
       - Reunião 2: reunioes/reuniao2.md
       - Reunião 3: reunioes/reuniao3.md
       - Reunião 4: reunioes/reuniao4.md
       - Reunião 5: reunioes/reuniao5.md
-      # - Reunião 6: reunioes/reuniao6.md
-      # - Reunião 7: reunioes/reuniao7.md
-      # - Reunião 8: reunioes/reuniao8.md
-      # - Reunião 9: reunioes/reuniao9.md
+      - Reunião 6: reunioes/reuniao6.md
+      - Reunião 7: reunioes/reuniao7.md
+      - Reunião 8: reunioes/reuniao8.md
+      - Reunião 9: reunioes/reuniao9.md
       # - Reunião 10: reunioes/reuniao10.md
 
   - Visão do Produto e Projeto:
@@ -25,7 +31,6 @@ nav:
       - "Intervenção social": visaoDeProdutoProjeto/intervencaoSocial.md
       - "Estratégias de Engenharia de Software": visaoDeProdutoProjeto/estrategias.md
       - "Engenharia de Requisitos": visaoDeProdutoProjeto/engenhariaDeRequisitos.md
-      - "Cronograma": visaoDeProdutoProjeto/cronograma.md
       - "Interação entre equipe e cliente": visaoDeProdutoProjeto/interacao.md
       # - "Requisitos de Software": visaoDeProdutoProjeto/requisitosDeSoftware.md
       - "DoR e Dod": visaoDeProdutoProjeto/DoReDod.md
@@ -33,19 +38,19 @@ nav:
       - "Lições Aprendidas": 
         - "Unidade 1": visaoDeProdutoProjeto/licoes/unidade1.md
         - "Unidade 2": visaoDeProdutoProjeto/licoes/unidade2.md
+        - "Unidade 3": visaoDeProdutoProjeto/licoes/unidade3.md
+        # - "Unidade 4": visaoDeProdutoProjeto/licoes/unidade4
   
   - Requisitos:
       - "Requisitos Funcionais": requisitos/requisitosFuncionais.md
       - "Requisitos Não Funcionais": requisitos/requisitosNaoFuncionais.md
-      - "Representação (Telas)": requisitos/representacao.md
-      - "Matriz de Rastreabilidade": requisitos/matrizRastreabilidade.md
       - "Priorização de Requisitos": requisitos/priorizacao.md
       - "Backlog do Produto": requisitos/backlog.md
 
   - Apresentações:
       - Apresentação 1: entregas/entrega1.md
       - Apresentação 2: entregas/unidade2.md
-      # - Apresentação 3: entregas/reuniao3.md
+      - Apresentação 3: entregas/unidade3.md
       # - Apresentação 4: entregas/reuniao4.md
   
   - Entrevistas/Evidências/Entregas:
@@ -60,10 +65,10 @@ nav:
         - "Protótipo 2": userDesign/Fase2/prototipos2.md
         - "Validação de protótipos (formulário)": userDesign/Fase2/evidenciasPrototipo2.md
       - "Fase 3 - Construction":
-        - "Evidências Critérios de Aceitação":
-          - "Evidências CA - Perfil e Entidade": userDesign/Fase3/CA/evidenciasCA1.md
-        - "Evidências Código Fonte":
-          - "Evidências Código Fonte - Perfil e Entidade": userDesign/Fase3/Codigo/evidenciasCodigoFonte1.md
+        - "Evidências Regras de Negócio": userDesign/Fase3/CA/evidenciasCA1.md
+        - "Evidências Entrega": userDesign/Fase3/entregas/entregas.md
+      - "Fase 4 - Cutover":
+        - "Evidências Testes": userDesign/Fase4/cutover.md
 
 theme:
   name: material

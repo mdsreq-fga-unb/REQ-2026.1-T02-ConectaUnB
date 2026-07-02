@@ -1,14 +1,20 @@
 "use client";
 
-import { useAuth } from "@/hooks/useAuth"; 
+import { useAuth } from "@/hooks/useAuth";
+import { api } from "@/guards/api";
 import { useState, useEffect } from "react";
 import { PreferenciasModal } from "@/components/notificacao/PreferenciasModal";
 import { NotificacaoCard } from "@/components/notificacao/NotificacaoCard";
 import { Settings } from "lucide-react";
+import { ProjetoModal, ProjetoDetalhe } from "@/components/ProjetoModal";
+import { PostagemModal, PostagemDetalhe } from "@/components/PostagemModal";
+import { ProcessoSeletivoViewModal } from "@/components/ProcessoSeletivoViewModal";
+import { type ProcessoSeletivo } from "@/components/ProcessoSeletivoFormModal";
 
 interface Notificacao {
   id: string;
   tipo: "ATUALIZACAO_PROJETO" | "NOVA_PUBLICACAO" | "PROCESSO_SELETIVO";
+  referenciaId: number; 
   entidade?: {
     nome: string;
     linkLogo?: string;
@@ -22,30 +28,55 @@ export default function NotificacoesPage() {
   
   const [notificacoes, setNotificacoes] = useState<Notificacao[]>([]);
   const [loadingNotificacoes, setLoadingNotificacoes] = useState(false);
+  const [isProjetoModalOpen, setIsProjetoModalOpen] = useState(false);
+  const [projetoSelecionado, setProjetoSelecionado] = useState<ProjetoDetalhe | null>(null);
+  const [isPostagemModalOpen, setIsPostagemModalOpen] = useState(false);
+  const [postagemSelecionada, setPostagemSelecionada] = useState<PostagemDetalhe | null>(null);
+  const [isProcessoSeletivoModalOpen, setIsProcessoSeletivoModalOpen] = useState(false);
+  const [processoSelecionado, setProcessoSelecionado] = useState<ProcessoSeletivo | null>(null);
+
+  const marcarNotificacoesComoLidas = async () => {
+    try {
+      await api.patch('/notificacao');
+    } catch (error) {
+      console.error("Erro ao registrar última leitura:", error);
+    }
+  };
 
   const buscarNotificacoes = async () => {
     setLoadingNotificacoes(true);
     try {
-      const token = localStorage.getItem("conecta_unb_token");
-      
-      const response = await fetch('http://localhost:3000/notificacao', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` 
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error('Falha ao buscar notificações');
-      }
-
-      const data = await response.json();
+      const { data } = await api.get('/notificacao');
       setNotificacoes(data);
+      marcarNotificacoesComoLidas();
     } catch (error) {
       console.error("Erro ao buscar notificações:", error);
     } finally {
       setLoadingNotificacoes(false);
+    }
+  };
+
+  const handleCardClick = async (id: number, tipo: "PROJETO" | "POSTAGEM" | "PROCESSO_SELETIVO") => {
+    try {
+      if (tipo === "PROJETO") {
+        const { data } = await api.get(`/projeto/${id}`);
+        setProjetoSelecionado(data);
+        setIsProjetoModalOpen(true);
+      } else if (tipo === "POSTAGEM") {
+        const { data } = await api.get(`/postagem/${id}`);
+        setPostagemSelecionada({
+          ...data,
+          entidadeNome: data.entidade?.nome || "Entidade Desconhecida",
+          entidadeLogo: data.entidade?.linkLogo || null
+        });
+        setIsPostagemModalOpen(true);
+      } else if (tipo === "PROCESSO_SELETIVO") {
+        const { data } = await api.get(`/processo-seletivo/${id}`);
+        setProcessoSelecionado(data);
+        setIsProcessoSeletivoModalOpen(true);
+      }
+    } catch (error) {
+      console.error("Erro ao carregar detalhes para o modal:", error);
     }
   };
 
@@ -132,8 +163,9 @@ export default function NotificacoesPage() {
                     nome={notif.entidade?.nome || "Sistema"} 
                     texto={textoFormatado}
                     fotoLogo={notif.entidade?.linkLogo} 
-                    idReferencia={notif.idEntidade} 
+                    idReferencia={notif.referenciaId} 
                     tipoNotificacao={tipoFormatado} 
+                    onClick={handleCardClick}
                   />
                 );
               })
@@ -145,6 +177,24 @@ export default function NotificacoesPage() {
       <PreferenciasModal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
+      />
+
+      <ProjetoModal 
+        isOpen={isProjetoModalOpen} 
+        onClose={() => setIsProjetoModalOpen(false)} 
+        projeto={projetoSelecionado} 
+      />
+
+      <PostagemModal 
+        isOpen={isPostagemModalOpen} 
+        onClose={() => setIsPostagemModalOpen(false)} 
+        postagem={postagemSelecionada} 
+      />
+
+      <ProcessoSeletivoViewModal
+        isOpen={isProcessoSeletivoModalOpen}
+        onClose={() => setIsProcessoSeletivoModalOpen(false)}
+        processo={processoSelecionado}
       />
 
     </div>
