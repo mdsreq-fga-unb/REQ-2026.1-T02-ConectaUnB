@@ -140,6 +140,7 @@ export default function PerfilPage() {
               alt="Foto de perfil"
               variant="badge"
               editable={isOwner && isEditing}
+              aspect={1}
               onFileSelected={setPendingFoto}
               className="w-48 h-48 rounded-full border border-gray-300 flex-shrink-0"
               fallback={

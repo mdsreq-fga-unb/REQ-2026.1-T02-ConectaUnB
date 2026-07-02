@@ -49,6 +49,8 @@ services:
       - internal
 
   api:
+    volumes:
+      - uploads:/workspace/apps/back/uploads
     image: ghcr.io/${GHCR_OWNER:-mdsreq-fga-unb}/conectaunb-back:${IMAGE_TAG:-latest}
     container_name: conecta_api
     restart: unless-stopped
@@ -84,6 +86,7 @@ services:
       - edge
 
 volumes:
+  uploads:
   pgdata:
   caddy_data:
   caddy_config:

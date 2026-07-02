@@ -75,7 +75,6 @@ export function EditEntidadeForm({
         const fd = new FormData();
         fd.append('file', file);
         await api.post(`/entidade/${entidadeId}/${slot}`, fd, {
-          headers: { 'Content-Type': 'multipart/form-data' },
           timeout: 30000,
         });
       };
@@ -176,6 +175,7 @@ export function EditEntidadeForm({
             file={pendingLogo}
             onChange={setPendingLogo}
             imageClassName="object-contain"
+            aspect={1}
           />
           <ImageUploadBox
             id="edit-banner"
@@ -183,6 +183,7 @@ export function EditEntidadeForm({
             file={pendingBanner}
             onChange={setPendingBanner}
             imageClassName="object-cover"
+            aspect={1280/400}
           />
         </div>
 

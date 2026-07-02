@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { X } from 'lucide-react';
 import { api } from '@/guards/api';
+import { uploadImage } from '@/lib/upload';
 import { ImageUploadBox } from '@/components/ImageUploadBox';
 
 type CriarPostagemModalProps = {
@@ -20,10 +21,10 @@ export function CriarPostagemModal({ isOpen, onClose, idEntidade, onSuccess }: C
 
   if (!isOpen) return null;
 
-  // Função simulada para o upload na Cloudflare
-  const uploadParaCloudflare = async (arquivo: File): Promise<string> => {
-    console.log("Fazendo upload para a Cloudflare...", arquivo.name);
-    return "https://link-ficticio-da-cloudflare.com/imagem-postagem.png"; 
+  // Envia a imagem para o storage do backend e retorna a URL pública real.
+  const uploadFoto = async (arquivo: File): Promise<string> => {
+    const { url } = await uploadImage(arquivo, 'postagem', Number(idEntidade));
+    return url;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -35,7 +36,7 @@ export function CriarPostagemModal({ isOpen, onClose, idEntidade, onSuccess }: C
       let linkDaFotoGerado = '';
 
       if (foto) {
-        linkDaFotoGerado = await uploadParaCloudflare(foto);
+        linkDaFotoGerado = await uploadFoto(foto);
       }
 
       const payload = {
@@ -112,6 +113,7 @@ export function CriarPostagemModal({ isOpen, onClose, idEntidade, onSuccess }: C
                 file={foto} 
                 onChange={setFoto} 
                 imageClassName="object-contain bg-gray-50" 
+                aspect={1}
               />
             </div>
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Pencil } from 'lucide-react';
 import { api } from '@/guards/api';
+import { uploadImage } from '@/lib/upload';
 import { StatusProjeto } from '@/constants/options';
 import { ImageUploadBox } from '@/components/ImageUploadBox';
 
@@ -65,8 +66,10 @@ export function ProjetoModal({ isOpen, onClose, projeto, onSuccess, startEditing
     return `${dia}/${mes}/${ano}`;
   };
 
-  const uploadParaCloudflare = async (arquivo: File): Promise<string> => {
-    return "https://link-ficticio-da-cloudflare.com/imagem.png"; 
+  // Envia a imagem para o storage do backend e retorna a URL pública real.
+  const uploadFoto = async (arquivo: File): Promise<string> => {
+    const { url } = await uploadImage(arquivo, 'projeto_foto', Number(projeto.id));
+    return url;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -77,7 +80,7 @@ export function ProjetoModal({ isOpen, onClose, projeto, onSuccess, startEditing
     try {
       let linkDaFotoGerado = linkFotoAtual;
       if (foto) {
-        linkDaFotoGerado = await uploadParaCloudflare(foto);
+        linkDaFotoGerado = await uploadFoto(foto);
       }
 
       const inicioIso = dataInicio ? new Date(`${dataInicio}T00:00:00`).toISOString() : undefined;
@@ -150,7 +153,7 @@ export function ProjetoModal({ isOpen, onClose, projeto, onSuccess, startEditing
                   </div>
                 )
               ) : (
-                <ImageUploadBox id="foto-projeto" label="Capa do Projeto" file={foto} onChange={setFoto} imageClassName="object-cover" />
+                <ImageUploadBox id="foto-projeto" label="Capa do Projeto" file={foto} onChange={setFoto} imageClassName="object-cover" aspect={1080/720} />
               )}
             </div>
 

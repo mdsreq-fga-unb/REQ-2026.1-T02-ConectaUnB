@@ -134,16 +134,23 @@ export default function EntidadesPage() {
   return (
     <div className="flex min-h-screen bg-[#fafafa]">
       <main className="flex-1 p-12">
-        <div className="flex justify-between items-center mb-12 gap-4">
+        <div className="flex justify-between items-end mb-12 gap-4">
           <div ref={psSearchRef} className="relative flex-1 max-w-md">
+            <label
+              htmlFor="busca-processos"
+              className="mb-1 block text-sm font-semibold text-[#0d2a54]"
+            >
+              Buscar processos seletivos abertos
+            </label>
             <div className="relative">
               <Search
                 size={18}
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
               />
               <input
+                id="busca-processos"
                 type="text"
-                placeholder="Buscar processos seletivos por entidade..."
+                placeholder="Digite o nome da entidade..."
                 value={psSearchQuery}
                 onChange={(e) => setPsSearchQuery(e.target.value)}
                 onFocus={() => { if (psSearchResults.length > 0) setPsShowResults(true); }}

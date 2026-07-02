@@ -42,7 +42,6 @@ export async function uploadImage(
       `/storage/upload?${params.toString()}`,
       formData,
       {
-        headers: { "Content-Type": "multipart/form-data" },
         timeout: 30000,
       },
     );

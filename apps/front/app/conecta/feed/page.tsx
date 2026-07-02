@@ -12,6 +12,8 @@ import {
 } from "@/constants/options";
 import { PostagemCardFeed } from "@/components/PostagemCardFeed";
 import { PostagemModal, type PostagemDetalhe } from "@/components/PostagemModal";
+import { ProcessoSeletivoViewModal } from "@/components/ProcessoSeletivoViewModal";
+import { type ProcessoSeletivo } from "@/components/ProcessoSeletivoFormModal";
 
 type EntidadeResumo = {
   id: number;
@@ -46,12 +48,22 @@ type Filtros = {
   classificacao: string;
 };
 
+type FeedItem =
+  | { tipo: "postagem"; ordem: number; detalhe: PostagemDetalhe }
+  | {
+      tipo: "processo";
+      ordem: number;
+      detalhe: PostagemDetalhe;
+      processo: ProcessoSeletivo;
+    };
+
 export default function HomePage() {
   const { user, loading } = useAuth();
   const router = useRouter();
 
   const [postagens, setPostagens] = useState<Postagem[]>([]);
   const [entidades, setEntidades] = useState<EntidadeResumo[]>([]);
+  const [processos, setProcessos] = useState<ProcessoSeletivo[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filtros, setFiltros] = useState<Filtros>({
     campus: "",
@@ -69,16 +81,20 @@ export default function HomePage() {
 
   const [postagemSelecionada, setPostagemSelecionada] =
     useState<PostagemDetalhe | null>(null);
+  const [processoSelecionado, setProcessoSelecionado] =
+    useState<ProcessoSeletivo | null>(null);
 
   const fetchDados = useCallback(async () => {
     setIsLoading(true);
     try {
-      const [postagensRes, entidadesRes] = await Promise.all([
+      const [postagensRes, entidadesRes, processosRes] = await Promise.all([
         api.get<Postagem[]>("/postagem"),
         api.get<EntidadeResumo[]>("/entidade"),
+        api.get<ProcessoSeletivo[]>("/processo-seletivo"),
       ]);
       setPostagens(postagensRes.data);
       setEntidades(entidadesRes.data);
+      setProcessos(processosRes.data);
     } catch (error) {
       console.error("Erro ao buscar dados do feed:", error);
     } finally {
@@ -96,11 +112,33 @@ export default function HomePage() {
     return map;
   }, [entidades]);
 
-  const postagensFiltradas = useMemo<PostagemDetalhe[]>(() => {
-    return postagens
-      .map((postagem): PostagemDetalhe => {
-        const entidade = entidadesMap.get(postagem.idEntidade);
-        return {
+  const passaFiltroEntidade = useCallback(
+    (idEntidade: number) => {
+      const entidade = entidadesMap.get(idEntidade);
+      if (!entidade) return false;
+      if (filtros.campus && entidade.campus !== filtros.campus) return false;
+      if (filtros.departamento && entidade.departamento !== filtros.departamento)
+        return false;
+      if (
+        filtros.classificacao &&
+        entidade.classificacao !== filtros.classificacao
+      )
+        return false;
+      return true;
+    },
+    [entidadesMap, filtros]
+  );
+
+  const feedItems = useMemo<FeedItem[]>(() => {
+    const itens: FeedItem[] = [];
+
+    postagens.forEach((postagem) => {
+      if (!passaFiltroEntidade(postagem.idEntidade)) return;
+      const entidade = entidadesMap.get(postagem.idEntidade);
+      itens.push({
+        tipo: "postagem",
+        ordem: postagem.createdAt ? new Date(postagem.createdAt).getTime() : 0,
+        detalhe: {
           id: postagem.id,
           idEntidade: postagem.idEntidade,
           titulo: postagem.titulo,
@@ -111,19 +149,36 @@ export default function HomePage() {
             : undefined,
           entidadeNome: entidade?.nome ?? "Entidade",
           entidadeLogo: entidade?.linkLogo ?? null,
-        };
-      })
-      .filter((postagem) => {
-        const entidade = entidadesMap.get(postagem.idEntidade);
-        if (!entidade) return false;
-        if (filtros.campus && entidade.campus !== filtros.campus) return false;
-        if (filtros.departamento && entidade.departamento !== filtros.departamento)
-          return false;
-        if (filtros.classificacao && entidade.classificacao !== filtros.classificacao)
-          return false;
-        return true;
+        },
       });
-  }, [postagens, entidadesMap, filtros]);
+    });
+
+    processos.forEach((processo) => {
+      if (!passaFiltroEntidade(processo.idEntidade)) return;
+      const entidade = entidadesMap.get(processo.idEntidade);
+      itens.push({
+        tipo: "processo",
+        ordem: processo.inicioInscricao
+          ? new Date(processo.inicioInscricao).getTime()
+          : 0,
+        processo,
+        detalhe: {
+          id: processo.id,
+          idEntidade: processo.idEntidade,
+          titulo: processo.titulo,
+          conteudo: processo.descricao ?? "",
+          linkFoto: processo.linkFoto ?? null,
+          dataPublicacao: processo.inicioInscricao
+            ? new Date(processo.inicioInscricao).toLocaleDateString("pt-BR")
+            : undefined,
+          entidadeNome: entidade?.nome ?? "Entidade",
+          entidadeLogo: entidade?.linkLogo ?? null,
+        },
+      });
+    });
+
+    return itens.sort((a, b) => b.ordem - a.ordem);
+  }, [postagens, processos, entidadesMap, passaFiltroEntidade]);
 
   const filtrosAtivos =
     Boolean(filtros.campus) ||
@@ -196,7 +251,7 @@ export default function HomePage() {
     <div className="p-8 bg-gray-50 text-[#1D1D1D]">
       <div className="max-w-4xl mx-auto">
         {/* Barra superior: filtros + buscar entidades à direita deles */}
-        <div className="mb-8 flex flex-wrap items-center gap-4">
+        <div className="mb-8 flex flex-wrap items-end gap-4">
           {/* Filtros compactos */}
           <div className="flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0d2a54]">
@@ -258,14 +313,21 @@ export default function HomePage() {
 
           {/* Buscar entidades */}
           <div ref={searchRef} className="relative w-56">
+            <label
+              htmlFor="busca-entidades"
+              className="mb-1 block text-sm font-semibold text-[#0d2a54]"
+            >
+              Buscar entidades
+            </label>
             <div className="relative">
               <Search
                 size={18}
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
               />
               <input
+                id="busca-entidades"
                 type="text"
-                placeholder="Buscar entidades..."
+                placeholder="Digite o nome da entidade..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => {
@@ -349,13 +411,20 @@ export default function HomePage() {
           <div className="flex flex-col gap-4">
             {isLoading ? (
               <p className="text-gray-500">Carregando publicações...</p>
-            ) : postagensFiltradas.length > 0 ? (
-              postagensFiltradas.map((postagem) => (
+            ) : feedItems.length > 0 ? (
+              feedItems.map((item) => (
                 <PostagemCardFeed
-                  key={postagem.id}
-                  postagem={postagem}
+                  key={`${item.tipo}-${item.detalhe.id}`}
+                  postagem={item.detalhe}
                   vinculo={null}
-                  onClick={() => setPostagemSelecionada(postagem)}
+                  tipoLabel={
+                    item.tipo === "processo" ? "Processo Seletivo" : undefined
+                  }
+                  onClick={() =>
+                    item.tipo === "processo"
+                      ? setProcessoSelecionado(item.processo)
+                      : setPostagemSelecionada(item.detalhe)
+                  }
                 />
               ))
             ) : (
@@ -372,6 +441,12 @@ export default function HomePage() {
         onClose={() => setPostagemSelecionada(null)}
         postagem={postagemSelecionada}
         vinculo={null}
+      />
+
+      <ProcessoSeletivoViewModal
+        isOpen={!!processoSelecionado}
+        onClose={() => setProcessoSelecionado(null)}
+        processo={processoSelecionado}
       />
     </div>
   );

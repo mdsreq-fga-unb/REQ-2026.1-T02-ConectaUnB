@@ -1,12 +1,15 @@
 "use client";
 
-import { useAuth } from "@/hooks/useAuth"; 
+import { useAuth } from "@/hooks/useAuth";
+import { api } from "@/guards/api";
 import { useState, useEffect } from "react";
 import { PreferenciasModal } from "@/components/notificacao/PreferenciasModal";
 import { NotificacaoCard } from "@/components/notificacao/NotificacaoCard";
 import { Settings } from "lucide-react";
 import { ProjetoModal, ProjetoDetalhe } from "@/components/ProjetoModal";
 import { PostagemModal, PostagemDetalhe } from "@/components/PostagemModal";
+import { ProcessoSeletivoViewModal } from "@/components/ProcessoSeletivoViewModal";
+import { type ProcessoSeletivo } from "@/components/ProcessoSeletivoFormModal";
 
 interface Notificacao {
   id: string;
@@ -29,16 +32,12 @@ export default function NotificacoesPage() {
   const [projetoSelecionado, setProjetoSelecionado] = useState<ProjetoDetalhe | null>(null);
   const [isPostagemModalOpen, setIsPostagemModalOpen] = useState(false);
   const [postagemSelecionada, setPostagemSelecionada] = useState<PostagemDetalhe | null>(null);
+  const [isProcessoSeletivoModalOpen, setIsProcessoSeletivoModalOpen] = useState(false);
+  const [processoSelecionado, setProcessoSelecionado] = useState<ProcessoSeletivo | null>(null);
 
   const marcarNotificacoesComoLidas = async () => {
     try {
-      const token = localStorage.getItem("conecta_unb_token");
-      await fetch('http://localhost:3000/notificacao', {
-        method: 'PATCH',
-        headers: {
-          'Authorization': `Bearer ${token}` 
-        }
-      });
+      await api.patch('/notificacao');
     } catch (error) {
       console.error("Erro ao registrar última leitura:", error);
     }
@@ -47,21 +46,7 @@ export default function NotificacoesPage() {
   const buscarNotificacoes = async () => {
     setLoadingNotificacoes(true);
     try {
-      const token = localStorage.getItem("conecta_unb_token");
-      
-      const response = await fetch('http://localhost:3000/notificacao', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` 
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error('Falha ao buscar notificações');
-      }
-
-      const data = await response.json();
+      const { data } = await api.get('/notificacao');
       setNotificacoes(data);
       marcarNotificacoesComoLidas();
     } catch (error) {
@@ -72,46 +57,23 @@ export default function NotificacoesPage() {
   };
 
   const handleCardClick = async (id: number, tipo: "PROJETO" | "POSTAGEM" | "PROCESSO_SELETIVO") => {
-    const token = localStorage.getItem("conecta_unb_token");
-    
     try {
       if (tipo === "PROJETO") {
-        const response = await fetch(`http://localhost:3000/projeto/${id}`, {
-          method: 'GET',
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setProjetoSelecionado(data);
-          setIsProjetoModalOpen(true);
-        }
+        const { data } = await api.get(`/projeto/${id}`);
+        setProjetoSelecionado(data);
+        setIsProjetoModalOpen(true);
       } else if (tipo === "POSTAGEM") {
-const response = await fetch(`http://localhost:3000/postagem/${id}`, {
-          method: 'GET',
-          headers: { 'Authorization': `Bearer ${token}` }
+        const { data } = await api.get(`/postagem/${id}`);
+        setPostagemSelecionada({
+          ...data,
+          entidadeNome: data.entidade?.nome || "Entidade Desconhecida",
+          entidadeLogo: data.entidade?.linkLogo || null
         });
-        if (response.ok) {
-          const data = await response.json();
-          
-          setPostagemSelecionada({
-            ...data,
-            entidadeNome: data.entidade?.nome || "Entidade Desconhecida",
-            entidadeLogo: data.entidade?.linkLogo || null
-          });
-          
-          setIsPostagemModalOpen(true);
-        }
+        setIsPostagemModalOpen(true);
       } else if (tipo === "PROCESSO_SELETIVO") {
-
-        const response = await fetch(`http://localhost:3000/processo-seletivo/${id}`, {
-          method: 'GET',
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (response.ok) {
-          const data = await response.json();
-
-          alert(`Dados do Processo Seletivo carregados: ${data.titulo || id}`);
-        }
+        const { data } = await api.get(`/processo-seletivo/${id}`);
+        setProcessoSelecionado(data);
+        setIsProcessoSeletivoModalOpen(true);
       }
     } catch (error) {
       console.error("Erro ao carregar detalhes para o modal:", error);
@@ -227,6 +189,12 @@ const response = await fetch(`http://localhost:3000/postagem/${id}`, {
         isOpen={isPostagemModalOpen} 
         onClose={() => setIsPostagemModalOpen(false)} 
         postagem={postagemSelecionada} 
+      />
+
+      <ProcessoSeletivoViewModal
+        isOpen={isProcessoSeletivoModalOpen}
+        onClose={() => setIsProcessoSeletivoModalOpen(false)}
+        processo={processoSelecionado}
       />
 
     </div>
