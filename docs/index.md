@@ -1,6 +1,10 @@
 
 Somos estudantes da **Universidade de Brasília (UnB) | Faculdade de Ciências e Tecnologias em Engenharia (FCTE)** e este projeto está sendo desenvolvido no contexto da disciplina de **Requisitos de Software**, ministrada pelo professor e doutor **George Marsicano Correia**, sendo o nome escolhido para o grupo **Capoeira**.
 
+# Visualização de rastreabilidade
+Caso o iframe não carregue você pode [acessar nosso miro](https://miro.com/app/board/uXjVHTrU614=/?share_link_id=361857912339), visualizar o [pdf do miro](https://drive.google.com/file/d/1kBZ7op6atCi08PjgWoICVVxFz5fD078_/view?usp=sharing) ou acessar a [página de backup de rastreabilidade](assets/rastreabilidade/rastreabilidade.md).
+<iframe width="768" height="432" src="https://miro.com/app/live-embed/uXjVHTrU614=/?embedMode=view_only_without_ui&moveToViewport=26669,18490,30824,14416&embedId=650722289560" frameborder="0" scrolling="no" allow="fullscreen; clipboard-read; clipboard-write" allowfullscreen></iframe>
+
 O **Conecta UnB** é uma plataforma digital integradora concebida para centralizar a comunicação e as oportunidades dentro do ecossistema acadêmico da Universidade de Brasília (UnB), buscando democratizar o acesso à informação na universidade, impulsionar o engajamento dos estudantes em projetos práticos, reduzir o trabalho de divulgação das entidades e preservar a memória institucional das organizações acadêmicas.
 
 ## Integrantes
