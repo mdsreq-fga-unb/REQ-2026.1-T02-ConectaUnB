@@ -2,6 +2,7 @@
 
 import React, { useRef, useState } from "react";
 import { Camera } from "lucide-react";
+import { ImageCropper } from "./ImageCropper";
 
 type EditablePhotoProps = {
   src?: string | null;
@@ -11,6 +12,7 @@ type EditablePhotoProps = {
   variant?: "badge" | "overlay";
   className?: string;
   fallback?: React.ReactNode;
+  aspect?: number;
 };
 
 export function EditablePhoto({
@@ -21,9 +23,11 @@ export function EditablePhoto({
   variant = "badge",
   className = "",
   fallback,
+  aspect,
 }: EditablePhotoProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [cropFile, setCropFile] = useState<File | null>(null);
 
   const currentSrc = previewUrl ?? src ?? undefined;
 
@@ -32,10 +36,21 @@ export function EditablePhoto({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (previewUrl) URL.revokeObjectURL(previewUrl);
-    setPreviewUrl(URL.createObjectURL(file));
-    onFileSelected?.(file);
+    if (aspect) {
+      setCropFile(file);
+    } else {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      setPreviewUrl(URL.createObjectURL(file));
+      onFileSelected?.(file);
+    }
     e.target.value = "";
+  };
+
+  const handleCropConfirm = (cropped: File) => {
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setPreviewUrl(URL.createObjectURL(cropped));
+    onFileSelected?.(cropped);
+    setCropFile(null);
   };
 
   const shape = variant === "badge" ? "rounded-full" : "rounded-xl";
@@ -83,6 +98,10 @@ export function EditablePhoto({
             className="hidden"
           />
         </>
+      )}
+
+      {cropFile && aspect && (
+        <ImageCropper file={cropFile} aspect={aspect} onConfirm={handleCropConfirm} onCancel={() => setCropFile(null)} />
       )}
     </div>
   );

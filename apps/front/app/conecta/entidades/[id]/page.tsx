@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { ProjetoCardLarge } from '@/components/ProjetoCardLarge';
 import { api } from '@/guards/api';
@@ -77,9 +77,6 @@ export default function PerfilEntidadePage() {
   const [processoSeletivo, setProcessoSeletivo] = useState<ProcessoSeletivo | null>(null);
   const [isProcessoFormModalOpen, setIsProcessoFormModalOpen] = useState(false);
   const [isProcessoViewModalOpen, setIsProcessoViewModalOpen] = useState(false);
-
-  const bannerFileRef = useRef<File | null>(null);
-  const logoFileRef = useRef<File | null>(null);
 
   const recarregarProjetos = async () => {
     if (!entidade) return;
@@ -278,11 +275,17 @@ useEffect(() => {
           alt="Banner da entidade"
           variant="overlay"
           editable={vinculoUsuario === 'GESTOR' || vinculoUsuario === 'CO_GESTOR'}
-          onFileSelected={(file) => {
-            bannerFileRef.current = file;
-            toast('Banner selecionado', {
-              description: 'A integração com o Cloudflare R2 está em breve.',
-            });
+          aspect={1280/400}
+          onFileSelected={async (file) => {
+            try {
+              const fd = new FormData();
+              fd.append('file', file);
+              await api.post(`/entidade/${entidade.id}/banner`, fd, { timeout: 30000 });
+              setEntidade((prev) => prev ? { ...prev, linkBanner: URL.createObjectURL(file) } : prev);
+              toast.success('Banner alterado');
+            } catch {
+              toast.error('Erro ao alterar banner');
+            }
           }}
           className="h-56 w-full bg-[#E0E0E0]"
           fallback={<div className="h-full w-full bg-[#E0E0E0]" />}
@@ -297,11 +300,17 @@ useEffect(() => {
                 alt={`Logo da entidade ${entidade.nome}`}
                 variant="badge"
                 editable={vinculoUsuario === 'GESTOR' || vinculoUsuario === 'CO_GESTOR'}
-                onFileSelected={(file) => {
-                  logoFileRef.current = file;
-                  toast('Logo selecionado', {
-                    description: 'A integração com o Cloudflare R2 está em breve.',
-                  });
+                aspect={1}
+                onFileSelected={async (file) => {
+                  try {
+                    const fd = new FormData();
+                    fd.append('file', file);
+                    await api.post(`/entidade/${entidade.id}/logo`, fd, { timeout: 30000 });
+                    setEntidade((prev) => prev ? { ...prev, linkLogo: URL.createObjectURL(file) } : prev);
+                    toast.success('Logo alterado');
+                  } catch {
+                    toast.error('Erro ao alterar logo');
+                  }
                 }}
                 className="h-32 w-32 rounded-full border-4 border-white bg-white shadow-sm"
                 fallback={
