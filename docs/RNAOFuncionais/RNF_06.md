@@ -12,3 +12,12 @@ requisito implícito
 ## Regras de negócio
 - [x] **RN1:** O tempo médio de carregamento da página não deve exceder 8 segundos sob uma conexão de rede 4G padrão.
 - [x] **RN2:** O limite de 8 segundos deve ser respeitado no acesso via navegadores web (Desktop e Mobile).
+
+**Vídeo de Entrega com Justificativas**
+
+<div style="text-align: center;">
+    <iframe width="100%" height="400" src="https://www.youtube.com/embed/Pb-5n4mukUM" title="TITULO" frameborder="0" allowfullscreen></iframe>
+    <figcaption>
+        <a href="https://youtu.be/Pb-5n4mukUM">Clique para assistir no YouTube</a>.
+    </figcaption>
+</div>
