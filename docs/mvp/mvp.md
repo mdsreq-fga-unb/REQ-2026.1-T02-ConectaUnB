@@ -11,7 +11,7 @@
 | [**RF-19**](../RFuncionais/RF_19.md) - Excluir perfil da usuário |  | Incompleto |
 | [**RF-12**](../RFuncionais/RF_12.md) - Criar perfil da entidade publicamente |  | Done |
 | [**RF-13**](../RFuncionais/RF_13.md) - Editar perfil da entidade |  | Done |
-| [**RF-17**](../RFuncionais/RF_17.md) - Cadastrar perfil de usuário |  | Incompleto |
+| [**RF-17**](../RFuncionais/RF_17.md) - Cadastrar perfil de usuário |  | Done |
 | [**RF-18**](../RFuncionais/RF_18.md) - Editar perfil da usuário |  | Incompleto |
 | [**RF-22**](../RFuncionais/RF_22.md) - Atualizar projeto |  | Incompleto |
 | [**RF-23**](../RFuncionais/RF_23.md) - Visualizar histórico de projetos |  | Done |
