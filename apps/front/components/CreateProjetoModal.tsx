@@ -64,14 +64,14 @@ export function CreateProjetoModal({
     setErrorMessage('');
     setPendingFoto(null);
     setFormData({
-      idEntidade: projeto?.idEntidade ? String(projeto.idEntidade) : '',
+      idEntidade: projeto?.idEntidade ? String(projeto.idEntidade) : String(entidades[0]?.id ?? ''),
       nome: projeto?.nome ?? '',
       descricao: projeto?.descricao ?? '',
       status: projeto?.status ?? 'PLANEJAMENTO',
       dataInicio: projeto?.dataInicio ? projeto.dataInicio.slice(0, 10) : '',
       dataFim: projeto?.dataFim ? projeto.dataFim.slice(0, 10) : '',
     });
-  }, [isOpen, projeto]);
+  }, [isOpen, projeto, entidades]);
 
   if (!isOpen) return null;
 
@@ -161,22 +161,6 @@ export function CreateProjetoModal({
                 className={inputClass} placeholder="Ex: Sistema de Gerenciamento"
               />
             </div>
-
-            {!isEditing && (
-              <div className="md:col-span-2">
-                <label className="mb-1 block text-sm font-medium text-gray-700">Entidade *</label>
-                <select
-                  required value={formData.idEntidade}
-                  onChange={(e) => setFormData({ ...formData, idEntidade: e.target.value })}
-                  className={inputClass}
-                >
-                  <option value="">Selecione uma entidade</option>
-                  {entidades.map((e) => (
-                    <option key={e.id} value={e.id}>{e.nome}</option>
-                  ))}
-                </select>
-              </div>
-            )}
 
             <div className="md:col-span-2">
               <label className="mb-1 block text-sm font-medium text-gray-700">Descrição</label>
