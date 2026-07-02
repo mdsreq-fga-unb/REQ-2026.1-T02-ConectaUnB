@@ -61,10 +61,10 @@ nav:
         - "Protótipo 2": userDesign/Fase2/prototipos2.md
         - "Validação de protótipos (formulário)": userDesign/Fase2/evidenciasPrototipo2.md
       - "Fase 3 - Construction":
-        - "Evidências Critérios de Aceitação":
-          - "Evidências CA - Perfil e Entidade": userDesign/Fase3/CA/evidenciasCA1.md
-        - "Evidências Código Fonte":
-          - "Evidências Código Fonte - Perfil e Entidade": userDesign/Fase3/Codigo/evidenciasCodigoFonte1.md
+        - "Evidências Regras de Negócio": userDesign/Fase3/CA/evidenciasCA1.md
+        - "Evidências Entrega": userDesign/Fase3/entregas/entregas.md
+      - "Fase 4 - Cutover":
+        - "Evidências Testes": userDesign/Fase4/cutover.md
 
 theme:
   name: material
