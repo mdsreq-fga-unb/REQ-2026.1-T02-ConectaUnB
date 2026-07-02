@@ -10,5 +10,5 @@ As páginas devem carregar em menos de 8 segundos em média.
 requisito implícito
 
 ## Regras de negócio
-- [ ] **RN1:** O tempo médio de carregamento da página não deve exceder 8 segundos sob uma conexão de rede 4G padrão.
-- [ ] **RN2:** O limite de 8 segundos deve ser respeitado no acesso via navegadores web (Desktop e Mobile).
+- [x] **RN1:** O tempo médio de carregamento da página não deve exceder 8 segundos sob uma conexão de rede 4G padrão.
+- [x] **RN2:** O limite de 8 segundos deve ser respeitado no acesso via navegadores web (Desktop e Mobile).

@@ -10,4 +10,4 @@ O sistema deve possuir interface responsiva, sempre comunicando com o usuário s
 Should Have
 
 ## Regras de negócio
-- [ ] **RN1:** Operações que envolvam o banco de dados sempre devem comunicar ao usuário se a operação foi concluída ou não.
+- [x] **RN1:** Operações que envolvam o banco de dados sempre devem comunicar ao usuário se a operação foi concluída ou não.
