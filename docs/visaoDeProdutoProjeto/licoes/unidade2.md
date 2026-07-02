@@ -2,7 +2,7 @@
 
 Durante a Unidade 2 consolidamos a elicitação de requisitos a partir das entrevistas e definimos critérios mais claros de prontidão e aceitação. Abaixo estão os principais aprendizados observados durante a fase de planejamento e elicitação.
 
-Definir critérios mínimos antes de iniciar uma tarefa (Definition of Ready) reduziu dúvidas de escopo e permitiu que as atividades começassem com menos bloqueios. Requisitos com critérios de aceitação bem descritos ficaram mais prontos para implementação e revisão.
+Definir critérios mínimos antes de iniciar uma tarefa (Definition of Ready) reduziu dúvidas de escopo e permitiu que as atividades começassem com menos bloqueios. Requisitos com regras de negócio bem descritas ficaram mais prontos para implementação e revisão.
 
 Agrupar os requisitos por componentes (perfis, feed, projetos, publicações, processos seletivos, notificações, métricas e integração) facilitou a comunicação entre os membros da equipe e tornou a rastreabilidade mais prática durante as discussões.
 

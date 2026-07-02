@@ -9,7 +9,11 @@ site_url: https://mdsreq-fga-unb.github.io/REQ-2026.1-T02-ConectaUnB/entrega4/
 nav:
   - Sobre: index.md
 
-  - Reuniões:
+  #- Cronograma: cronograma/cronograma.md
+
+  #- Backlog Realizado: mvp/mvp.md
+
+  - Reuniões grupo:
       - Reunião 1: reunioes/reuniao1.md
       - Reunião 2: reunioes/reuniao2.md
       - Reunião 3: reunioes/reuniao3.md
@@ -27,7 +31,6 @@ nav:
       - "Intervenção social": visaoDeProdutoProjeto/intervencaoSocial.md
       - "Estratégias de Engenharia de Software": visaoDeProdutoProjeto/estrategias.md
       - "Engenharia de Requisitos": visaoDeProdutoProjeto/engenhariaDeRequisitos.md
-      - "Cronograma": visaoDeProdutoProjeto/cronograma.md
       - "Interação entre equipe e cliente": visaoDeProdutoProjeto/interacao.md
       # - "Requisitos de Software": visaoDeProdutoProjeto/requisitosDeSoftware.md
       - "DoR e Dod": visaoDeProdutoProjeto/DoReDod.md
@@ -41,8 +44,6 @@ nav:
   - Requisitos:
       - "Requisitos Funcionais": requisitos/requisitosFuncionais.md
       - "Requisitos Não Funcionais": requisitos/requisitosNaoFuncionais.md
-      - "Representação (Telas)": requisitos/representacao.md
-      - "Matriz de Rastreabilidade": requisitos/matrizRastreabilidade.md
       - "Priorização de Requisitos": requisitos/priorizacao.md
       - "Backlog do Produto": requisitos/backlog.md
 
@@ -64,10 +65,10 @@ nav:
         - "Protótipo 2": userDesign/Fase2/prototipos2.md
         - "Validação de protótipos (formulário)": userDesign/Fase2/evidenciasPrototipo2.md
       - "Fase 3 - Construction":
-        - "Evidências Critérios de Aceitação":
-          - "Evidências CA - Perfil e Entidade": userDesign/Fase3/CA/evidenciasCA1.md
-        - "Evidências Código Fonte":
-          - "Evidências Código Fonte - Perfil e Entidade": userDesign/Fase3/Codigo/evidenciasCodigoFonte1.md
+        - "Evidências Regras de Negócio": userDesign/Fase3/CA/evidenciasCA1.md
+        - "Evidências Entrega": userDesign/Fase3/entregas/entregas.md
+      - "Fase 4 - Cutover":
+        - "Evidências Testes": userDesign/Fase4/cutover.md
 
 theme:
   name: material

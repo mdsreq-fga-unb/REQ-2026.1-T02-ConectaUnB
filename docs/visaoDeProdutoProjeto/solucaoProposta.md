@@ -34,7 +34,7 @@ Com base nos requisitos levantados, no mapa de stakeholders e no rich picture el
 <div align="center">
   <p class="table-source"><strong>Figura 1</strong> - Diagrama de Contexto do ConectaUnB</p>
 
-  <img src="../../assets/fotos/soluçãoProposta/DiagramaContexto.png" alt="Diagrama de Contexto">
+  <img src="../../assets/fotos/solucaoProposta/DiagramaContexto.png" alt="Diagrama de Contexto">
 
 </div>
 
