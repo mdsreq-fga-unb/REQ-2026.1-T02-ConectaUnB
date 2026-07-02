@@ -29,6 +29,13 @@ const mockPrismaService = {
     delete: jest.fn(),
     create: jest.fn(),
   },
+  membro: {
+    findMany: jest.fn(),
+    count: jest.fn(),
+  },
+  entidade: {
+    delete: jest.fn(),
+  },
   seguindo: {
     findMany: jest.fn(),
   },
@@ -112,12 +119,14 @@ describe('PerfilService', () => {
 
   describe('remove', () => {
     it('deve deletar o perfil com sucesso', async () => {
+      mockPrismaService.membro.findMany.mockResolvedValue([]);
       mockPrismaService.perfil.delete.mockResolvedValue(mockPerfil);
       const result = await service.remove(1);
       expect(result).toEqual(mockPerfil);
     });
 
     it('deve lançar NotFoundException se tentar deletar ID inexistente (Erro P2025)', async () => {
+      mockPrismaService.membro.findMany.mockResolvedValue([]);
       const mockError = { code: 'P2025' };
       mockPrismaService.perfil.delete.mockRejectedValue(mockError);
 
