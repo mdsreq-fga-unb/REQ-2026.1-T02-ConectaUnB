@@ -75,7 +75,6 @@ export function EditEntidadeForm({
         const fd = new FormData();
         fd.append('file', file);
         await api.post(`/entidade/${entidadeId}/${slot}`, fd, {
-          headers: { 'Content-Type': 'multipart/form-data' },
           timeout: 30000,
         });
       };

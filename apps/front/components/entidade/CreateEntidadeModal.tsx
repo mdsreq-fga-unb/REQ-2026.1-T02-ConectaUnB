@@ -30,7 +30,6 @@ export function CreateEntidadeModal({ isOpen, onClose, onSuccess }: CreateEntida
     const fd = new FormData();
     fd.append('file', file);
     await api.post(`/entidade/${entityId}/${slot}`, fd, {
-      headers: { 'Content-Type': 'multipart/form-data' },
       timeout: 30000,
     });
   };
@@ -42,10 +41,21 @@ export function CreateEntidadeModal({ isOpen, onClose, onSuccess }: CreateEntida
     try {
       const { data: entidade } = await api.post('/entidade', formData);
 
-      if (logo) await uploadFile(logo, 'logo', entidade.id);
-      if (banner) await uploadFile(banner, 'banner', entidade.id);
+      const falhas: string[] = [];
+      if (logo) {
+        try { await uploadFile(logo, 'logo', entidade.id); }
+        catch { falhas.push('logo'); }
+      }
+      if (banner) {
+        try { await uploadFile(banner, 'banner', entidade.id); }
+        catch { falhas.push('banner'); }
+      }
 
-      toast.success('Entidade criada com sucesso!');
+      if (falhas.length) {
+        toast.warning(`Entidade criada, mas não foi possível enviar: ${falhas.join(', ')}.`);
+      } else {
+        toast.success('Entidade criada com sucesso!');
+      }
 
       setFormData({
         nome: '',

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { X, Trash2 } from 'lucide-react';
 import { api } from '@/guards/api';
+import { uploadImage } from '@/lib/upload';
 import { ImageUploadBox } from '@/components/ImageUploadBox';
 import { toast } from 'sonner';
 import { ConfirmModal } from '@/components/ConfirmModal';
@@ -88,9 +89,10 @@ export function ProcessoSeletivoFormModal({
 
   if (!isOpen) return null;
 
-  const uploadParaCloudflare = async (arquivo: File): Promise<string> => {
-    console.log("Fazendo upload para a Cloudflare...", arquivo.name);
-    return "https://link-ficticio-da-cloudflare.com/imagem.png"; 
+  // Envia a imagem para o storage do backend e retorna a URL pública real.
+  const uploadFoto = async (arquivo: File): Promise<string> => {
+    const { url } = await uploadImage(arquivo, 'processo_foto', Number(idEntidade));
+    return url;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -102,7 +104,7 @@ export function ProcessoSeletivoFormModal({
       let linkDaFotoGerado = typeof foto === 'string' ? foto : '';
 
       if (foto instanceof File) {
-        linkDaFotoGerado = await uploadParaCloudflare(foto);
+        linkDaFotoGerado = await uploadFoto(foto);
       }
 
       if (dataFim && dataInicio && new Date(dataFim) < new Date(dataInicio)) {
