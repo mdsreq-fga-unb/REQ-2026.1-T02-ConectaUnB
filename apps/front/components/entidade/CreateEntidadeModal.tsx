@@ -183,6 +183,7 @@ export function CreateEntidadeModal({ isOpen, onClose, onSuccess }: CreateEntida
                 file={logo} 
                 onChange={setLogo} 
                 imageClassName="object-contain" 
+                aspect={1}
               />
               <ImageUploadBox 
                 id="banner-upload" 
@@ -190,6 +191,7 @@ export function CreateEntidadeModal({ isOpen, onClose, onSuccess }: CreateEntida
                 file={banner} 
                 onChange={setBanner} 
                 imageClassName="object-cover" 
+                aspect={1280/400}
               />
             </div>
           </div>

@@ -61,6 +61,20 @@ export class PerfilService {
   }
 
   async remove(id: number) {
+    const entidades = await this.prisma.membro.findMany({
+      where: { idPerfil: id },
+      select: { idEntidade: true },
+    });
+
+    for (const m of entidades) {
+      const outros = await this.prisma.membro.count({
+        where: { idEntidade: m.idEntidade, idPerfil: { not: id } },
+      });
+      if (outros === 0) {
+        await this.prisma.entidade.delete({ where: { id: m.idEntidade } });
+      }
+    }
+
     try {
       return await this.prisma.perfil.delete({
         where: { id },

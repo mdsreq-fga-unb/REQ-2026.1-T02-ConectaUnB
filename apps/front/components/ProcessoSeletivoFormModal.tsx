@@ -234,6 +234,7 @@ export function ProcessoSeletivoFormModal({
                   file={foto instanceof File ? foto : null} 
                   onChange={setFoto} 
                   imageClassName="object-cover" 
+                  aspect={1080/720}
                 />
               </div>
 

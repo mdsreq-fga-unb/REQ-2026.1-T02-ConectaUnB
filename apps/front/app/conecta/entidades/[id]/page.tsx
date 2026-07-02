@@ -284,7 +284,7 @@ useEffect(() => {
               description: 'A integração com o Cloudflare R2 está em breve.',
             });
           }}
-          className="h-48 w-full bg-[#E0E0E0]"
+          className="h-56 w-full bg-[#E0E0E0]"
           fallback={<div className="h-full w-full bg-[#E0E0E0]" />}
         />
 

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Upload } from 'lucide-react';
+import { ImageCropper } from './ImageCropper';
 
 interface ImageUploadBoxProps {
   id: string;
@@ -7,9 +8,26 @@ interface ImageUploadBoxProps {
   file: File | null;
   onChange: (file: File | null) => void;
   imageClassName?: string;
+  aspect?: number;
 }
 
-export function ImageUploadBox({ id, label, file, onChange, imageClassName = "object-contain" }: ImageUploadBoxProps) {
+export function ImageUploadBox({ id, label, file, onChange, imageClassName = "object-contain", aspect }: ImageUploadBoxProps) {
+  const [cropFile, setCropFile] = useState<File | null>(null);
+
+  const handleSelect = (raw: File | null) => {
+    if (!raw) { onChange(null); return; }
+    if (aspect) {
+      setCropFile(raw);
+    } else {
+      onChange(raw);
+    }
+  };
+
+  const handleCropConfirm = (cropped: File) => {
+    onChange(cropped);
+    setCropFile(null);
+  };
+
   return (
     <div>
       <span className="block text-sm font-medium text-gray-700 mb-1">{label}</span>
@@ -30,8 +48,12 @@ export function ImageUploadBox({ id, label, file, onChange, imageClassName = "ob
           {!file && <p className="text-xs text-gray-500 mt-1">PNG, JPG até 5MB</p>}
           {file && <p className="text-xs text-[#195b3d] font-semibold mt-2 break-all">{file.name}</p>}
         </div>
-        <input id={id} type="file" className="hidden" accept="image/*" onChange={(e) => onChange(e.target.files?.[0] || null)} />
+        <input id={id} type="file" className="hidden" accept="image/*" onChange={(e) => handleSelect(e.target.files?.[0] || null)} />
       </label>
+
+      {cropFile && aspect && (
+        <ImageCropper file={cropFile} aspect={aspect} onConfirm={handleCropConfirm} onCancel={() => setCropFile(null)} />
+      )}
     </div>
   );
 }

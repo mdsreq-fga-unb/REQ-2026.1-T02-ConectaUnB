@@ -175,6 +175,7 @@ export function EditEntidadeForm({
             file={pendingLogo}
             onChange={setPendingLogo}
             imageClassName="object-contain"
+            aspect={1}
           />
           <ImageUploadBox
             id="edit-banner"
@@ -182,6 +183,7 @@ export function EditEntidadeForm({
             file={pendingBanner}
             onChange={setPendingBanner}
             imageClassName="object-cover"
+            aspect={1280/400}
           />
         </div>
 

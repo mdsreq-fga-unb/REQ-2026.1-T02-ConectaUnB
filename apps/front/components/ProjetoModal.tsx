@@ -153,7 +153,7 @@ export function ProjetoModal({ isOpen, onClose, projeto, onSuccess, startEditing
                   </div>
                 )
               ) : (
-                <ImageUploadBox id="foto-projeto" label="Capa do Projeto" file={foto} onChange={setFoto} imageClassName="object-cover" />
+                <ImageUploadBox id="foto-projeto" label="Capa do Projeto" file={foto} onChange={setFoto} imageClassName="object-cover" aspect={1080/720} />
               )}
             </div>
 

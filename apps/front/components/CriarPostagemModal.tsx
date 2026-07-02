@@ -113,6 +113,7 @@ export function CriarPostagemModal({ isOpen, onClose, idEntidade, onSuccess }: C
                 file={foto} 
                 onChange={setFoto} 
                 imageClassName="object-contain bg-gray-50" 
+                aspect={1}
               />
             </div>
 

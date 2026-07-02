@@ -49,7 +49,6 @@ export function CreateProjetoModal({
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [pendingFoto, setPendingFoto] = useState<File | null>(null);
-  const [pendingBanner, setPendingBanner] = useState<File | null>(null);
   const [formData, setFormData] = useState({
     idEntidade: '',
     nome: '',
@@ -64,7 +63,6 @@ export function CreateProjetoModal({
     if (!isOpen) return;
     setErrorMessage('');
     setPendingFoto(null);
-    setPendingBanner(null);
     setFormData({
       idEntidade: projeto?.idEntidade ? String(projeto.idEntidade) : '',
       nome: projeto?.nome ?? '',
@@ -117,19 +115,16 @@ export function CreateProjetoModal({
         await api.patch(`/projeto/${projeto.id}`, payload);
         const pid = projeto.id;
         if (pendingFoto) await uploadFile(pid, pendingFoto, 'foto');
-        if (pendingBanner) await uploadFile(pid, pendingBanner, 'banner');
       } else {
         const { data: created } = await api.post('/projeto', {
           ...payload,
           idEntidade: Number(formData.idEntidade),
         });
         if (pendingFoto) await uploadFile(created.id, pendingFoto, 'foto');
-        if (pendingBanner) await uploadFile(created.id, pendingBanner, 'banner');
       }
 
       setFormData({ idEntidade: '', nome: '', descricao: '', status: 'PLANEJAMENTO', dataInicio: '', dataFim: '' });
       setPendingFoto(null);
-      setPendingBanner(null);
       onCreated();
       onClose();
     } catch (error) {
@@ -225,9 +220,8 @@ export function CreateProjetoModal({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-            <ImageUploadBox id="projeto-foto" label="Foto do Projeto" file={pendingFoto} onChange={setPendingFoto} imageClassName="object-cover" />
-            <ImageUploadBox id="projeto-banner" label="Banner do Projeto" file={pendingBanner} onChange={setPendingBanner} imageClassName="object-cover" />
+          <div className="pt-2">
+            <ImageUploadBox id="projeto-foto" label="Foto do Projeto" file={pendingFoto} onChange={setPendingFoto} imageClassName="object-cover" aspect={1080/720} />
           </div>
 
           <div className="flex justify-end gap-3 pt-5 border-t border-gray-100">
