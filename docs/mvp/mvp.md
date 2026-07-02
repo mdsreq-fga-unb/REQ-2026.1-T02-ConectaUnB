@@ -1,4 +1,4 @@
-# MVP
+# Backlog Realizado
 
 | Requisitos | Referência | Status |
 | :--- | :--- | :--- |
@@ -24,7 +24,7 @@
 | [**RF-05**](../RFuncionais/RF_05.md) - Criar um processo seletivo | [Referência](https://conectaunb.app/conecta/entidades/4) | Done |
 | [**RF-21**](../RFuncionais/RF_21.md) - Exibir entidades nas quais o usuário é gestor/membro | [Referência](https://conectaunb.app/conecta/entidades/gestao) | Done |
 | Escopo realizado| | |
-| [**RF-04**](../RFuncionais/escopo/RF_04.md) - Finalizar um processo seletivo | [Referência](https://conectaunb.app/conecta/entidades/4) | Done) |
+| [**RF-04**](../RFuncionais/escopo/RF_04.md) - Finalizar um processo seletivo | [Referência](https://conectaunb.app/conecta/entidades/4) | Done |
 | [**RF-16.1**](../RFuncionais/escopo/RF_16.1.md) - Adicionar Co-gestores das entidades | [Referência](https://conectaunb.app/conecta/entidades/gestao) | Done |
 | [**RF-16.2**](../RFuncionais/escopo/RF_16.2.md) - Remover Co-gestores das entidades | [Referência](https://conectaunb.app/conecta/entidades/gestao) | Done |
 | [**RF-16.3**](../RFuncionais/escopo/RF_16.3.md) - Visualizar Co-gestores das entidades | [Referência](https://conectaunb.app/conecta/entidades/gestao) | Done |
@@ -37,11 +37,11 @@
 
 | Requisitos | Referência | Status |
 | :--- | :--- | :--- |
-| [**RNF-01**](../RNAOFuncionais/RF_01.md) - Acessar plataforma sem login | [Referência](https://conectaunb.app/conecta/feed) (caso esteja logado, faça o logout) | Done |
-| [**RNF-02**](../RNAOFuncionais/RF_02.md) - Facilidade no uso | Evidênciado em Vídeo | Done |
-| [**RNF-03**](../RNAOFuncionais/RF_03.md) - Manter consistência visual | Evidênciado em Vídeo | Done |
-| [**RNF-04**](../RNAOFuncionais/RF_04.md) - Feedback responsivo | Evidênciado em Vídeo | Done |
-| [**RNF-05**](../RNAOFuncionais/RF_05.md) - Uso mobile e desktop | - | Não Implementado |
-| [**RNF-06**](../RNAOFuncionais/RF_06.md) - Carregamento rápido de páginas | Evidênciado em Vídeo | Done |
-| [**RNF-07**](../RNAOFuncionais/RF_07.md) - Coleta de métricas de acordo com LGPD | Evidênciado em Vídeo | Done |
-| [**RNF-08**](../RNAOFuncionais/RF_08.md) - Criptografar senhas de usuários e entidades | Evidênciado em Vídeo | Done |
+| [**RNF-01**](../RNAOFuncionais/RNF_01.md) - Acessar plataforma sem login | [Referência](https://conectaunb.app/conecta/feed) (caso esteja logado, faça o logout) | Done |
+| [**RNF-02**](../RNAOFuncionais/RNF_02.md) - Facilidade no uso | Evidênciado em Vídeo | Done |
+| [**RNF-03**](../RNAOFuncionais/RNF_03.md) - Manter consistência visual | Evidênciado em Vídeo | Done |
+| [**RNF-04**](../RNAOFuncionais/RNF_04.md) - Feedback responsivo | Evidênciado em Vídeo | Done |
+| [**RNF-05**](../RNAOFuncionais/RNF_05.md) - Uso mobile e desktop | Evidenciado em Vídeo | Done |
+| [**RNF-06**](../RNAOFuncionais/RNF_06.md) - Carregamento rápido de páginas | Evidênciado em Vídeo | Done |
+| [**RNF-07**](../RNAOFuncionais/RNF_07.md) - Coleta de métricas de acordo com LGPD | - | Não Implementado |
+| [**RNF-08**](../RNAOFuncionais/RNF_08.md) - Criptografar senhas de usuários e entidades | Evidênciado em Vídeo | Done |
