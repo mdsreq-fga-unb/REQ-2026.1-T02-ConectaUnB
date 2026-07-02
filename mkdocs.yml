@@ -4,7 +4,7 @@ site_description: Site voltado para a documentação do Grupo 5 sobre Requisitos
 repo_url: https://github.com/mdsreq-fga-unb/REQ-2026.1-T02-ConectaUnB
 repo_name: REQ-2026.1-T02-ConectaUnB
 
-site_url: https://mdsreq-fga-unb.github.io/REQ-2026.1-T02-ConectaUnB/entrega4/
+site_url: https://mdsreq-fga-unb.github.io/REQ-2026.1-T02-ConectaUnB/
 
 nav:
   - Sobre: index.md
@@ -39,7 +39,7 @@ nav:
         - "Unidade 1": visaoDeProdutoProjeto/licoes/unidade1.md
         - "Unidade 2": visaoDeProdutoProjeto/licoes/unidade2.md
         - "Unidade 3": visaoDeProdutoProjeto/licoes/unidade3.md
-        # - "Unidade 4": visaoDeProdutoProjeto/licoes/unidade4
+        - "Unidade 4": visaoDeProdutoProjeto/licoes/unidade4.md
   
   - Requisitos:
       - "Requisitos Funcionais": requisitos/requisitosFuncionais.md
@@ -51,7 +51,7 @@ nav:
       - Apresentação 1: entregas/entrega1.md
       - Apresentação 2: entregas/unidade2.md
       - Apresentação 3: entregas/unidade3.md
-      # - Apresentação 4: entregas/reuniao4.md
+      - Apresentação 4: entregas/unidade4.md
   
   - Entrevistas/Evidências/Entregas:
       - "Fase 1 - Requisitos":
