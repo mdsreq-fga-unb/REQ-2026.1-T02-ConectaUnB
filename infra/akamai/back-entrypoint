@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+
+echo "[entrypoint] Aplicando migrations do Prisma..."
+pnpm --filter back prisma:migrate:deploy
+
+echo "[entrypoint] Iniciando a API..."
+exec node apps/back/dist/src/main.js

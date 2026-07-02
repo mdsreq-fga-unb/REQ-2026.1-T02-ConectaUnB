@@ -1,0 +1,209 @@
+name: ci-cd
+
+on:
+  pull_request:
+    branches: [main, developer]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: ci-cd-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: "24"
+  PNPM_VERSION: "11.3.0"
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        run: corepack enable && corepack prepare pnpm@${{ env.PNPM_VERSION }} --activate
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Lint back
+        run: pnpm --filter back lint
+
+      - name: Lint front
+        run: pnpm --filter front lint
+
+  test-back:
+    name: Tests (back)
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: conectaunb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d conectaunb"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/conectaunb?schema=public
+      JWT_SECRET: ci-test-secret
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        run: corepack enable && corepack prepare pnpm@${{ env.PNPM_VERSION }} --activate
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm --filter back prisma:generate
+
+      - run: pnpm --filter back prisma:migrate:deploy
+
+      - name: Unit tests
+        run: pnpm --filter back test
+
+      - name: E2E tests
+        run: pnpm --filter back test:e2e
+
+  test-front:
+    name: Tests (front)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        run: corepack enable && corepack prepare pnpm@${{ env.PNPM_VERSION }} --activate
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Vitest
+        run: pnpm --filter front test
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: [lint, test-back, test-front]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        run: corepack enable && corepack prepare pnpm@${{ env.PNPM_VERSION }} --activate
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm --filter back prisma:generate
+
+      - name: Build back
+        run: pnpm --filter back build
+
+      - name: Build front
+        run: pnpm --filter front build
+
+  release-image:
+    name: Release Docker images
+    runs-on: ubuntu-latest
+    needs: [build]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build & push backend image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: infra/docker/Dockerfile.prod
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/conectaunb-back:${{ github.sha }}
+            ghcr.io/${{ github.repository_owner }}/conectaunb-back:latest
+          labels: |
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+
+      - name: Build & push frontend image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: infra/docker/Dockerfile.front.prod
+          push: true
+          build-args: |
+            NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/conectaunb-front:${{ github.sha }}
+            ghcr.io/${{ github.repository_owner }}/conectaunb-front:latest
+          labels: |
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+
+  deploy-akamai:
+    name: Deploy to Akamai (Linode) via SSH
+    runs-on: ubuntu-latest
+    needs: [release-image]
+    if: false
+    steps:
+      - name: Compute short sha
+        id: tag
+        run: echo "sha=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+
+      - name: SSH into the VM and roll the stack
+        uses: appleboy/ssh-action@v1
+        env:
+          IMAGE_TAG: ${{ steps.tag.outputs.sha }}
+          GHCR_PULL_TOKEN: ${{ secrets.GHCR_PULL_TOKEN }}
+          GHCR_USER: ${{ github.actor }}
+        with:
+          host: ${{ secrets.AKAMAI_HOST }}
+          username: ${{ secrets.AKAMAI_USER }}
+          key: ${{ secrets.AKAMAI_SSH_KEY }}
+          envs: IMAGE_TAG,GHCR_PULL_TOKEN,GHCR_USER
+          script: |
+            cd /opt/conectaunb
+            git pull --ff-only
+            if [ -n "$GHCR_PULL_TOKEN" ]; then \
+              echo "$GHCR_PULL_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin; \
+            fi
+            docker compose -f infra/docker/docker-compose.prod.yml pull
+            docker compose -f infra/docker/docker-compose.prod.yml up -d --remove-orphans
+            docker image prune -f

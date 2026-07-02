@@ -1,0 +1,436 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Perfil {
+  id                        Int @id @default(autoincrement())
+  name                      String @db.Text
+  email                     String @unique
+  matricula                 String? @unique
+  senha                     String
+  linkFoto                  String?
+  curso                     Curso
+  departamento              Departamento
+  campus                    Campus
+  cargo                     Cargo
+  PreferenciaNotificacao    PreferenciaNotificacao?
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
+  ultimaLeituraNotificacoes DateTime @default(now())
+
+  Membro              Membro[]
+  Seguindo            Seguindo[]
+  Curtidas            Curtidas[]
+  Inscricao           Inscricao[]
+  files               File[]
+}
+
+model Entidade {
+  id               Int @id @default(autoincrement())
+  nome             String @db.Text
+  descricao        String? @db.Text 
+  classificacao    ClassificacaoEntidade
+  campus           Campus
+  departamento     Departamento
+  linkBanner       String?
+  linkLogo         String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  membros            Membro[]
+  seguidores         Seguindo[]
+  postagens          Postagem[]
+  projetos           Projeto[]
+  processosSeletivos ProcessoSeletivo[]
+  notificacoes       Notificacao[]
+}
+
+model Membro {
+  id              Int @id @default(autoincrement())
+  idPerfil        Int
+  idEntidade      Int
+  classificacao   ClassificacaoMembro
+  createdAt       DateTime @default(now())
+
+  perfil          Perfil @relation(fields: [idPerfil], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  entidade        Entidade @relation(fields: [idEntidade], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  gerenteProjetos     gerentesProjetos[]
+  colaboradorProjetos colaboradoresProjetos[]
+
+  @@unique([idPerfil, idEntidade])
+}
+
+model Seguindo {
+  idPerfil    Int
+  idEntidade  Int
+  createdAt   DateTime @default(now())
+
+  perfil      Perfil @relation(fields: [idPerfil], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  entidade    Entidade @relation(fields: [idEntidade], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@id([idPerfil, idEntidade])
+}
+
+model Postagem {
+  id            Int @id @default(autoincrement())
+  idEntidade    Int
+  titulo        String @db.Text
+  conteudo      String @db.Text
+  linkFoto      String?
+  createdAt     DateTime @default(now())
+
+  entidade      Entidade @relation(fields: [idEntidade], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  curtidas       Curtidas[]
+}
+
+model Curtidas {
+  idPostagem  Int
+  idPerfil    Int
+  createdAt   DateTime @default(now())
+
+  perfil      Perfil @relation(fields: [idPerfil], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  postagem    Postagem @relation(fields: [idPostagem], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@id([idPostagem, idPerfil])
+}
+
+model Projeto {
+  id              Int @id @default(autoincrement())
+  idEntidade      Int
+  nome            String @db.Text
+  descricao       String? @db.Text
+  linkFoto        String?
+  linkBanner      String?
+  status          StatusProjeto
+  gerentes         gerentesProjetos[]
+  colaboradores   colaboradoresProjetos[]
+  dataInicio      DateTime
+  dataFim         DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  entidade        Entidade @relation(fields: [idEntidade], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model gerentesProjetos {
+  idProjeto   Int
+  idMembro    Int
+  createdAt   DateTime @default(now())
+
+  projeto     Projeto @relation(fields: [idProjeto], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  membro      Membro @relation(fields: [idMembro], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@id([idProjeto, idMembro])
+}
+
+model colaboradoresProjetos {
+  idProjeto   Int
+  idMembro    Int
+  createdAt   DateTime @default(now())
+
+  projeto     Projeto @relation(fields: [idProjeto], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  membro      Membro @relation(fields: [idMembro], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@id([idProjeto, idMembro])
+}
+
+model ProcessoSeletivo {
+  id              Int @id @default(autoincrement())
+  idEntidade      Int
+  titulo          String @db.Text
+  descricao       String? @db.Text
+  classificacao   ClassificacaoInscricao
+  linkFoto        String?
+  linkIncricao    String?
+  inicioInscricao DateTime
+  fimInscricao    DateTime
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  entidade        Entidade @relation(fields: [idEntidade], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  inscricoes      Inscricao[]
+}
+
+model Inscricao {
+  idProcessoSeletivo  Int
+  idPerfil            Int
+  createdAt           DateTime @default(now())
+
+  perfil              Perfil @relation(fields: [idPerfil], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  processoSeletivo    ProcessoSeletivo @relation(fields: [idProcessoSeletivo], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@id([idProcessoSeletivo, idPerfil])
+}
+
+model Notificacao {
+  id              Int @id @default(autoincrement())
+  idEntidade      Int
+  tipo            TipoNotificacao
+  mensagem        String @db.Text
+  referenciaId    Int
+  createdAt       DateTime @default(now())
+
+  entidade        Entidade @relation(fields: [idEntidade], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model PreferenciaNotificacao {
+  idPerfil              Int
+  processoSeletivo      Boolean @default(true)
+  atualizacaoProjeto    Boolean @default(true)
+  atualizacaoPublicacao Boolean @default(true)
+
+  perfil                Perfil @relation(fields: [idPerfil], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@id([idPerfil])
+}
+
+/// Rastreia objetos armazenados no R2 (ou local) para permitir
+/// quota por dono, limpeza de orfaos e substituicao no update.
+model File {
+  id            String   @id @default(uuid())
+  key           String   @unique
+  url           String
+  originalName  String   @db.Text
+  mimeType      String
+  size          Int
+  /// Slot do arquivo: avatar | logo | banner | postagem | projeto_foto | projeto_banner | processo_foto
+  slot          String
+  /// Perfil.id de quem subiu o arquivo (dono para efeito de quota).
+  ownerId       Int
+  /// Tipo da entidade referenciada (entidade | projeto | postagem | processo_seletivo). Null para perfil.
+  entityType    String?
+  /// ID da entidade referenciada.
+  entityId      Int?
+  createdAt     DateTime @default(now())
+
+  owner         Perfil @relation(fields: [ownerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([ownerId, slot])
+  @@index([entityType, entityId])
+}
+
+enum Cargo {
+  DOCENTE
+  DISCENTE
+}
+
+enum Campus {
+CEILANDIA
+GAMA
+DARCY
+PLANALTINA
+}
+
+enum ClassificacaoEntidade {
+  EMPRESA_JUNIOR
+  EQUIPE_COMPETICAO
+  PROJETO_EXTENSAO
+  ATLETICA
+}
+
+enum StatusProjeto {
+  PLANEJAMENTO
+  EM_ANDAMENTO
+  CONCLUIDO
+  CANCELADO
+  PAUSADO
+}
+
+enum ClassificacaoMembro {
+  GESTOR
+  CO_GESTOR
+  MEMBRO
+}
+
+enum ClassificacaoInscricao {
+  ABERTA
+  FECHADA
+}
+
+enum TipoNotificacao {
+  PROCESSO_SELETIVO
+  ATUALIZACAO_PROJETO
+  NOVA_PUBLICACAO
+}
+
+enum Departamento {
+  ADM       //DEPTO ADMINISTRAÇÃO
+  CCA       //DEPTO CIÊNCIAS CONTÁBEIS ATUARIAIS
+  CEN       //DEPTO ARTES CÊNICAS
+  CET       //CENTRO DE EXCELÊNCIA EM TURISMO
+  CIC       //DEPTO CIÊNCIAS DA COMPUTAÇÃO
+  DAN       //DEPTO ANTROPOLOGIA
+  DIN       //DEPARTAMENTO DE DESIGN (11.01.01.14.04)
+  DSC       //DEPTO SAUDE COLETIVA
+  ECO       //DEPTO ECONOMIA
+  EFL       //DEPTO ENGENHARIA FLORESTAL
+  ELA       //DEPARTAMENTO DE ESTUDOS LATINO AMERICANO
+  ENC       //DEPTO ENGENHARIA CIVIL E AMBIENTAL
+  ENE       //DEPTO ENGENHARIA ELETRICA
+  ENF       //DEPTO ENFERMAGEM
+  ENM       //DEPARTAMENTO DE ENGENHARIA MECANICA
+  EPR       //DEPTO ENGENHARIA DE PRODUCAO
+  EST       //DEPTO ESTATÍSTICA
+  FAC_COM   //DEPARTAMENTO DE COMUNICAÇÃO ORGANIZACIONAL/COM
+  FAC_DAP   //DEPARTAMENTO DE AUDIOVISUAIS E PUBLICIDADE/DAP
+  FAC_JOR   //DEPARTAMENTO DE JORNALISMO/JOR
+  FAU       //FACULDADE DE ARQUITETURA E URBANISMO
+  FAV       //FACULDADE DE AGRONOMIA E MEDICINA VETERINÁRIA
+  FCI       //FACULDADE DE CIÊNCIA DA INFORMAÇÃO
+  FCS       //FACULDADE DE CIÊNCIAS DA SAÚDE
+  FCTE      //CAMPUS UNB GAMA: FACULDADE DE CIÊNCIAS E TECNOLOGIAS EM ENGENHARIA
+  FCTS      //CAMPUS UNB CEILÂNDIA: FACULDADE DE CIÊNCIAS E TECNOLOGIAS EM SAÚDE
+  FDD       //FACULDADE DE DIREITO
+  FED       //FACULDADE DE EDUCAÇÃO
+  FEF       //FACULDADE DE EDUCAÇÃO FÍSICA
+  FIL       //DEPTO FILOSOFIA
+  FMD       //FACULDADE DE MEDICINA
+  FTD       //FACULDADE DE TECNOLOGIA
+  FUP       //FACULDADE DE PLANALTINA
+  GEA       //DEPTO GEOGRAFIA
+  GPP       //DEPARTAMENTO DE GESTAO DE POLITICAS PUBL
+  HIS       //DEPTO HISTÓRIA
+  ICB       //INSTITUTO DE CIÊNCIAS BIOLÓGICAS
+  ICE       //INSTITUTO DE CIÊNCIAS EXATAS
+  ICH       //INSTITUTO DE CIÊNCIAS HUMANAS
+  IDA1      //INSTITUTO DE ARTES
+  IFD       //INSTITUTO DE FÍSICA
+  IGD       //INSTITUTO DE GEOCIÊNCIAS
+  ILD       //INSTITUTO DE LETRAS
+  IPD       //INSTITUTO DE PSICOLOGIA
+  IPOL      //INSTITUTO DE CIÊNCIA POLÍTICA
+  IQD       //INSTITUTO DE QUÍMICA
+  IREL      //INSTITUTO DE RELAÇÕES INTERNACIONAIS
+  LET       //DEPTO LÍNGUAS ESTRANGEIRAS E TRADUÇÃO
+  LIP       //DEPTO LINGUISTICA, PORT. LING. CLASSICAS
+  MAT       //DEPARTAMENTO DE MATEMÁTICA
+  MUS       //DEPTO MÚSICA
+  NUT       //DEPTO NUTRICAO
+  ODT       //DEPTO ODONTOLOGIA
+  SER       //DEPTO SERVIÇO SOCIAL
+  SOL       //DEPARTAMENTO DE SOCIOLOGIA
+  VIS       //DEPTO ARTES VISUAIS
+}
+
+enum Curso {
+  ADMINISTRACAO
+  AGRONOMIA
+  ARQUITETURA_E_URBANISMO
+  ARQUIVOLOGIA
+  ARTES_CENICAS
+  ARTES_CENICAS_INTERPRETACAO_TEATRAL
+  ARTES_VISUAIS
+  BIBLIOTECONOMIA
+  BIOTECNOLOGIA
+  CIENCIA_DA_COMPUTACAO
+  CIENCIA_POLITICA
+  CIENCIAS_AMBIENTAIS
+  CIENCIAS_BIOLOGICAS
+  CIENCIAS_CONTABEIS
+  CIENCIAS_ECONOMICAS
+  CIENCIAS_NATURAIS
+  CIENCIAS_SOCIAIS
+  CIENCIAS_SOCIAIS_ANTROPOLOGIA
+  CIENCIAS_SOCIAIS_LATINO_AMERICANAS
+  CIENCIAS_SOCIAIS_SOCIOLOGIA
+  COMPUTACAO
+  COMUNICACAO_SOCIAL_AUDIOVISUAL
+  COMUNICACAO_SOCIAL_COMUNICACAO_ORGANIZACIONAL
+  COMUNICACAO_SOCIAL_PUBLICIDADE_E_PROPAGANDA
+  DESIGN_PROGRAMACAO_VISUAL
+  DESIGN_PROJETO_DO_PRODUTO
+  DIREITO
+  EDUCACAO_DO_CAMPO_CIENCIAS_DA_NATUREZA
+  EDUCACAO_DO_CAMPO_CIENCIAS_DA_NATUREZA_E_MATEMATICA
+  EDUCACAO_DO_CAMPO_LINGUAGENS_ARTES_E_LITERATURA
+  EDUCACAO_DO_CAMPO_MATEMATICA
+  EDUCACAO_FISICA
+  EDUCACAO_FISICA_CICLO_BASICO
+  ENFERMAGEM
+  ENGENHARIA
+  ENGENHARIA_AEROESPACIAL
+  ENGENHARIA_AMBIENTAL
+  ENGENHARIA_AMBIENTAL_E_SANITARIA
+  ENGENHARIA_AUTOMOTIVA
+  ENGENHARIA_CIVIL
+  ENGENHARIA_DE_COMPUTACAO
+  ENGENHARIA_DE_ENERGIA
+  ENGENHARIA_DE_PRODUCAO
+  ENGENHARIA_DE_REDES_DE_COMUNICACAO
+  ENGENHARIA_DE_SOFTWARE
+  ENGENHARIA_ELETRICA
+  ENGENHARIA_ELETRONICA
+  ENGENHARIA_FLORESTAL
+  ENGENHARIA_MECANICA
+  ENGENHARIA_MECATRONICA_CONTROLE_E_AUTOMACAO
+  ENGENHARIA_QUIMICA
+  ESTATISTICA
+  FARMACIA
+  FILOSOFIA
+  FISICA
+  FISICA_COMPUTACIONAL
+  FISIOTERAPIA
+  FONOAUDIOLOGIA
+  GEOFISICA
+  GEOGRAFIA
+  GEOLOGIA
+  GESTAO_AMBIENTAL
+  GESTAO_DE_AGRONEGOCIOS
+  GESTAO_DE_POLITICAS_PUBLICAS
+  GESTAO_DO_AGRONEGOCIO
+  HISTORIA
+  INTELIGENCIA_ARTIFICIAL
+  JORNALISMO
+  LETRAS_LINGUA_E_LITERATURA_JAPONESA
+  LETRAS_LINGUA_ESPANHOLA_E_LITERATURA_ESPANHOLA_E_HISPANO_AMERICANA @map("LETRAS_ESPANHOL_E_LIT_HISPANO")
+  LETRAS_LINGUA_FRANCESA_E_RESPECTIVA_LITERATURA
+  LETRAS_LINGUA_INGLESA_E_RESPECTIVA_LITERATURA
+  LETRAS_LINGUA_PORTUGUESA_E_RESPECTIVA_LITERATURA
+  LETRAS_PORTUGUES_DO_BRASIL_COMO_SEGUNDA_LINGUA
+  LETRAS_TRADUCAO_ESPANHOL
+  LETRAS_TRADUCAO_FRANCES
+  LETRAS_TRADUCAO_INGLES
+  LINGUA_DE_SINAIS_BRASILEIRA_PORTUGUES_COMO_SEGUNDA_LINGUA
+  LINGUAS_ESTRANGEIRAS_APLICADAS_MSI
+  MATEMATICA
+  MEDICINA
+  MEDICINA_VETERINARIA
+  MUSEOLOGIA
+  MUSICA
+  MUSICA_CANTO
+  MUSICA_CLARINETA
+  MUSICA_COMPOSICAO
+  MUSICA_CONTRABAIXO
+  MUSICA_FAGOTE
+  MUSICA_FLAUTA
+  MUSICA_OBOE
+  MUSICA_PIANO
+  MUSICA_REGENCIA
+  MUSICA_SAXOFONE
+  MUSICA_TROMBONE
+  MUSICA_TROMPA
+  MUSICA_TROMPETE
+  MUSICA_VIOLA
+  MUSICA_VIOLAO
+  MUSICA_VIOLINO
+  MUSICA_VIOLONCELO
+  NUTRICAO
+  ODONTOLOGIA
+  PSICOLOGIA
+  QUIMICA
+  QUIMICA_TECNOLOGICA
+  RELACOES_INTERNACIONAIS
+  SAUDE_COLETIVA
+  SERVICO_SOCIAL
+  TEATRO
+  TEORIA_CRITICA_E_HISTORIA_DA_ARTE
+  TURISMO
+}

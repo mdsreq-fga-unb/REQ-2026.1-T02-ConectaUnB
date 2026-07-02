@@ -22,7 +22,6 @@ A declaração de requisitos formaliza o entendimento obtido durante o levantame
 
 - **Declarações textuais estruturadas**: O grupo utilizará da técnida de textos estruturados através do template "O sistema deve <ação> [condição/opcional] [restrição/critério]" para uma abstração mais objetiva dos requisitos 
 - **Catálogos de Requisitos (Listas de RFs e RNFs)**: Utilizaremos listas estruturadas para documentar formalmente os requisitos do sistema. Os Requisitos Funcionais descreverão as ações precisas da plataforma, enquanto os Requisitos Não Funcionais serão declarados e classificados utilizando o modelo *URPS+*, garantindo que atributos de qualidade como usabilidade, desempenho e suportabilidade fiquem perfeitamente claros para o desenvolvimento.
-- **Critérios de Aceitação**: Para garantir a verificabilidade dos requisitos e reduzir ambiguidades, definiremos condições objetivas e testáveis que a plataforma precisará atender para que uma funcionalidade seja aprovada. Essa técnica de declaração estruturada orientará a equipe técnica sobre o comportamento exato esperado de cada entrega iterativa.
 
 ### Representação de Requisitos
 A representação dá forma visual e sistêmica aos requisitos já levantados, servindo de base para a comunicação com stakeholders e para o desenvolvimento.
@@ -35,7 +34,7 @@ As atividades de Verificação e Validação garantem tanto a qualidade interna 
 
 - **Validação com Protótipos e Demonstrações**: Como o processo RAD é fortemente orientado ao feedback contínuo, utilizaremos a apresentação de protótipos interativos e incrementos do sistema em reuniões com os stakeholders. O objetivo é garantir a qualidade externa, confirmando visualmente com o cliente se estamos "construindo o requisito correto" e se ele atende às reais necessidades de divulgação da comunidade acadêmica.
 - **Listas de Verificação**: Para assegurar a qualidade interna dos requisitos antes de passarem para a codificação, a equipe de desenvolvimento aplicará listas de verificação estruturadas. O propósito é responder à pergunta "estamos realizando o requisito da maneira correta?", avaliando se os catálogos de requisitos estão consistentes, completos, testáveis e sem ambiguidades.
-- **Validação de Requisitos em Ambiente de Aceitação**: Para garantir que as necessidades de negócio foram atendidas, os representantes dos usuários validarão os incrementos confrontando-os estritamente com os critérios de aceitação previamente definidos. Essa técnica comprova que o comportamento do Conecta UnB respeita as regras de negócio e as demandas específicas, focando na aprovação do requisito mapeado e não apenas na busca por falhas no produto final.
+- **Validação de Requisitos em Ambiente de Aceitação**: Para garantir que as necessidades de negócio foram atendidas, os representantes dos usuários validarão os incrementos confrontando-os estritamente com as regras de negócio previamente definidos. Essa técnica comprova que o comportamento do Conecta UnB respeita as regras de negócio e as demandas específicas, focando na aprovação do requisito mapeado e não apenas na busca por falhas no produto final.
 - **Revisões Técnicas por Pares (Inspeções)**: A equipe técnica realizará revisões conjuntas dos artefatos de requisitos produzidos para verificar sua conformidade técnica. Essa prática de verificação busca identificar precocemente inconsistências, lacunas ou falhas nos Requisitos Funcionais e Não Funcionais antes que se tornem problemas na fase de desenvolvimento.
 
 ### Organização e Atualização de Requisitos
@@ -43,24 +42,3 @@ A organização e atualização dos requisitos está presente desde o Planejamen
 
 - **Organização e Atualização de Backlog**: Por termos optado pelo processo RAD iterativo e incremental com framework kanban, organizaremos os requisitos em um backlog dinâmico. Essa técnica estruturará as funcionalidades em uma lista priorizada, que será atualizada continuamente à medida que o entendimento do problema de fragmentação da UnB amadurece e novos feedbacks são coletados.
 - **Matriz de Rastreabilidade**: Utilizaremos uma matriz de rastreabilidade para conectar cada requisito à sua fonte original (por exemplo, a demanda de recrutamento da Empresa Júnior CJR ou de divulgação de eventos da Atlética Pesadelo) e aos artefatos do sistema. Essa técnica de organização garantirá que a evolução do entendimento coletivo não se perca e funcionará como uma memória estruturada das decisões e mudanças adotadas no projeto.
-
-
-## Engenharia de Requisitos e o RAD
-
-| Fases do Processo | Atividades ER | Prática | Técnica | Resultado Esperado |
-| :--- | :--- | :--- | :--- | :--- |
-| **Fase 1: Planejamento de Requisitos** | Elicitação e Descoberta | Interação direta com stakeholders e pesquisa de campo | Entrevistas, conversas informais e Análise de Documentos | Entendimento claro da fragmentação de informações e identificação exata das limitações atuais. |
-| | Análise e Consenso | Alinhamento de escopo e definição de valor | Reuniões de Análise Conjunta e Técnicas de Priorização (MoSCoW e dependências/trade-offs) | Definição objetiva e priorização do escopo essencial para compor o Produto Mínimo Viável (MVP). |
-| | Declaração | Documentação estruturada de requisitos funcionais e não funcionais | Catálogos de Requisitos (RFs/RNFs) | Documentação estruturada inicial das ações e qualidades exigidas para o Conecta UnB. |
-| | Organização e Atualização | Estruturação inicial do backlog e rastreabilidade | Organização e Atualização de Backlog e Matriz de Rastreabilidade | Backlog preliminar priorizado e rastreabilidade das demandas estabelecida. |
-| | Verificação e Validação | Confirmação da qualidade interna desde o início | Listas de Verificação de Qualidade Interna | Requisitos iniciais validados quanto à completude e ausência de ambiguidades antes da prototipagem. |
-| **Fase 2: Design do Usuário** | Elicitação e Descoberta | Observação do contexto de uso | Observação Direta e Análise de Tarefas | Descoberta de requisitos latentes a partir de como o usuário realiza tarefas. |
-| | Representação | Modelagem de fronteiras e jornada | Diagrama de Contexto e Protótipos de Baixa/Média Fidelidade (Figma) | Navegação e estrutura visual da plataforma simuladas para aprovação. |
-| | Análise e Consenso | Mediação de interesses e impasses visuais | Negociação e Resolução de Conflitos | Soluções de compromisso para alinhar interfaces divergentes entre entidades. |
-| | Declaração | Detalhamento para desenvolvimento | Declarações textuais estruturadas e Critérios de Aceitação | Backlog refinado em valor, com condições testáveis prontas para codificação. |
-| | Verificação e Validação | Validação contínua externa | Validação com Protótipos e Demonstrações | Confirmação visual de que o design atende às necessidades de divulgação. |
-| | Organização e Atualização | Ajuste de escopo pós-validação visual | Organização e Atualização de Backlog | Inclusão ou remoção de requisitos descobertos/refutados durante o design. |
-| **Fase 3: Construção** | Verificação e Validação | Verificação de qualidade interna (técnica) | Listas de Verificação e Revisões Técnicas por Pares (Inspeções em Pull Requests) | Requisitos implementados de forma consistente com a documentação. |
-| | Organização e Atualização | Adaptação contínua ao desenvolvimento | Revisão Iterativa de Requisitos no Kanban | Lista de funcionalidades atualizada conforme o progresso do código. |
-| **Fase 4: Cutover (Implementação)** | Verificação e Validação | Verificação do atendimento às necessidades de negócio | Validação de Requisitos em Ambiente de Aceitação | Comprovação estrita de que os critérios de aceitação dos requisitos foram integralmente cumpridos. |
-| | Organização e Atualização | Manutenção da evolução do projeto | Fechamento da Matriz de Rastreabilidade | Conexão final documentada entre demandas originais e código entregue. |
